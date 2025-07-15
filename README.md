@@ -51,6 +51,8 @@ Merge is the leading provider of customer-facing integrations for frontier LLMs,
 - [GDPR](https://www.merge.dev/eu)
 - [Login](https://app.merge.dev/login?_gl=1*6bfh40*_gcl_au*MTY4MjQ4NzcxMy4xNzUyNjE4Mjgw*_ga*MTY0NjYzNTAyLjE3NTI2MTgyODA.*_ga_S6X9VBDBJN*czE3NTI2MTgyODAkbzEkZzEkdDE3NTI2MTg2MjEkajMyJGwwJGgw)
 - [SignUp](https://app.merge.dev/signup)
+- [Features](undefined)
+- [UseCases](undefined)
 
 ## Maintainers
 
