@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/merge/refs/heads/main/json-schema/ticketing-api-ticket-schema.json",
+  "title": "Ticket",
+  "description": "A ticket or issue from a connected ticketing or project management system.",
+  "type": "object",
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "remote_id": { "type": "string" },
+    "name": { "type": "string", "description": "Ticket title or name." },
+    "assignees": { "type": "array", "items": { "type": "string", "format": "uuid" } },
+    "creator": { "type": "string", "format": "uuid" },
+    "due_date": { "type": "string", "format": "date-time" },
+    "status": { "type": "string", "enum": ["OPEN", "CLOSED", "IN_PROGRESS", "ON_HOLD"] },
+    "description": { "type": "string" },
+    "priority": { "type": "string", "enum": ["URGENT", "HIGH", "NORMAL", "LOW"] },
+    "ticket_type": { "type": "string" },
+    "account": { "type": "string", "format": "uuid" },
+    "contact": { "type": "string", "format": "uuid" },
+    "parent_ticket": { "type": "string", "format": "uuid" },
+    "tags": { "type": "array", "items": { "type": "string" } },
+    "completed_at": { "type": "string", "format": "date-time" },
+    "ticket_url": { "type": "string", "format": "uri" },
+    "remote_was_deleted": { "type": "boolean" },
+    "created_at": { "type": "string", "format": "date-time" },
+    "modified_at": { "type": "string", "format": "date-time" }
+  }
+}

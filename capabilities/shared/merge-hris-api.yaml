@@ -1,0 +1,150 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: "Merge HRIS API"
+  description: "Unified HRIS API for employees, companies, employments, teams, and payroll."
+  tags:
+    - Merge
+    - HRIS
+    - Human Resources
+    - Payroll
+  created: "2026-04-18"
+  modified: "2026-04-18"
+
+binds:
+  - namespace: env
+    keys:
+      MERGE_API_KEY: MERGE_API_KEY
+      MERGE_ACCOUNT_TOKEN: MERGE_ACCOUNT_TOKEN
+
+capability:
+  consumes:
+    - type: http
+      namespace: merge-hris
+      baseUri: https://api.merge.dev/api/hris/v1
+      description: "Merge Unified HRIS API."
+      authentication:
+        type: bearer
+        token: "{{MERGE_API_KEY}}"
+      resources:
+        - name: employees
+          path: /employees
+          description: "Employee operations."
+          operations:
+            - name: list-employees
+              method: GET
+              description: "List all employees."
+              inputParameters:
+                - name: cursor
+                  in: query
+                  type: string
+                  required: false
+                - name: page_size
+                  in: query
+                  type: integer
+                  required: false
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+            - name: create-employee
+              method: POST
+              description: "Create an employee."
+              body:
+                type: json
+                data:
+                  model: "{{tools.model}}"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+        - name: companies
+          path: /companies
+          description: "Company operations."
+          operations:
+            - name: list-companies
+              method: GET
+              description: "List all companies."
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+        - name: time-off
+          path: /time-off
+          description: "Time off operations."
+          operations:
+            - name: list-time-off
+              method: GET
+              description: "List time off requests."
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+            - name: create-time-off
+              method: POST
+              description: "Create a time off request."
+              body:
+                type: json
+                data:
+                  model: "{{tools.model}}"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+  exposes:
+    - type: mcp
+      port: 9100
+      namespace: merge-hris-mcp
+      transport: http
+      tools:
+        - name: list-employees
+          description: "List all employees from connected HRIS."
+          hints:
+            readOnly: true
+            idempotent: true
+          call: "merge-hris.list-employees"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: create-employee
+          description: "Create an employee in the connected HRIS."
+          hints:
+            readOnly: false
+          call: "merge-hris.create-employee"
+          with:
+            model: "tools.model"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: list-companies
+          description: "List all companies from connected HRIS."
+          hints:
+            readOnly: true
+          call: "merge-hris.list-companies"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: list-time-off
+          description: "List time off requests from connected HRIS."
+          hints:
+            readOnly: true
+          call: "merge-hris.list-time-off"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: create-time-off
+          description: "Create a time off request in the connected HRIS."
+          hints:
+            readOnly: false
+          call: "merge-hris.create-time-off"
+          with:
+            model: "tools.model"
+          outputParameters:
+            - type: object
+              mapping: "$."

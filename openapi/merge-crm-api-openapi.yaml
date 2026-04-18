@@ -1,0 +1,898 @@
+openapi: 3.0.3
+info:
+  title: Merge CRM API
+  description: >-
+    Unified API for integrating with 20+ CRM platforms including Salesforce,
+    HubSpot, Pipedrive, and Zoho CRM. Provides read and write capabilities for
+    standardized CRM data objects such as Accounts, Contacts, Leads,
+    Opportunities, and Engagements.
+  version: "1.0.0"
+  contact:
+    name: Merge Support
+    url: https://help.merge.dev/
+  x-generated-from: documentation
+  x-last-validated: "2026-04-18"
+servers:
+  - url: https://api.merge.dev/api/crm/v1
+    description: Merge CRM API production server
+security:
+  - bearerAuth: []
+    accountToken: []
+paths:
+  /accounts:
+    get:
+      operationId: listAccounts
+      summary: Merge List Accounts
+      description: Returns a list of CRM Account objects.
+      tags:
+        - Accounts
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+      responses:
+        '200':
+          description: A paginated list of Account objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCRMAccountList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    post:
+      operationId: createAccount
+      summary: Merge Create Account
+      description: Creates an Account in the connected CRM.
+      tags:
+        - Accounts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CRMAccountRequest'
+      responses:
+        '201':
+          description: The created Account.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CRMAccount'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /contacts:
+    get:
+      operationId: listContacts
+      summary: Merge List Contacts
+      description: Returns a list of CRM Contact objects.
+      tags:
+        - Contacts
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+      responses:
+        '200':
+          description: A paginated list of Contact objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCRMContactList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    post:
+      operationId: createContact
+      summary: Merge Create Contact
+      description: Creates a Contact in the connected CRM.
+      tags:
+        - Contacts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CRMContactRequest'
+      responses:
+        '201':
+          description: The created Contact.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CRMContact'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /leads:
+    get:
+      operationId: listLeads
+      summary: Merge List Leads
+      description: Returns a list of Lead objects.
+      tags:
+        - Leads
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+      responses:
+        '200':
+          description: A paginated list of Lead objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedLeadList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    post:
+      operationId: createLead
+      summary: Merge Create Lead
+      description: Creates a Lead in the connected CRM.
+      tags:
+        - Leads
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeadRequest'
+      responses:
+        '201':
+          description: The created Lead.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lead'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /opportunities:
+    get:
+      operationId: listOpportunities
+      summary: Merge List Opportunities
+      description: Returns a list of Opportunity objects.
+      tags:
+        - Opportunities
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [OPEN, WON, LOST]
+          description: Filter by opportunity status.
+      responses:
+        '200':
+          description: A paginated list of Opportunity objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedOpportunityList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    post:
+      operationId: createOpportunity
+      summary: Merge Create Opportunity
+      description: Creates an Opportunity in the connected CRM.
+      tags:
+        - Opportunities
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpportunityRequest'
+      responses:
+        '201':
+          description: The created Opportunity.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Opportunity'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /engagements:
+    get:
+      operationId: listEngagements
+      summary: Merge List Engagements
+      description: Returns a list of Engagement objects (meetings, calls, emails).
+      tags:
+        - Engagements
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+      responses:
+        '200':
+          description: A paginated list of Engagement objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedEngagementList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    post:
+      operationId: createEngagement
+      summary: Merge Create Engagement
+      description: Creates an Engagement in the connected CRM.
+      tags:
+        - Engagements
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EngagementRequest'
+      responses:
+        '201':
+          description: The created Engagement.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Engagement'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /notes:
+    get:
+      operationId: listNotes
+      summary: Merge List Notes
+      description: Returns a list of Note objects.
+      tags:
+        - Notes
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+      responses:
+        '200':
+          description: A paginated list of Note objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedNoteList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    post:
+      operationId: createNote
+      summary: Merge Create Note
+      description: Creates a Note in the connected CRM.
+      tags:
+        - Notes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NoteRequest'
+      responses:
+        '201':
+          description: The created Note.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /stages:
+    get:
+      operationId: listStages
+      summary: Merge List Stages
+      description: Returns a list of Stage objects in the deal pipeline.
+      tags:
+        - Stages
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+      responses:
+        '200':
+          description: A paginated list of Stage objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedStageList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /users:
+    get:
+      operationId: listUsers
+      summary: Merge List Users
+      description: Returns a list of CRM User objects.
+      tags:
+        - Users
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+      responses:
+        '200':
+          description: A paginated list of User objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCRMUserList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /engagement-types:
+    get:
+      operationId: listEngagementTypes
+      summary: Merge List Engagement Types
+      description: Returns a list of EngagementType objects.
+      tags:
+        - Engagements
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+      responses:
+        '200':
+          description: A paginated list of EngagementType objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedEngagementTypeList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+    accountToken:
+      type: apiKey
+      in: header
+      name: X-Account-Token
+  parameters:
+    cursor:
+      name: cursor
+      in: query
+      schema:
+        type: string
+      description: Pagination cursor.
+    pageSize:
+      name: page_size
+      in: query
+      schema:
+        type: integer
+        default: 100
+      description: Number of results per page.
+    includeRemoteData:
+      name: include_remote_data
+      in: query
+      schema:
+        type: boolean
+      description: Whether to include raw third-party data.
+  schemas:
+    CRMAccount:
+      type: object
+      description: A company or organization in the CRM.
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "0958cbc6-6040-430a-848e-aafacbadf4ae"
+        remote_id:
+          type: string
+        name:
+          type: string
+          example: "Acme Corporation"
+        description:
+          type: string
+        industry:
+          type: string
+          example: "Technology"
+        website:
+          type: string
+          example: "https://www.acme.com"
+        number_of_employees:
+          type: integer
+          example: 500
+        owner:
+          type: string
+          format: uuid
+        last_activity_at:
+          type: string
+          format: date-time
+        remote_was_deleted:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        modified_at:
+          type: string
+          format: date-time
+    CRMAccountRequest:
+      type: object
+      properties:
+        model:
+          type: object
+          properties:
+            name:
+              type: string
+            description:
+              type: string
+            industry:
+              type: string
+            website:
+              type: string
+            number_of_employees:
+              type: integer
+            owner:
+              type: string
+              format: uuid
+    CRMContact:
+      type: object
+      description: A person associated with an account in the CRM.
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type: string
+        first_name:
+          type: string
+          example: "Gil"
+        last_name:
+          type: string
+          example: "Feig"
+        account:
+          type: string
+          format: uuid
+        owner:
+          type: string
+          format: uuid
+        email_addresses:
+          type: array
+          items:
+            type: object
+            properties:
+              email_address:
+                type: string
+                format: email
+              email_address_type:
+                type: string
+        phone_numbers:
+          type: array
+          items:
+            type: object
+            properties:
+              phone_number:
+                type: string
+              phone_number_type:
+                type: string
+        last_activity_at:
+          type: string
+          format: date-time
+        remote_was_deleted:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        modified_at:
+          type: string
+          format: date-time
+    CRMContactRequest:
+      type: object
+      properties:
+        model:
+          type: object
+          properties:
+            first_name:
+              type: string
+            last_name:
+              type: string
+            account:
+              type: string
+              format: uuid
+            owner:
+              type: string
+              format: uuid
+    Lead:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type: string
+        owner:
+          type: string
+          format: uuid
+        lead_source:
+          type: string
+          example: "Website"
+        title:
+          type: string
+          example: "VP of Engineering"
+        company:
+          type: string
+          example: "Acme Corp"
+        first_name:
+          type: string
+          example: "Jane"
+        last_name:
+          type: string
+          example: "Doe"
+        converted_date:
+          type: string
+          format: date-time
+        converted_contact:
+          type: string
+          format: uuid
+        converted_account:
+          type: string
+          format: uuid
+        remote_was_deleted:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        modified_at:
+          type: string
+          format: date-time
+    LeadRequest:
+      type: object
+      properties:
+        model:
+          type: object
+          properties:
+            owner:
+              type: string
+              format: uuid
+            lead_source:
+              type: string
+            title:
+              type: string
+            company:
+              type: string
+            first_name:
+              type: string
+            last_name:
+              type: string
+    Opportunity:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type: string
+        name:
+          type: string
+          example: "Acme Enterprise Deal"
+        description:
+          type: string
+        amount:
+          type: integer
+          example: 100000
+        owner:
+          type: string
+          format: uuid
+        account:
+          type: string
+          format: uuid
+        stage:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: [OPEN, WON, LOST]
+          example: "OPEN"
+        close_date:
+          type: string
+          format: date-time
+        last_activity_at:
+          type: string
+          format: date-time
+        remote_was_deleted:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        modified_at:
+          type: string
+          format: date-time
+    OpportunityRequest:
+      type: object
+      properties:
+        model:
+          type: object
+          properties:
+            name:
+              type: string
+            description:
+              type: string
+            amount:
+              type: integer
+            owner:
+              type: string
+              format: uuid
+            account:
+              type: string
+              format: uuid
+            stage:
+              type: string
+              format: uuid
+            status:
+              type: string
+            close_date:
+              type: string
+              format: date-time
+    Engagement:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type: string
+        owner:
+          type: string
+          format: uuid
+        content:
+          type: string
+          example: "Discussed Q3 roadmap priorities."
+        subject:
+          type: string
+          example: "Q3 Planning Call"
+        direction:
+          type: string
+          enum: [INBOUND, OUTBOUND]
+          example: "OUTBOUND"
+        engagement_type:
+          type: string
+          format: uuid
+        start_time:
+          type: string
+          format: date-time
+        end_time:
+          type: string
+          format: date-time
+        account:
+          type: string
+          format: uuid
+        contacts:
+          type: array
+          items:
+            type: string
+            format: uuid
+        remote_was_deleted:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        modified_at:
+          type: string
+          format: date-time
+    EngagementRequest:
+      type: object
+      properties:
+        model:
+          type: object
+          properties:
+            owner:
+              type: string
+              format: uuid
+            content:
+              type: string
+            subject:
+              type: string
+            direction:
+              type: string
+            engagement_type:
+              type: string
+              format: uuid
+            start_time:
+              type: string
+              format: date-time
+            end_time:
+              type: string
+              format: date-time
+    Note:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type: string
+        owner:
+          type: string
+          format: uuid
+        content:
+          type: string
+          example: "Follow up regarding contract renewal."
+        contact:
+          type: string
+          format: uuid
+        account:
+          type: string
+          format: uuid
+        opportunity:
+          type: string
+          format: uuid
+        remote_was_deleted:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        modified_at:
+          type: string
+          format: date-time
+    NoteRequest:
+      type: object
+      properties:
+        model:
+          type: object
+          properties:
+            owner:
+              type: string
+              format: uuid
+            content:
+              type: string
+            contact:
+              type: string
+              format: uuid
+            account:
+              type: string
+              format: uuid
+            opportunity:
+              type: string
+              format: uuid
+    Stage:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type: string
+        name:
+          type: string
+          example: "Proposal"
+        remote_was_deleted:
+          type: boolean
+    CRMUser:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type: string
+        name:
+          type: string
+          example: "Gil Feig"
+        email:
+          type: string
+          format: email
+          example: "gil@merge.dev"
+        is_active:
+          type: boolean
+        remote_was_deleted:
+          type: boolean
+    EngagementType:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type: string
+        name:
+          type: string
+          example: "Call"
+        remote_was_deleted:
+          type: boolean
+    PaginatedCRMAccountList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CRMAccount'
+    PaginatedCRMContactList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CRMContact'
+    PaginatedLeadList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Lead'
+    PaginatedOpportunityList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Opportunity'
+    PaginatedEngagementList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Engagement'
+    PaginatedNoteList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Note'
+    PaginatedStageList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Stage'
+    PaginatedCRMUserList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CRMUser'
+    PaginatedEngagementTypeList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/EngagementType'

@@ -1,0 +1,676 @@
+openapi: 3.0.3
+info:
+  title: Merge Ticketing API
+  description: >-
+    Unified API for integrating with 30+ ticketing and project management
+    systems including Jira, Asana, Linear, Zendesk, Freshdesk, GitHub Issues,
+    and ServiceNow. Normalizes ticket data objects including tickets, comments,
+    attachments, contacts, teams, and tags.
+  version: "1.0.0"
+  contact:
+    name: Merge Support
+    url: https://help.merge.dev/
+  x-generated-from: documentation
+  x-last-validated: "2026-04-18"
+servers:
+  - url: https://api.merge.dev/api/ticketing/v1
+    description: Merge Ticketing API production server
+security:
+  - bearerAuth: []
+    accountToken: []
+paths:
+  /tickets:
+    get:
+      operationId: listTickets
+      summary: Merge List Tickets
+      description: Returns a list of Ticket objects from the connected ticketing system.
+      tags:
+        - Tickets
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [OPEN, CLOSED, IN_PROGRESS, ON_HOLD]
+          description: Filter by ticket status.
+        - name: priority
+          in: query
+          schema:
+            type: string
+            enum: [URGENT, HIGH, NORMAL, LOW]
+          description: Filter by priority.
+        - name: project_id
+          in: query
+          schema:
+            type: string
+          description: Filter by project ID.
+      responses:
+        '200':
+          description: A paginated list of Ticket objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTicketList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    post:
+      operationId: createTicket
+      summary: Merge Create Ticket
+      description: Creates a Ticket in the connected ticketing system.
+      tags:
+        - Tickets
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TicketRequest'
+      responses:
+        '201':
+          description: The created Ticket.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ticket'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /tickets/{id}:
+    get:
+      operationId: getTicket
+      summary: Merge Get Ticket
+      description: Returns a Ticket object with the given ID.
+      tags:
+        - Tickets
+      parameters:
+        - $ref: '#/components/parameters/resourceId'
+        - $ref: '#/components/parameters/includeRemoteData'
+      responses:
+        '200':
+          description: The Ticket object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ticket'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    patch:
+      operationId: updateTicket
+      summary: Merge Update Ticket
+      description: Updates a Ticket in the connected ticketing system.
+      tags:
+        - Tickets
+      parameters:
+        - $ref: '#/components/parameters/resourceId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TicketRequest'
+      responses:
+        '200':
+          description: The updated Ticket.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ticket'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /comments:
+    get:
+      operationId: listComments
+      summary: Merge List Comments
+      description: Returns a list of Comment objects.
+      tags:
+        - Comments
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+        - name: ticket_id
+          in: query
+          schema:
+            type: string
+          description: Filter by ticket ID.
+      responses:
+        '200':
+          description: A paginated list of Comment objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCommentList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    post:
+      operationId: createComment
+      summary: Merge Create Comment
+      description: Creates a Comment on a ticket.
+      tags:
+        - Comments
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentRequest'
+      responses:
+        '201':
+          description: The created Comment.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /projects:
+    get:
+      operationId: listProjects
+      summary: Merge List Projects
+      description: Returns a list of Project objects.
+      tags:
+        - Projects
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+      responses:
+        '200':
+          description: A paginated list of Project objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedProjectList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /users:
+    get:
+      operationId: listUsers
+      summary: Merge List Users
+      description: Returns a list of User objects from the ticketing platform.
+      tags:
+        - Users
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+      responses:
+        '200':
+          description: A paginated list of User objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUserList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /teams:
+    get:
+      operationId: listTeams
+      summary: Merge List Teams
+      description: Returns a list of Team objects.
+      tags:
+        - Teams
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+      responses:
+        '200':
+          description: A paginated list of Team objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTeamList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /contacts:
+    get:
+      operationId: listContacts
+      summary: Merge List Contacts
+      description: Returns a list of Contact objects (customers raising tickets).
+      tags:
+        - Contacts
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+      responses:
+        '200':
+          description: A paginated list of Contact objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedContactList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /tags:
+    get:
+      operationId: listTags
+      summary: Merge List Tags
+      description: Returns a list of Tag objects.
+      tags:
+        - Tags
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+      responses:
+        '200':
+          description: A paginated list of Tag objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTagList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /attachments:
+    get:
+      operationId: listAttachments
+      summary: Merge List Attachments
+      description: Returns a list of Attachment objects.
+      tags:
+        - Attachments
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+        - name: ticket_id
+          in: query
+          schema:
+            type: string
+          description: Filter by ticket ID.
+      responses:
+        '200':
+          description: A paginated list of Attachment objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAttachmentList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+    accountToken:
+      type: apiKey
+      in: header
+      name: X-Account-Token
+  parameters:
+    cursor:
+      name: cursor
+      in: query
+      schema:
+        type: string
+      description: Pagination cursor.
+    pageSize:
+      name: page_size
+      in: query
+      schema:
+        type: integer
+        default: 100
+      description: Number of results per page.
+    includeRemoteData:
+      name: include_remote_data
+      in: query
+      schema:
+        type: boolean
+      description: Whether to include raw third-party data.
+    resourceId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: Resource identifier.
+  schemas:
+    Ticket:
+      type: object
+      description: A ticket or issue in a ticketing or project management system.
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "0958cbc6-6040-430a-848e-aafacbadf4ae"
+        remote_id:
+          type: string
+          example: "19202938"
+        name:
+          type: string
+          example: "Bug: Login page not loading"
+        assignees:
+          type: array
+          items:
+            type: string
+            format: uuid
+        creator:
+          type: string
+          format: uuid
+        due_date:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum: [OPEN, CLOSED, IN_PROGRESS, ON_HOLD]
+          example: "OPEN"
+        description:
+          type: string
+          example: "Users are unable to access the login page."
+        priority:
+          type: string
+          enum: [URGENT, HIGH, NORMAL, LOW]
+          example: "HIGH"
+        ticket_type:
+          type: string
+          example: "Bug"
+        account:
+          type: string
+          format: uuid
+        contact:
+          type: string
+          format: uuid
+        parent_ticket:
+          type: string
+          format: uuid
+        tags:
+          type: array
+          items:
+            type: string
+        completed_at:
+          type: string
+          format: date-time
+        ticket_url:
+          type: string
+          example: "https://jira.example.com/browse/PROJ-123"
+        remote_was_deleted:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        modified_at:
+          type: string
+          format: date-time
+    TicketRequest:
+      type: object
+      properties:
+        model:
+          type: object
+          properties:
+            name:
+              type: string
+            assignees:
+              type: array
+              items:
+                type: string
+                format: uuid
+            status:
+              type: string
+            description:
+              type: string
+            priority:
+              type: string
+            ticket_type:
+              type: string
+            due_date:
+              type: string
+              format: date-time
+    Comment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type: string
+        user:
+          type: string
+          format: uuid
+        contact:
+          type: string
+          format: uuid
+        body:
+          type: string
+          example: "This issue has been resolved in the latest deployment."
+        html_body:
+          type: string
+        ticket:
+          type: string
+          format: uuid
+        is_private:
+          type: boolean
+        remote_was_deleted:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        modified_at:
+          type: string
+          format: date-time
+    CommentRequest:
+      type: object
+      properties:
+        model:
+          type: object
+          properties:
+            user:
+              type: string
+              format: uuid
+            body:
+              type: string
+            html_body:
+              type: string
+            ticket:
+              type: string
+              format: uuid
+            is_private:
+              type: boolean
+    Project:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type: string
+        name:
+          type: string
+          example: "Platform Engineering"
+        description:
+          type: string
+        remote_was_deleted:
+          type: boolean
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type: string
+        name:
+          type: string
+          example: "Gil Feig"
+        email_address:
+          type: string
+          format: email
+          example: "gil@merge.dev"
+        is_active:
+          type: boolean
+        teams:
+          type: array
+          items:
+            type: string
+            format: uuid
+        remote_was_deleted:
+          type: boolean
+    TicketingTeam:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type: string
+        name:
+          type: string
+          example: "Customer Support"
+        description:
+          type: string
+        remote_was_deleted:
+          type: boolean
+    TicketingContact:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type: string
+        name:
+          type: string
+          example: "Jane Smith"
+        email_address:
+          type: string
+          format: email
+          example: "jane@customer.com"
+        phone_number:
+          type: string
+        remote_was_deleted:
+          type: boolean
+    TicketingTag:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Critical"
+        remote_was_deleted:
+          type: boolean
+    Attachment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type: string
+        file_name:
+          type: string
+          example: "screenshot.png"
+        ticket:
+          type: string
+          format: uuid
+        file_url:
+          type: string
+          example: "https://storage.example.com/files/screenshot.png"
+        content_type:
+          type: string
+          example: "image/png"
+        uploaded_by:
+          type: string
+          format: uuid
+        remote_was_deleted:
+          type: boolean
+    PaginatedTicketList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ticket'
+    PaginatedCommentList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Comment'
+    PaginatedProjectList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Project'
+    PaginatedUserList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+    PaginatedTeamList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TicketingTeam'
+    PaginatedContactList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TicketingContact'
+    PaginatedTagList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TicketingTag'
+    PaginatedAttachmentList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Attachment'

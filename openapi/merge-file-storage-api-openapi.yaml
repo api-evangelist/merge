@@ -1,0 +1,479 @@
+openapi: 3.0.3
+info:
+  title: Merge File Storage API
+  description: >-
+    Unified API for integrating with file storage platforms including Box,
+    Dropbox, Google Drive, OneDrive, and SharePoint. Normalizes access to
+    Drives, Files, Folders, Groups, and Users with download and upload
+    capabilities.
+  version: "1.0.0"
+  contact:
+    name: Merge Support
+    url: https://help.merge.dev/
+  x-generated-from: documentation
+  x-last-validated: "2026-04-18"
+servers:
+  - url: https://api.merge.dev/api/filestorage/v1
+    description: Merge File Storage API production server
+security:
+  - bearerAuth: []
+    accountToken: []
+paths:
+  /files:
+    get:
+      operationId: listFiles
+      summary: Merge List Files
+      description: Returns a list of File objects from the connected file storage platform.
+      tags:
+        - Files
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+        - name: drive_id
+          in: query
+          schema:
+            type: string
+          description: Filter by drive ID.
+        - name: folder_id
+          in: query
+          schema:
+            type: string
+          description: Filter by folder ID.
+      responses:
+        '200':
+          description: A paginated list of File objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedFileList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /files/{id}:
+    get:
+      operationId: getFile
+      summary: Merge Get File
+      description: Returns a File object with the given ID.
+      tags:
+        - Files
+      parameters:
+        - $ref: '#/components/parameters/resourceId'
+        - $ref: '#/components/parameters/includeRemoteData'
+      responses:
+        '200':
+          description: The File object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/File'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /files/{id}/download:
+    get:
+      operationId: downloadFile
+      summary: Merge Download File
+      description: Downloads the binary content of a File.
+      tags:
+        - Files
+      parameters:
+        - $ref: '#/components/parameters/resourceId'
+      responses:
+        '200':
+          description: The binary file content.
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /folders:
+    get:
+      operationId: listFolders
+      summary: Merge List Folders
+      description: Returns a list of Folder objects.
+      tags:
+        - Folders
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+        - name: parent_folder_id
+          in: query
+          schema:
+            type: string
+          description: Filter by parent folder ID.
+        - name: drive_id
+          in: query
+          schema:
+            type: string
+          description: Filter by drive ID.
+      responses:
+        '200':
+          description: A paginated list of Folder objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedFolderList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    post:
+      operationId: createFolder
+      summary: Merge Create Folder
+      description: Creates a Folder in the connected file storage platform.
+      tags:
+        - Folders
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FolderRequest'
+      responses:
+        '201':
+          description: The created Folder.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Folder'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /drives:
+    get:
+      operationId: listDrives
+      summary: Merge List Drives
+      description: Returns a list of Drive objects.
+      tags:
+        - Drives
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+      responses:
+        '200':
+          description: A paginated list of Drive objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedDriveList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /groups:
+    get:
+      operationId: listGroups
+      summary: Merge List Groups
+      description: Returns a list of Group objects.
+      tags:
+        - Groups
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+      responses:
+        '200':
+          description: A paginated list of Group objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGroupList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /users:
+    get:
+      operationId: listUsers
+      summary: Merge List Users
+      description: Returns a list of User objects from the file storage platform.
+      tags:
+        - Users
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+      responses:
+        '200':
+          description: A paginated list of User objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedFSUserList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+    accountToken:
+      type: apiKey
+      in: header
+      name: X-Account-Token
+  parameters:
+    cursor:
+      name: cursor
+      in: query
+      schema:
+        type: string
+      description: Pagination cursor.
+    pageSize:
+      name: page_size
+      in: query
+      schema:
+        type: integer
+        default: 100
+      description: Number of results per page.
+    includeRemoteData:
+      name: include_remote_data
+      in: query
+      schema:
+        type: boolean
+      description: Whether to include raw third-party data.
+    resourceId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: Resource identifier.
+  schemas:
+    File:
+      type: object
+      description: A file in the connected file storage platform.
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "c28b6a1e-5c57-45d9-a1b5-87e70f98ab27"
+        remote_id:
+          type: string
+        name:
+          type: string
+          example: "Q3-report.pdf"
+        file_url:
+          type: string
+          example: "https://drive.example.com/files/q3-report.pdf"
+        file_thumbnail_url:
+          type: string
+        size:
+          type: integer
+          example: 524288
+        mime_type:
+          type: string
+          example: "application/pdf"
+        description:
+          type: string
+        folder:
+          type: string
+          format: uuid
+        drive:
+          type: string
+          format: uuid
+        permissions:
+          type: array
+          items:
+            type: object
+            properties:
+              user:
+                type: string
+                format: uuid
+              group:
+                type: string
+                format: uuid
+              type:
+                type: string
+                enum: [USER, GROUP, COMPANY, ANYONE]
+              roles:
+                type: array
+                items:
+                  type: string
+                  enum: [READ, WRITE, OWNER]
+        remote_was_deleted:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        modified_at:
+          type: string
+          format: date-time
+    Folder:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "fba1fbc6-67c0-4cb2-a176-7896acd2ffd5"
+        remote_id:
+          type: string
+        name:
+          type: string
+          example: "Financial Reports"
+        folder_url:
+          type: string
+        size:
+          type: integer
+        description:
+          type: string
+        parent_folder:
+          type: string
+          format: uuid
+        drive:
+          type: string
+          format: uuid
+        permissions:
+          type: array
+          items:
+            type: object
+            properties:
+              user:
+                type: string
+                format: uuid
+              group:
+                type: string
+                format: uuid
+              type:
+                type: string
+              roles:
+                type: array
+                items:
+                  type: string
+        remote_was_deleted:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        modified_at:
+          type: string
+          format: date-time
+    FolderRequest:
+      type: object
+      properties:
+        model:
+          type: object
+          properties:
+            name:
+              type: string
+            parent_folder:
+              type: string
+              format: uuid
+            drive:
+              type: string
+              format: uuid
+    Drive:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type: string
+        name:
+          type: string
+          example: "My Drive"
+        remote_was_deleted:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        modified_at:
+          type: string
+          format: date-time
+    FSGroup:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type: string
+        name:
+          type: string
+          example: "Engineering Team"
+        users:
+          type: array
+          items:
+            type: string
+            format: uuid
+        remote_was_deleted:
+          type: boolean
+    FSUser:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type: string
+        name:
+          type: string
+          example: "Gil Feig"
+        email_address:
+          type: string
+          format: email
+          example: "gil@merge.dev"
+        is_me:
+          type: boolean
+        remote_was_deleted:
+          type: boolean
+    PaginatedFileList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/File'
+    PaginatedFolderList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Folder'
+    PaginatedDriveList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Drive'
+    PaginatedGroupList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/FSGroup'
+    PaginatedFSUserList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/FSUser'

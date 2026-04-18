@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/merge/refs/heads/main/json-schema/ats-api-candidate-schema.json",
+  "title": "Candidate",
+  "description": "A candidate in the recruiting pipeline from a connected ATS integration.",
+  "type": "object",
+  "properties": {
+    "id": { "type": "string", "format": "uuid", "description": "Unique Merge identifier." },
+    "remote_id": { "type": "string", "description": "Third-party ID." },
+    "first_name": { "type": "string", "description": "First name." },
+    "last_name": { "type": "string", "description": "Last name." },
+    "company": { "type": "string", "description": "Current or most recent company." },
+    "title": { "type": "string", "description": "Current or most recent title." },
+    "is_private": { "type": "boolean", "description": "Whether the candidate is private." },
+    "can_email": { "type": "boolean", "description": "Whether the candidate can be emailed." },
+    "email_addresses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "value": { "type": "string", "format": "email" },
+          "email_address_type": { "type": "string", "enum": ["PERSONAL", "WORK", "OTHER"] }
+        }
+      }
+    },
+    "phone_numbers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "value": { "type": "string" },
+          "phone_number_type": { "type": "string", "enum": ["HOME", "WORK", "MOBILE", "SKYPE", "OTHER"] }
+        }
+      }
+    },
+    "tags": { "type": "array", "items": { "type": "string" } },
+    "applications": { "type": "array", "items": { "type": "string", "format": "uuid" } },
+    "attachments": { "type": "array", "items": { "type": "string", "format": "uuid" } },
+    "remote_was_deleted": { "type": "boolean" },
+    "created_at": { "type": "string", "format": "date-time" },
+    "modified_at": { "type": "string", "format": "date-time" }
+  }
+}

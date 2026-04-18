@@ -1,0 +1,1346 @@
+openapi: 3.0.3
+info:
+  title: Merge Accounting API
+  description: >-
+    Unified API for integrating with accounting platforms including QuickBooks
+    Online, Xero, NetSuite, and Sage Intacct. Provides normalized access to
+    accounts, contacts, invoices, payments, journal entries, expenses, and
+    other financial transaction data across all connected integrations.
+  version: "1.0.0"
+  contact:
+    name: Merge Support
+    url: https://help.merge.dev/
+  x-generated-from: documentation
+  x-last-validated: "2026-04-18"
+servers:
+  - url: https://api.merge.dev/api/accounting/v1
+    description: Merge Accounting API production server
+security:
+  - bearerAuth: []
+    accountToken: []
+paths:
+  /accounts:
+    get:
+      operationId: listAccounts
+      summary: Merge List Accounts
+      description: Returns a list of Account objects from the connected accounting system.
+      tags:
+        - Accounts
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+      responses:
+        '200':
+          description: A paginated list of Account objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAccountList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /contacts:
+    get:
+      operationId: listContacts
+      summary: Merge List Contacts
+      description: Returns a list of Contact objects (customers, vendors).
+      tags:
+        - Contacts
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+      responses:
+        '200':
+          description: A paginated list of Contact objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedContactList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    post:
+      operationId: createContact
+      summary: Merge Create Contact
+      description: Creates a Contact object in the connected accounting system.
+      tags:
+        - Contacts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactRequest'
+      responses:
+        '201':
+          description: The created Contact.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contact'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /invoices:
+    get:
+      operationId: listInvoices
+      summary: Merge List Invoices
+      description: Returns a list of Invoice objects.
+      tags:
+        - Invoices
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum:
+              - ACCOUNTS_RECEIVABLE
+              - ACCOUNTS_PAYABLE
+          description: Filter by invoice type.
+      responses:
+        '200':
+          description: A paginated list of Invoice objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedInvoiceList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    post:
+      operationId: createInvoice
+      summary: Merge Create Invoice
+      description: Creates an Invoice in the connected accounting system.
+      tags:
+        - Invoices
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvoiceRequest'
+      responses:
+        '201':
+          description: The created Invoice.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /payments:
+    get:
+      operationId: listPayments
+      summary: Merge List Payments
+      description: Returns a list of Payment objects.
+      tags:
+        - Payments
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+      responses:
+        '200':
+          description: A paginated list of Payment objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPaymentList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    post:
+      operationId: createPayment
+      summary: Merge Create Payment
+      description: Creates a Payment in the connected accounting system.
+      tags:
+        - Payments
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentRequest'
+      responses:
+        '201':
+          description: The created Payment.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /journal-entries:
+    get:
+      operationId: listJournalEntries
+      summary: Merge List Journal Entries
+      description: Returns a list of JournalEntry objects.
+      tags:
+        - Journal Entries
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+      responses:
+        '200':
+          description: A paginated list of JournalEntry objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedJournalEntryList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    post:
+      operationId: createJournalEntry
+      summary: Merge Create Journal Entry
+      description: Creates a JournalEntry in the connected accounting system.
+      tags:
+        - Journal Entries
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JournalEntryRequest'
+      responses:
+        '201':
+          description: The created JournalEntry.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JournalEntry'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /expenses:
+    get:
+      operationId: listExpenses
+      summary: Merge List Expenses
+      description: Returns a list of Expense objects.
+      tags:
+        - Expenses
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+      responses:
+        '200':
+          description: A paginated list of Expense objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedExpenseList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    post:
+      operationId: createExpense
+      summary: Merge Create Expense
+      description: Creates an Expense in the connected accounting system.
+      tags:
+        - Expenses
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExpenseRequest'
+      responses:
+        '201':
+          description: The created Expense.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Expense'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /company-info:
+    get:
+      operationId: listCompanyInfo
+      summary: Merge List Company Info
+      description: Returns company information from the connected accounting system.
+      tags:
+        - Company Info
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+      responses:
+        '200':
+          description: A paginated list of CompanyInfo objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCompanyInfoList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /items:
+    get:
+      operationId: listItems
+      summary: Merge List Items
+      description: Returns a list of Item objects (products and services).
+      tags:
+        - Items
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+      responses:
+        '200':
+          description: A paginated list of Item objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedItemList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /tax-rates:
+    get:
+      operationId: listTaxRates
+      summary: Merge List Tax Rates
+      description: Returns a list of TaxRate objects.
+      tags:
+        - Tax Rates
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+      responses:
+        '200':
+          description: A paginated list of TaxRate objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTaxRateList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /tracking-categories:
+    get:
+      operationId: listTrackingCategories
+      summary: Merge List Tracking Categories
+      description: Returns a list of TrackingCategory objects.
+      tags:
+        - Tracking Categories
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+      responses:
+        '200':
+          description: A paginated list of TrackingCategory objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTrackingCategoryList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /purchase-orders:
+    get:
+      operationId: listPurchaseOrders
+      summary: Merge List Purchase Orders
+      description: Returns a list of PurchaseOrder objects.
+      tags:
+        - Purchase Orders
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+      responses:
+        '200':
+          description: A paginated list of PurchaseOrder objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPurchaseOrderList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    post:
+      operationId: createPurchaseOrder
+      summary: Merge Create Purchase Order
+      description: Creates a PurchaseOrder in the connected accounting system.
+      tags:
+        - Purchase Orders
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PurchaseOrderRequest'
+      responses:
+        '201':
+          description: The created PurchaseOrder.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PurchaseOrder'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /vendor-credits:
+    get:
+      operationId: listVendorCredits
+      summary: Merge List Vendor Credits
+      description: Returns a list of VendorCredit objects.
+      tags:
+        - Vendor Credits
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+      responses:
+        '200':
+          description: A paginated list of VendorCredit objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedVendorCreditList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /credit-notes:
+    get:
+      operationId: listCreditNotes
+      summary: Merge List Credit Notes
+      description: Returns a list of CreditNote objects.
+      tags:
+        - Credit Notes
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+      responses:
+        '200':
+          description: A paginated list of CreditNote objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCreditNoteList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /balance-sheets:
+    get:
+      operationId: listBalanceSheets
+      summary: Merge List Balance Sheets
+      description: Returns a list of BalanceSheet objects.
+      tags:
+        - Financial Statements
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+      responses:
+        '200':
+          description: A paginated list of BalanceSheet objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBalanceSheetList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /income-statements:
+    get:
+      operationId: listIncomeStatements
+      summary: Merge List Income Statements
+      description: Returns a list of IncomeStatement objects.
+      tags:
+        - Financial Statements
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+      responses:
+        '200':
+          description: A paginated list of IncomeStatement objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedIncomeStatementList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /cash-flow-statements:
+    get:
+      operationId: listCashFlowStatements
+      summary: Merge List Cash Flow Statements
+      description: Returns a list of CashFlowStatement objects.
+      tags:
+        - Financial Statements
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+      responses:
+        '200':
+          description: A paginated list of CashFlowStatement objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCashFlowStatementList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+    accountToken:
+      type: apiKey
+      in: header
+      name: X-Account-Token
+  parameters:
+    cursor:
+      name: cursor
+      in: query
+      schema:
+        type: string
+      description: Pagination cursor.
+    pageSize:
+      name: page_size
+      in: query
+      schema:
+        type: integer
+        default: 100
+      description: Number of results per page.
+    includeRemoteData:
+      name: include_remote_data
+      in: query
+      schema:
+        type: boolean
+      description: Whether to include raw third-party data.
+  schemas:
+    Account:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "9871b4a9-f5d2-4f3b-a66b-dfedbed42c46"
+        remote_id:
+          type: string
+        name:
+          type: string
+          example: "Cash"
+        description:
+          type: string
+        classification:
+          type: string
+          enum: [ASSET, EQUITY, EXPENSE, LIABILITY, REVENUE]
+          example: "ASSET"
+        type:
+          type: string
+          example: "Bank"
+        status:
+          type: string
+          enum: [ACTIVE, PENDING, INACTIVE]
+          example: "ACTIVE"
+        current_balance:
+          type: number
+          example: 25000.00
+        currency:
+          type: string
+          example: "USD"
+        account_number:
+          type: string
+          example: "1000"
+        parent_account:
+          type: string
+          format: uuid
+        company:
+          type: string
+          format: uuid
+        remote_was_deleted:
+          type: boolean
+    Contact:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type: string
+        name:
+          type: string
+          example: "Acme Corp"
+        is_supplier:
+          type: boolean
+        is_customer:
+          type: boolean
+        email_address:
+          type: string
+          format: email
+          example: "accounts@acme.com"
+        tax_number:
+          type: string
+        status:
+          type: string
+          enum: [ACTIVE, ARCHIVED]
+        currency:
+          type: string
+          example: "USD"
+        company:
+          type: string
+          format: uuid
+        remote_was_deleted:
+          type: boolean
+    ContactRequest:
+      type: object
+      properties:
+        model:
+          type: object
+          properties:
+            name:
+              type: string
+            is_supplier:
+              type: boolean
+            is_customer:
+              type: boolean
+            email_address:
+              type: string
+    Invoice:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type: string
+        type:
+          type: string
+          enum: [ACCOUNTS_RECEIVABLE, ACCOUNTS_PAYABLE]
+          example: "ACCOUNTS_RECEIVABLE"
+        contact:
+          type: string
+          format: uuid
+        number:
+          type: string
+          example: "INV-0001"
+        issue_date:
+          type: string
+          format: date-time
+        due_date:
+          type: string
+          format: date-time
+        paid_on_date:
+          type: string
+          format: date-time
+        memo:
+          type: string
+        currency:
+          type: string
+          example: "USD"
+        total_discount:
+          type: number
+        sub_total:
+          type: number
+          example: 1000.00
+        total_tax_amount:
+          type: number
+        total_amount:
+          type: number
+          example: 1080.00
+        balance:
+          type: number
+          example: 1080.00
+        status:
+          type: string
+          enum: [DRAFT, SUBMITTED, PARTIALLY_PAID, PAID, OVERDUE, VOIDED]
+          example: "SUBMITTED"
+        line_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/InvoiceLineItem'
+        remote_was_deleted:
+          type: boolean
+    InvoiceRequest:
+      type: object
+      properties:
+        model:
+          type: object
+          properties:
+            type:
+              type: string
+            contact:
+              type: string
+              format: uuid
+            number:
+              type: string
+            issue_date:
+              type: string
+              format: date-time
+            due_date:
+              type: string
+              format: date-time
+            currency:
+              type: string
+            line_items:
+              type: array
+              items:
+                type: object
+                properties:
+                  description:
+                    type: string
+                  unit_price:
+                    type: number
+                  quantity:
+                    type: number
+                  account:
+                    type: string
+                    format: uuid
+    InvoiceLineItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type: string
+        description:
+          type: string
+          example: "Consulting services"
+        unit_price:
+          type: number
+          example: 200.00
+        quantity:
+          type: number
+          example: 5
+        total_amount:
+          type: number
+          example: 1000.00
+        currency:
+          type: string
+        account:
+          type: string
+          format: uuid
+        item:
+          type: string
+          format: uuid
+        tracking_category:
+          type: string
+          format: uuid
+    Payment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type: string
+        transaction_date:
+          type: string
+          format: date-time
+        contact:
+          type: string
+          format: uuid
+        account:
+          type: string
+          format: uuid
+        currency:
+          type: string
+          example: "USD"
+        total_amount:
+          type: number
+          example: 1080.00
+        remote_was_deleted:
+          type: boolean
+    PaymentRequest:
+      type: object
+      properties:
+        model:
+          type: object
+          properties:
+            transaction_date:
+              type: string
+              format: date-time
+            contact:
+              type: string
+              format: uuid
+            account:
+              type: string
+              format: uuid
+            total_amount:
+              type: number
+            currency:
+              type: string
+    JournalEntry:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type: string
+        transaction_date:
+          type: string
+          format: date-time
+        payments:
+          type: array
+          items:
+            type: string
+            format: uuid
+        memo:
+          type: string
+          example: "Monthly adjustment"
+        currency:
+          type: string
+          example: "USD"
+        lines:
+          type: array
+          items:
+            $ref: '#/components/schemas/JournalLine'
+        remote_was_deleted:
+          type: boolean
+    JournalEntryRequest:
+      type: object
+      properties:
+        model:
+          type: object
+          properties:
+            transaction_date:
+              type: string
+              format: date-time
+            memo:
+              type: string
+            currency:
+              type: string
+            lines:
+              type: array
+              items:
+                type: object
+                properties:
+                  account:
+                    type: string
+                    format: uuid
+                  net_amount:
+                    type: number
+    JournalLine:
+      type: object
+      properties:
+        remote_id:
+          type: string
+        account:
+          type: string
+          format: uuid
+        net_amount:
+          type: number
+          example: 5000.00
+        description:
+          type: string
+        contact:
+          type: string
+          format: uuid
+    Expense:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type: string
+        transaction_date:
+          type: string
+          format: date-time
+        account:
+          type: string
+          format: uuid
+        contact:
+          type: string
+          format: uuid
+        total_amount:
+          type: number
+          example: 250.00
+        currency:
+          type: string
+          example: "USD"
+        memo:
+          type: string
+        lines:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExpenseLine'
+        remote_was_deleted:
+          type: boolean
+    ExpenseRequest:
+      type: object
+      properties:
+        model:
+          type: object
+          properties:
+            transaction_date:
+              type: string
+              format: date-time
+            account:
+              type: string
+              format: uuid
+            total_amount:
+              type: number
+            currency:
+              type: string
+    ExpenseLine:
+      type: object
+      properties:
+        remote_id:
+          type: string
+        account:
+          type: string
+          format: uuid
+        net_amount:
+          type: number
+        description:
+          type: string
+    CompanyInfo:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type: string
+        name:
+          type: string
+          example: "Acme Corporation"
+        legal_name:
+          type: string
+        currency:
+          type: string
+          example: "USD"
+        fiscal_year_end_month:
+          type: integer
+          example: 12
+        fiscal_year_end_day:
+          type: integer
+          example: 31
+        urls:
+          type: array
+          items:
+            type: string
+        remote_was_deleted:
+          type: boolean
+    Item:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type: string
+        name:
+          type: string
+          example: "Consulting Hour"
+        status:
+          type: string
+          enum: [ACTIVE, ARCHIVED]
+        unit_price:
+          type: number
+          example: 200.00
+        purchase_price:
+          type: number
+        purchase_account:
+          type: string
+          format: uuid
+        sales_account:
+          type: string
+          format: uuid
+        remote_was_deleted:
+          type: boolean
+    TaxRate:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type: string
+        description:
+          type: string
+          example: "Sales Tax"
+        total_tax_rate:
+          type: number
+          example: 8.0
+        effective_tax_rate:
+          type: number
+          example: 8.0
+        remote_was_deleted:
+          type: boolean
+    TrackingCategory:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type: string
+        name:
+          type: string
+          example: "Region"
+        status:
+          type: string
+          enum: [ACTIVE, ARCHIVED]
+        remote_was_deleted:
+          type: boolean
+    PurchaseOrder:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type: string
+        status:
+          type: string
+          enum: [DRAFT, SUBMITTED, AUTHORIZED, BILLED, DELETED]
+          example: "SUBMITTED"
+        issue_date:
+          type: string
+          format: date-time
+        delivery_date:
+          type: string
+          format: date-time
+        delivery_address:
+          type: string
+        customer:
+          type: string
+          format: uuid
+        vendor:
+          type: string
+          format: uuid
+        memo:
+          type: string
+        total_amount:
+          type: number
+          example: 5000.00
+        currency:
+          type: string
+          example: "USD"
+        remote_was_deleted:
+          type: boolean
+    PurchaseOrderRequest:
+      type: object
+      properties:
+        model:
+          type: object
+          properties:
+            status:
+              type: string
+            issue_date:
+              type: string
+              format: date-time
+            vendor:
+              type: string
+              format: uuid
+            total_amount:
+              type: number
+            currency:
+              type: string
+    VendorCredit:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type: string
+        number:
+          type: string
+        transaction_date:
+          type: string
+          format: date-time
+        vendor:
+          type: string
+          format: uuid
+        total_amount:
+          type: number
+          example: 500.00
+        currency:
+          type: string
+          example: "USD"
+        remote_was_deleted:
+          type: boolean
+    CreditNote:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type: string
+        transaction_date:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum: [SUBMITTED, AUTHORIZED, PAID]
+        number:
+          type: string
+        contact:
+          type: string
+          format: uuid
+        total_amount:
+          type: number
+        currency:
+          type: string
+        remaining_credit:
+          type: number
+        remote_was_deleted:
+          type: boolean
+    BalanceSheet:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type: string
+        name:
+          type: string
+        date:
+          type: string
+          format: date-time
+        net_assets:
+          type: number
+          example: 150000.00
+        currency:
+          type: string
+          example: "USD"
+        remote_was_deleted:
+          type: boolean
+    IncomeStatement:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type: string
+        name:
+          type: string
+        start_period:
+          type: string
+          format: date-time
+        end_period:
+          type: string
+          format: date-time
+        gross_profit:
+          type: number
+          example: 75000.00
+        net_income:
+          type: number
+          example: 50000.00
+        currency:
+          type: string
+          example: "USD"
+        remote_was_deleted:
+          type: boolean
+    CashFlowStatement:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type: string
+        name:
+          type: string
+        start_period:
+          type: string
+          format: date-time
+        end_period:
+          type: string
+          format: date-time
+        currency:
+          type: string
+          example: "USD"
+        remote_was_deleted:
+          type: boolean
+    PaginatedAccountList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Account'
+    PaginatedContactList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Contact'
+    PaginatedInvoiceList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Invoice'
+    PaginatedPaymentList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Payment'
+    PaginatedJournalEntryList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/JournalEntry'
+    PaginatedExpenseList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Expense'
+    PaginatedCompanyInfoList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompanyInfo'
+    PaginatedItemList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Item'
+    PaginatedTaxRateList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaxRate'
+    PaginatedTrackingCategoryList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TrackingCategory'
+    PaginatedPurchaseOrderList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PurchaseOrder'
+    PaginatedVendorCreditList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/VendorCredit'
+    PaginatedCreditNoteList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreditNote'
+    PaginatedBalanceSheetList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BalanceSheet'
+    PaginatedIncomeStatementList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/IncomeStatement'
+    PaginatedCashFlowStatementList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CashFlowStatement'

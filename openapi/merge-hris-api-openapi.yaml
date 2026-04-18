@@ -1,0 +1,1253 @@
+openapi: 3.0.3
+info:
+  title: Merge HRIS API
+  description: >-
+    Unified API for integrating with 80+ HR, payroll, and directory platforms
+    including Workday, BambooHR, Gusto, Rippling, and ADP. Provides normalized
+    access to employees, companies, employments, teams, groups, pay groups,
+    benefits, time off, and directory data across all connected integrations.
+  version: "1.0.0"
+  contact:
+    name: Merge Support
+    url: https://help.merge.dev/
+    email: support@merge.dev
+  license:
+    name: Merge Terms of Use
+    url: https://www.merge.dev/legal/terms
+  x-generated-from: documentation
+  x-last-validated: "2026-04-18"
+servers:
+  - url: https://api.merge.dev/api/hris/v1
+    description: Merge HRIS API production server
+security:
+  - bearerAuth: []
+    accountToken: []
+paths:
+  /employees:
+    get:
+      operationId: listEmployees
+      summary: Merge List Employees
+      description: Returns a list of Employee objects across all connected HRIS integrations.
+      tags:
+        - Employees
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+        - name: created_after
+          in: query
+          schema:
+            type: string
+            format: date-time
+          description: Filter by creation date after this timestamp.
+        - name: created_before
+          in: query
+          schema:
+            type: string
+            format: date-time
+          description: Filter by creation date before this timestamp.
+        - name: modified_after
+          in: query
+          schema:
+            type: string
+            format: date-time
+          description: Filter by modification date after this timestamp.
+        - name: modified_before
+          in: query
+          schema:
+            type: string
+            format: date-time
+          description: Filter by modification date before this timestamp.
+        - name: manager_id
+          in: query
+          schema:
+            type: string
+          description: Filter employees by manager ID.
+        - name: company_id
+          in: query
+          schema:
+            type: string
+          description: Filter employees by company ID.
+        - name: work_location_id
+          in: query
+          schema:
+            type: string
+          description: Filter employees by work location ID.
+        - name: employment_status
+          in: query
+          schema:
+            type: string
+            enum:
+              - ACTIVE
+              - PENDING
+              - INACTIVE
+          description: Filter by employment status.
+      responses:
+        '200':
+          description: A paginated list of Employee objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedEmployeeList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    post:
+      operationId: createEmployee
+      summary: Merge Create Employee
+      description: Creates an Employee object in the connected HRIS integration.
+      tags:
+        - Employees
+      parameters:
+        - $ref: '#/components/parameters/includeRemoteData'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmployeeRequest'
+      responses:
+        '201':
+          description: The created Employee object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /employees/{id}:
+    get:
+      operationId: getEmployee
+      summary: Merge Get Employee
+      description: Returns an Employee object with the given ID.
+      tags:
+        - Employees
+      parameters:
+        - $ref: '#/components/parameters/resourceId'
+        - $ref: '#/components/parameters/includeRemoteData'
+      responses:
+        '200':
+          description: The Employee object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /companies:
+    get:
+      operationId: listCompanies
+      summary: Merge List Companies
+      description: Returns a list of Company objects.
+      tags:
+        - Companies
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+      responses:
+        '200':
+          description: A paginated list of Company objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCompanyList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /employments:
+    get:
+      operationId: listEmployments
+      summary: Merge List Employments
+      description: Returns a list of Employment objects.
+      tags:
+        - Employments
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+        - name: employee_id
+          in: query
+          schema:
+            type: string
+          description: Filter employments by employee ID.
+      responses:
+        '200':
+          description: A paginated list of Employment objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedEmploymentList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /teams:
+    get:
+      operationId: listTeams
+      summary: Merge List Teams
+      description: Returns a list of Team objects.
+      tags:
+        - Teams
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+      responses:
+        '200':
+          description: A paginated list of Team objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTeamList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /locations:
+    get:
+      operationId: listLocations
+      summary: Merge List Locations
+      description: Returns a list of Location objects.
+      tags:
+        - Locations
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+      responses:
+        '200':
+          description: A paginated list of Location objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedLocationList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /benefits:
+    get:
+      operationId: listBenefits
+      summary: Merge List Benefits
+      description: Returns a list of Benefit objects.
+      tags:
+        - Benefits
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+      responses:
+        '200':
+          description: A paginated list of Benefit objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBenefitList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /time-off:
+    get:
+      operationId: listTimeOff
+      summary: Merge List Time Off
+      description: Returns a list of TimeOff objects.
+      tags:
+        - Time Off
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+        - name: employee_id
+          in: query
+          schema:
+            type: string
+          description: Filter time off records by employee ID.
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum:
+              - REQUESTED
+              - APPROVED
+              - DECLINED
+              - CANCELLED
+              - DELETED
+          description: Filter by time off request status.
+      responses:
+        '200':
+          description: A paginated list of TimeOff objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTimeOffList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    post:
+      operationId: createTimeOff
+      summary: Merge Create Time Off
+      description: Creates a TimeOff object in the connected HRIS integration.
+      tags:
+        - Time Off
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TimeOffRequest'
+      responses:
+        '201':
+          description: The created TimeOff object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimeOff'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /time-off-balances:
+    get:
+      operationId: listTimeOffBalances
+      summary: Merge List Time Off Balances
+      description: Returns a list of TimeOffBalance objects.
+      tags:
+        - Time Off
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+        - name: employee_id
+          in: query
+          schema:
+            type: string
+          description: Filter balances by employee ID.
+      responses:
+        '200':
+          description: A paginated list of TimeOffBalance objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTimeOffBalanceList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /pay-groups:
+    get:
+      operationId: listPayGroups
+      summary: Merge List Pay Groups
+      description: Returns a list of PayGroup objects.
+      tags:
+        - Payroll
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+      responses:
+        '200':
+          description: A paginated list of PayGroup objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPayGroupList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /groups:
+    get:
+      operationId: listGroups
+      summary: Merge List Groups
+      description: Returns a list of Group objects (departments, teams, cost centers, etc.).
+      tags:
+        - Groups
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+      responses:
+        '200':
+          description: A paginated list of Group objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGroupList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /bank-info:
+    get:
+      operationId: listBankInfo
+      summary: Merge List Bank Info
+      description: Returns a list of BankInfo objects.
+      tags:
+        - Payroll
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+        - name: employee_id
+          in: query
+          schema:
+            type: string
+          description: Filter by employee ID.
+      responses:
+        '200':
+          description: A paginated list of BankInfo objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBankInfoList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /employee-payroll-runs:
+    get:
+      operationId: listEmployeePayrollRuns
+      summary: Merge List Employee Payroll Runs
+      description: Returns a list of EmployeePayrollRun objects.
+      tags:
+        - Payroll
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+        - name: employee_id
+          in: query
+          schema:
+            type: string
+          description: Filter by employee ID.
+      responses:
+        '200':
+          description: A paginated list of EmployeePayrollRun objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedEmployeePayrollRunList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /payroll-runs:
+    get:
+      operationId: listPayrollRuns
+      summary: Merge List Payroll Runs
+      description: Returns a list of PayrollRun objects.
+      tags:
+        - Payroll
+      parameters:
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/includeRemoteData'
+      responses:
+        '200':
+          description: A paginated list of PayrollRun objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPayrollRunList'
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: API key provided as a Bearer token in the Authorization header.
+    accountToken:
+      type: apiKey
+      in: header
+      name: X-Account-Token
+      description: Token identifying the end-user linked account.
+  parameters:
+    cursor:
+      name: cursor
+      in: query
+      schema:
+        type: string
+      description: The pagination cursor value for fetching the next page.
+    pageSize:
+      name: page_size
+      in: query
+      schema:
+        type: integer
+        default: 100
+      description: Number of results to return per page.
+    includeRemoteData:
+      name: include_remote_data
+      in: query
+      schema:
+        type: boolean
+      description: Whether to include the original third-party data in the response.
+    resourceId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: The unique identifier of the resource.
+  responses:
+    Unauthorized:
+      description: Authentication credentials are missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: The request was malformed or contained invalid parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        detail:
+          type: string
+          description: A human-readable error message.
+          example: "Authentication credentials were not provided."
+    Employee:
+      type: object
+      description: Represents an employee record from a connected HRIS integration.
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The unique Merge-generated identifier.
+          example: "17a54124-287f-494d-965e-3c5b330c9a68"
+        remote_id:
+          type: string
+          description: The third-party ID of this employee in the connected platform.
+          example: "19202938"
+        employee_number:
+          type: string
+          description: The employee's number in the organization.
+          example: "EMP-001234"
+        first_name:
+          type: string
+          description: The employee's first name.
+          example: "Jane"
+        last_name:
+          type: string
+          description: The employee's last name.
+          example: "Smith"
+        display_full_name:
+          type: string
+          description: The employee's full display name.
+          example: "Jane Smith"
+        work_email:
+          type: string
+          format: email
+          description: The employee's work email address.
+          example: "jane.smith@example.com"
+        personal_email:
+          type: string
+          format: email
+          description: The employee's personal email address.
+          example: "jsmith@personal.com"
+        mobile_phone_number:
+          type: string
+          description: The employee's mobile phone number.
+          example: "+1-555-0123"
+        date_of_birth:
+          type: string
+          format: date
+          description: The employee's date of birth.
+          example: "1990-06-15"
+        start_date:
+          type: string
+          format: date-time
+          description: The date the employee started working.
+          example: "2022-01-15T00:00:00Z"
+        termination_date:
+          type: string
+          format: date-time
+          description: The date the employee was terminated, if applicable.
+        employment_status:
+          type: string
+          enum:
+            - ACTIVE
+            - PENDING
+            - INACTIVE
+          description: The current employment status.
+          example: "ACTIVE"
+        manager:
+          type: string
+          format: uuid
+          description: The Merge ID of this employee's manager.
+        company:
+          type: string
+          format: uuid
+          description: The Merge ID of the employee's company.
+        team:
+          type: string
+          format: uuid
+          description: The Merge ID of the employee's team.
+        pay_group:
+          type: string
+          format: uuid
+          description: The Merge ID of the employee's pay group.
+        groups:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Array of Merge IDs for the groups this employee belongs to.
+        remote_data:
+          type: array
+          items:
+            type: object
+          description: Original data from the third-party platform.
+        remote_was_deleted:
+          type: boolean
+          description: Whether the record was deleted in the third-party platform.
+        created_at:
+          type: string
+          format: date-time
+          description: When the Merge record was created.
+        modified_at:
+          type: string
+          format: date-time
+          description: When the Merge record was last modified.
+    EmployeeRequest:
+      type: object
+      properties:
+        model:
+          type: object
+          properties:
+            first_name:
+              type: string
+              example: "Jane"
+            last_name:
+              type: string
+              example: "Smith"
+            work_email:
+              type: string
+              format: email
+              example: "jane.smith@example.com"
+            manager:
+              type: string
+              format: uuid
+            company:
+              type: string
+              format: uuid
+            employment_status:
+              type: string
+              enum:
+                - ACTIVE
+                - PENDING
+                - INACTIVE
+            start_date:
+              type: string
+              format: date-time
+    Company:
+      type: object
+      description: Represents a company or legal entity within a connected HRIS platform.
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "8d9fd929-436c-4fd4-a48b-0c61f68d6178"
+        remote_id:
+          type: string
+          example: "COMP-001"
+        legal_name:
+          type: string
+          description: The legal name of the company.
+          example: "Acme Corporation"
+        display_name:
+          type: string
+          description: The display name of the company.
+          example: "Acme Corp"
+        eins:
+          type: array
+          items:
+            type: string
+          description: Employer Identification Numbers for the company.
+        remote_was_deleted:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        modified_at:
+          type: string
+          format: date-time
+    Employment:
+      type: object
+      description: Represents an employment record linking an employee to a position.
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "c28b6a1e-5c57-45d9-a1b5-87e70f98ab27"
+        remote_id:
+          type: string
+        job_title:
+          type: string
+          description: The employee's job title.
+          example: "Software Engineer"
+        pay_rate:
+          type: number
+          description: The pay rate amount.
+          example: 95000.00
+        pay_period:
+          type: string
+          enum:
+            - HOUR
+            - DAY
+            - WEEK
+            - EVERY_TWO_WEEKS
+            - SEMIMONTHLY
+            - MONTH
+            - QUARTER
+            - EVERY_SIX_MONTHS
+            - YEAR
+          description: The pay period frequency.
+          example: "YEAR"
+        pay_frequency:
+          type: string
+          enum:
+            - WEEKLY
+            - BIWEEKLY
+            - MONTHLY
+            - QUARTERLY
+            - SEMIANNUALLY
+            - ANNUALLY
+            - THIRTEEN_MONTHLY
+            - PRO_RATA
+          description: How frequently the employee is paid.
+        pay_currency:
+          type: string
+          description: The currency of the pay rate (ISO 4217).
+          example: "USD"
+        flsa_status:
+          type: string
+          enum:
+            - EXEMPT
+            - SALARIED_NONEXEMPT
+            - NONEXEMPT
+            - OWNER
+          description: FLSA overtime eligibility status.
+        effective_date:
+          type: string
+          format: date-time
+          description: The date when this employment record became effective.
+        employment_type:
+          type: string
+          enum:
+            - FULL_TIME
+            - PART_TIME
+            - INTERN
+            - CONTRACTOR
+            - FREELANCE
+          description: The type of employment.
+          example: "FULL_TIME"
+        employee:
+          type: string
+          format: uuid
+        remote_was_deleted:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        modified_at:
+          type: string
+          format: date-time
+    Team:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "249c9faa-3045-4a31-953b-8f22d3613301"
+        remote_id:
+          type: string
+        name:
+          type: string
+          example: "Engineering"
+        parent_team:
+          type: string
+          format: uuid
+        remote_was_deleted:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        modified_at:
+          type: string
+          format: date-time
+    Location:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "9871b4a9-f5d2-4f3b-a66b-dfedbed42c46"
+        remote_id:
+          type: string
+        name:
+          type: string
+          example: "San Francisco HQ"
+        phone_number:
+          type: string
+        street_1:
+          type: string
+        street_2:
+          type: string
+        city:
+          type: string
+          example: "San Francisco"
+        state:
+          type: string
+          example: "CA"
+        zip_code:
+          type: string
+          example: "94105"
+        country:
+          type: string
+          example: "US"
+        location_type:
+          type: string
+          enum:
+            - HOME
+            - OFFICE
+        remote_was_deleted:
+          type: boolean
+    Benefit:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type: string
+        employee:
+          type: string
+          format: uuid
+        provider_name:
+          type: string
+          example: "Blue Cross Blue Shield"
+        benefit_plan_type:
+          type: string
+          example: "MEDICAL"
+        employee_contribution:
+          type: number
+          example: 150.00
+        company_contribution:
+          type: number
+          example: 450.00
+        remote_was_deleted:
+          type: boolean
+    TimeOff:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type: string
+        employee:
+          type: string
+          format: uuid
+        approver:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum:
+            - REQUESTED
+            - APPROVED
+            - DECLINED
+            - CANCELLED
+            - DELETED
+          example: "APPROVED"
+        employee_note:
+          type: string
+          example: "Family vacation"
+        units:
+          type: string
+          enum:
+            - HOURS
+            - DAYS
+          example: "DAYS"
+        amount:
+          type: number
+          example: 5.0
+        request_type:
+          type: string
+          enum:
+            - VACATION
+            - SICK
+            - PERSONAL
+            - JURY_DUTY
+            - VOLUNTEER
+            - BEREAVEMENT
+          example: "VACATION"
+        start_time:
+          type: string
+          format: date-time
+        end_time:
+          type: string
+          format: date-time
+        remote_was_deleted:
+          type: boolean
+    TimeOffRequest:
+      type: object
+      properties:
+        model:
+          type: object
+          properties:
+            employee:
+              type: string
+              format: uuid
+            approver:
+              type: string
+              format: uuid
+            status:
+              type: string
+              enum:
+                - REQUESTED
+                - APPROVED
+                - DECLINED
+            request_type:
+              type: string
+              enum:
+                - VACATION
+                - SICK
+                - PERSONAL
+            start_time:
+              type: string
+              format: date-time
+            end_time:
+              type: string
+              format: date-time
+            amount:
+              type: number
+            units:
+              type: string
+              enum:
+                - HOURS
+                - DAYS
+    TimeOffBalance:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type: string
+        employee:
+          type: string
+          format: uuid
+        balance:
+          type: number
+          example: 120.0
+        used:
+          type: number
+          example: 40.0
+        policy_type:
+          type: string
+          enum:
+            - VACATION
+            - SICK
+            - PERSONAL
+            - JURY_DUTY
+            - VOLUNTEER
+            - BEREAVEMENT
+        remote_was_deleted:
+          type: boolean
+    PayGroup:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type: string
+        pay_group_name:
+          type: string
+          example: "US Salaried Biweekly"
+        remote_was_deleted:
+          type: boolean
+    Group:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type: string
+        name:
+          type: string
+          example: "Engineering Department"
+        type:
+          type: string
+          enum:
+            - TEAM
+            - DEPARTMENT
+            - COST_CENTER
+            - BUSINESS_UNIT
+            - GROUP
+          example: "DEPARTMENT"
+        parent_group:
+          type: string
+          format: uuid
+        remote_was_deleted:
+          type: boolean
+    BankInfo:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type: string
+        employee:
+          type: string
+          format: uuid
+        account_number:
+          type: string
+          example: "****6789"
+        routing_number:
+          type: string
+          example: "021000021"
+        bank_name:
+          type: string
+          example: "Chase Bank"
+        account_type:
+          type: string
+          enum:
+            - SAVINGS
+            - CHECKING
+          example: "CHECKING"
+        remote_was_deleted:
+          type: boolean
+    EmployeePayrollRun:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type: string
+        employee:
+          type: string
+          format: uuid
+        payroll_run:
+          type: string
+          format: uuid
+        gross_pay:
+          type: number
+          example: 5000.00
+        net_pay:
+          type: number
+          example: 3750.00
+        start_date:
+          type: string
+          format: date-time
+        end_date:
+          type: string
+          format: date-time
+        check_date:
+          type: string
+          format: date-time
+        remote_was_deleted:
+          type: boolean
+    PayrollRun:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type: string
+        run_state:
+          type: string
+          enum:
+            - PAID
+            - DRAFT
+            - APPROVED
+            - FAILED
+            - CLOSED
+          example: "PAID"
+        run_type:
+          type: string
+          enum:
+            - REGULAR
+            - OFF_CYCLE
+            - CORRECTION
+            - TERMINATION
+            - SIGN_ON_BONUS
+          example: "REGULAR"
+        start_date:
+          type: string
+          format: date-time
+        end_date:
+          type: string
+          format: date-time
+        check_date:
+          type: string
+          format: date-time
+        remote_was_deleted:
+          type: boolean
+    PaginatedEmployeeList:
+      type: object
+      properties:
+        next:
+          type: string
+          description: URL for the next page of results.
+        previous:
+          type: string
+          description: URL for the previous page of results.
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Employee'
+    PaginatedCompanyList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Company'
+    PaginatedEmploymentList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Employment'
+    PaginatedTeamList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Team'
+    PaginatedLocationList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Location'
+    PaginatedBenefitList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Benefit'
+    PaginatedTimeOffList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeOff'
+    PaginatedTimeOffBalanceList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeOffBalance'
+    PaginatedPayGroupList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PayGroup'
+    PaginatedGroupList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Group'
+    PaginatedBankInfoList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BankInfo'
+    PaginatedEmployeePayrollRunList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmployeePayrollRun'
+    PaginatedPayrollRunList:
+      type: object
+      properties:
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PayrollRun'

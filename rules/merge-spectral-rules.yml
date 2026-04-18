@@ -1,0 +1,369 @@
+rules:
+  # ============================================================
+  # INFO / METADATA
+  # ============================================================
+  info-title-required:
+    description: Info object must have a title.
+    given: $.info
+    severity: error
+    then:
+      field: title
+      function: truthy
+
+  info-title-merge-prefix:
+    description: Info title should start with "Merge".
+    given: $.info.title
+    severity: warn
+    then:
+      function: pattern
+      functionOptions:
+        match: "^Merge"
+
+  info-description-required:
+    description: Info object must have a description.
+    given: $.info
+    severity: error
+    then:
+      field: description
+      function: truthy
+
+  info-description-min-length:
+    description: Info description should be at least 50 characters.
+    given: $.info.description
+    severity: warn
+    then:
+      function: length
+      functionOptions:
+        min: 50
+
+  info-version-required:
+    description: Info object must have a version.
+    given: $.info
+    severity: error
+    then:
+      field: version
+      function: truthy
+
+  info-contact-required:
+    description: Info object should have contact information.
+    given: $.info
+    severity: warn
+    then:
+      field: contact
+      function: truthy
+
+  # ============================================================
+  # OPENAPI VERSION
+  # ============================================================
+  openapi-version-3:
+    description: OpenAPI version should be 3.x.
+    given: $
+    severity: warn
+    then:
+      field: openapi
+      function: pattern
+      functionOptions:
+        match: "^3\\."
+
+  # ============================================================
+  # SERVERS
+  # ============================================================
+  servers-defined:
+    description: At least one server must be defined.
+    given: $
+    severity: error
+    then:
+      field: servers
+      function: truthy
+
+  servers-https:
+    description: Server URLs should use HTTPS.
+    given: $.servers[*].url
+    severity: error
+    then:
+      function: pattern
+      functionOptions:
+        match: "^https://"
+
+  servers-merge-api-domain:
+    description: Server URL should be on api.merge.dev.
+    given: $.servers[*].url
+    severity: info
+    then:
+      function: pattern
+      functionOptions:
+        match: "api\\.merge\\.dev"
+
+  # ============================================================
+  # PATHS - NAMING CONVENTIONS
+  # ============================================================
+  paths-kebab-case:
+    description: Path segments should use kebab-case.
+    given: $.paths
+    severity: warn
+    then:
+      field: "@key"
+      function: pattern
+      functionOptions:
+        match: "^(\\/[a-z0-9-{}]+)+$"
+
+  paths-no-trailing-slash:
+    description: Paths must not have trailing slashes.
+    given: $.paths
+    severity: error
+    then:
+      field: "@key"
+      function: pattern
+      functionOptions:
+        notMatch: "\\/$"
+
+  paths-plural-resources:
+    description: Resource paths should use plural nouns.
+    given: $.paths
+    severity: info
+    then:
+      field: "@key"
+      function: pattern
+      functionOptions:
+        notMatch: "\\/[a-z]+[^s{}]\\/\\{"
+
+  # ============================================================
+  # OPERATIONS
+  # ============================================================
+  operation-operationid-required:
+    description: Every operation must have an operationId.
+    given: $.paths[*][get,post,put,patch,delete]
+    severity: error
+    then:
+      field: operationId
+      function: truthy
+
+  operation-operationid-camel-case:
+    description: operationId should use camelCase.
+    given: $.paths[*][get,post,put,patch,delete].operationId
+    severity: warn
+    then:
+      function: pattern
+      functionOptions:
+        match: "^[a-z][a-zA-Z0-9]*$"
+
+  operation-summary-required:
+    description: Every operation must have a summary.
+    given: $.paths[*][get,post,put,patch,delete]
+    severity: error
+    then:
+      field: summary
+      function: truthy
+
+  operation-summary-merge-prefix:
+    description: Operation summaries should start with "Merge".
+    given: $.paths[*][get,post,put,patch,delete].summary
+    severity: warn
+    then:
+      function: pattern
+      functionOptions:
+        match: "^Merge"
+
+  operation-description-required:
+    description: Every operation must have a description.
+    given: $.paths[*][get,post,put,patch,delete]
+    severity: error
+    then:
+      field: description
+      function: truthy
+
+  operation-tags-required:
+    description: Every operation must have at least one tag.
+    given: $.paths[*][get,post,put,patch,delete]
+    severity: error
+    then:
+      field: tags
+      function: truthy
+
+  # ============================================================
+  # PARAMETERS
+  # ============================================================
+  parameter-description-required:
+    description: Every parameter must have a description.
+    given: $.paths[*][*].parameters[*]
+    severity: warn
+    then:
+      field: description
+      function: truthy
+
+  parameter-snake-case:
+    description: Parameter names should use snake_case.
+    given: $.paths[*][*].parameters[*].name
+    severity: warn
+    then:
+      function: pattern
+      functionOptions:
+        match: "^[a-z][a-z0-9_]*$"
+
+  parameter-pagination-cursor:
+    description: Merge APIs use cursor-based pagination with cursor parameter.
+    given: $.paths[*].get.parameters
+    severity: info
+    then:
+      function: schema
+      functionOptions:
+        schema:
+          type: array
+          contains:
+            type: object
+            properties:
+              name:
+                const: cursor
+
+  # ============================================================
+  # REQUEST BODIES
+  # ============================================================
+  request-body-json:
+    description: Request bodies should use application/json.
+    given: $.paths[*][post,put,patch].requestBody.content
+    severity: warn
+    then:
+      field: application/json
+      function: truthy
+
+  # ============================================================
+  # RESPONSES
+  # ============================================================
+  response-success-required:
+    description: Every operation must have a success response.
+    given: $.paths[*][get,post,put,patch,delete].responses
+    severity: error
+    then:
+      function: schema
+      functionOptions:
+        schema:
+          anyOf:
+            - required: ["200"]
+            - required: ["201"]
+            - required: ["204"]
+
+  response-description-required:
+    description: Every response must have a description.
+    given: $.paths[*][*].responses[*]
+    severity: error
+    then:
+      field: description
+      function: truthy
+
+  # ============================================================
+  # SCHEMAS - PROPERTY NAMING
+  # ============================================================
+  schema-property-snake-case:
+    description: Schema properties should use snake_case naming.
+    given: $.components.schemas[*].properties
+    severity: warn
+    then:
+      field: "@key"
+      function: pattern
+      functionOptions:
+        match: "^[a-z][a-z0-9_]*$"
+
+  schema-type-defined:
+    description: Schemas must define a type.
+    given: $.components.schemas[*]
+    severity: warn
+    then:
+      field: type
+      function: truthy
+
+  schema-description:
+    description: Top-level schemas should have descriptions.
+    given: $.components.schemas[*]
+    severity: info
+    then:
+      field: description
+      function: truthy
+
+  # ============================================================
+  # SECURITY
+  # ============================================================
+  security-defined:
+    description: Global security must be defined.
+    given: $
+    severity: error
+    then:
+      field: security
+      function: truthy
+
+  security-bearer-auth:
+    description: Merge APIs should use Bearer token authentication.
+    given: $.components.securitySchemes
+    severity: warn
+    then:
+      field: bearerAuth
+      function: truthy
+
+  security-account-token-header:
+    description: Merge APIs require X-Account-Token header.
+    given: $.components.securitySchemes
+    severity: warn
+    then:
+      field: accountToken
+      function: truthy
+
+  # ============================================================
+  # HTTP METHOD CONVENTIONS
+  # ============================================================
+  get-no-request-body:
+    description: GET operations must not have a request body.
+    given: $.paths[*].get
+    severity: error
+    then:
+      field: requestBody
+      function: falsy
+
+  delete-no-request-body:
+    description: DELETE operations should not have a request body.
+    given: $.paths[*].delete
+    severity: warn
+    then:
+      field: requestBody
+      function: falsy
+
+  # ============================================================
+  # MERGE-SPECIFIC PATTERNS
+  # ============================================================
+  pagination-response-format:
+    description: List endpoints should return paginated responses with next/previous/results.
+    given: $.paths[*].get.responses.200.content.application/json.schema
+    severity: info
+    then:
+      function: schema
+      functionOptions:
+        schema:
+          type: object
+          properties:
+            "$ref":
+              type: string
+              pattern: "Paginated"
+
+  remote-was-deleted-field:
+    description: Merge schemas should include remote_was_deleted field for soft delete tracking.
+    given: $.components.schemas[?(@.type=='object' && !@.title.match(/Paginated|Request|Error/))]
+    severity: info
+    then:
+      field: properties.remote_was_deleted
+      function: truthy
+
+  # ============================================================
+  # GENERAL QUALITY
+  # ============================================================
+  no-empty-descriptions:
+    description: Descriptions must not be empty strings.
+    given: $..description
+    severity: error
+    then:
+      function: truthy
+
+  examples-encouraged:
+    description: Schema properties should include example values.
+    given: $.components.schemas[*].properties[*]
+    severity: info
+    then:
+      field: example
+      function: truthy

@@ -1,0 +1,235 @@
+vocabulary: "1.0.0"
+
+info:
+  provider: "Merge"
+  description: "Vocabulary mapping operational API dimensions and capability workflows for the Merge Unified API platform."
+  created: "2026-04-18"
+  modified: "2026-04-18"
+
+operational:
+  apis:
+    - name: Merge HRIS API
+      namespace: merge-hris
+      version: "1.0.0"
+      baseUrl: https://api.merge.dev/api/hris/v1
+      status: active
+    - name: Merge ATS API
+      namespace: merge-ats
+      version: "1.0.0"
+      baseUrl: https://api.merge.dev/api/ats/v1
+      status: active
+    - name: Merge Accounting API
+      namespace: merge-accounting
+      version: "1.0.0"
+      baseUrl: https://api.merge.dev/api/accounting/v1
+      status: active
+    - name: Merge Ticketing API
+      namespace: merge-ticketing
+      version: "1.0.0"
+      baseUrl: https://api.merge.dev/api/ticketing/v1
+      status: active
+    - name: Merge CRM API
+      namespace: merge-crm
+      version: "1.0.0"
+      baseUrl: https://api.merge.dev/api/crm/v1
+      status: active
+    - name: Merge File Storage API
+      namespace: merge-file-storage
+      version: "1.0.0"
+      baseUrl: https://api.merge.dev/api/filestorage/v1
+      status: active
+
+  resources:
+    - name: Employees
+      apis: [merge-hris]
+      actions: [list, get, create]
+    - name: Candidates
+      apis: [merge-ats]
+      actions: [list, get, create]
+    - name: Applications
+      apis: [merge-ats]
+      actions: [list, get, create]
+    - name: Jobs
+      apis: [merge-ats]
+      actions: [list, get]
+    - name: Invoices
+      apis: [merge-accounting]
+      actions: [list, get, create]
+    - name: Payments
+      apis: [merge-accounting]
+      actions: [list, get, create]
+    - name: Tickets
+      apis: [merge-ticketing]
+      actions: [list, get, create, update]
+    - name: Accounts
+      apis: [merge-crm, merge-accounting]
+      actions: [list, get, create]
+    - name: Contacts
+      apis: [merge-crm, merge-accounting, merge-ticketing]
+      actions: [list, get, create]
+    - name: Leads
+      apis: [merge-crm]
+      actions: [list, get, create]
+    - name: Opportunities
+      apis: [merge-crm]
+      actions: [list, get, create]
+    - name: Files
+      apis: [merge-file-storage]
+      actions: [list, get, download]
+    - name: Folders
+      apis: [merge-file-storage]
+      actions: [list, get, create]
+
+  actions:
+    - name: list
+      method: GET
+      pattern: read
+    - name: get
+      method: GET
+      pattern: read
+    - name: create
+      method: POST
+      pattern: write
+    - name: update
+      method: PATCH
+      pattern: write
+    - name: download
+      method: GET
+      pattern: read
+
+  schemas:
+    core:
+      - name: Employee
+        api: merge-hris
+        keyProperties: [id, first_name, last_name, employment_status]
+      - name: Candidate
+        api: merge-ats
+        keyProperties: [id, first_name, last_name, company]
+      - name: Application
+        api: merge-ats
+        keyProperties: [id, candidate, job, current_stage]
+      - name: Invoice
+        api: merge-accounting
+        keyProperties: [id, number, total_amount, status]
+      - name: Ticket
+        api: merge-ticketing
+        keyProperties: [id, name, status, priority]
+      - name: Opportunity
+        api: merge-crm
+        keyProperties: [id, name, amount, status]
+      - name: File
+        api: merge-file-storage
+        keyProperties: [id, name, size, mime_type]
+
+  parameters:
+    pagination:
+      - name: cursor
+        description: Cursor-based pagination token.
+      - name: page_size
+        description: Number of results per page.
+    identifiers:
+      - name: id
+        description: Merge-generated UUID identifier.
+      - name: remote_id
+        description: Third-party platform identifier.
+    filters:
+      - name: created_after
+        description: Filter by creation date.
+      - name: modified_after
+        description: Filter by modification date.
+      - name: include_remote_data
+        description: Include raw third-party data.
+
+  enums:
+    states:
+      - name: EmploymentStatus
+        values: [ACTIVE, PENDING, INACTIVE]
+      - name: TicketStatus
+        values: [OPEN, CLOSED, IN_PROGRESS, ON_HOLD]
+      - name: InvoiceStatus
+        values: [DRAFT, SUBMITTED, PARTIALLY_PAID, PAID, OVERDUE, VOIDED]
+      - name: OpportunityStatus
+        values: [OPEN, WON, LOST]
+      - name: JobStatus
+        values: [OPEN, CLOSED, DRAFT, ARCHIVED, PENDING]
+    types:
+      - name: TicketPriority
+        values: [URGENT, HIGH, NORMAL, LOW]
+      - name: AccountClassification
+        values: [ASSET, EQUITY, EXPENSE, LIABILITY, REVENUE]
+      - name: EmploymentType
+        values: [FULL_TIME, PART_TIME, INTERN, CONTRACTOR, FREELANCE]
+
+  authentication:
+    schemes:
+      - type: Bearer Token
+        header: Authorization
+        apis: [merge-hris, merge-ats, merge-accounting, merge-ticketing, merge-crm, merge-file-storage]
+      - type: API Key
+        header: X-Account-Token
+        description: End-user linked account token.
+        apis: [merge-hris, merge-ats, merge-accounting, merge-ticketing, merge-crm, merge-file-storage]
+
+capability:
+  workflows:
+    - name: Talent Management
+      file: capabilities/talent-management.yaml
+      description: "End-to-end talent management combining HRIS and ATS."
+      apis: [merge-hris, merge-ats]
+      toolCount: 11
+      personas: [HR Manager, Recruiter]
+      domains: [Human Resources, Recruiting]
+
+  personas:
+    - id: hr-manager
+      name: HR Manager
+      description: "Manages employee records, time off, and HR processes."
+      workflows: [Talent Management]
+    - id: recruiter
+      name: Recruiter
+      description: "Manages candidate pipeline and hiring workflow."
+      workflows: [Talent Management]
+    - id: finance-team
+      name: Finance Team
+      description: "Manages invoices, payments, and financial reporting."
+      workflows: []
+    - id: support-agent
+      name: Support Agent
+      description: "Manages tickets and customer support issues."
+      workflows: []
+    - id: sales-rep
+      name: Sales Representative
+      description: "Manages leads, opportunities, and CRM activities."
+      workflows: []
+
+  domains:
+    - name: Human Resources
+      description: "Employee management, benefits, time off, and payroll."
+    - name: Recruiting
+      description: "Candidate sourcing, applications, interviews, and offers."
+    - name: Finance
+      description: "Invoicing, payments, expenses, and financial reporting."
+    - name: Customer Support
+      description: "Ticket management and customer communication."
+    - name: Sales
+      description: "CRM, leads, opportunities, and engagements."
+    - name: Document Management
+      description: "File storage, sharing, and permissions."
+
+crossReference:
+  - resource: Employees
+    operations: [listEmployees, getEmployee, createEmployee]
+    workflows: [Talent Management]
+    personas: [HR Manager]
+  - resource: Candidates
+    operations: [listCandidates, getCandidate, createCandidate]
+    workflows: [Talent Management]
+    personas: [Recruiter]
+  - resource: Applications
+    operations: [listApplications, createApplication]
+    workflows: [Talent Management]
+    personas: [Recruiter]
+  - resource: Jobs
+    operations: [listJobs, getJob]
+    workflows: [Talent Management]
+    personas: [Recruiter, HR Manager]

@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/merge/refs/heads/main/json-schema/accounting-api-invoice-schema.json",
+  "title": "Invoice",
+  "description": "An invoice from a connected accounting system in the Merge Unified API.",
+  "type": "object",
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "remote_id": { "type": "string" },
+    "type": { "type": "string", "enum": ["ACCOUNTS_RECEIVABLE", "ACCOUNTS_PAYABLE"] },
+    "contact": { "type": "string", "format": "uuid" },
+    "number": { "type": "string", "description": "Invoice number." },
+    "issue_date": { "type": "string", "format": "date-time" },
+    "due_date": { "type": "string", "format": "date-time" },
+    "paid_on_date": { "type": "string", "format": "date-time" },
+    "memo": { "type": "string" },
+    "currency": { "type": "string", "description": "ISO 4217 currency code." },
+    "total_discount": { "type": "number" },
+    "sub_total": { "type": "number" },
+    "total_tax_amount": { "type": "number" },
+    "total_amount": { "type": "number" },
+    "balance": { "type": "number" },
+    "status": { "type": "string", "enum": ["DRAFT", "SUBMITTED", "PARTIALLY_PAID", "PAID", "OVERDUE", "VOIDED"] },
+    "line_items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "description": { "type": "string" },
+          "unit_price": { "type": "number" },
+          "quantity": { "type": "number" },
+          "total_amount": { "type": "number" },
+          "account": { "type": "string", "format": "uuid" },
+          "item": { "type": "string", "format": "uuid" }
+        }
+      }
+    },
+    "remote_was_deleted": { "type": "boolean" }
+  }
+}

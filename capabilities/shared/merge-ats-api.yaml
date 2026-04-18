@@ -1,0 +1,170 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: "Merge ATS API"
+  description: "Unified ATS API for candidates, applications, jobs, interviews, and offers."
+  tags:
+    - Merge
+    - ATS
+    - Recruiting
+    - Applicant Tracking
+  created: "2026-04-18"
+  modified: "2026-04-18"
+
+binds:
+  - namespace: env
+    keys:
+      MERGE_API_KEY: MERGE_API_KEY
+      MERGE_ACCOUNT_TOKEN: MERGE_ACCOUNT_TOKEN
+
+capability:
+  consumes:
+    - type: http
+      namespace: merge-ats
+      baseUri: https://api.merge.dev/api/ats/v1
+      description: "Merge Unified ATS API."
+      authentication:
+        type: bearer
+        token: "{{MERGE_API_KEY}}"
+      resources:
+        - name: candidates
+          path: /candidates
+          description: "Candidate operations."
+          operations:
+            - name: list-candidates
+              method: GET
+              description: "List all candidates."
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+            - name: create-candidate
+              method: POST
+              description: "Create a candidate."
+              body:
+                type: json
+                data:
+                  model: "{{tools.model}}"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+        - name: applications
+          path: /applications
+          description: "Application operations."
+          operations:
+            - name: list-applications
+              method: GET
+              description: "List all applications."
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+            - name: create-application
+              method: POST
+              description: "Create an application."
+              body:
+                type: json
+                data:
+                  model: "{{tools.model}}"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+        - name: jobs
+          path: /jobs
+          description: "Job posting operations."
+          operations:
+            - name: list-jobs
+              method: GET
+              description: "List all job postings."
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+        - name: interviews
+          path: /interviews
+          description: "Interview operations."
+          operations:
+            - name: list-interviews
+              method: GET
+              description: "List all scheduled interviews."
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+        - name: offers
+          path: /offers
+          description: "Offer operations."
+          operations:
+            - name: list-offers
+              method: GET
+              description: "List all offers."
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+
+  exposes:
+    - type: mcp
+      port: 9101
+      namespace: merge-ats-mcp
+      transport: http
+      tools:
+        - name: list-candidates
+          description: "List candidates from connected ATS."
+          hints:
+            readOnly: true
+          call: "merge-ats.list-candidates"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: create-candidate
+          description: "Create a candidate in the connected ATS."
+          hints:
+            readOnly: false
+          call: "merge-ats.create-candidate"
+          with:
+            model: "tools.model"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: list-applications
+          description: "List applications from connected ATS."
+          hints:
+            readOnly: true
+          call: "merge-ats.list-applications"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: list-jobs
+          description: "List job postings from connected ATS."
+          hints:
+            readOnly: true
+          call: "merge-ats.list-jobs"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: list-interviews
+          description: "List scheduled interviews from connected ATS."
+          hints:
+            readOnly: true
+          call: "merge-ats.list-interviews"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: list-offers
+          description: "List offers from connected ATS."
+          hints:
+            readOnly: true
+          call: "merge-ats.list-offers"
+          outputParameters:
+            - type: object
+              mapping: "$."

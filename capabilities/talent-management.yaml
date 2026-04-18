@@ -1,0 +1,207 @@
+naftiko: "1.0.0-alpha1"
+
+info:
+  label: "Merge Talent Management"
+  description: "Unified workflow combining HRIS and ATS APIs for end-to-end talent management, from candidate sourcing through onboarding and employee lifecycle. Used by HR teams, recruiters, and people operations."
+  tags:
+    - Merge
+    - Talent Management
+    - HRIS
+    - ATS
+    - Recruiting
+  created: "2026-04-18"
+  modified: "2026-04-18"
+
+binds:
+  - namespace: env
+    keys:
+      MERGE_API_KEY: MERGE_API_KEY
+      MERGE_ACCOUNT_TOKEN: MERGE_ACCOUNT_TOKEN
+
+capability:
+  consumes:
+    - import: merge-hris
+      location: ./shared/merge-hris-api.yaml
+    - import: merge-ats
+      location: ./shared/merge-ats-api.yaml
+
+  exposes:
+    - type: rest
+      port: 8080
+      namespace: merge-talent-api
+      description: "Unified REST API for talent management across HRIS and ATS."
+      resources:
+        - path: /v1/candidates
+          name: candidates
+          description: "Candidate pipeline management."
+          operations:
+            - method: GET
+              name: list-candidates
+              description: "List all candidates."
+              call: "merge-ats.list-candidates"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: POST
+              name: create-candidate
+              description: "Create a new candidate."
+              call: "merge-ats.create-candidate"
+              with:
+                model: "rest.model"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/applications
+          name: applications
+          description: "Application tracking."
+          operations:
+            - method: GET
+              name: list-applications
+              description: "List all applications."
+              call: "merge-ats.list-applications"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/jobs
+          name: jobs
+          description: "Job postings."
+          operations:
+            - method: GET
+              name: list-jobs
+              description: "List all job postings."
+              call: "merge-ats.list-jobs"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/employees
+          name: employees
+          description: "Employee records."
+          operations:
+            - method: GET
+              name: list-employees
+              description: "List all employees."
+              call: "merge-hris.list-employees"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: POST
+              name: create-employee
+              description: "Create a new employee."
+              call: "merge-hris.create-employee"
+              with:
+                model: "rest.model"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/time-off
+          name: time-off
+          description: "Time off management."
+          operations:
+            - method: GET
+              name: list-time-off
+              description: "List time off requests."
+              call: "merge-hris.list-time-off"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+
+    - type: mcp
+      port: 9090
+      namespace: merge-talent-mcp
+      transport: http
+      description: "MCP server for AI-assisted talent management."
+      tools:
+        - name: ats-list-candidates
+          description: "List candidates from the connected ATS."
+          hints:
+            readOnly: true
+          call: "merge-ats.list-candidates"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: ats-create-candidate
+          description: "Create a new candidate in the ATS."
+          hints:
+            readOnly: false
+          call: "merge-ats.create-candidate"
+          with:
+            model: "tools.model"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: ats-list-applications
+          description: "List all applications from the ATS."
+          hints:
+            readOnly: true
+          call: "merge-ats.list-applications"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: ats-list-jobs
+          description: "List all open job postings."
+          hints:
+            readOnly: true
+          call: "merge-ats.list-jobs"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: ats-list-interviews
+          description: "List scheduled interviews."
+          hints:
+            readOnly: true
+          call: "merge-ats.list-interviews"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: ats-list-offers
+          description: "List all offers."
+          hints:
+            readOnly: true
+          call: "merge-ats.list-offers"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: hris-list-employees
+          description: "List employees from the connected HRIS."
+          hints:
+            readOnly: true
+          call: "merge-hris.list-employees"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: hris-create-employee
+          description: "Create an employee in the HRIS."
+          hints:
+            readOnly: false
+          call: "merge-hris.create-employee"
+          with:
+            model: "tools.model"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: hris-list-companies
+          description: "List companies from the HRIS."
+          hints:
+            readOnly: true
+          call: "merge-hris.list-companies"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: hris-list-time-off
+          description: "List time off requests."
+          hints:
+            readOnly: true
+          call: "merge-hris.list-time-off"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: hris-create-time-off
+          description: "Create a time off request."
+          hints:
+            readOnly: false
+          call: "merge-hris.create-time-off"
+          with:
+            model: "tools.model"
+          outputParameters:
+            - type: object
+              mapping: "$."
