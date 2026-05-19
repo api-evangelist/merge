@@ -1,0 +1,105 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Merge CRM API — Leads
+  description: 'Merge CRM API — Leads. 2 operations. Lead operation: Merge List Leads. Self-contained Naftiko capability covering
+    one Merge business surface.'
+  tags:
+  - Merge
+  - Leads
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MERGE_API_KEY: MERGE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: crm-leads
+    baseUri: https://api.merge.dev/api/crm/v1
+    description: Merge CRM API — Leads business capability. Self-contained, no shared references.
+    resources:
+    - name: leads
+      path: /leads
+      operations:
+      - name: listleads
+        method: GET
+        description: Merge List Leads
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createlead
+        method: POST
+        description: Merge Create Lead
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.MERGE_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: crm-leads-rest
+    port: 8080
+    description: REST adapter for Merge CRM API — Leads. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/leads
+      name: leads
+      description: REST surface for leads.
+      operations:
+      - method: GET
+        name: listleads
+        description: Merge List Leads
+        call: crm-leads.listleads
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createlead
+        description: Merge Create Lead
+        call: crm-leads.createlead
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: crm-leads-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Merge CRM API — Leads. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: merge-list-leads
+      description: Merge List Leads
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: crm-leads.listleads
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: merge-create-lead
+      description: Merge Create Lead
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: crm-leads.createlead
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

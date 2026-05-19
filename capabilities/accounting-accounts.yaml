@@ -1,0 +1,70 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Merge Accounting API — Accounts
+  description: 'Merge Accounting API — Accounts. 1 operations. Lead operation: Merge List Accounts. Self-contained Naftiko
+    capability covering one Merge business surface.'
+  tags:
+  - Merge
+  - Accounts
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MERGE_API_KEY: MERGE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: accounting-accounts
+    baseUri: https://api.merge.dev/api/accounting/v1
+    description: Merge Accounting API — Accounts business capability. Self-contained, no shared references.
+    resources:
+    - name: accounts
+      path: /accounts
+      operations:
+      - name: listaccounts
+        method: GET
+        description: Merge List Accounts
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.MERGE_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: accounting-accounts-rest
+    port: 8080
+    description: REST adapter for Merge Accounting API — Accounts. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/accounts
+      name: accounts
+      description: REST surface for accounts.
+      operations:
+      - method: GET
+        name: listaccounts
+        description: Merge List Accounts
+        call: accounting-accounts.listaccounts
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: accounting-accounts-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Merge Accounting API — Accounts. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: merge-list-accounts
+      description: Merge List Accounts
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: accounting-accounts.listaccounts
+      outputParameters:
+      - type: object
+        mapping: $.

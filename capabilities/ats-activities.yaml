@@ -1,0 +1,105 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Merge ATS API — Activities
+  description: 'Merge ATS API — Activities. 2 operations. Lead operation: Merge List Activities. Self-contained Naftiko capability
+    covering one Merge business surface.'
+  tags:
+  - Merge
+  - Activities
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MERGE_API_KEY: MERGE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: ats-activities
+    baseUri: https://api.merge.dev/api/ats/v1
+    description: Merge ATS API — Activities business capability. Self-contained, no shared references.
+    resources:
+    - name: activities
+      path: /activities
+      operations:
+      - name: listactivities
+        method: GET
+        description: Merge List Activities
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createactivity
+        method: POST
+        description: Merge Create Activity
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.MERGE_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: ats-activities-rest
+    port: 8080
+    description: REST adapter for Merge ATS API — Activities. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/activities
+      name: activities
+      description: REST surface for activities.
+      operations:
+      - method: GET
+        name: listactivities
+        description: Merge List Activities
+        call: ats-activities.listactivities
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createactivity
+        description: Merge Create Activity
+        call: ats-activities.createactivity
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: ats-activities-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Merge ATS API — Activities. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: merge-list-activities
+      description: Merge List Activities
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ats-activities.listactivities
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: merge-create-activity
+      description: Merge Create Activity
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: ats-activities.createactivity
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

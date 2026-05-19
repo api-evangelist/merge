@@ -1,0 +1,70 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Merge ATS API — Offices
+  description: 'Merge ATS API — Offices. 1 operations. Lead operation: Merge List Offices. Self-contained Naftiko capability
+    covering one Merge business surface.'
+  tags:
+  - Merge
+  - Offices
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MERGE_API_KEY: MERGE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: ats-offices
+    baseUri: https://api.merge.dev/api/ats/v1
+    description: Merge ATS API — Offices business capability. Self-contained, no shared references.
+    resources:
+    - name: offices
+      path: /offices
+      operations:
+      - name: listoffices
+        method: GET
+        description: Merge List Offices
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.MERGE_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: ats-offices-rest
+    port: 8080
+    description: REST adapter for Merge ATS API — Offices. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/offices
+      name: offices
+      description: REST surface for offices.
+      operations:
+      - method: GET
+        name: listoffices
+        description: Merge List Offices
+        call: ats-offices.listoffices
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: ats-offices-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Merge ATS API — Offices. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: merge-list-offices
+      description: Merge List Offices
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ats-offices.listoffices
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,70 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Merge File Storage API — Drives
+  description: 'Merge File Storage API — Drives. 1 operations. Lead operation: Merge List Drives. Self-contained Naftiko capability
+    covering one Merge business surface.'
+  tags:
+  - Merge
+  - Drives
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MERGE_API_KEY: MERGE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: file-storage-drives
+    baseUri: https://api.merge.dev/api/filestorage/v1
+    description: Merge File Storage API — Drives business capability. Self-contained, no shared references.
+    resources:
+    - name: drives
+      path: /drives
+      operations:
+      - name: listdrives
+        method: GET
+        description: Merge List Drives
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.MERGE_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: file-storage-drives-rest
+    port: 8080
+    description: REST adapter for Merge File Storage API — Drives. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/drives
+      name: drives
+      description: REST surface for drives.
+      operations:
+      - method: GET
+        name: listdrives
+        description: Merge List Drives
+        call: file-storage-drives.listdrives
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: file-storage-drives-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Merge File Storage API — Drives. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: merge-list-drives
+      description: Merge List Drives
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: file-storage-drives.listdrives
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,137 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Merge CRM API — Engagements
+  description: 'Merge CRM API — Engagements. 3 operations. Lead operation: Merge List Engagement Types. Self-contained Naftiko
+    capability covering one Merge business surface.'
+  tags:
+  - Merge
+  - Engagements
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MERGE_API_KEY: MERGE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: crm-engagements
+    baseUri: https://api.merge.dev/api/crm/v1
+    description: Merge CRM API — Engagements business capability. Self-contained, no shared references.
+    resources:
+    - name: engagement-types
+      path: /engagement-types
+      operations:
+      - name: listengagementtypes
+        method: GET
+        description: Merge List Engagement Types
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: engagements
+      path: /engagements
+      operations:
+      - name: listengagements
+        method: GET
+        description: Merge List Engagements
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createengagement
+        method: POST
+        description: Merge Create Engagement
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.MERGE_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: crm-engagements-rest
+    port: 8080
+    description: REST adapter for Merge CRM API — Engagements. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/engagement-types
+      name: engagement-types
+      description: REST surface for engagement-types.
+      operations:
+      - method: GET
+        name: listengagementtypes
+        description: Merge List Engagement Types
+        call: crm-engagements.listengagementtypes
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/engagements
+      name: engagements
+      description: REST surface for engagements.
+      operations:
+      - method: GET
+        name: listengagements
+        description: Merge List Engagements
+        call: crm-engagements.listengagements
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createengagement
+        description: Merge Create Engagement
+        call: crm-engagements.createengagement
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: crm-engagements-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Merge CRM API — Engagements. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: merge-list-engagement-types
+      description: Merge List Engagement Types
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: crm-engagements.listengagementtypes
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: merge-list-engagements
+      description: Merge List Engagements
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: crm-engagements.listengagements
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: merge-create-engagement
+      description: Merge Create Engagement
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: crm-engagements.createengagement
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

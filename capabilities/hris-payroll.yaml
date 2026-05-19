@@ -1,0 +1,184 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Merge HRIS API — Payroll
+  description: 'Merge HRIS API — Payroll. 4 operations. Lead operation: Merge List Bank Info. Self-contained Naftiko capability
+    covering one Merge business surface.'
+  tags:
+  - Merge
+  - Payroll
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MERGE_API_KEY: MERGE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: hris-payroll
+    baseUri: https://api.merge.dev/api/hris/v1
+    description: Merge HRIS API — Payroll business capability. Self-contained, no shared references.
+    resources:
+    - name: bank-info
+      path: /bank-info
+      operations:
+      - name: listbankinfo
+        method: GET
+        description: Merge List Bank Info
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: employee_id
+          in: query
+          type: string
+          description: Filter by employee ID.
+    - name: employee-payroll-runs
+      path: /employee-payroll-runs
+      operations:
+      - name: listemployeepayrollruns
+        method: GET
+        description: Merge List Employee Payroll Runs
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: employee_id
+          in: query
+          type: string
+          description: Filter by employee ID.
+    - name: pay-groups
+      path: /pay-groups
+      operations:
+      - name: listpaygroups
+        method: GET
+        description: Merge List Pay Groups
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: payroll-runs
+      path: /payroll-runs
+      operations:
+      - name: listpayrollruns
+        method: GET
+        description: Merge List Payroll Runs
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.MERGE_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: hris-payroll-rest
+    port: 8080
+    description: REST adapter for Merge HRIS API — Payroll. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/bank-info
+      name: bank-info
+      description: REST surface for bank-info.
+      operations:
+      - method: GET
+        name: listbankinfo
+        description: Merge List Bank Info
+        call: hris-payroll.listbankinfo
+        with:
+          employee_id: rest.employee_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/employee-payroll-runs
+      name: employee-payroll-runs
+      description: REST surface for employee-payroll-runs.
+      operations:
+      - method: GET
+        name: listemployeepayrollruns
+        description: Merge List Employee Payroll Runs
+        call: hris-payroll.listemployeepayrollruns
+        with:
+          employee_id: rest.employee_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/pay-groups
+      name: pay-groups
+      description: REST surface for pay-groups.
+      operations:
+      - method: GET
+        name: listpaygroups
+        description: Merge List Pay Groups
+        call: hris-payroll.listpaygroups
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/payroll-runs
+      name: payroll-runs
+      description: REST surface for payroll-runs.
+      operations:
+      - method: GET
+        name: listpayrollruns
+        description: Merge List Payroll Runs
+        call: hris-payroll.listpayrollruns
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: hris-payroll-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Merge HRIS API — Payroll. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: merge-list-bank-info
+      description: Merge List Bank Info
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hris-payroll.listbankinfo
+      with:
+        employee_id: tools.employee_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: merge-list-employee-payroll-runs
+      description: Merge List Employee Payroll Runs
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hris-payroll.listemployeepayrollruns
+      with:
+        employee_id: tools.employee_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: merge-list-pay-groups
+      description: Merge List Pay Groups
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hris-payroll.listpaygroups
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: merge-list-payroll-runs
+      description: Merge List Payroll Runs
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hris-payroll.listpayrollruns
+      outputParameters:
+      - type: object
+        mapping: $.

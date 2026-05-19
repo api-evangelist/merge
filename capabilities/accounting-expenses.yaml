@@ -1,0 +1,105 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Merge Accounting API — Expenses
+  description: 'Merge Accounting API — Expenses. 2 operations. Lead operation: Merge List Expenses. Self-contained Naftiko
+    capability covering one Merge business surface.'
+  tags:
+  - Merge
+  - Expenses
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MERGE_API_KEY: MERGE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: accounting-expenses
+    baseUri: https://api.merge.dev/api/accounting/v1
+    description: Merge Accounting API — Expenses business capability. Self-contained, no shared references.
+    resources:
+    - name: expenses
+      path: /expenses
+      operations:
+      - name: listexpenses
+        method: GET
+        description: Merge List Expenses
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createexpense
+        method: POST
+        description: Merge Create Expense
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.MERGE_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: accounting-expenses-rest
+    port: 8080
+    description: REST adapter for Merge Accounting API — Expenses. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/expenses
+      name: expenses
+      description: REST surface for expenses.
+      operations:
+      - method: GET
+        name: listexpenses
+        description: Merge List Expenses
+        call: accounting-expenses.listexpenses
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createexpense
+        description: Merge Create Expense
+        call: accounting-expenses.createexpense
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: accounting-expenses-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Merge Accounting API — Expenses. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: merge-list-expenses
+      description: Merge List Expenses
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: accounting-expenses.listexpenses
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: merge-create-expense
+      description: Merge Create Expense
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: accounting-expenses.createexpense
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

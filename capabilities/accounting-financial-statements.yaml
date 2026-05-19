@@ -1,0 +1,134 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Merge Accounting API — Financial Statements
+  description: 'Merge Accounting API — Financial Statements. 3 operations. Lead operation: Merge List Balance Sheets. Self-contained
+    Naftiko capability covering one Merge business surface.'
+  tags:
+  - Merge
+  - Financial Statements
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MERGE_API_KEY: MERGE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: accounting-financial-statements
+    baseUri: https://api.merge.dev/api/accounting/v1
+    description: Merge Accounting API — Financial Statements business capability. Self-contained, no shared references.
+    resources:
+    - name: balance-sheets
+      path: /balance-sheets
+      operations:
+      - name: listbalancesheets
+        method: GET
+        description: Merge List Balance Sheets
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: cash-flow-statements
+      path: /cash-flow-statements
+      operations:
+      - name: listcashflowstatements
+        method: GET
+        description: Merge List Cash Flow Statements
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: income-statements
+      path: /income-statements
+      operations:
+      - name: listincomestatements
+        method: GET
+        description: Merge List Income Statements
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.MERGE_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: accounting-financial-statements-rest
+    port: 8080
+    description: REST adapter for Merge Accounting API — Financial Statements. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/balance-sheets
+      name: balance-sheets
+      description: REST surface for balance-sheets.
+      operations:
+      - method: GET
+        name: listbalancesheets
+        description: Merge List Balance Sheets
+        call: accounting-financial-statements.listbalancesheets
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/cash-flow-statements
+      name: cash-flow-statements
+      description: REST surface for cash-flow-statements.
+      operations:
+      - method: GET
+        name: listcashflowstatements
+        description: Merge List Cash Flow Statements
+        call: accounting-financial-statements.listcashflowstatements
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/income-statements
+      name: income-statements
+      description: REST surface for income-statements.
+      operations:
+      - method: GET
+        name: listincomestatements
+        description: Merge List Income Statements
+        call: accounting-financial-statements.listincomestatements
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: accounting-financial-statements-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Merge Accounting API — Financial Statements. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: merge-list-balance-sheets
+      description: Merge List Balance Sheets
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: accounting-financial-statements.listbalancesheets
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: merge-list-cash-flow-statements
+      description: Merge List Cash Flow Statements
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: accounting-financial-statements.listcashflowstatements
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: merge-list-income-statements
+      description: Merge List Income Statements
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: accounting-financial-statements.listincomestatements
+      outputParameters:
+      - type: object
+        mapping: $.

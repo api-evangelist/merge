@@ -1,0 +1,70 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Merge HRIS API — Benefits
+  description: 'Merge HRIS API — Benefits. 1 operations. Lead operation: Merge List Benefits. Self-contained Naftiko capability
+    covering one Merge business surface.'
+  tags:
+  - Merge
+  - Benefits
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MERGE_API_KEY: MERGE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: hris-benefits
+    baseUri: https://api.merge.dev/api/hris/v1
+    description: Merge HRIS API — Benefits business capability. Self-contained, no shared references.
+    resources:
+    - name: benefits
+      path: /benefits
+      operations:
+      - name: listbenefits
+        method: GET
+        description: Merge List Benefits
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.MERGE_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: hris-benefits-rest
+    port: 8080
+    description: REST adapter for Merge HRIS API — Benefits. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/benefits
+      name: benefits
+      description: REST surface for benefits.
+      operations:
+      - method: GET
+        name: listbenefits
+        description: Merge List Benefits
+        call: hris-benefits.listbenefits
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: hris-benefits-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Merge HRIS API — Benefits. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: merge-list-benefits
+      description: Merge List Benefits
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hris-benefits.listbenefits
+      outputParameters:
+      - type: object
+        mapping: $.

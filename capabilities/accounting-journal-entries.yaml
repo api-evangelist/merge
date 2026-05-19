@@ -1,0 +1,105 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Merge Accounting API — Journal Entries
+  description: 'Merge Accounting API — Journal Entries. 2 operations. Lead operation: Merge List Journal Entries. Self-contained
+    Naftiko capability covering one Merge business surface.'
+  tags:
+  - Merge
+  - Journal Entries
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MERGE_API_KEY: MERGE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: accounting-journal-entries
+    baseUri: https://api.merge.dev/api/accounting/v1
+    description: Merge Accounting API — Journal Entries business capability. Self-contained, no shared references.
+    resources:
+    - name: journal-entries
+      path: /journal-entries
+      operations:
+      - name: listjournalentries
+        method: GET
+        description: Merge List Journal Entries
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createjournalentry
+        method: POST
+        description: Merge Create Journal Entry
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.MERGE_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: accounting-journal-entries-rest
+    port: 8080
+    description: REST adapter for Merge Accounting API — Journal Entries. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/journal-entries
+      name: journal-entries
+      description: REST surface for journal-entries.
+      operations:
+      - method: GET
+        name: listjournalentries
+        description: Merge List Journal Entries
+        call: accounting-journal-entries.listjournalentries
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createjournalentry
+        description: Merge Create Journal Entry
+        call: accounting-journal-entries.createjournalentry
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: accounting-journal-entries-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Merge Accounting API — Journal Entries. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: merge-list-journal-entries
+      description: Merge List Journal Entries
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: accounting-journal-entries.listjournalentries
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: merge-create-journal-entry
+      description: Merge Create Journal Entry
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: accounting-journal-entries.createjournalentry
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

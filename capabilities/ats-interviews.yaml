@@ -1,0 +1,120 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Merge ATS API — Interviews
+  description: 'Merge ATS API — Interviews. 2 operations. Lead operation: Merge List Interviews. Self-contained Naftiko capability
+    covering one Merge business surface.'
+  tags:
+  - Merge
+  - Interviews
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MERGE_API_KEY: MERGE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: ats-interviews
+    baseUri: https://api.merge.dev/api/ats/v1
+    description: Merge ATS API — Interviews business capability. Self-contained, no shared references.
+    resources:
+    - name: interviews
+      path: /interviews
+      operations:
+      - name: listinterviews
+        method: GET
+        description: Merge List Interviews
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: application_id
+          in: query
+          type: string
+          description: Filter by application ID.
+    - name: job-interview-stages
+      path: /job-interview-stages
+      operations:
+      - name: listjobinterviewstages
+        method: GET
+        description: Merge List Job Interview Stages
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: job_id
+          in: query
+          type: string
+          description: Filter by job ID.
+    authentication:
+      type: bearer
+      token: '{{env.MERGE_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: ats-interviews-rest
+    port: 8080
+    description: REST adapter for Merge ATS API — Interviews. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/interviews
+      name: interviews
+      description: REST surface for interviews.
+      operations:
+      - method: GET
+        name: listinterviews
+        description: Merge List Interviews
+        call: ats-interviews.listinterviews
+        with:
+          application_id: rest.application_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/job-interview-stages
+      name: job-interview-stages
+      description: REST surface for job-interview-stages.
+      operations:
+      - method: GET
+        name: listjobinterviewstages
+        description: Merge List Job Interview Stages
+        call: ats-interviews.listjobinterviewstages
+        with:
+          job_id: rest.job_id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: ats-interviews-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Merge ATS API — Interviews. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: merge-list-interviews
+      description: Merge List Interviews
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ats-interviews.listinterviews
+      with:
+        application_id: tools.application_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: merge-list-job-interview-stages
+      description: Merge List Job Interview Stages
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ats-interviews.listjobinterviewstages
+      with:
+        job_id: tools.job_id
+      outputParameters:
+      - type: object
+        mapping: $.

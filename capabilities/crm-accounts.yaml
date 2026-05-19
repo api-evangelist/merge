@@ -1,0 +1,105 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Merge CRM API — Accounts
+  description: 'Merge CRM API — Accounts. 2 operations. Lead operation: Merge List Accounts. Self-contained Naftiko capability
+    covering one Merge business surface.'
+  tags:
+  - Merge
+  - Accounts
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MERGE_API_KEY: MERGE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: crm-accounts
+    baseUri: https://api.merge.dev/api/crm/v1
+    description: Merge CRM API — Accounts business capability. Self-contained, no shared references.
+    resources:
+    - name: accounts
+      path: /accounts
+      operations:
+      - name: listaccounts
+        method: GET
+        description: Merge List Accounts
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createaccount
+        method: POST
+        description: Merge Create Account
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.MERGE_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: crm-accounts-rest
+    port: 8080
+    description: REST adapter for Merge CRM API — Accounts. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/accounts
+      name: accounts
+      description: REST surface for accounts.
+      operations:
+      - method: GET
+        name: listaccounts
+        description: Merge List Accounts
+        call: crm-accounts.listaccounts
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createaccount
+        description: Merge Create Account
+        call: crm-accounts.createaccount
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: crm-accounts-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Merge CRM API — Accounts. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: merge-list-accounts
+      description: Merge List Accounts
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: crm-accounts.listaccounts
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: merge-create-account
+      description: Merge Create Account
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: crm-accounts.createaccount
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

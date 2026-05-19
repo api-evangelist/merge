@@ -1,0 +1,152 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Merge ATS API — Candidates
+  description: 'Merge ATS API — Candidates. 3 operations. Lead operation: Merge List Candidates. Self-contained Naftiko capability
+    covering one Merge business surface.'
+  tags:
+  - Merge
+  - Candidates
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MERGE_API_KEY: MERGE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: ats-candidates
+    baseUri: https://api.merge.dev/api/ats/v1
+    description: Merge ATS API — Candidates business capability. Self-contained, no shared references.
+    resources:
+    - name: candidates
+      path: /candidates
+      operations:
+      - name: listcandidates
+        method: GET
+        description: Merge List Candidates
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: created_after
+          in: query
+          type: string
+          description: Filter by creation date.
+        - name: modified_after
+          in: query
+          type: string
+          description: Filter by modification date.
+      - name: createcandidate
+        method: POST
+        description: Merge Create Candidate
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: candidates-id
+      path: /candidates/{id}
+      operations:
+      - name: getcandidate
+        method: GET
+        description: Merge Get Candidate
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.MERGE_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: ats-candidates-rest
+    port: 8080
+    description: REST adapter for Merge ATS API — Candidates. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/candidates
+      name: candidates
+      description: REST surface for candidates.
+      operations:
+      - method: GET
+        name: listcandidates
+        description: Merge List Candidates
+        call: ats-candidates.listcandidates
+        with:
+          created_after: rest.created_after
+          modified_after: rest.modified_after
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createcandidate
+        description: Merge Create Candidate
+        call: ats-candidates.createcandidate
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/candidates/{id}
+      name: candidates-id
+      description: REST surface for candidates-id.
+      operations:
+      - method: GET
+        name: getcandidate
+        description: Merge Get Candidate
+        call: ats-candidates.getcandidate
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: ats-candidates-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Merge ATS API — Candidates. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: merge-list-candidates
+      description: Merge List Candidates
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ats-candidates.listcandidates
+      with:
+        created_after: tools.created_after
+        modified_after: tools.modified_after
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: merge-create-candidate
+      description: Merge Create Candidate
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: ats-candidates.createcandidate
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: merge-get-candidate
+      description: Merge Get Candidate
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ats-candidates.getcandidate
+      outputParameters:
+      - type: object
+        mapping: $.

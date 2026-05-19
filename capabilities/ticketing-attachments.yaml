@@ -1,0 +1,79 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Merge Ticketing API — Attachments
+  description: 'Merge Ticketing API — Attachments. 1 operations. Lead operation: Merge List Attachments. Self-contained Naftiko
+    capability covering one Merge business surface.'
+  tags:
+  - Merge
+  - Attachments
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MERGE_API_KEY: MERGE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: ticketing-attachments
+    baseUri: https://api.merge.dev/api/ticketing/v1
+    description: Merge Ticketing API — Attachments business capability. Self-contained, no shared references.
+    resources:
+    - name: attachments
+      path: /attachments
+      operations:
+      - name: listattachments
+        method: GET
+        description: Merge List Attachments
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: ticket_id
+          in: query
+          type: string
+          description: Filter by ticket ID.
+    authentication:
+      type: bearer
+      token: '{{env.MERGE_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: ticketing-attachments-rest
+    port: 8080
+    description: REST adapter for Merge Ticketing API — Attachments. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/attachments
+      name: attachments
+      description: REST surface for attachments.
+      operations:
+      - method: GET
+        name: listattachments
+        description: Merge List Attachments
+        call: ticketing-attachments.listattachments
+        with:
+          ticket_id: rest.ticket_id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: ticketing-attachments-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Merge Ticketing API — Attachments. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: merge-list-attachments
+      description: Merge List Attachments
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ticketing-attachments.listattachments
+      with:
+        ticket_id: tools.ticket_id
+      outputParameters:
+      - type: object
+        mapping: $.

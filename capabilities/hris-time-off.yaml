@@ -1,0 +1,161 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Merge HRIS API — Time Off
+  description: 'Merge HRIS API — Time Off. 3 operations. Lead operation: Merge List Time Off. Self-contained Naftiko capability
+    covering one Merge business surface.'
+  tags:
+  - Merge
+  - Time Off
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MERGE_API_KEY: MERGE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: hris-time-off
+    baseUri: https://api.merge.dev/api/hris/v1
+    description: Merge HRIS API — Time Off business capability. Self-contained, no shared references.
+    resources:
+    - name: time-off
+      path: /time-off
+      operations:
+      - name: listtimeoff
+        method: GET
+        description: Merge List Time Off
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: employee_id
+          in: query
+          type: string
+          description: Filter time off records by employee ID.
+        - name: status
+          in: query
+          type: string
+          description: Filter by time off request status.
+      - name: createtimeoff
+        method: POST
+        description: Merge Create Time Off
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: time-off-balances
+      path: /time-off-balances
+      operations:
+      - name: listtimeoffbalances
+        method: GET
+        description: Merge List Time Off Balances
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: employee_id
+          in: query
+          type: string
+          description: Filter balances by employee ID.
+    authentication:
+      type: bearer
+      token: '{{env.MERGE_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: hris-time-off-rest
+    port: 8080
+    description: REST adapter for Merge HRIS API — Time Off. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/time-off
+      name: time-off
+      description: REST surface for time-off.
+      operations:
+      - method: GET
+        name: listtimeoff
+        description: Merge List Time Off
+        call: hris-time-off.listtimeoff
+        with:
+          employee_id: rest.employee_id
+          status: rest.status
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createtimeoff
+        description: Merge Create Time Off
+        call: hris-time-off.createtimeoff
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/time-off-balances
+      name: time-off-balances
+      description: REST surface for time-off-balances.
+      operations:
+      - method: GET
+        name: listtimeoffbalances
+        description: Merge List Time Off Balances
+        call: hris-time-off.listtimeoffbalances
+        with:
+          employee_id: rest.employee_id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: hris-time-off-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Merge HRIS API — Time Off. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: merge-list-time-off
+      description: Merge List Time Off
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hris-time-off.listtimeoff
+      with:
+        employee_id: tools.employee_id
+        status: tools.status
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: merge-create-time-off
+      description: Merge Create Time Off
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hris-time-off.createtimeoff
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: merge-list-time-off-balances
+      description: Merge List Time Off Balances
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hris-time-off.listtimeoffbalances
+      with:
+        employee_id: tools.employee_id
+      outputParameters:
+      - type: object
+        mapping: $.

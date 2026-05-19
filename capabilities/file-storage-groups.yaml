@@ -1,0 +1,70 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Merge File Storage API — Groups
+  description: 'Merge File Storage API — Groups. 1 operations. Lead operation: Merge List Groups. Self-contained Naftiko capability
+    covering one Merge business surface.'
+  tags:
+  - Merge
+  - Groups
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MERGE_API_KEY: MERGE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: file-storage-groups
+    baseUri: https://api.merge.dev/api/filestorage/v1
+    description: Merge File Storage API — Groups business capability. Self-contained, no shared references.
+    resources:
+    - name: groups
+      path: /groups
+      operations:
+      - name: listgroups
+        method: GET
+        description: Merge List Groups
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.MERGE_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: file-storage-groups-rest
+    port: 8080
+    description: REST adapter for Merge File Storage API — Groups. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/groups
+      name: groups
+      description: REST surface for groups.
+      operations:
+      - method: GET
+        name: listgroups
+        description: Merge List Groups
+        call: file-storage-groups.listgroups
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: file-storage-groups-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Merge File Storage API — Groups. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: merge-list-groups
+      description: Merge List Groups
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: file-storage-groups.listgroups
+      outputParameters:
+      - type: object
+        mapping: $.

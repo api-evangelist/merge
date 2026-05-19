@@ -1,0 +1,105 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Merge Accounting API — Purchase Orders
+  description: 'Merge Accounting API — Purchase Orders. 2 operations. Lead operation: Merge List Purchase Orders. Self-contained
+    Naftiko capability covering one Merge business surface.'
+  tags:
+  - Merge
+  - Purchase Orders
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MERGE_API_KEY: MERGE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: accounting-purchase-orders
+    baseUri: https://api.merge.dev/api/accounting/v1
+    description: Merge Accounting API — Purchase Orders business capability. Self-contained, no shared references.
+    resources:
+    - name: purchase-orders
+      path: /purchase-orders
+      operations:
+      - name: listpurchaseorders
+        method: GET
+        description: Merge List Purchase Orders
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createpurchaseorder
+        method: POST
+        description: Merge Create Purchase Order
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.MERGE_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: accounting-purchase-orders-rest
+    port: 8080
+    description: REST adapter for Merge Accounting API — Purchase Orders. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/purchase-orders
+      name: purchase-orders
+      description: REST surface for purchase-orders.
+      operations:
+      - method: GET
+        name: listpurchaseorders
+        description: Merge List Purchase Orders
+        call: accounting-purchase-orders.listpurchaseorders
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createpurchaseorder
+        description: Merge Create Purchase Order
+        call: accounting-purchase-orders.createpurchaseorder
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: accounting-purchase-orders-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Merge Accounting API — Purchase Orders. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: merge-list-purchase-orders
+      description: Merge List Purchase Orders
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: accounting-purchase-orders.listpurchaseorders
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: merge-create-purchase-order
+      description: Merge Create Purchase Order
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: accounting-purchase-orders.createpurchaseorder
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

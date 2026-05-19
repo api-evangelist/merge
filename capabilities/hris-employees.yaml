@@ -1,0 +1,188 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Merge HRIS API — Employees
+  description: 'Merge HRIS API — Employees. 3 operations. Lead operation: Merge List Employees. Self-contained Naftiko capability
+    covering one Merge business surface.'
+  tags:
+  - Merge
+  - Employees
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MERGE_API_KEY: MERGE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: hris-employees
+    baseUri: https://api.merge.dev/api/hris/v1
+    description: Merge HRIS API — Employees business capability. Self-contained, no shared references.
+    resources:
+    - name: employees
+      path: /employees
+      operations:
+      - name: listemployees
+        method: GET
+        description: Merge List Employees
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: created_after
+          in: query
+          type: string
+          description: Filter by creation date after this timestamp.
+        - name: created_before
+          in: query
+          type: string
+          description: Filter by creation date before this timestamp.
+        - name: modified_after
+          in: query
+          type: string
+          description: Filter by modification date after this timestamp.
+        - name: modified_before
+          in: query
+          type: string
+          description: Filter by modification date before this timestamp.
+        - name: manager_id
+          in: query
+          type: string
+          description: Filter employees by manager ID.
+        - name: company_id
+          in: query
+          type: string
+          description: Filter employees by company ID.
+        - name: work_location_id
+          in: query
+          type: string
+          description: Filter employees by work location ID.
+        - name: employment_status
+          in: query
+          type: string
+          description: Filter by employment status.
+      - name: createemployee
+        method: POST
+        description: Merge Create Employee
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: employees-id
+      path: /employees/{id}
+      operations:
+      - name: getemployee
+        method: GET
+        description: Merge Get Employee
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.MERGE_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: hris-employees-rest
+    port: 8080
+    description: REST adapter for Merge HRIS API — Employees. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/employees
+      name: employees
+      description: REST surface for employees.
+      operations:
+      - method: GET
+        name: listemployees
+        description: Merge List Employees
+        call: hris-employees.listemployees
+        with:
+          created_after: rest.created_after
+          created_before: rest.created_before
+          modified_after: rest.modified_after
+          modified_before: rest.modified_before
+          manager_id: rest.manager_id
+          company_id: rest.company_id
+          work_location_id: rest.work_location_id
+          employment_status: rest.employment_status
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createemployee
+        description: Merge Create Employee
+        call: hris-employees.createemployee
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/employees/{id}
+      name: employees-id
+      description: REST surface for employees-id.
+      operations:
+      - method: GET
+        name: getemployee
+        description: Merge Get Employee
+        call: hris-employees.getemployee
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: hris-employees-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Merge HRIS API — Employees. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: merge-list-employees
+      description: Merge List Employees
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hris-employees.listemployees
+      with:
+        created_after: tools.created_after
+        created_before: tools.created_before
+        modified_after: tools.modified_after
+        modified_before: tools.modified_before
+        manager_id: tools.manager_id
+        company_id: tools.company_id
+        work_location_id: tools.work_location_id
+        employment_status: tools.employment_status
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: merge-create-employee
+      description: Merge Create Employee
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: hris-employees.createemployee
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: merge-get-employee
+      description: Merge Get Employee
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hris-employees.getemployee
+      outputParameters:
+      - type: object
+        mapping: $.

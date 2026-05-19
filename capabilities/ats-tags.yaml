@@ -1,0 +1,70 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Merge ATS API — Tags
+  description: 'Merge ATS API — Tags. 1 operations. Lead operation: Merge List Tags. Self-contained Naftiko capability covering
+    one Merge business surface.'
+  tags:
+  - Merge
+  - Tags
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MERGE_API_KEY: MERGE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: ats-tags
+    baseUri: https://api.merge.dev/api/ats/v1
+    description: Merge ATS API — Tags business capability. Self-contained, no shared references.
+    resources:
+    - name: tags
+      path: /tags
+      operations:
+      - name: listtags
+        method: GET
+        description: Merge List Tags
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.MERGE_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: ats-tags-rest
+    port: 8080
+    description: REST adapter for Merge ATS API — Tags. One Spectral-compliant resource per consumed operation, prefixed with
+      /v1.
+    resources:
+    - path: /v1/tags
+      name: tags
+      description: REST surface for tags.
+      operations:
+      - method: GET
+        name: listtags
+        description: Merge List Tags
+        call: ats-tags.listtags
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: ats-tags-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Merge ATS API — Tags. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: merge-list-tags
+      description: Merge List Tags
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ats-tags.listtags
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,162 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Merge ATS API — Applications
+  description: 'Merge ATS API — Applications. 3 operations. Lead operation: Merge List Applications. Self-contained Naftiko
+    capability covering one Merge business surface.'
+  tags:
+  - Merge
+  - Applications
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MERGE_API_KEY: MERGE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: ats-applications
+    baseUri: https://api.merge.dev/api/ats/v1
+    description: Merge ATS API — Applications business capability. Self-contained, no shared references.
+    resources:
+    - name: applications
+      path: /applications
+      operations:
+      - name: listapplications
+        method: GET
+        description: Merge List Applications
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: candidate_id
+          in: query
+          type: string
+          description: Filter by candidate ID.
+        - name: current_stage_id
+          in: query
+          type: string
+          description: Filter by current interview stage ID.
+      - name: createapplication
+        method: POST
+        description: Merge Create Application
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: applications-id-change-stage
+      path: /applications/{id}/change-stage
+      operations:
+      - name: changeapplicationstage
+        method: POST
+        description: Merge Change Application Stage
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.MERGE_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: ats-applications-rest
+    port: 8080
+    description: REST adapter for Merge ATS API — Applications. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/applications
+      name: applications
+      description: REST surface for applications.
+      operations:
+      - method: GET
+        name: listapplications
+        description: Merge List Applications
+        call: ats-applications.listapplications
+        with:
+          candidate_id: rest.candidate_id
+          current_stage_id: rest.current_stage_id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createapplication
+        description: Merge Create Application
+        call: ats-applications.createapplication
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/applications/{id}/change-stage
+      name: applications-id-change-stage
+      description: REST surface for applications-id-change-stage.
+      operations:
+      - method: POST
+        name: changeapplicationstage
+        description: Merge Change Application Stage
+        call: ats-applications.changeapplicationstage
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: ats-applications-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Merge ATS API — Applications. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: merge-list-applications
+      description: Merge List Applications
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ats-applications.listapplications
+      with:
+        candidate_id: tools.candidate_id
+        current_stage_id: tools.current_stage_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: merge-create-application
+      description: Merge Create Application
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: ats-applications.createapplication
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: merge-change-application-stage
+      description: Merge Change Application Stage
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: ats-applications.changeapplicationstage
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

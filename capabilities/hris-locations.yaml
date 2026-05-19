@@ -1,0 +1,70 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Merge HRIS API — Locations
+  description: 'Merge HRIS API — Locations. 1 operations. Lead operation: Merge List Locations. Self-contained Naftiko capability
+    covering one Merge business surface.'
+  tags:
+  - Merge
+  - Locations
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    MERGE_API_KEY: MERGE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: hris-locations
+    baseUri: https://api.merge.dev/api/hris/v1
+    description: Merge HRIS API — Locations business capability. Self-contained, no shared references.
+    resources:
+    - name: locations
+      path: /locations
+      operations:
+      - name: listlocations
+        method: GET
+        description: Merge List Locations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.MERGE_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: hris-locations-rest
+    port: 8080
+    description: REST adapter for Merge HRIS API — Locations. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/locations
+      name: locations
+      description: REST surface for locations.
+      operations:
+      - method: GET
+        name: listlocations
+        description: Merge List Locations
+        call: hris-locations.listlocations
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: hris-locations-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Merge HRIS API — Locations. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: merge-list-locations
+      description: Merge List Locations
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: hris-locations.listlocations
+      outputParameters:
+      - type: object
+        mapping: $.
