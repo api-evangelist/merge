@@ -1,350 +1,184 @@
 # Merge (merge)
-Merge is a Unified API that offers developers the ability to embed customer-facing API integrations in their products without the need to configure on a per-integration basis.
+
+Merge is the connective infrastructure for production AI. The Merge Unified API offers one API surface across HRIS, ATS, Accounting, CRM, Ticketing, File Storage, Knowledge Base, and Chat. Merge Agent Handler exposes pre-built enterprise connectors to AI agents via REST + MCP. Merge Gateway provides a unified LLM API across OpenAI, Anthropic, Google, Mistral, Cohere, and xAI with routing, caching, and observability.
 
 **URL:** [Visit APIs.json URL](https://raw.githubusercontent.com/api-evangelist/merge/refs/heads/main/apis.yml)
 
 **Run:** [Capabilities Using Naftiko](https://github.com/naftiko/fleet?utm_source=api-evangelist&utm_medium=readme&utm_campaign=company-api-evangelist&utm_content=repo)
 
-## Tags:
+## Tags
 
- - Integrations, Platform, Unified API
+ - Integrations, Platform, Unified API, Agent Handler, LLM Gateway
 
 ## Timestamps
 
 - **Created:** 2025-06-05
-- **Modified:** 2026-04-18
+- **Modified:** 2026-05-22
+
+## Product Lines
+
+Merge ships three product surfaces:
+
+1. **Merge Unified API** — One API across HRIS, ATS, Accounting, CRM, Ticketing, File Storage, Knowledge Base, and Chat. Hosted on `api.merge.dev` (also `api-eu.merge.dev`, `api-ap.merge.dev`). Bearer + `X-Account-Token` auth.
+2. **Merge Agent Handler** — Agentic tool orchestration with pre-built enterprise connectors. Management plane via REST at `ah-api.merge.dev`; agent-facing surface via MCP.
+3. **Merge Gateway** — Unified LLM API on `api-gateway.merge.dev` routing to OpenAI, Anthropic, Google, Mistral, Cohere, and xAI. BYOK pricing is $0.05 per million tokens routed.
+
+The provider publishes an RFC 9727 [`.well-known/api-catalog`](https://docs.merge.dev/.well-known/api-catalog) linking OpenAPI specs for all 10 surfaces above — captured locally in `openapi/`.
 
 ## APIs
 
-### Merge
-Merge is the leading provider of customer-facing integrations for frontier LLMs, Fortune 500 organizations, and thousands of other B2B SaaS companies.
-
-**Human URL:** [https://www.merge.dev/](https://www.merge.dev/)
-
-#### Tags:
-
- - Integrations, Platform, Unified API
-
-#### Properties
-
-- [Documentation](https://www.merge.dev/)
-
 ### Merge HRIS API
-Merge HRIS API provides a unified interface to integrate every HR, payroll, and SCIM directory system with one API.
 
-**Human URL:** [https://www.merge.dev/categories/hr-payroll-api](https://www.merge.dev/categories/hr-payroll-api)
+Merge HRIS API provides a unified interface to integrate every HR, payroll, and SCIM directory system with one API. It normalizes data across 80+ HR platforms including Workday, BambooHR, Gusto, Rippling, ADP, and UKG Pro.
 
-#### Tags:
+**Human URL:** https://www.merge.dev/categories/hr-payroll-api
+**Base URL:** `https://api.merge.dev/api/hris/v1`
 
- - Directory, HRIS, Human Resources, Payroll, Unified API
+Properties: [Website](https://www.merge.dev/categories/hr-payroll-api) · [Documentation](https://docs.merge.dev/merge-unified/hris/overview) · [OpenAPI](openapi/merge-hris-api-openapi.yaml) · [JSONSchema](json-schema/hris-api-employee-schema.json) · [JSONStructure](json-structure/hris-api-employee-structure.json) · [JSON-LD](json-ld/merge-hris-api-context.jsonld) · [Example](examples/hris-api-employee-example.json)
 
-#### Properties
-
-- [Website](https://www.merge.dev/categories/hr-payroll-api)
-- [Documentation](https://docs.merge.dev/hris/)
-- [OpenAPI](openapi/merge-hris-api-openapi.yaml)
-- [JSONSchema](json-schema/hris-api-employee-schema.json)
-- [JSONStructure](json-structure/hris-api-employee-structure.json)
-- [JSON-LD](json-ld/merge-hris-api-context.jsonld)
-- [Example](examples/hris-api-employee-example.json)
+Capabilities: hris-benefits · hris-companies · hris-employees · hris-employments · hris-groups · hris-locations · hris-payroll · hris-teams · hris-time-off
 
 ### Merge ATS API
-Merge ATS API enables connection to every applicant tracking system with one API.
 
-**Human URL:** [https://www.merge.dev/categories/ats-recruiting-api](https://www.merge.dev/categories/ats-recruiting-api)
+Merge ATS API enables connection to every applicant tracking system with one API. It provides standardized data schemas for candidates, applications, interviews, and job postings across 50+ recruiting platforms including Greenhouse, Lever, Workday, iCIMS, and Jobvite.
 
-#### Tags:
+**Human URL:** https://www.merge.dev/categories/ats-recruiting-api
+**Base URL:** `https://api.merge.dev/api/ats/v1`
 
- - Applicant Tracking, ATS, Recruiting, Unified API
+Properties: [Website](https://www.merge.dev/categories/ats-recruiting-api) · [Documentation](https://docs.merge.dev/merge-unified/ats/overview) · [OpenAPI](openapi/merge-ats-api-openapi.yaml) · [JSONSchema candidate](json-schema/ats-api-candidate-schema.json) · [JSONSchema application](json-schema/ats-api-application-schema.json) · [JSONStructure](json-structure/ats-api-candidate-structure.json) · [JSON-LD](json-ld/merge-ats-api-context.jsonld) · [Example candidate](examples/ats-api-candidate-example.json) · [Example application](examples/ats-api-application-example.json)
 
-#### Properties
-
-- [Website](https://www.merge.dev/categories/ats-recruiting-api)
-- [Documentation](https://docs.merge.dev/ats/)
-- [OpenAPI](openapi/merge-ats-api-openapi.yaml)
-- [JSONSchema](json-schema/ats-api-candidate-schema.json)
-- [JSONStructure](json-structure/ats-api-candidate-structure.json)
-- [JSON-LD](json-ld/merge-ats-api-context.jsonld)
-- [Example](examples/ats-api-candidate-example.json)
+Capabilities: ats-activities · ats-applications · ats-candidates · ats-departments · ats-eeocs · ats-interviews · ats-jobs · ats-offers · ats-offices · ats-scorecards · ats-tags · ats-users
 
 ### Merge Accounting API
-Merge Accounting API provides a unified API for accounting integrations, enabling read and write access to financial data.
 
-**Human URL:** [https://www.merge.dev/categories/accounting-api](https://www.merge.dev/categories/accounting-api)
+Merge Accounting API provides a unified API for accounting integrations across QuickBooks Online, Xero, NetSuite, Sage Intacct, and (April 2026 beta) Oracle Fusion Cloud ERP. It supports journal entries, payments, invoices, and other financial transaction data.
 
-#### Tags:
+**Human URL:** https://www.merge.dev/categories/accounting-api
+**Base URL:** `https://api.merge.dev/api/accounting/v1`
 
- - Accounting, Finance, Unified API
+Properties: [Website](https://www.merge.dev/categories/accounting-api) · [Documentation](https://docs.merge.dev/merge-unified/accounting/overview) · [OpenAPI](openapi/merge-accounting-api-openapi.yaml) · [JSONSchema](json-schema/accounting-api-invoice-schema.json) · [JSONStructure](json-structure/accounting-api-invoice-structure.json) · [JSON-LD](json-ld/merge-accounting-api-context.jsonld) · [Example](examples/accounting-api-invoice-example.json)
 
-#### Properties
-
-- [Website](https://www.merge.dev/categories/accounting-api)
-- [Documentation](https://docs.merge.dev/accounting/overview/)
-- [OpenAPI](openapi/merge-accounting-api-openapi.yaml)
-- [JSONSchema](json-schema/accounting-api-invoice-schema.json)
-- [JSONStructure](json-structure/accounting-api-invoice-structure.json)
-- [JSON-LD](json-ld/merge-accounting-api-context.jsonld)
-- [Example](examples/accounting-api-invoice-example.json)
+Capabilities: accounts · company-info · contacts · credit-notes · expenses · financial-statements · invoices · items · journal-entries · payments · purchase-orders · tax-rates · tracking-categories · vendor-credits
 
 ### Merge Ticketing API
-Merge Ticketing API provides unified access to 30+ ticketing and project management systems.
 
-**Human URL:** [https://www.merge.dev/categories/ticketing-api](https://www.merge.dev/categories/ticketing-api)
+Merge Ticketing API provides unified access to 30+ ticketing and project management systems including Jira, Asana, Linear, Zendesk, Freshdesk, GitHub Issues, and ServiceNow.
 
-#### Tags:
+**Human URL:** https://www.merge.dev/categories/ticketing-api
+**Base URL:** `https://api.merge.dev/api/ticketing/v1`
 
- - Project Management, Ticketing, Unified API
+Properties: [Website](https://www.merge.dev/categories/ticketing-api) · [Documentation](https://docs.merge.dev/merge-unified/ticketing/overview) · [OpenAPI](openapi/merge-ticketing-api-openapi.yaml) · [JSONSchema](json-schema/ticketing-api-ticket-schema.json) · [JSONStructure](json-structure/ticketing-api-ticket-structure.json) · [JSON-LD](json-ld/merge-ticketing-api-context.jsonld) · [Example](examples/ticketing-api-ticket-example.json)
 
-#### Properties
-
-- [Website](https://www.merge.dev/categories/ticketing-api)
-- [Documentation](https://docs.merge.dev/ticketing/overview/)
-- [OpenAPI](openapi/merge-ticketing-api-openapi.yaml)
-- [JSONSchema](json-schema/ticketing-api-ticket-schema.json)
-- [JSONStructure](json-structure/ticketing-api-ticket-structure.json)
-- [JSON-LD](json-ld/merge-ticketing-api-context.jsonld)
-- [Example](examples/ticketing-api-ticket-example.json)
+Capabilities: ticketing-attachments · ticketing-comments · ticketing-contacts · ticketing-projects · ticketing-tags · ticketing-teams · ticketing-tickets · ticketing-users
 
 ### Merge CRM API
-Merge CRM API provides unified access to 20+ CRM platforms including Salesforce, HubSpot, Pipedrive, and Zoho CRM.
 
-**Human URL:** [https://www.merge.dev/categories/crm-api](https://www.merge.dev/categories/crm-api)
+Merge CRM API provides unified access to 20+ CRM platforms including Salesforce, HubSpot, Pipedrive, and Zoho CRM, with custom object support.
 
-#### Tags:
+**Human URL:** https://www.merge.dev/categories/crm-api
+**Base URL:** `https://api.merge.dev/api/crm/v1`
 
- - CRM, Customer Relationship Management, Unified API
+Properties: [Website](https://www.merge.dev/categories/crm-api) · [Documentation](https://docs.merge.dev/merge-unified/crm/overview) · [OpenAPI](openapi/merge-crm-api-openapi.yaml) · [JSONSchema](json-schema/crm-api-opportunity-schema.json) · [JSONStructure](json-structure/crm-api-opportunity-structure.json) · [JSON-LD](json-ld/merge-crm-api-context.jsonld) · [Example](examples/crm-api-opportunity-example.json)
 
-#### Properties
-
-- [Website](https://www.merge.dev/categories/crm-api)
-- [Documentation](https://docs.merge.dev/crm/overview/)
-- [OpenAPI](openapi/merge-crm-api-openapi.yaml)
-- [JSONSchema](json-schema/crm-api-opportunity-schema.json)
-- [JSONStructure](json-structure/crm-api-opportunity-structure.json)
-- [JSON-LD](json-ld/merge-crm-api-context.jsonld)
-- [Example](examples/crm-api-opportunity-example.json)
+Capabilities: crm-accounts · crm-contacts · crm-engagements · crm-leads · crm-notes · crm-opportunities · crm-stages · crm-users
 
 ### Merge File Storage API
-Merge File Storage API provides unified access to file storage platforms including Box, Dropbox, Google Drive, OneDrive, and SharePoint.
 
-**Human URL:** [https://www.merge.dev/categories/file-storage-api](https://www.merge.dev/categories/file-storage-api)
+Merge File Storage API provides unified access to Box, Dropbox, Google Drive, OneDrive, and SharePoint. Includes a built-in File Picker for browsing connected storage accounts.
 
-#### Tags:
+**Human URL:** https://www.merge.dev/categories/file-storage-api
+**Base URL:** `https://api.merge.dev/api/filestorage/v1`
 
- - Documents, File Storage, Unified API
+Properties: [Website](https://www.merge.dev/categories/file-storage-api) · [Documentation](https://docs.merge.dev/merge-unified/filestorage/overview) · [OpenAPI](openapi/merge-file-storage-api-openapi.yaml) · [JSONSchema](json-schema/file-storage-api-file-schema.json) · [JSONStructure](json-structure/file-storage-api-file-structure.json) · [JSON-LD](json-ld/merge-file-storage-api-context.jsonld) · [Example](examples/file-storage-api-file-example.json)
 
-#### Properties
-
-- [Website](https://www.merge.dev/categories/file-storage-api)
-- [Documentation](https://docs.merge.dev/filestorage/)
-- [OpenAPI](openapi/merge-file-storage-api-openapi.yaml)
-- [JSONSchema](json-schema/file-storage-api-file-schema.json)
-- [JSONStructure](json-structure/file-storage-api-file-structure.json)
-- [JSON-LD](json-ld/merge-file-storage-api-context.jsonld)
-- [Example](examples/file-storage-api-file-example.json)
+Capabilities: file-storage-drives · file-storage-files · file-storage-folders · file-storage-groups · file-storage-users
 
 ### Merge Knowledge Base API
-Merge Knowledge Base API provides unified access to knowledge base platforms including Confluence and Notion.
 
-**Human URL:** [https://www.merge.dev/categories/knowledge-base](https://www.merge.dev/categories/knowledge-base)
+Merge Knowledge Base API provides unified access to Confluence and Notion (Notion added February 2026). It normalizes Articles, Attachments, Containers, Groups, and Users with ACL management mapping users, groups, and company-level permissions across platforms — feeding enterprise AI context and search.
 
-#### Tags:
+**Human URL:** https://www.merge.dev/categories/knowledge-base
+**Base URL:** `https://api.merge.dev/api/knowledgebase/v1`
 
- - Content Management, Knowledge Base, Unified API
+Properties: [Website](https://www.merge.dev/categories/knowledge-base) · [Documentation](https://docs.merge.dev/merge-unified/knowledge-base/overview) · [OpenAPI](openapi/merge-knowledge-base-api-openapi.yaml) · [JSONSchema](json-schema/knowledge-base-api-article-schema.json) · [JSONStructure](json-structure/knowledge-base-api-article-structure.json) · [JSON-LD](json-ld/merge-knowledge-base-api-context.jsonld) · [Example](examples/knowledge-base-api-article-example.json)
 
-#### Properties
-
-- [Website](https://www.merge.dev/categories/knowledge-base)
-- [Documentation](https://docs.merge.dev/knowledgebase/overview/)
+Capabilities: knowledge-base-articles · knowledge-base-attachments · knowledge-base-containers · knowledge-base-groups · knowledge-base-users
 
 ### Merge Chat API
-Merge Chat Unified API provides real-time, normalized access to chat and messaging platforms.
 
-**Human URL:** [https://www.merge.dev/categories/chat](https://www.merge.dev/categories/chat)
+Merge Chat Unified API (launched February 2026) provides real-time, normalized access to chat and messaging platforms starting with Microsoft Teams, with Slack on the roadmap. It normalizes five core object types — Messages, Conversations, Users, Groups, and Members.
 
-#### Tags:
+**Human URL:** https://www.merge.dev/categories/chat
+**Base URL:** `https://api.merge.dev/api/chat/v1`
 
- - Chat, Messaging, Unified API
+Properties: [Website](https://www.merge.dev/categories/chat) · [Documentation](https://docs.merge.dev/merge-unified/chat/overview) · [OpenAPI](openapi/merge-chat-api-openapi.yaml) · [JSONSchema](json-schema/chat-api-message-schema.json) · [JSONStructure](json-structure/chat-api-message-structure.json) · [JSON-LD](json-ld/merge-chat-api-context.jsonld) · [Example](examples/chat-api-message-example.json)
 
-#### Properties
-
-- [Website](https://www.merge.dev/categories/chat)
+Capabilities: chat-conversations · chat-messages · chat-users · chat-groups
 
 ### Merge Agent Handler
-Merge Agent Handler enables AI agents to connect with thousands of pre-built tools for taking real-time actions.
 
-**Human URL:** [https://www.merge.dev/merge-agent-handler](https://www.merge.dev/merge-agent-handler)
+Merge Agent Handler enables AI agents to connect with thousands of pre-built tools for taking real-time actions. It manages authentication, rate limits, error handling, Tool Packs that group connectors per agent, Registered Users for end-user identity, and security controls (standard entity rules + custom regex rules) that scan tool inputs and responses for sensitive data. Exposes both a REST management API and an MCP server surface the agent talks to directly.
 
-#### Tags:
+**Human URL:** https://www.merge.dev/merge-agent-handler
+**Base URL:** `https://ah-api.merge.dev/api/v1`
 
- - AI Agents, Integrations, MCP, Tool Use
+Properties: [Website](https://www.merge.dev/merge-agent-handler) · [Documentation](https://docs.merge.dev/merge-agent-handler/agent-handler) · [OpenAPI](openapi/merge-agent-handler-api-openapi.yaml) · [JSONSchema](json-schema/agent-handler-tool-pack-schema.json) · [JSONStructure](json-structure/agent-handler-tool-pack-structure.json) · [JSON-LD](json-ld/merge-agent-handler-context.jsonld) · [Example](examples/agent-handler-tool-pack-example.json) · [Support](https://help.ah.merge.dev/)
 
-#### Properties
+Capabilities: agent-handler-connectors · agent-handler-tool-packs · agent-handler-registered-users · agent-handler-access-keys · agent-handler-security-rules
 
-- [Website](https://www.merge.dev/merge-agent-handler)
-- [Documentation](https://docs.ah.merge.dev/Overview/Agent-Handler-intro)
-- [Support](https://help.ah.merge.dev/)
+### Merge Gateway
 
-## Common Properties
+Merge Gateway is a control plane for production AI providing unified access to OpenAI, Anthropic, Google (Gemini), Mistral, Cohere, and xAI (Grok) through a single API. It offers intelligent routing on cost/latency/quality, context compression, response caching, spend limits by team/project/customer, request-level logging, and automatic failover. BYOK billing is $0.05 per million tokens.
 
-- [Website](https://www.merge.dev/)
-- [Security](https://www.merge.dev/security)
-- [Customers](https://www.merge.dev/case-studies)
-- [Blog](https://www.merge.dev/blog)
-- [Support](https://help.merge.dev/)
-- [ChangeLog](https://www.merge.dev/changelog)
-- [Pricing](https://www.merge.dev/pricing)
-- [Documentation](https://docs.merge.dev/)
-- [TermsOfService](https://www.merge.dev/legal/terms)
-- [PrivacyPolicy](https://www.merge.dev/legal/privacy-policy)
-- [Login](https://app.merge.dev/login)
-- [SignUp](https://app.merge.dev/signup)
-- [StatusPage](https://status.merge.dev/)
-- [GitHubOrganization](https://github.com/merge-api)
-- [Authentication](https://docs.merge.dev/basics/authentication/)
-- [GettingStarted](https://docs.merge.dev/get-started/unified-api/)
+**Human URL:** https://www.merge.dev/gateway
+**Base URL:** `https://api-gateway.merge.dev`
 
-## Features
+Properties: [Website](https://www.merge.dev/gateway) · [Documentation](https://docs.merge.dev/merge-gateway/api-overview) · [OpenAPI](openapi/merge-gateway-api-openapi.yaml) · [JSONSchema](json-schema/gateway-response-schema.json) · [JSONStructure](json-structure/gateway-response-structure.json) · [JSON-LD](json-ld/merge-gateway-context.jsonld) · [Example](examples/gateway-response-example.json)
 
-| Name | Description |
-|------|-------------|
-| Observability | Integration monitoring and debugging tools. |
-| Unified API | Single API interface across multiple third-party platforms. |
-| Linked Accounts | Manage end-user connections to third-party services. |
-| Self-Service Guides | End-user integration configuration guides. |
-| Data Syncs | Automated data synchronization across platforms. |
-| Webhooks | Real-time event notifications for data changes. |
-| Rate Limits | Per-integration rate limit management. |
-| Versioning | API versioning for backward compatibility. |
-| Async Operations | Asynchronous data processing for large datasets. |
-| Model Context Protocol (MCP) | AI agent tool integration protocol. |
-| Embedded Link | UI component for end-user integration setup. |
-| Field Mapping | Custom field mapping across integrations. |
-| Custom Objects | Support for custom object types. |
-| File Picker | Built-in file browsing component. |
-| Agent Handler | AI agent tool orchestration. |
+Capabilities: gateway-models · gateway-responses · gateway-routing
 
-## Use Cases
+## SDKs and tooling
 
-| Name | Description |
-|------|-------------|
-| Power AI Features | Use unified data to power AI and ML features. |
-| Auto-Provision | Automatically provision users across platforms. |
-| Knowledge Base | Enterprise search across knowledge platforms. |
-| Financial Analysis | Unified financial data for analysis and reporting. |
-| Candidate Sourcing | Aggregate candidates across ATS platforms. |
-| Project Analysis | Cross-platform project and ticket analytics. |
-| Source Leads | Aggregate leads across CRM platforms. |
-| Enterprise Search | Search across file storage, chat, and knowledge base. |
-| Document Management | Unified document access and management. |
+Unified clients live under [github.com/merge-api](https://github.com/merge-api):
 
-## Integrations
+- Python: [merge-python-client](https://github.com/merge-api/merge-python-client)
+- Node/TypeScript: [merge-node-client](https://github.com/merge-api/merge-node-client)
+- Go: [merge-go-client](https://github.com/merge-api/merge-go-client)
+- Java: [merge-java-client](https://github.com/merge-api/merge-java-client)
+- Ruby: [merge-ruby-client](https://github.com/merge-api/merge-ruby-client)
+- C#: [merge-csharp-client](https://github.com/merge-api/merge-csharp-client)
+- Kotlin: [merge-sdk-kotlin](https://github.com/merge-api/merge-sdk-kotlin)
 
-| Name | Description |
-|------|-------------|
-| Workday | HR platform integration via HRIS unified API. |
-| BambooHR | HR and payroll integration via HRIS unified API. |
-| Greenhouse | ATS integration for recruiting workflows. |
-| Lever | ATS integration for candidate management. |
-| QuickBooks Online | Accounting integration for financial data. |
-| Xero | Accounting integration for invoicing and payments. |
-| Jira | Ticketing integration for project management. |
-| Salesforce | CRM integration for sales data. |
-| HubSpot | CRM integration for marketing and sales. |
-| Box | File storage integration for document management. |
-| Google Drive | File storage integration for cloud files. |
-| Slack | Chat integration for messaging (roadmap). |
-| Microsoft Teams | Chat integration for enterprise messaging. |
-| Confluence | Knowledge base integration for enterprise content. |
+Agent / Gateway / MCP tooling:
 
-## Solutions
+- [merge-mcp](https://github.com/merge-api/merge-mcp) — Python MCP server for the Merge Unified API
+- [merge-unified-skills](https://github.com/merge-api/merge-unified-skills) — Claude Code skills for the Unified API
+- [merge-gateway-skills](https://github.com/merge-api/merge-gateway-skills) — Claude Code skills for Gateway
+- [merge-gateway-ai-sdk-provider](https://github.com/merge-api/merge-gateway-ai-sdk-provider) — Vercel AI SDK provider
+- [ah-plugins](https://github.com/merge-api/ah-plugins) — Agent Handler plugins for AI coding agents
+- [react-merge-link](https://github.com/merge-api/react-merge-link), [vue-merge-link](https://github.com/merge-api/vue-merge-link), [react-agent-handler-link](https://github.com/merge-api/react-agent-handler-link), [react-agent-handler-chat](https://github.com/merge-api/react-agent-handler-chat), [agent-handler-chat-demo](https://github.com/merge-api/agent-handler-chat-demo)
+- [n8n-nodes-merge](https://github.com/merge-api/n8n-nodes-merge) — n8n nodes for workflow automation
 
-| Name | Description |
-|------|-------------|
-| Unified HRIS | Single API for 80+ HR and payroll platforms. |
-| Unified ATS | Single API for 50+ applicant tracking systems. |
-| Unified Accounting | Single API for major accounting platforms. |
-| Unified Ticketing | Single API for 30+ ticketing and project management systems. |
-| Unified CRM | Single API for 20+ CRM platforms. |
-| Unified File Storage | Single API for file storage platforms with File Picker. |
-| Agent Handler | AI agent tool orchestration for thousands of pre-built integrations. |
+## Pricing & limits
 
-## Artifacts
+Plans captured in [plans/merge-plans-pricing.yml](plans/merge-plans-pricing.yml):
 
-Machine-readable API specifications organized by format.
+- **Launch** — first 3 production Linked Accounts free; $650/mo for up to 10; $65 per additional. 100 req/min, 3-day log retention.
+- **Professional** — contract pricing. 400 req/min, 30-day log retention, custom fields, field-level scopes.
+- **Enterprise** — contract pricing. 600 req/min, 90+ day log retention, Audit Trail, dedicated CSM + Slack channel.
+- **Agent Handler** — consumption-based after a free tier allocation.
+- **Gateway (BYOK)** — $0.05 per million tokens routed.
 
-### OpenAPI
+Rate limits, FinOps mapping, and Spectral rules:
 
-- [Merge HRIS API](openapi/merge-hris-api-openapi.yaml)
-- [Merge ATS API](openapi/merge-ats-api-openapi.yaml)
-- [Merge Accounting API](openapi/merge-accounting-api-openapi.yaml)
-- [Merge Ticketing API](openapi/merge-ticketing-api-openapi.yaml)
-- [Merge CRM API](openapi/merge-crm-api-openapi.yaml)
-- [Merge File Storage API](openapi/merge-file-storage-api-openapi.yaml)
+- [rate-limits/merge-rate-limits.yml](rate-limits/merge-rate-limits.yml)
+- [finops/merge-finops.yml](finops/merge-finops.yml)
+- [rules/merge-spectral-rules.yml](rules/merge-spectral-rules.yml)
+- [vocabulary/merge-vocabulary.yaml](vocabulary/merge-vocabulary.yaml)
 
-### JSON Schema
+## Operations
 
-- [Employee](json-schema/hris-api-employee-schema.json)
-- [Candidate](json-schema/ats-api-candidate-schema.json)
-- [Application](json-schema/ats-api-application-schema.json)
-- [Invoice](json-schema/accounting-api-invoice-schema.json)
-- [Ticket](json-schema/ticketing-api-ticket-schema.json)
-- [Opportunity](json-schema/crm-api-opportunity-schema.json)
-- [File](json-schema/file-storage-api-file-schema.json)
-
-### JSON Structure
-
-- [Employee](json-structure/hris-api-employee-structure.json)
-- [Candidate](json-structure/ats-api-candidate-structure.json)
-- [Invoice](json-structure/accounting-api-invoice-structure.json)
-- [Ticket](json-structure/ticketing-api-ticket-structure.json)
-- [Opportunity](json-structure/crm-api-opportunity-structure.json)
-- [File](json-structure/file-storage-api-file-structure.json)
-
-### JSON-LD
-
-- [HRIS API Context](json-ld/merge-hris-api-context.jsonld)
-- [ATS API Context](json-ld/merge-ats-api-context.jsonld)
-- [Accounting API Context](json-ld/merge-accounting-api-context.jsonld)
-- [Ticketing API Context](json-ld/merge-ticketing-api-context.jsonld)
-- [CRM API Context](json-ld/merge-crm-api-context.jsonld)
-- [File Storage API Context](json-ld/merge-file-storage-api-context.jsonld)
-
-### Examples
-
-- [Employee Example](examples/hris-api-employee-example.json)
-- [Candidate Example](examples/ats-api-candidate-example.json)
-- [Application Example](examples/ats-api-application-example.json)
-- [Invoice Example](examples/accounting-api-invoice-example.json)
-- [Ticket Example](examples/ticketing-api-ticket-example.json)
-- [Opportunity Example](examples/crm-api-opportunity-example.json)
-- [File Example](examples/file-storage-api-file-example.json)
-
-## Capabilities
-
-Naftiko capabilities organized as shared per-API definitions composed into customer-facing workflows.
-
-### Shared Per-API Definitions
-
-- [Merge HRIS API](capabilities/shared/merge-hris-api.yaml) -- 5 operations for employees, companies, and time off
-- [Merge ATS API](capabilities/shared/merge-ats-api.yaml) -- 7 operations for candidates, applications, jobs, interviews, and offers
-
-### Workflow Capabilities
-
-| Workflow | APIs Combined | Tools | Persona |
-|----------|--------------|-------|---------|
-| [Talent Management](capabilities/talent-management.yaml) | HRIS + ATS | 11 | HR Manager, Recruiter |
-
-## Vocabulary
-
-- [Merge Vocabulary](vocabulary/merge-vocabulary.yaml) -- Unified taxonomy mapping 13 resources, 5 actions, 1 workflow, and 5 personas across operational (OpenAPI) and capability (Naftiko) dimensions
-
-## Rules
-
-- [Merge Spectral Rules](rules/merge-spectral-rules.yml) -- 35 rules across 12 categories enforcing Merge API conventions
-
-## Maintainers
-
-**FN:** Kin Lane
-
-**Email:** kin@apievangelist.com
+- Status page: https://status.merge.dev/
+- Trust center: https://trust.merge.dev/
+- Compliance: SOC 2 Type 2, ISO 27001, GDPR, HIPAA-ready
+- Changelog: https://www.merge.dev/changelog

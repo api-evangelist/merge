@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/merge/refs/heads/main/json-structure/gateway-response-structure.json",
+  "name": "GatewayResponse",
+  "description": "An LLM response routed through Merge Gateway with vendor selection metadata.",
+  "type": "object",
+  "properties": {
+    "id": { "type": "string" },
+    "model": { "type": "string" },
+    "vendor": { "type": "string" },
+    "provider": { "type": "string" },
+    "created_at": { "type": "datetime" },
+    "output": { "type": "array", "items": { "type": "object" } },
+    "usage": {
+      "type": "object",
+      "properties": {
+        "input_tokens": { "type": "integer" },
+        "output_tokens": { "type": "integer" },
+        "cached_input_tokens": { "type": "integer" }
+      }
+    },
+    "routing": {
+      "type": "object",
+      "properties": {
+        "policy": { "type": "string" },
+        "strategy": { "type": "string" },
+        "tags": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

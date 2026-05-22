@@ -1,0 +1,74 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Merge Knowledge Base API — Attachments
+  description: 'Merge Knowledge Base API — Attachments. 2 operations. Lead operation: Merge List Attachments. Self-contained
+    Naftiko capability covering one Merge business surface.'
+  tags:
+  - Merge
+  - Knowledge Base
+  - Attachments
+  created: '2026-05-22'
+  modified: '2026-05-22'
+binds:
+- namespace: env
+  keys:
+    MERGE_API_KEY: MERGE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: knowledge-base-attachments
+    baseUri: https://api.merge.dev/api/knowledgebase/v1
+    description: Merge Knowledge Base API — Attachments business capability.
+    resources:
+    - name: attachments
+      path: /attachments
+      operations:
+      - name: listattachments
+        method: GET
+        description: Merge List Attachments
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: attachments-id
+      path: /attachments/{id}
+      operations:
+      - name: getattachment
+        method: GET
+        description: Merge Get Attachment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.MERGE_API_KEY}}'
+  exposes:
+  - type: mcp
+    namespace: knowledge-base-attachments-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Merge Knowledge Base API — Attachments.
+    tools:
+    - name: merge-list-attachments
+      description: Merge List Attachments
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: knowledge-base-attachments.listattachments
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: merge-get-attachment
+      description: Merge Get Attachment
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: knowledge-base-attachments.getattachment
+      outputParameters:
+      - type: object
+        mapping: $.

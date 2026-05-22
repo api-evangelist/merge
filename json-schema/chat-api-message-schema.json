@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/merge/refs/heads/main/json-schema/chat-api-message-schema.json",
+  "title": "Message",
+  "description": "Represents a chat message from a connected platform (Microsoft Teams; Slack on roadmap) via the Merge Chat Unified API.",
+  "type": "object",
+  "properties": {
+    "id": { "type": "string", "format": "uuid", "description": "The unique Merge-generated identifier." },
+    "remote_id": { "type": "string", "description": "The third-party ID of this message." },
+    "conversation": { "type": "string", "format": "uuid", "description": "Parent conversation Merge ID." },
+    "author": { "type": "string", "format": "uuid", "description": "Merge ID of the message author (user)." },
+    "content": { "type": "string", "description": "Message body, normalized text." },
+    "content_html": { "type": "string", "description": "Original HTML content if present." },
+    "parent_message": { "type": ["string", "null"], "format": "uuid", "description": "Parent message ID when this is a threaded reply." },
+    "attachments": {
+      "type": "array",
+      "items": { "type": "string", "format": "uri" },
+      "description": "URLs for any attached files."
+    },
+    "mentions": {
+      "type": "array",
+      "items": { "type": "string", "format": "uuid" },
+      "description": "Mentioned user/group Merge IDs."
+    },
+    "sent_at": { "type": "string", "format": "date-time", "description": "Original timestamp on the source platform." },
+    "remote_was_deleted": { "type": "boolean" },
+    "created_at": { "type": "string", "format": "date-time" },
+    "modified_at": { "type": "string", "format": "date-time" }
+  }
+}

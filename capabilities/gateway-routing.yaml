@@ -1,0 +1,96 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Merge Gateway — Routing
+  description: 'Merge Gateway — Routing. Lead operation: List Routing Policies. Self-contained capability for declarative
+    routing policies and strategies that govern multi-vendor LLM selection.'
+  tags:
+  - Merge
+  - Gateway
+  - Routing
+  - Policy
+  created: '2026-05-22'
+  modified: '2026-05-22'
+binds:
+- namespace: env
+  keys:
+    MERGE_GATEWAY_API_KEY: MERGE_GATEWAY_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: gateway-routing
+    baseUri: https://api-gateway.merge.dev
+    description: Merge Gateway — Routing business capability.
+    resources:
+    - name: routing-policies
+      path: /routing/policies
+      operations:
+      - name: listroutingpolicies
+        method: GET
+        description: List Routing Policies
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: routing-strategies
+      path: /routing/strategies
+      operations:
+      - name: listroutingstrategies
+        method: GET
+        description: List Routing Strategies
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: tags
+      path: /tags
+      operations:
+      - name: listtags
+        method: GET
+        description: List Tags
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.MERGE_GATEWAY_API_KEY}}'
+  exposes:
+  - type: mcp
+    namespace: gateway-routing-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Merge Gateway — Routing.
+    tools:
+    - name: gateway-list-routing-policies
+      description: List Routing Policies
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: gateway-routing.listroutingpolicies
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: gateway-list-routing-strategies
+      description: List Routing Strategies
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: gateway-routing.listroutingstrategies
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: gateway-list-tags
+      description: List Tags
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: gateway-routing.listtags
+      outputParameters:
+      - type: object
+        mapping: $.

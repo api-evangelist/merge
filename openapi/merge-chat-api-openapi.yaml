@@ -1,19 +1,19 @@
 openapi: 3.1.0
 info:
-  title: File Storage
+  title: Chat
   version: 1.0.0
 paths:
-  /filestorage/v1/drives:
+  /conversations:
     get:
       operationId: list
       summary: List
       description: >-
-        Returns a list of `Drive` objects.{/* BEGIN_FILESTORAGE_DRIVE_FETCH_SUPPORTED_FIELDS
+        Returns a list of `Conversation` objects.{/* BEGIN_CHAT_CONVERSATION_FETCH_SUPPORTED_FIELDS
         */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
-        data="H4sIAAAAAAAAA8WTXW/aMBSG/8rkS5SPUcqqRpomSlgLEqYrabWqqqJDfAgGxw62A22q/vcppB/QVWsvkHYVn1fnvLYfv3kgCVhMlb4nAZlygcYqDSkSh2SKoSABCTVfVTXknEKGu33x6oA4xBR5rrRF9pOjYOZM45QExM9Qp+gWkk85Mn9ryufSYqrBciWN/zLtTjfjxCGCywWyTpKoQtpP+NX9LtQDb0rjC24scUgOxtiZVkU6u8BlgeYz1tXpBGYoLQiXgQV/y8bVtc97WnUPhgItshAshGgxqS78tOXM2twEvj9DkXub7T2GKx+lD9ryRKDx263jg6Pjtvvkstn9R5yK783GfDlRk6NGnCYihqIxjJI7GvXXdJ4e0u7hHS0v27RclHS++NqIU2gMo2F7FF23RmGnOXqnIR5/+318dRKeDGgjKXstOr9e0yhpDqNkMSn7rcFpsh6c/bqj5fXBMLxs0ajXHpyq5qh7YYbdCzXseB5xyPa7kuDmYVt4Cs+pUqnAL8+p2mroZ1XwXsnUbwI5d/NiInjimZYHGZRKwtp4icr8DBkHv3aMN47xeFmARi+X6TN+ruQLexIQ2on6V73dNHRWwAVMBJLA6gL/CjQJbgjb2BdaEKf+AZ6/dU6q5RtFCYa60jaLql9WCByiMVMW40QjWGQx2FeteuLdKs7Bzl4lzshtVSwLrpGdg4YMbeUe3Nw+Ou8BH0ncI+xzAXaqdDaSWBMxHwHv0bMO7fbCPSH/vzDHM9B4rri0+8U5rnzzyvdjoHtN8J5xOsRwi/GuUOI/MN8+/gHQUDLFhAYAAA=="
-        /></Footer>{/* END_FILESTORAGE_DRIVE_FETCH_SUPPORTED_FIELDS */}
+        data="H4sIAAAAAAAAA31T72/aMBD9VyZ/RCQZpaxqpGmiwNoixWxtOq2qquiwj2Bw7OAf0Kbq/z4ZWEu3qt/sp3fv7vyenwgDh6U2jyQlbA6OtEmlOUqSkoFWazQWnNCKtAnUgkKFe16xPiJtYn1da+OQfxcoub0wOCMpSSo0JUZeiZlAngR6IpTD0my1bPJSFs22daRNpFBL5H3GtFfuI6EdMYId85+rTaSwYYcarHVzo305v8KVR/uhZphHYoXKgYw4OEgO6iOzE3gPC5NzlOiQD8HBEB2ysOK+19y52qZJMkdZx9u+Mcd1gioB4wSTaJNe9/To5LQX7VW23b8VpfzaaS1WUz09aRUlkwX4VpazB5pfbuiiPKaD4wfa3PRos2zoYvm5VZTQyvKsN8lvu5NhvzN5h1Bcf/l9+utseDamLdaMunRxu6E562Q5W06by+74nG3GFz8faHN7lA1vujQf9cbnujMZXNlscKWzfhyTNjl0kqR3T4fAPiCZYEZbPXOfcoQqPNIB57KCEg8eZ+cH1CKq/VQKFttuDBU0WsHGxkxXSYVcQPIiWmxFi+uVB4Nxrcq/JgitXhwgKRnRiz4djIZv49Bfg5AwlUhSZzz+l2GS3hGOlhlR74NfYTVFE7ZQYb02MVhphwUzCA55sf00eyzY9/ZW1ODmr5Dgr2df81cB91gHba/EygcaKhcSagJmJLkPVSsvDPIfYKBCF0ZK7+6f75//AKIh9xbFAwAA"
+        /></Footer>{/* END_CHAT_CONVERSATION_FETCH_SUPPORTED_FIELDS */}
       tags:
-        - subpackage_drives
+        - subpackage_conversations
       parameters:
         - name: created_after
           in: query
@@ -35,6 +35,16 @@ paths:
           required: false
           schema:
             type: string
+        - name: expand
+          in: query
+          description: >-
+            Which relations should be returned in expanded form. Multiple relation names should be comma separated
+            without spaces.
+          required: false
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/ConversationsGetParametersExpandSchemaItems'
         - name: include_deleted_data
           in: query
           description: >-
@@ -72,12 +82,6 @@ paths:
           schema:
             type: string
             format: date-time
-        - name: name
-          in: query
-          description: If provided, will only return drives with this name. This performs an exact match.
-          required: false
-          schema:
-            type: string
         - name: page_size
           in: query
           description: Number of results to return per page. The maximum limit is 100.
@@ -108,18 +112,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedDriveList'
-  /filestorage/v1/drives/{id}:
+                $ref: '#/components/schemas/PaginatedConversationList'
+  /conversations/{id}:
     get:
       operationId: retrieve
       summary: Retrieve
       description: >-
-        Returns a `Drive` object with the given `id`.{/* BEGIN_FILESTORAGE_DRIVE_FETCH_SUPPORTED_FIELDS
+        Returns a `Conversation` object with the given `id`.{/* BEGIN_CHAT_CONVERSATION_FETCH_SUPPORTED_FIELDS
         */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
-        data="H4sIAAAAAAAAA8WTXW/aMBSG/8rkS5SPUcqqRpomSlgLEqYrabWqqqJDfAgGxw62A22q/vcppB/QVWsvkHYVn1fnvLYfv3kgCVhMlb4nAZlygcYqDSkSh2SKoSABCTVfVTXknEKGu33x6oA4xBR5rrRF9pOjYOZM45QExM9Qp+gWkk85Mn9ryufSYqrBciWN/zLtTjfjxCGCywWyTpKoQtpP+NX9LtQDb0rjC24scUgOxtiZVkU6u8BlgeYz1tXpBGYoLQiXgQV/y8bVtc97WnUPhgItshAshGgxqS78tOXM2twEvj9DkXub7T2GKx+lD9ryRKDx263jg6Pjtvvkstn9R5yK783GfDlRk6NGnCYihqIxjJI7GvXXdJ4e0u7hHS0v27RclHS++NqIU2gMo2F7FF23RmGnOXqnIR5/+318dRKeDGgjKXstOr9e0yhpDqNkMSn7rcFpsh6c/bqj5fXBMLxs0ajXHpyq5qh7YYbdCzXseB5xyPa7kuDmYVt4Cs+pUqnAL8+p2mroZ1XwXsnUbwI5d/NiInjimZYHGZRKwtp4icr8DBkHv3aMN47xeFmARi+X6TN+ruQLexIQ2on6V73dNHRWwAVMBJLA6gL/CjQJbgjb2BdaEKf+AZ6/dU6q5RtFCYa60jaLql9WCByiMVMW40QjWGQx2FeteuLdKs7Bzl4lzshtVSwLrpGdg4YMbeUe3Nw+Ou8BH0ncI+xzAXaqdDaSWBMxHwHv0bMO7fbCPSH/vzDHM9B4rri0+8U5rnzzyvdjoHtN8J5xOsRwi/GuUOI/MN8+/gHQUDLFhAYAAA=="
-        /></Footer>{/* END_FILESTORAGE_DRIVE_FETCH_SUPPORTED_FIELDS */}
+        data="H4sIAAAAAAAAA31T72/aMBD9VyZ/RCQZpaxqpGmiwNoixWxtOq2qquiwj2Bw7OAf0Kbq/z4ZWEu3qt/sp3fv7vyenwgDh6U2jyQlbA6OtEmlOUqSkoFWazQWnNCKtAnUgkKFe16xPiJtYn1da+OQfxcoub0wOCMpSSo0JUZeiZlAngR6IpTD0my1bPJSFs22daRNpFBL5H3GtFfuI6EdMYId85+rTaSwYYcarHVzo305v8KVR/uhZphHYoXKgYw4OEgO6iOzE3gPC5NzlOiQD8HBEB2ysOK+19y52qZJMkdZx9u+Mcd1gioB4wSTaJNe9/To5LQX7VW23b8VpfzaaS1WUz09aRUlkwX4VpazB5pfbuiiPKaD4wfa3PRos2zoYvm5VZTQyvKsN8lvu5NhvzN5h1Bcf/l9+utseDamLdaMunRxu6E562Q5W06by+74nG3GFz8faHN7lA1vujQf9cbnujMZXNlscKWzfhyTNjl0kqR3T4fAPiCZYEZbPXOfcoQqPNIB57KCEg8eZ+cH1CKq/VQKFttuDBU0WsHGxkxXSYVcQPIiWmxFi+uVB4Nxrcq/JgitXhwgKRnRiz4djIZv49Bfg5AwlUhSZzz+l2GS3hGOlhlR74NfYTVFE7ZQYb02MVhphwUzCA55sf00eyzY9/ZW1ODmr5Dgr2df81cB91gHba/EygcaKhcSagJmJLkPVSsvDPIfYKBCF0ZK7+6f75//AKIh9xbFAwAA"
+        /></Footer>{/* END_CHAT_CONVERSATION_FETCH_SUPPORTED_FIELDS */}
       tags:
-        - subpackage_drives
+        - subpackage_conversations
       parameters:
         - name: id
           in: path
@@ -127,6 +131,16 @@ paths:
           schema:
             type: string
             format: uuid
+        - name: expand
+          in: query
+          description: >-
+            Which relations should be returned in expanded form. Multiple relation names should be comma separated
+            without spaces.
+          required: false
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/ConversationsIdGetParametersExpandSchemaItems'
         - name: include_remote_data
           in: query
           description: Whether to include the original data Merge fetched from the third-party to produce these models.
@@ -159,19 +173,26 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Drive'
-  /filestorage/v1/files:
+                $ref: '#/components/schemas/Conversation'
+  /messages:
     get:
       operationId: list
       summary: List
       description: >-
-        Returns a list of `File` objects.{/* BEGIN_FILESTORAGE_FILE_FETCH_SUPPORTED_FIELDS
+        Returns a list of `Message` objects.{/* BEGIN_CHAT_MESSAGE_FETCH_SUPPORTED_FIELDS
         */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
-        data="H4sIAAAAAAAAA+2T207bQBCGX6Xay8ixG0KKsFRVCeGQqHEoGFSKkLVZT+xN9sTuOgcj3r2yY0jSckGlQC/aO+/szL+e+eZ/QARbSKReIh+NKQNjpcYJIAdxGQNDPjqhrDhiRQPMYTstmu0hB5lMKaktxCcUWGzONIyRjzwOOoF6JuiYQuxtVHlUWEg0tlQK4z1X18dlOXIQo2IKcZsQmQn7Cr1Vfh2vCn45Go9RY5GDFDbGplpmSXoB9xmY10gXf8eAg7CY1WNssbchU9crnZdiRR8xMLAQd7HFXbBAioarJ1NrlfE9LwWm3PJ5N4aZB8LD2lLCwHit5uHewWGrXqmUr3+JEva5UZvcj+TooBYlhEU4qw1CsgjC3jyYJPvB0f4iyK9aQT7Ng8n0Yy1KcG0QDlrD8KY57LYbwxcSostP3w+vO91OP6iR/LgZTG7mQUgag5BMR3mv2T8l8/7Zt0WQ3+wNulfNIDxu9U9lY3h0YQZHF3LQdl3koE2uyL992AxUy9ORi+3EHi/WbT2QFQqsaF1lI0aJa5ou5jiXAs+NSyT3OMQUe+cM27HUvCMXkbnPsIZoEuj5jwPhKpE8DZ9K8Tx55KOgHfauj7d3oT3DlOERA+RbncFv64z8W0RSIFOT8VLWEE1VKeiUXogyzarPamsUaE6NKcfgoLFkMejCUZRDZJeqsJMoxuGg7UylKcd6GZWq21cauLQQEQ3YQhxhu44Ve7F9ihS26TpE4/V3puK1gKE5oLvi7j6jGuJzrDEHC7po+u7ReQlgV0s12jXESvQJJP8qrlOxfFuQm+h2SOh9aZxKmTD40NV0BrtBslKMSsXosuTxnoaKq07KAds04yOBKduw2L/ltqGAHbJ9sttQQDnnym9vzHeT6O799vcZXaZYw7mkwu6WUqmrCt3/nOyfcbp7/AkqCFoM2QoAAA=="
-        /></Footer>{/* END_FILESTORAGE_FILE_FETCH_SUPPORTED_FIELDS */}
+        data="H4sIAAAAAAAAA31TbU/bMBD+K5M/VnlZKR1qpGkqlEErJWUQ0BBC0cW+pm4dO/VLC0H898ltx7oN8cWS75577rHvuRdCwWKl9DNJCJ2DJQGpFUNBEpKiMVAhCQg0PIMa95BifUQCYlzTKG2RfecomLnUOCMJiWvUFYZO8hlHFnt4zKXFSoPlSpr4rSycbetIQASXS2RDSpWT9iOiHTCEHfKfq4kFN15+A8bYuVauml/jyqH5kNPrEVijtCBCBhbig/pQ7wjei3nlDAVaZCOwMEKL1D9x32tubWOSOJ6jaKJt34jhOkYZg7acCjRxvzc4Ohn0wz3Ltvu3ohJfu53FqlTlSaeoqCjAddKcPmX5eJMtquPs7Pgpa2/7Wbtss8Xyc6eooJPmaX+a3/emo2F3+g6guPnyc3B3OjqdZB3anveyxf0my2k3zemybMe9yQXdTC5/PGXt/VE6uu1l+Xl/cqG607Nrk55dq3QYRSQgh5MkycPLYWBvkJRTrYya2U85Qu0/6QAzrr2f/nzObh7Q8LBxpeA0Mr0IamiVhI2JqKrjGhmH+I202JIWNysHGqNGVr+HwJV8mwBJSDbMx3fnf5thuAYuoBRIEqsd/udgkjyQUrFnEhCq5Bq12WouOCMB0VgriwXVCBZZsd2Tfeww7xp2kFfKFvVuiXYo48oFUlsILv1aOclXzqdQWm9J7WNa+NOg9iWPnnnluEZ2BRpqtKi90MfXx9dfUhLBZrsDAAA="
+        /></Footer>{/* END_CHAT_MESSAGE_FETCH_SUPPORTED_FIELDS */}
       tags:
-        - subpackage_files
+        - subpackage_messages
       parameters:
+        - name: conversation_id
+          in: query
+          description: Filter messages by conversation ID.
+          required: false
+          schema:
+            type: string
+            format: uuid
         - name: created_after
           in: query
           description: If provided, will only return objects created after this datetime.
@@ -189,32 +210,6 @@ paths:
         - name: cursor
           in: query
           description: The pagination cursor value.
-          required: false
-          schema:
-            type: string
-        - name: drive_id
-          in: query
-          description: >-
-            Specifying a drive id returns only the files in that drive. Specifying null returns only the files outside
-            the top-level drive.
-          required: false
-          schema:
-            type: string
-        - name: expand
-          in: query
-          description: >-
-            Which relations should be returned in expanded form. Multiple relation names should be comma separated
-            without spaces.
-          required: false
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/FilesGetParametersExpandSchemaItems'
-        - name: folder_id
-          in: query
-          description: >-
-            Specifying a folder id returns only the files in that folder. Specifying null returns only the files in root
-            directory.
           required: false
           schema:
             type: string
@@ -241,12 +236,6 @@ paths:
           required: false
           schema:
             type: boolean
-        - name: mime_type
-          in: query
-          description: If provided, will only return files with these mime_types. Multiple values can be separated by commas.
-          required: false
-          schema:
-            type: string
         - name: modified_after
           in: query
           description: If provided, only objects synced by Merge after this date time will be returned.
@@ -261,43 +250,29 @@ paths:
           schema:
             type: string
             format: date-time
-        - name: name
-          in: query
-          description: If provided, will only return files with this name. This performs an exact match.
-          required: false
-          schema:
-            type: string
         - name: order_by
           in: query
           description: >-
-            Overrides the default ordering for this endpoint. Possible values include: created_at, -created_at,
-            modified_at, -modified_at.
+            Overrides the default ordering for this endpoint. Possible values include: remote_created_at,
+            -remote_created_at.
           required: false
           schema:
-            $ref: '#/components/schemas/FilesGetParametersOrderBy'
+            $ref: '#/components/schemas/MessagesGetParametersOrderBy'
         - name: page_size
           in: query
           description: Number of results to return per page. The maximum limit is 100.
           required: false
           schema:
             type: integer
-        - name: remote_created_after
-          in: query
-          description: If provided, will only return files created in the third party platform after this datetime.
-          required: false
-          schema:
-            type: string
-            format: date-time
-        - name: remote_created_before
-          in: query
-          description: If provided, will only return files created in the third party platform before this datetime.
-          required: false
-          schema:
-            type: string
-            format: date-time
         - name: remote_id
           in: query
           description: The API provider's ID for the given object.
+          required: false
+          schema:
+            type: string
+        - name: root_message
+          in: query
+          description: If provided as 'true', will only return root messages (messages without a parent message).
           required: false
           schema:
             type: string
@@ -319,65 +294,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedFileList'
-    post:
-      operationId: create
-      summary: Create
-      description: >-
-        Creates a `File` object with the given values.{/* BEGIN_FILESTORAGE_FILE_CREATE_SUPPORTED_FIELDS
-        */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
-        data="H4sIAAAAAAAAA91U227aQBD9lWofkbFLCI1iqaog5AIqJk2cqGkUWct6sBf2YnbXXBzl3ysbJ0BD2jxApfZtLzNnZs45u4+IYAORVAvkoiFloI1UOAJkIS5DYMhFZ5TlW5xQD3PYDAumB8hCOk0SqQyEZxRYqC8UDJGLHA4qgmoq6JBC6KxlOVQYiBQ2VArtvGRXh0U6shCjYgxhkxCZCvMOvGV8FS8Tftlqh1FtkIUSrLWJlUyj+AomKej3QOfdMeAgDGbVEBvsrMFU1RJn21k+RwgMDIRtbHAbDJB84LJkbEyiXceJgSV2Ud4OYeqAcLAylDDQTqN+fHB03KiWKEX1L0HEPtcqo8lADo4qQURYgNNKzydzz+/MvFF06J0czr3spuFl48wbjT9WgghXen6v0ffv6v12s9bfEhBcf/p+fNtqt7pehWSndW90N/N8Uuv5ZDzIOvXuOZl1L77NvezuoNe+qXv+aaN7Lmv9kyvdO7mSvaZtIwut64rc+8f1g9I8LTnfDOzw3G4rQpZS4IRWk3TAKLF13cYcZ1LgmbaJ5A6HkGLnkmEzlIq35DzQkxQrCEaemv04EnYiomfyqRQvzCMXeU2/c3u66YXmFFOGBwyQa1QKr+yM3HsUgiaKJgWKVTyAIFWsXJZWSUBxqnUxu4WGkoWg8mdEOQRmkeRvSOQcWGgzUgGXBgKiABsIA2xWZzRcrdMkXN1rmgF6yO8mKVUQXmKFORhQRbdr/RUVH56sbVK0lUwGu5ajBH2WhH8Vt7FY7EGSdRF+w/VfYfJcyojBh7aiU9gNnUvEoEAMrgsu98AhiYGMdcpz2LL3YmITp3wgMGVrLv9HDP+q+huS9QXsUK5n9/cFFESW9t/HT7Su0/8lyXWMFVxKKsxuRSlwkxx3f7KQN17Snz+oTSESRTlWi6BI3rdGWzrdotXD009G2X+MJQoAAA=="
-        /></Footer>{/* END_FILESTORAGE_FILE_CREATE_SUPPORTED_FIELDS */}
-      tags:
-        - subpackage_files
-      parameters:
-        - name: is_debug_mode
-          in: query
-          description: Whether to include debug fields (such as log file links) in the response.
-          required: false
-          schema:
-            type: boolean
-        - name: run_async
-          in: query
-          description: Whether or not third-party updates should be run asynchronously.
-          required: false
-          schema:
-            type: boolean
-        - name: Authorization
-          in: header
-          description: Token-based authentication with required prefix "Bearer"
-          required: true
-          schema:
-            type: string
-        - name: X-Account-Token
-          in: header
-          description: Token identifying the end user.
-          required: true
-          schema:
-            type: string
-      responses:
-        '201':
-          description: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FileStorageFileResponse'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/FileStorageFileEndpointRequest'
-  /filestorage/v1/files/{id}:
+                $ref: '#/components/schemas/PaginatedMessageList'
+  /messages/{id}:
     get:
       operationId: retrieve
       summary: Retrieve
       description: >-
-        Returns a `File` object with the given `id`.{/* BEGIN_FILESTORAGE_FILE_FETCH_SUPPORTED_FIELDS
+        Returns a `Message` object with the given `id`.{/* BEGIN_CHAT_MESSAGE_FETCH_SUPPORTED_FIELDS
         */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
-        data="H4sIAAAAAAAAA+2T207bQBCGX6Xay8ixG0KKsFRVCeGQqHEoGFSKkLVZT+xN9sTuOgcj3r2yY0jSckGlQC/aO+/szL+e+eZ/QARbSKReIh+NKQNjpcYJIAdxGQNDPjqhrDhiRQPMYTstmu0hB5lMKaktxCcUWGzONIyRjzwOOoF6JuiYQuxtVHlUWEg0tlQK4z1X18dlOXIQo2IKcZsQmQn7Cr1Vfh2vCn45Go9RY5GDFDbGplpmSXoB9xmY10gXf8eAg7CY1WNssbchU9crnZdiRR8xMLAQd7HFXbBAioarJ1NrlfE9LwWm3PJ5N4aZB8LD2lLCwHit5uHewWGrXqmUr3+JEva5UZvcj+TooBYlhEU4qw1CsgjC3jyYJPvB0f4iyK9aQT7Ng8n0Yy1KcG0QDlrD8KY57LYbwxcSostP3w+vO91OP6iR/LgZTG7mQUgag5BMR3mv2T8l8/7Zt0WQ3+wNulfNIDxu9U9lY3h0YQZHF3LQdl3koE2uyL992AxUy9ORi+3EHi/WbT2QFQqsaF1lI0aJa5ou5jiXAs+NSyT3OMQUe+cM27HUvCMXkbnPsIZoEuj5jwPhKpE8DZ9K8Tx55KOgHfauj7d3oT3DlOERA+RbncFv64z8W0RSIFOT8VLWEE1VKeiUXogyzarPamsUaE6NKcfgoLFkMejCUZRDZJeqsJMoxuGg7UylKcd6GZWq21cauLQQEQ3YQhxhu44Ve7F9ihS26TpE4/V3puK1gKE5oLvi7j6jGuJzrDEHC7po+u7ReQlgV0s12jXESvQJJP8qrlOxfFuQm+h2SOh9aZxKmTD40NV0BrtBslKMSsXosuTxnoaKq07KAds04yOBKduw2L/ltqGAHbJ9sttQQDnnym9vzHeT6O799vcZXaZYw7mkwu6WUqmrCt3/nOyfcbp7/AkqCFoM2QoAAA=="
-        /></Footer>{/* END_FILESTORAGE_FILE_FETCH_SUPPORTED_FIELDS */}
+        data="H4sIAAAAAAAAA31TbU/bMBD+K5M/VnlZKR1qpGkqlEErJWUQ0BBC0cW+pm4dO/VLC0H898ltx7oN8cWS75577rHvuRdCwWKl9DNJCJ2DJQGpFUNBEpKiMVAhCQg0PIMa95BifUQCYlzTKG2RfecomLnUOCMJiWvUFYZO8hlHFnt4zKXFSoPlSpr4rSycbetIQASXS2RDSpWT9iOiHTCEHfKfq4kFN15+A8bYuVauml/jyqH5kNPrEVijtCBCBhbig/pQ7wjei3nlDAVaZCOwMEKL1D9x32tubWOSOJ6jaKJt34jhOkYZg7acCjRxvzc4Ohn0wz3Ltvu3ohJfu53FqlTlSaeoqCjAddKcPmX5eJMtquPs7Pgpa2/7Wbtss8Xyc6eooJPmaX+a3/emo2F3+g6guPnyc3B3OjqdZB3anveyxf0my2k3zemybMe9yQXdTC5/PGXt/VE6uu1l+Xl/cqG607Nrk55dq3QYRSQgh5MkycPLYWBvkJRTrYya2U85Qu0/6QAzrr2f/nzObh7Q8LBxpeA0Mr0IamiVhI2JqKrjGhmH+I202JIWNysHGqNGVr+HwJV8mwBJSDbMx3fnf5thuAYuoBRIEqsd/udgkjyQUrFnEhCq5Bq12WouOCMB0VgriwXVCBZZsd2Tfeww7xp2kFfKFvVuiXYo48oFUlsILv1aOclXzqdQWm9J7WNa+NOg9iWPnnnluEZ2BRpqtKi90MfXx9dfUhLBZrsDAAA="
+        /></Footer>{/* END_CHAT_MESSAGE_FETCH_SUPPORTED_FIELDS */}
       tags:
-        - subpackage_files
+        - subpackage_messages
       parameters:
         - name: id
           in: path
@@ -385,16 +313,6 @@ paths:
           schema:
             type: string
             format: uuid
-        - name: expand
-          in: query
-          description: >-
-            Which relations should be returned in expanded form. Multiple relation names should be comma separated
-            without spaces.
-          required: false
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/FilesIdGetParametersExpandSchemaItems'
         - name: include_remote_data
           in: query
           description: Whether to include the original data Merge fetched from the third-party to produce these models.
@@ -427,149 +345,31 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/File'
-  /filestorage/v1/files/{id}/download:
+                $ref: '#/components/schemas/Message'
+  /messages/{message_id}/replies:
     get:
-      operationId: download-retrieve
-      summary: Download Retrieve
+      operationId: replies-list
+      summary: Replies List
       description: >-
-        Returns the `File` content with the given `id` as a stream of bytes.{/*
-        BEGIN_FILESTORAGE_FILE_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget
-        requestType="GET"
-        data="H4sIAAAAAAAAA+2T207bQBCGX6Xay8ixG0KKsFRVCeGQqHEoGFSKkLVZT+xN9sTuOgcj3r2yY0jSckGlQC/aO+/szL+e+eZ/QARbSKReIh+NKQNjpcYJIAdxGQNDPjqhrDhiRQPMYTstmu0hB5lMKaktxCcUWGzONIyRjzwOOoF6JuiYQuxtVHlUWEg0tlQK4z1X18dlOXIQo2IKcZsQmQn7Cr1Vfh2vCn45Go9RY5GDFDbGplpmSXoB9xmY10gXf8eAg7CY1WNssbchU9crnZdiRR8xMLAQd7HFXbBAioarJ1NrlfE9LwWm3PJ5N4aZB8LD2lLCwHit5uHewWGrXqmUr3+JEva5UZvcj+TooBYlhEU4qw1CsgjC3jyYJPvB0f4iyK9aQT7Ng8n0Yy1KcG0QDlrD8KY57LYbwxcSostP3w+vO91OP6iR/LgZTG7mQUgag5BMR3mv2T8l8/7Zt0WQ3+wNulfNIDxu9U9lY3h0YQZHF3LQdl3koE2uyL992AxUy9ORi+3EHi/WbT2QFQqsaF1lI0aJa5ou5jiXAs+NSyT3OMQUe+cM27HUvCMXkbnPsIZoEuj5jwPhKpE8DZ9K8Tx55KOgHfauj7d3oT3DlOERA+RbncFv64z8W0RSIFOT8VLWEE1VKeiUXogyzarPamsUaE6NKcfgoLFkMejCUZRDZJeqsJMoxuGg7UylKcd6GZWq21cauLQQEQ3YQhxhu44Ve7F9ihS26TpE4/V3puK1gKE5oLvi7j6jGuJzrDEHC7po+u7ReQlgV0s12jXESvQJJP8qrlOxfFuQm+h2SOh9aZxKmTD40NV0BrtBslKMSsXosuTxnoaKq07KAds04yOBKduw2L/ltqGAHbJ9sttQQDnnym9vzHeT6O799vcZXaZYw7mkwu6WUqmrCt3/nOyfcbp7/AkqCFoM2QoAAA=="
-        /></Footer>{/* END_FILESTORAGE_FILE_FETCH_SUPPORTED_FIELDS */}
-      tags:
-        - subpackage_files
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-        - name: include_shell_data
-          in: query
-          description: >-
-            Whether to include shell records. Shell records are empty records (they may contain some metadata but all
-            other fields are null).
-          required: false
-          schema:
-            type: boolean
-        - name: mime_type
-          in: query
-          description: >-
-            If provided, specifies the export format of the file to be downloaded. For information on supported export
-            formats, please refer to our <a
-            href='https://help.merge.dev/en/articles/8615316-file-export-and-download-specification'
-            target='_blank'>export format help center article</a>.
-          required: false
-          schema:
-            type: string
-        - name: Authorization
-          in: header
-          description: Token-based authentication with required prefix "Bearer"
-          required: true
-          schema:
-            type: string
-        - name: X-Account-Token
-          in: header
-          description: Token identifying the end user.
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: ''
-          content:
-            application/octet-stream:
-              schema:
-                type: string
-                format: binary
-  /filestorage/v1/files/{id}/download/request-meta:
-    get:
-      operationId: download-request-meta-retrieve
-      summary: Download Request Meta Retrieve
-      description: >-
-        Returns metadata to construct an authenticated file download request for a singular file, allowing you to
-        download file directly from the third-party. For information on our download process please refer to our <a
-        href='https://help.merge.dev/articles/10644317' target='_blank'>direct file download help center article</a>.{/*
-        BEGIN_FILESTORAGE_FILE_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget
-        requestType="GET"
-        data="H4sIAAAAAAAAA+2T207bQBCGX6Xay8ixG0KKsFRVCeGQqHEoGFSKkLVZT+xN9sTuOgcj3r2yY0jSckGlQC/aO+/szL+e+eZ/QARbSKReIh+NKQNjpcYJIAdxGQNDPjqhrDhiRQPMYTstmu0hB5lMKaktxCcUWGzONIyRjzwOOoF6JuiYQuxtVHlUWEg0tlQK4z1X18dlOXIQo2IKcZsQmQn7Cr1Vfh2vCn45Go9RY5GDFDbGplpmSXoB9xmY10gXf8eAg7CY1WNssbchU9crnZdiRR8xMLAQd7HFXbBAioarJ1NrlfE9LwWm3PJ5N4aZB8LD2lLCwHit5uHewWGrXqmUr3+JEva5UZvcj+TooBYlhEU4qw1CsgjC3jyYJPvB0f4iyK9aQT7Ng8n0Yy1KcG0QDlrD8KY57LYbwxcSostP3w+vO91OP6iR/LgZTG7mQUgag5BMR3mv2T8l8/7Zt0WQ3+wNulfNIDxu9U9lY3h0YQZHF3LQdl3koE2uyL992AxUy9ORi+3EHi/WbT2QFQqsaF1lI0aJa5ou5jiXAs+NSyT3OMQUe+cM27HUvCMXkbnPsIZoEuj5jwPhKpE8DZ9K8Tx55KOgHfauj7d3oT3DlOERA+RbncFv64z8W0RSIFOT8VLWEE1VKeiUXogyzarPamsUaE6NKcfgoLFkMejCUZRDZJeqsJMoxuGg7UylKcd6GZWq21cauLQQEQ3YQhxhu44Ve7F9ihS26TpE4/V3puK1gKE5oLvi7j6jGuJzrDEHC7po+u7ReQlgV0s12jXESvQJJP8qrlOxfFuQm+h2SOh9aZxKmTD40NV0BrtBslKMSsXosuTxnoaKq07KAds04yOBKduw2L/ltqGAHbJ9sttQQDnnym9vzHeT6O799vcZXaZYw7mkwu6WUqmrCt3/nOyfcbp7/AkqCFoM2QoAAA=="
-        /></Footer>{/* END_FILESTORAGE_FILE_FETCH_SUPPORTED_FIELDS */}
-      tags:
-        - subpackage_files
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-        - name: mime_type
-          in: query
-          description: If provided, specifies the export format of the file to be downloaded.
-          required: false
-          schema:
-            type: string
-        - name: Authorization
-          in: header
-          description: Token-based authentication with required prefix "Bearer"
-          required: true
-          schema:
-            type: string
-        - name: X-Account-Token
-          in: header
-          description: Token identifying the end user.
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DownloadRequestMeta'
-  /filestorage/v1/files/download/request-meta:
-    get:
-      operationId: download-request-meta-list
-      summary: Download Request Meta List
-      description: >-
-        Returns metadata to construct authenticated file download requests, allowing you to download files directly from
-        the third-party.{/* BEGIN_FILESTORAGE_FILE_FETCH_SUPPORTED_FIELDS
+        Returns a list of `Message` objects.{/* BEGIN_CHAT_MESSAGE_FETCH_SUPPORTED_FIELDS
         */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
-        data="H4sIAAAAAAAAA+2T207bQBCGX6Xay8ixG0KKsFRVCeGQqHEoGFSKkLVZT+xN9sTuOgcj3r2yY0jSckGlQC/aO+/szL+e+eZ/QARbSKReIh+NKQNjpcYJIAdxGQNDPjqhrDhiRQPMYTstmu0hB5lMKaktxCcUWGzONIyRjzwOOoF6JuiYQuxtVHlUWEg0tlQK4z1X18dlOXIQo2IKcZsQmQn7Cr1Vfh2vCn45Go9RY5GDFDbGplpmSXoB9xmY10gXf8eAg7CY1WNssbchU9crnZdiRR8xMLAQd7HFXbBAioarJ1NrlfE9LwWm3PJ5N4aZB8LD2lLCwHit5uHewWGrXqmUr3+JEva5UZvcj+TooBYlhEU4qw1CsgjC3jyYJPvB0f4iyK9aQT7Ng8n0Yy1KcG0QDlrD8KY57LYbwxcSostP3w+vO91OP6iR/LgZTG7mQUgag5BMR3mv2T8l8/7Zt0WQ3+wNulfNIDxu9U9lY3h0YQZHF3LQdl3koE2uyL992AxUy9ORi+3EHi/WbT2QFQqsaF1lI0aJa5ou5jiXAs+NSyT3OMQUe+cM27HUvCMXkbnPsIZoEuj5jwPhKpE8DZ9K8Tx55KOgHfauj7d3oT3DlOERA+RbncFv64z8W0RSIFOT8VLWEE1VKeiUXogyzarPamsUaE6NKcfgoLFkMejCUZRDZJeqsJMoxuGg7UylKcd6GZWq21cauLQQEQ3YQhxhu44Ve7F9ihS26TpE4/V3puK1gKE5oLvi7j6jGuJzrDEHC7po+u7ReQlgV0s12jXESvQJJP8qrlOxfFuQm+h2SOh9aZxKmTD40NV0BrtBslKMSsXosuTxnoaKq07KAds04yOBKduw2L/ltqGAHbJ9sttQQDnnym9vzHeT6O799vcZXaZYw7mkwu6WUqmrCt3/nOyfcbp7/AkqCFoM2QoAAA=="
-        /></Footer>{/* END_FILESTORAGE_FILE_FETCH_SUPPORTED_FIELDS */}
+        data="H4sIAAAAAAAAA31TbU/bMBD+K5M/VnlZKR1qpGkqlEErJWUQ0BBC0cW+pm4dO/VLC0H898ltx7oN8cWS75577rHvuRdCwWKl9DNJCJ2DJQGpFUNBEpKiMVAhCQg0PIMa95BifUQCYlzTKG2RfecomLnUOCMJiWvUFYZO8hlHFnt4zKXFSoPlSpr4rSycbetIQASXS2RDSpWT9iOiHTCEHfKfq4kFN15+A8bYuVauml/jyqH5kNPrEVijtCBCBhbig/pQ7wjei3nlDAVaZCOwMEKL1D9x32tubWOSOJ6jaKJt34jhOkYZg7acCjRxvzc4Ohn0wz3Ltvu3ohJfu53FqlTlSaeoqCjAddKcPmX5eJMtquPs7Pgpa2/7Wbtss8Xyc6eooJPmaX+a3/emo2F3+g6guPnyc3B3OjqdZB3anveyxf0my2k3zemybMe9yQXdTC5/PGXt/VE6uu1l+Xl/cqG607Nrk55dq3QYRSQgh5MkycPLYWBvkJRTrYya2U85Qu0/6QAzrr2f/nzObh7Q8LBxpeA0Mr0IamiVhI2JqKrjGhmH+I202JIWNysHGqNGVr+HwJV8mwBJSDbMx3fnf5thuAYuoBRIEqsd/udgkjyQUrFnEhCq5Bq12WouOCMB0VgriwXVCBZZsd2Tfeww7xp2kFfKFvVuiXYo48oFUlsILv1aOclXzqdQWm9J7WNa+NOg9iWPnnnluEZ2BRpqtKi90MfXx9dfUhLBZrsDAAA="
+        /></Footer>{/* END_CHAT_MESSAGE_FETCH_SUPPORTED_FIELDS */}
       tags:
-        - subpackage_files
+        - subpackage_messages
       parameters:
-        - name: created_after
-          in: query
-          description: If provided, will only return objects created after this datetime.
-          required: false
+        - name: message_id
+          in: path
+          required: true
           schema:
             type: string
-        - name: created_before
-          in: query
-          description: If provided, will only return objects created before this datetime.
-          required: false
-          schema:
-            type: string
+            format: uuid
         - name: cursor
           in: query
           description: The pagination cursor value.
           required: false
           schema:
             type: string
-        - name: ids
-          in: query
-          description: If provided, will only return objects with the given IDs. Comma-separated list of strings.
-          required: false
-          schema:
-            type: array
-            items:
-              type: string
         - name: include_deleted_data
           in: query
           description: >-
@@ -579,37 +379,28 @@ paths:
           required: false
           schema:
             type: boolean
-        - name: mime_types
+        - name: include_remote_data
+          in: query
+          description: Whether to include the original data Merge fetched from the third-party to produce these models.
+          required: false
+          schema:
+            type: boolean
+        - name: include_shell_data
           in: query
           description: >-
-            A comma-separated list of preferred MIME types in order of priority. If supported by the third-party
-            provider, the file(s) will be returned in the first supported MIME type from the list. The default MIME type
-            is PDF. To see supported MIME types by file type, refer to our <a
-            href='https://help.merge.dev/en/articles/8615316-file-export-and-download-specification'
-            target='_blank'>export format help center article</a>.
+            Whether to include shell records. Shell records are empty records (they may contain some metadata but all
+            other fields are null).
           required: false
           schema:
-            type: string
-        - name: modified_after
-          in: query
-          description: If provided, will only return objects modified after this datetime.
-          required: false
-          schema:
-            type: string
-        - name: modified_before
-          in: query
-          description: If provided, will only return objects modified before this datetime.
-          required: false
-          schema:
-            type: string
+            type: boolean
         - name: order_by
           in: query
           description: >-
-            Overrides the default ordering for this endpoint. Possible values include: created_at, -created_at,
-            modified_at, -modified_at.
+            Overrides the default ordering for this endpoint. Possible values include: remote_created_at,
+            -remote_created_at.
           required: false
           schema:
-            $ref: '#/components/schemas/FilesDownloadRequestMetaGetParametersOrderBy'
+            $ref: '#/components/schemas/MessagesMessageIdRepliesGetParametersOrderBy'
         - name: page_size
           in: query
           description: Number of results to return per page. The maximum limit is 100.
@@ -634,19 +425,70 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedDownloadRequestMetaList'
-  /filestorage/v1/files/meta/post:
+                $ref: '#/components/schemas/PaginatedMessageList'
+  /conversations/{conversation_id}/members:
     get:
-      operationId: meta-post-retrieve
-      summary: Meta Post Retrieve
+      operationId: members-list
+      summary: Members List
       description: >-
-        Returns metadata for `FileStorageFile` POSTs.{/* BEGIN_FILESTORAGE_FILE_FETCH_SUPPORTED_FIELDS
+        Returns a list of `Member` objects.{/* BEGIN_CHAT_CONVERSATION_FETCH_SUPPORTED_FIELDS
         */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
-        data="H4sIAAAAAAAAA+2T207bQBCGX6Xay8ixG0KKsFRVCeGQqHEoGFSKkLVZT+xN9sTuOgcj3r2yY0jSckGlQC/aO+/szL+e+eZ/QARbSKReIh+NKQNjpcYJIAdxGQNDPjqhrDhiRQPMYTstmu0hB5lMKaktxCcUWGzONIyRjzwOOoF6JuiYQuxtVHlUWEg0tlQK4z1X18dlOXIQo2IKcZsQmQn7Cr1Vfh2vCn45Go9RY5GDFDbGplpmSXoB9xmY10gXf8eAg7CY1WNssbchU9crnZdiRR8xMLAQd7HFXbBAioarJ1NrlfE9LwWm3PJ5N4aZB8LD2lLCwHit5uHewWGrXqmUr3+JEva5UZvcj+TooBYlhEU4qw1CsgjC3jyYJPvB0f4iyK9aQT7Ng8n0Yy1KcG0QDlrD8KY57LYbwxcSostP3w+vO91OP6iR/LgZTG7mQUgag5BMR3mv2T8l8/7Zt0WQ3+wNulfNIDxu9U9lY3h0YQZHF3LQdl3koE2uyL992AxUy9ORi+3EHi/WbT2QFQqsaF1lI0aJa5ou5jiXAs+NSyT3OMQUe+cM27HUvCMXkbnPsIZoEuj5jwPhKpE8DZ9K8Tx55KOgHfauj7d3oT3DlOERA+RbncFv64z8W0RSIFOT8VLWEE1VKeiUXogyzarPamsUaE6NKcfgoLFkMejCUZRDZJeqsJMoxuGg7UylKcd6GZWq21cauLQQEQ3YQhxhu44Ve7F9ihS26TpE4/V3puK1gKE5oLvi7j6jGuJzrDEHC7po+u7ReQlgV0s12jXESvQJJP8qrlOxfFuQm+h2SOh9aZxKmTD40NV0BrtBslKMSsXosuTxnoaKq07KAds04yOBKduw2L/ltqGAHbJ9sttQQDnnym9vzHeT6O799vcZXaZYw7mkwu6WUqmrCt3/nOyfcbp7/AkqCFoM2QoAAA=="
-        /></Footer>{/* END_FILESTORAGE_FILE_FETCH_SUPPORTED_FIELDS */}
+        data="H4sIAAAAAAAAA31T72/aMBD9VyZ/RCQZpaxqpGmiwNoixWxtOq2qquiwj2Bw7OAf0Kbq/z4ZWEu3qt/sp3fv7vyenwgDh6U2jyQlbA6OtEmlOUqSkoFWazQWnNCKtAnUgkKFe16xPiJtYn1da+OQfxcoub0wOCMpSSo0JUZeiZlAngR6IpTD0my1bPJSFs22daRNpFBL5H3GtFfuI6EdMYId85+rTaSwYYcarHVzo305v8KVR/uhZphHYoXKgYw4OEgO6iOzE3gPC5NzlOiQD8HBEB2ysOK+19y52qZJMkdZx9u+Mcd1gioB4wSTaJNe9/To5LQX7VW23b8VpfzaaS1WUz09aRUlkwX4VpazB5pfbuiiPKaD4wfa3PRos2zoYvm5VZTQyvKsN8lvu5NhvzN5h1Bcf/l9+utseDamLdaMunRxu6E562Q5W06by+74nG3GFz8faHN7lA1vujQf9cbnujMZXNlscKWzfhyTNjl0kqR3T4fAPiCZYEZbPXOfcoQqPNIB57KCEg8eZ+cH1CKq/VQKFttuDBU0WsHGxkxXSYVcQPIiWmxFi+uVB4Nxrcq/JgitXhwgKRnRiz4djIZv49Bfg5AwlUhSZzz+l2GS3hGOlhlR74NfYTVFE7ZQYb02MVhphwUzCA55sf00eyzY9/ZW1ODmr5Dgr2df81cB91gHba/EygcaKhcSagJmJLkPVSsvDPIfYKBCF0ZK7+6f75//AKIh9xbFAwAA"
+        /></Footer>{/* END_CHAT_CONVERSATION_FETCH_SUPPORTED_FIELDS */}
       tags:
-        - subpackage_files
+        - subpackage_conversations
       parameters:
+        - name: conversation_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: cursor
+          in: query
+          description: The pagination cursor value.
+          required: false
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: >-
+            Which relations should be returned in expanded form. Multiple relation names should be comma separated
+            without spaces.
+          required: false
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/ConversationsConversationIdMembersGetParametersExpandSchemaItems'
+        - name: include_deleted_data
+          in: query
+          description: >-
+            Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion
+            detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn
+            more](https://docs.merge.dev/integrations/hris/supported-features/).
+          required: false
+          schema:
+            type: boolean
+        - name: include_remote_data
+          in: query
+          description: Whether to include the original data Merge fetched from the third-party to produce these models.
+          required: false
+          schema:
+            type: boolean
+        - name: include_shell_data
+          in: query
+          description: >-
+            Whether to include shell records. Shell records are empty records (they may contain some metadata but all
+            other fields are null).
+          required: false
+          schema:
+            type: boolean
+        - name: page_size
+          in: query
+          description: Number of results to return per page. The maximum limit is 100.
+          required: false
+          schema:
+            type: integer
         - name: Authorization
           in: header
           description: Token-based authentication with required prefix "Bearer"
@@ -665,18 +507,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MetaResponse'
-  /filestorage/v1/folders:
+                $ref: '#/components/schemas/PaginatedMemberList'
+  /users:
     get:
       operationId: list
       summary: List
       description: >-
-        Returns a list of `Folder` objects.{/* BEGIN_FILESTORAGE_FOLDER_FETCH_SUPPORTED_FIELDS
+        Returns a list of `User` objects.{/* BEGIN_CHAT_USER_FETCH_SUPPORTED_FIELDS
         */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
-        data="H4sIAAAAAAAAA+2Tb2/aMBDGv8rklygko5RVjTRNUPoHNELXptW6qrJMfCQGxw62AzRVv/uUBAp0vOgqhjZprxKffY9997vnCQXEQCjVI3LRkHHQRioSArJQLClw5KIzySkoZCGSMI/EsHkQTw+QhXSaJFIZoGcMONUXCobIRU4MKoRqKtiQAXXWshwmDISKGCaFdl6yq8MiHVmIMzEG2gwCmQrzBr3yfJWUCa+W2uFMG2ShhGhtIiXTMLqCSQr6LdL56zjEIAzhVUoMcdZkqqrU2RbL66DAwQBtE0PaYCDIC15cGRmTaNdxIuCJXVxvU5g6IByiDAs4aKdRPz44Om5UFyrF7V9wyD/XKqPJQA6OKjgMOCZppecHc8/vzLxReOidHM697KbhZePMG40/VnBIKj2/1+j7d/V+u1nrbzmArz99P75ttVtdrxJkp3VvdDfz/KDW84PxIOvUu+fBrHvxbe5ldwe99k3d808b3XNZ659c6d7Jlew1bRtZaJ0rcu+f1gOL4WnJ+ebBTpwP3KohJQqSsGqSDjgLbF23SUwyKchM24GMnRgoI84lJ2YoVdySc6wnKVGAR56a/TgSdiLCZfOZFC+dRy7ymn7n9nRzFppTwjgZcECuUSn8Ms7IvUdBxDjFw8ILJVgdKJYUqlZpiOW3nJsEVMy0LhphoTIRp4ojC4m8EfkLFAiz0MzXGxmJYjFRj4ttvLmpIJYGcKCAGKCYmFUsn5HNFU6IiVYhRlf/aUJXApplgB7yvUnKFNBLokgMJq/XvX94trbBbCuZDHYNdCG6hBp/FbeReNwD1BeMf4TWfsmcSxly+NBWbAq7wVMq4kIRXxds9m40uihni+Hy31eRJat/2Ja/Sb0vYIfEl4bsCygav3DkPqi/5vzXg3qfS68jouBSMmF2S6zQTXLd/8zM+5k9PP8EY4zDXCELAAA="
-        /></Footer>{/* END_FILESTORAGE_FOLDER_FETCH_SUPPORTED_FIELDS */}
+        data="H4sIAAAAAAAAA31T70/bMBD9VyZ/rPJjpXSISNNU2g6oFJdBOg1VKLrY19StHae2QyGI/31KWqBsiI/37t27O7/zE2HgMNfmkUSELcERjyjNUZKIzCwa4hEoBQWF+3x6f0Q8Yquy1MYh/ylQcnthcEEiEio0OfpVIRYCedjQQ1E4zA04oQsbvpb5i7aOeESKYo18wJiuCveZ0I7ow475T2hDKWwzewnWuqXRVb68xk2F9lPNZh6JCgsH0ufgIDyo981O4COsmZyjRId8BA5G6JA1K+57LZ0rbRSGS5Rl0PYNON6HWIRgnGASbdjvnR6dnPb9vUrb/Ueay+/dzmqT6eykk+ZMplB14oQ90ORyS1f5MR0eP9B61qf1uqar9ddOmkMnTuL+NLntTUeD7vQDQnrz7c/p77PR2YR2WD3u0dXtliasGydsndWXvck5204ufj3Q+vYoHs16NBn3J+e6Ox1e23h4reNBEBCPHDpJovnTIbA/kFgwo61euC8Jgmoe6YBzqSDHg8fZ+QGl8Msqk4IFtheAgloXsLUB0ypUyAWEr6JpK5rebCowGJRF/mKC0MWrAyQiY3oxoMPx6P05DO5BSMgkksiZCv+7YRLNCRe2lPCYFs06HlkIY91LkBtdle1KNs10c2sS3rIKVYamSRtU2mHKDIJDnrY/ao81Hr+P0hLc8g0SnHiksmha1bsG31TCIL8CAwpd0yGa3z3fPf8Fvm5f1bgDAAA="
+        /></Footer>{/* END_CHAT_USER_FETCH_SUPPORTED_FIELDS */}
       tags:
-        - subpackage_folders
+        - subpackage_users
       parameters:
         - name: created_after
           in: query
@@ -698,12 +540,6 @@ paths:
           required: false
           schema:
             type: string
-        - name: drive_id
-          in: query
-          description: If provided, will only return folders in this drive.
-          required: false
-          schema:
-            type: string
         - name: expand
           in: query
           description: >-
@@ -713,7 +549,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/components/schemas/FoldersGetParametersExpandSchemaItems'
+              $ref: '#/components/schemas/UsersGetParametersExpandSchemaItems'
         - name: include_deleted_data
           in: query
           description: >-
@@ -751,24 +587,12 @@ paths:
           schema:
             type: string
             format: date-time
-        - name: name
-          in: query
-          description: If provided, will only return folders with this name. This performs an exact match.
-          required: false
-          schema:
-            type: string
         - name: page_size
           in: query
           description: Number of results to return per page. The maximum limit is 100.
           required: false
           schema:
             type: integer
-        - name: parent_folder_id
-          in: query
-          description: If provided, will only return folders in this parent folder. If null, will return folders in root directory.
-          required: false
-          schema:
-            type: string
         - name: remote_id
           in: query
           description: The API provider's ID for the given object.
@@ -793,65 +617,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaginatedFolderList'
-    post:
-      operationId: create
-      summary: Create
-      description: >-
-        Creates a `Folder` object with the given values.{/* BEGIN_FILESTORAGE_FOLDER_CREATE_SUPPORTED_FIELDS
-        */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST"
-        data="H4sIAAAAAAAAA+2UX2/aMBTFv8rkR5Q/o5RVjTRN0LQdaISuTat1VRUZ+xIMjh1sB2iqfvcpIRToeKg6KvVhb4l977n2+Z3kERFsIJbqAXloyDhoIxWOAVkokRQ48tCZ5BQUshBOWYAT2C6MZgfIQjpLU6kM0DMGnOrvCobIQ24CKgY7E2zIgLobXS4TBmKFDZNCu8/d9rBsRxbiTEyAtgiRmTCv0FvW23jZ8OJVu5xpgyyUYq3NSMksHl3CNAP9GunidBwSEAZzm2KD3Q0ZWy11dq0V96DAwQD1scE+GCDFhauRI2NS7bnuCHjqlOMdCjMXhIuVYYSDdpuN44Oj46ZdqZTTv0Ux/1qvjacDOTiqRTHhEc5qvZAsgrAzD8bxYXByuAjy62aQT/JgPPlci2Jc64W9Zj+8bfT9Vr2/oyC6+vLr+Kbtt7tBjeSnjWB8Ow9CUu+FZDLIO43uOZl3v/9cBPntQc+/bgThabN7Luv9k0vdO7mUvZbjIAttckXe3ePmQhWetlxsF3aSInBrQ5YocMrsNBtwRhzdcHCCcynwXDtEJm4ClGH3gmMzlCppy0WkpxlWEI0DNf99JJxUxCvzmRTPziMPBa2wc3O6nYXWDDOOBxyQZ1QGf8UZeXeIgiaKpaWKtfkBDFefx8ZaCiphWpcmWGhZEWWKIwuJwoRiugJhoufm7Q4FiTQQEQXYAI2wWa8xun7OUrre1ywHdF/sTTOmgF5ghRMwoMrjl2Pvn6xdQHwl08G+oVSiKzDJD3EzEg/vAGYnilc4vvbzTaadSxlz+OQrNoP9OLdUjErF6Kq07d1zTKvjf7g8v4lJX8AeeayS3BdQ2lRF+T2YfFQK//JXuRphBReSCbNfHKVuWuj+B6JeAlklqQJz//QHHoXkwOAJAAA="
-        /></Footer>{/* END_FILESTORAGE_FOLDER_CREATE_SUPPORTED_FIELDS */}
-      tags:
-        - subpackage_folders
-      parameters:
-        - name: is_debug_mode
-          in: query
-          description: Whether to include debug fields (such as log file links) in the response.
-          required: false
-          schema:
-            type: boolean
-        - name: run_async
-          in: query
-          description: Whether or not third-party updates should be run asynchronously.
-          required: false
-          schema:
-            type: boolean
-        - name: Authorization
-          in: header
-          description: Token-based authentication with required prefix "Bearer"
-          required: true
-          schema:
-            type: string
-        - name: X-Account-Token
-          in: header
-          description: Token identifying the end user.
-          required: true
-          schema:
-            type: string
-      responses:
-        '201':
-          description: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FileStorageFolderResponse'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/FileStorageFolderEndpointRequest'
-  /filestorage/v1/folders/{id}:
+                $ref: '#/components/schemas/PaginatedUserList'
+  /users/{id}:
     get:
       operationId: retrieve
       summary: Retrieve
       description: >-
-        Returns a `Folder` object with the given `id`.{/* BEGIN_FILESTORAGE_FOLDER_FETCH_SUPPORTED_FIELDS
+        Returns a `User` object with the given `id`.{/* BEGIN_CHAT_USER_FETCH_SUPPORTED_FIELDS
         */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
-        data="H4sIAAAAAAAAA+2Tb2/aMBDGv8rklygko5RVjTRNUPoHNELXptW6qrJMfCQGxw62AzRVv/uUBAp0vOgqhjZprxKffY9997vnCQXEQCjVI3LRkHHQRioSArJQLClw5KIzySkoZCGSMI/EsHkQTw+QhXSaJFIZoGcMONUXCobIRU4MKoRqKtiQAXXWshwmDISKGCaFdl6yq8MiHVmIMzEG2gwCmQrzBr3yfJWUCa+W2uFMG2ShhGhtIiXTMLqCSQr6LdL56zjEIAzhVUoMcdZkqqrU2RbL66DAwQBtE0PaYCDIC15cGRmTaNdxIuCJXVxvU5g6IByiDAs4aKdRPz44Om5UFyrF7V9wyD/XKqPJQA6OKjgMOCZppecHc8/vzLxReOidHM697KbhZePMG40/VnBIKj2/1+j7d/V+u1nrbzmArz99P75ttVtdrxJkp3VvdDfz/KDW84PxIOvUu+fBrHvxbe5ldwe99k3d808b3XNZ659c6d7Jlew1bRtZaJ0rcu+f1gOL4WnJ+ebBTpwP3KohJQqSsGqSDjgLbF23SUwyKchM24GMnRgoI84lJ2YoVdySc6wnKVGAR56a/TgSdiLCZfOZFC+dRy7ymn7n9nRzFppTwjgZcECuUSn8Ms7IvUdBxDjFw8ILJVgdKJYUqlZpiOW3nJsEVMy0LhphoTIRp4ojC4m8EfkLFAiz0MzXGxmJYjFRj4ttvLmpIJYGcKCAGKCYmFUsn5HNFU6IiVYhRlf/aUJXApplgB7yvUnKFNBLokgMJq/XvX94trbBbCuZDHYNdCG6hBp/FbeReNwD1BeMf4TWfsmcSxly+NBWbAq7wVMq4kIRXxds9m40uihni+Hy31eRJat/2Ja/Sb0vYIfEl4bsCygav3DkPqi/5vzXg3qfS68jouBSMmF2S6zQTXLd/8zM+5k9PP8EY4zDXCELAAA="
-        /></Footer>{/* END_FILESTORAGE_FOLDER_FETCH_SUPPORTED_FIELDS */}
+        data="H4sIAAAAAAAAA31T70/bMBD9VyZ/rPJjpXSISNNU2g6oFJdBOg1VKLrY19StHae2QyGI/31KWqBsiI/37t27O7/zE2HgMNfmkUSELcERjyjNUZKIzCwa4hEoBQWF+3x6f0Q8Yquy1MYh/ylQcnthcEEiEio0OfpVIRYCedjQQ1E4zA04oQsbvpb5i7aOeESKYo18wJiuCveZ0I7ow475T2hDKWwzewnWuqXRVb68xk2F9lPNZh6JCgsH0ufgIDyo981O4COsmZyjRId8BA5G6JA1K+57LZ0rbRSGS5Rl0PYNON6HWIRgnGASbdjvnR6dnPb9vUrb/Ueay+/dzmqT6eykk+ZMplB14oQ90ORyS1f5MR0eP9B61qf1uqar9ddOmkMnTuL+NLntTUeD7vQDQnrz7c/p77PR2YR2WD3u0dXtliasGydsndWXvck5204ufj3Q+vYoHs16NBn3J+e6Ox1e23h4reNBEBCPHDpJovnTIbA/kFgwo61euC8Jgmoe6YBzqSDHg8fZ+QGl8Msqk4IFtheAgloXsLUB0ypUyAWEr6JpK5rebCowGJRF/mKC0MWrAyQiY3oxoMPx6P05DO5BSMgkksiZCv+7YRLNCRe2lPCYFs06HlkIY91LkBtdle1KNs10c2sS3rIKVYamSRtU2mHKDIJDnrY/ao81Hr+P0hLc8g0SnHiksmha1bsG31TCIL8CAwpd0yGa3z3fPf8Fvm5f1bgDAAA="
+        /></Footer>{/* END_CHAT_USER_FETCH_SUPPORTED_FIELDS */}
       tags:
-        - subpackage_folders
+        - subpackage_users
       parameters:
         - name: id
           in: path
@@ -868,7 +645,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/components/schemas/FoldersIdGetParametersExpandSchemaItems'
+              $ref: '#/components/schemas/UsersIdGetParametersExpandSchemaItems'
         - name: include_remote_data
           in: query
           description: Whether to include the original data Merge fetched from the third-party to produce these models.
@@ -901,47 +678,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Folder'
-  /filestorage/v1/folders/meta/post:
-    get:
-      operationId: meta-post-retrieve
-      summary: Meta Post Retrieve
-      description: >-
-        Returns metadata for `FileStorageFolder` POSTs.{/* BEGIN_FILESTORAGE_FOLDER_FETCH_SUPPORTED_FIELDS
-        */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
-        data="H4sIAAAAAAAAA+2Tb2/aMBDGv8rklygko5RVjTRNUPoHNELXptW6qrJMfCQGxw62AzRVv/uUBAp0vOgqhjZprxKffY9997vnCQXEQCjVI3LRkHHQRioSArJQLClw5KIzySkoZCGSMI/EsHkQTw+QhXSaJFIZoGcMONUXCobIRU4MKoRqKtiQAXXWshwmDISKGCaFdl6yq8MiHVmIMzEG2gwCmQrzBr3yfJWUCa+W2uFMG2ShhGhtIiXTMLqCSQr6LdL56zjEIAzhVUoMcdZkqqrU2RbL66DAwQBtE0PaYCDIC15cGRmTaNdxIuCJXVxvU5g6IByiDAs4aKdRPz44Om5UFyrF7V9wyD/XKqPJQA6OKjgMOCZppecHc8/vzLxReOidHM697KbhZePMG40/VnBIKj2/1+j7d/V+u1nrbzmArz99P75ttVtdrxJkp3VvdDfz/KDW84PxIOvUu+fBrHvxbe5ldwe99k3d808b3XNZ659c6d7Jlew1bRtZaJ0rcu+f1gOL4WnJ+ebBTpwP3KohJQqSsGqSDjgLbF23SUwyKchM24GMnRgoI84lJ2YoVdySc6wnKVGAR56a/TgSdiLCZfOZFC+dRy7ymn7n9nRzFppTwjgZcECuUSn8Ms7IvUdBxDjFw8ILJVgdKJYUqlZpiOW3nJsEVMy0LhphoTIRp4ojC4m8EfkLFAiz0MzXGxmJYjFRj4ttvLmpIJYGcKCAGKCYmFUsn5HNFU6IiVYhRlf/aUJXApplgB7yvUnKFNBLokgMJq/XvX94trbBbCuZDHYNdCG6hBp/FbeReNwD1BeMf4TWfsmcSxly+NBWbAq7wVMq4kIRXxds9m40uihni+Hy31eRJat/2Ja/Sb0vYIfEl4bsCygav3DkPqi/5vzXg3qfS68jouBSMmF2S6zQTXLd/8zM+5k9PP8EY4zDXCELAAA="
-        /></Footer>{/* END_FILESTORAGE_FOLDER_FETCH_SUPPORTED_FIELDS */}
-      tags:
-        - subpackage_folders
-      parameters:
-        - name: Authorization
-          in: header
-          description: Token-based authentication with required prefix "Bearer"
-          required: true
-          schema:
-            type: string
-        - name: X-Account-Token
-          in: header
-          description: Token identifying the end user.
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MetaResponse'
-  /filestorage/v1/groups:
+                $ref: '#/components/schemas/User'
+  /groups:
     get:
       operationId: list
       summary: List
       description: >-
-        Returns a list of `Group` objects.{/* BEGIN_FILESTORAGE_GROUP_FETCH_SUPPORTED_FIELDS
+        Returns a list of `Group` objects.{/* BEGIN_CHAT_GROUP_FETCH_SUPPORTED_FIELDS
         */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
-        data="H4sIAAAAAAAAA82WbW/aMBSF/8rkjygvo4xVjTRNQBgFDdO1abWuqiKTXBKDYwe/AE3V/z4l0Ba2au0mqu5bfHTvse/joyS3KCIaEiFvkIcmlIHSQpIEkIUyEQNDHupJYXJkIZJTTDLYrQsXB8hCyuS5kBriLxRYrI4lTJCH3AxkArbhdEIhdre6XMo1JJJoKrhyH7rtSdWOLMQon0HciiJhuH6B37reJuuGX5bKZVRpZKGcKKVTKUySnsLcgHqJdXk6BhlwTZgdE03cLRtbrn2e0so5YmCgIfaJJj5oiMqBN1umWufKc90UWO5U2zsxLFzgLpGaRgyU22wcHRweNe2NS7X75zBhn+q16Xwsxoe1MIlYSExtGEQrHPSXeJp8wJ0PK1ycN3ExK/B09r4WJqQ2DIbNUXDZGPmt+uiJgvDs4/eji7bfHuBaVHQbeHq5xEFUHwbRbFz0G4NetBwcf1vh4vJg6J83cNBtDnqiPuqcqmHnVAxbjoMstH2vyLu63RY24WmL1W5hPyvz9ghkfRUkp3ZuxoxGjmo4JCOF4GSpnEhkbgYxJe4JI3oiZNYWq1DNDZEQTrFc/jjkTs6Te/hU8AfyyENdfNzCna6/m4bWglBGxgyQp6WB3wKNvKvt0OcgM6pUNaSFeDmXhXZFCZnQEJY3trsKc6LTR4nGyEJGgVTouhTnhkqIT4gkGehS9a6u76ynOPpS5ON9s9yY3vPMvvKLlN+8Cs83wtYTImHwzpd0Aftht3YMK8fwrAL3B2C4FfQvun+PK0opi8OkfBeXoLbSWGm70n8R0BGHPVK+T+iIQ1yRXkf0VaL5POs9IOV0bspn4Lr86Mh/xXyWEgkngnK9X9CVb176Po/69UJd/YSExlTM3ob69d1PM/qMCSUJAAA="
-        /></Footer>{/* END_FILESTORAGE_GROUP_FETCH_SUPPORTED_FIELDS */}
+        data="H4sIAAAAAAAAA31T207bQBD9lWofI9vbEFKEpaoKhEIi2aFgUCOErMnuxNlk1+vshVAj/r2yk6ahRTzO0ZkzlzPzQhg4LLT5RWLCFuBIQJTmKElMLo32FQkIVCIFhTtC/nREAmJ9VWnjkH8XKLm9MjgnMaEKTYGhL8VcIKcNnYrSYWHACV1auk8L520eCYgU5Qr5gDHtS/eR0JYYwpb5T2ipFLZpvgJr3cJoXyxucO3RfqjZ9CNRYelAhhwc0IP80GwF3sOazjlKdMiH4GCIDlkz4q7WwrnKxpQuUFZRWzfi+ESxpGCcYBIt7fdOj05O++FOpa3+LS/k125nuZ7p2UknL5jMwXeSjD2n2WiTLovj9Pz4Oa3v+mm9qtPl6nMnL6CTZEl/kk17k+GgO3mHkN9++Xl6fzY8G6cdVl/00uV0k2asm2RsNatHvfEl24yvfjyn9fQoGd710uyiP77U3cn5jU3Ob3QyiCISkEMnSfzwcgjsDiQRzGir5+5ThqCaJR1wRgoKPFjO1g+oRFj5mRQssr0IFNS6hI2NmFZUIRdA96J5K5rfrj0YjKqy+GOC0OXeARKTdJCN7i/eHsPgCYSEmUQSO+Pxvwsm8QNRqGZomq7bF8i9F5wEpGxmC4hBpR3mzCA45Hn7Kjus8e5tlFfgFn+hVsfbRvyxAddeGOTXYECha9D44fH18fU3CEMvBo4DAAA="
+        /></Footer>{/* END_CHAT_GROUP_FETCH_SUPPORTED_FIELDS */}
       tags:
         - subpackage_groups
       parameters:
@@ -1043,15 +789,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaginatedGroupList'
-  /filestorage/v1/groups/{id}:
+  /groups/{id}:
     get:
       operationId: retrieve
       summary: Retrieve
       description: >-
-        Returns a `Group` object with the given `id`.{/* BEGIN_FILESTORAGE_GROUP_FETCH_SUPPORTED_FIELDS
+        Returns a `Group` object with the given `id`.{/* BEGIN_CHAT_GROUP_FETCH_SUPPORTED_FIELDS
         */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
-        data="H4sIAAAAAAAAA82WbW/aMBSF/8rkjygvo4xVjTRNQBgFDdO1abWuqiKTXBKDYwe/AE3V/z4l0Ba2au0mqu5bfHTvse/joyS3KCIaEiFvkIcmlIHSQpIEkIUyEQNDHupJYXJkIZJTTDLYrQsXB8hCyuS5kBriLxRYrI4lTJCH3AxkArbhdEIhdre6XMo1JJJoKrhyH7rtSdWOLMQon0HciiJhuH6B37reJuuGX5bKZVRpZKGcKKVTKUySnsLcgHqJdXk6BhlwTZgdE03cLRtbrn2e0so5YmCgIfaJJj5oiMqBN1umWufKc90UWO5U2zsxLFzgLpGaRgyU22wcHRweNe2NS7X75zBhn+q16Xwsxoe1MIlYSExtGEQrHPSXeJp8wJ0PK1ycN3ExK/B09r4WJqQ2DIbNUXDZGPmt+uiJgvDs4/eji7bfHuBaVHQbeHq5xEFUHwbRbFz0G4NetBwcf1vh4vJg6J83cNBtDnqiPuqcqmHnVAxbjoMstH2vyLu63RY24WmL1W5hPyvz9ghkfRUkp3ZuxoxGjmo4JCOF4GSpnEhkbgYxJe4JI3oiZNYWq1DNDZEQTrFc/jjkTs6Te/hU8AfyyENdfNzCna6/m4bWglBGxgyQp6WB3wKNvKvt0OcgM6pUNaSFeDmXhXZFCZnQEJY3trsKc6LTR4nGyEJGgVTouhTnhkqIT4gkGehS9a6u76ynOPpS5ON9s9yY3vPMvvKLlN+8Cs83wtYTImHwzpd0Aftht3YMK8fwrAL3B2C4FfQvun+PK0opi8OkfBeXoLbSWGm70n8R0BGHPVK+T+iIQ1yRXkf0VaL5POs9IOV0bspn4Lr86Mh/xXyWEgkngnK9X9CVb176Po/69UJd/YSExlTM3ob69d1PM/qMCSUJAAA="
-        /></Footer>{/* END_FILESTORAGE_GROUP_FETCH_SUPPORTED_FIELDS */}
+        data="H4sIAAAAAAAAA31T207bQBD9lWofI9vbEFKEpaoKhEIi2aFgUCOErMnuxNlk1+vshVAj/r2yk6ahRTzO0ZkzlzPzQhg4LLT5RWLCFuBIQJTmKElMLo32FQkIVCIFhTtC/nREAmJ9VWnjkH8XKLm9MjgnMaEKTYGhL8VcIKcNnYrSYWHACV1auk8L520eCYgU5Qr5gDHtS/eR0JYYwpb5T2ipFLZpvgJr3cJoXyxucO3RfqjZ9CNRYelAhhwc0IP80GwF3sOazjlKdMiH4GCIDlkz4q7WwrnKxpQuUFZRWzfi+ESxpGCcYBIt7fdOj05O++FOpa3+LS/k125nuZ7p2UknL5jMwXeSjD2n2WiTLovj9Pz4Oa3v+mm9qtPl6nMnL6CTZEl/kk17k+GgO3mHkN9++Xl6fzY8G6cdVl/00uV0k2asm2RsNatHvfEl24yvfjyn9fQoGd710uyiP77U3cn5jU3Ob3QyiCISkEMnSfzwcgjsDiQRzGir5+5ThqCaJR1wRgoKPFjO1g+oRFj5mRQssr0IFNS6hI2NmFZUIRdA96J5K5rfrj0YjKqy+GOC0OXeARKTdJCN7i/eHsPgCYSEmUQSO+Pxvwsm8QNRqGZomq7bF8i9F5wEpGxmC4hBpR3mzCA45Hn7Kjus8e5tlFfgFn+hVsfbRvyxAddeGOTXYECha9D44fH18fU3CEMvBo4DAAA="
+        /></Footer>{/* END_CHAT_GROUP_FETCH_SUPPORTED_FIELDS */}
       tags:
         - subpackage_groups
       parameters:
@@ -1104,170 +850,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Group'
-  /filestorage/v1/users:
-    get:
-      operationId: list
-      summary: List
-      description: >-
-        Returns a list of `User` objects.{/* BEGIN_FILESTORAGE_USER_FETCH_SUPPORTED_FIELDS
-        */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
-        data="H4sIAAAAAAAAA+WTYW/aMBCG/8rkjygko4xVjTRNQFgLGqYrabWuqqIjPoLBsYPtAKXqf58SaAtbpfUD2jT1W+50957vuTf3JAaLidJ3xCdjLtBYpSFB4pBUMRTEJ5cGNXEIZJxCivtl0eKIOMTkWaa0RfaFo2DmTOOY+MRLUSdYzSUfc2TeTpfHpcVEg+VKGu+puzou24lDBJczZM04Vrm0r9Db1Fdh0/BLaDzBjSUOycAYO9EqTyYXOM/RvEa6eJ3AFKUFUWVgwduRqeqNzku5Yg+GAi2yACwEaDEuFt6OnFibGd/zJigytxzvMlx4KD3QlscCjdeonxwdnzSqW5Vy+ucoEZ9qlel8pEbHlSiJRQR5pR/GKxp2l3SafKDtDyu6vmzQ9WxNp7P3lSiBSj/sNwbhdX0QNGuDFwqi4cfvJ1etoNWjlXjdqdPp9ZKGca0fxrPRulvvncbL3tm3FV1fH/WDyzoNO43eqaoN2hem375Q/abrEofs3pX4N/e7ia15Wmq1X9hNC7s9A9mcAjJezfKR4LFr6i6ksFYSlsaNVeqlyDh45wLsWOm0pVaRmeegMZpSvfxxLN1MJo/wuZJP5IlPOvSsSdudYN8NzQVwASOBxLc6x98MTfwbgilwEQFjGk1x2h2PZKhTbky5tEMSrfKs+OAmSov/SBaLO2S/SmOqLEbFSfejKAM7eU5xRm6LYJ5zjewcNKRoURdPun1wXgIcaJWNDg15K/oIOv0qryby7q+A/tc8T5VKBL4LNF/gYaBuFKNSMRqWRN+2ZQcSD4j30bMDiaxEvDHtmzDrcAIazxWX9rAsh4VuVuj+mSZtht2rzn/F8vbhJ7/9+x4ICQAA"
-        /></Footer>{/* END_FILESTORAGE_USER_FETCH_SUPPORTED_FIELDS */}
-      tags:
-        - subpackage_users
-      parameters:
-        - name: created_after
-          in: query
-          description: If provided, will only return objects created after this datetime.
-          required: false
-          schema:
-            type: string
-            format: date-time
-        - name: created_before
-          in: query
-          description: If provided, will only return objects created before this datetime.
-          required: false
-          schema:
-            type: string
-            format: date-time
-        - name: cursor
-          in: query
-          description: The pagination cursor value.
-          required: false
-          schema:
-            type: string
-        - name: email_address
-          in: query
-          description: If provided, will only return users with emails equal to this value (case insensitive).
-          required: false
-          schema:
-            type: string
-        - name: include_deleted_data
-          in: query
-          description: >-
-            Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion
-            detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn
-            more](https://docs.merge.dev/integrations/hris/supported-features/).
-          required: false
-          schema:
-            type: boolean
-        - name: include_remote_data
-          in: query
-          description: Whether to include the original data Merge fetched from the third-party to produce these models.
-          required: false
-          schema:
-            type: boolean
-        - name: include_shell_data
-          in: query
-          description: >-
-            Whether to include shell records. Shell records are empty records (they may contain some metadata but all
-            other fields are null).
-          required: false
-          schema:
-            type: boolean
-        - name: is_me
-          in: query
-          description: If provided, will only return the user object for requestor.
-          required: false
-          schema:
-            type: string
-        - name: modified_after
-          in: query
-          description: If provided, only objects synced by Merge after this date time will be returned.
-          required: false
-          schema:
-            type: string
-            format: date-time
-        - name: modified_before
-          in: query
-          description: If provided, only objects synced by Merge before this date time will be returned.
-          required: false
-          schema:
-            type: string
-            format: date-time
-        - name: page_size
-          in: query
-          description: Number of results to return per page. The maximum limit is 100.
-          required: false
-          schema:
-            type: integer
-        - name: remote_id
-          in: query
-          description: The API provider's ID for the given object.
-          required: false
-          schema:
-            type: string
-        - name: Authorization
-          in: header
-          description: Token-based authentication with required prefix "Bearer"
-          required: true
-          schema:
-            type: string
-        - name: X-Account-Token
-          in: header
-          description: Token identifying the end user.
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaginatedUserList'
-  /filestorage/v1/users/{id}:
-    get:
-      operationId: retrieve
-      summary: Retrieve
-      description: >-
-        Returns a `User` object with the given `id`.{/* BEGIN_FILESTORAGE_USER_FETCH_SUPPORTED_FIELDS
-        */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET"
-        data="H4sIAAAAAAAAA+WTYW/aMBCG/8rkjygko4xVjTRNQFgLGqYrabWuqqIjPoLBsYPtAKXqf58SaAtbpfUD2jT1W+50957vuTf3JAaLidJ3xCdjLtBYpSFB4pBUMRTEJ5cGNXEIZJxCivtl0eKIOMTkWaa0RfaFo2DmTOOY+MRLUSdYzSUfc2TeTpfHpcVEg+VKGu+puzou24lDBJczZM04Vrm0r9Db1Fdh0/BLaDzBjSUOycAYO9EqTyYXOM/RvEa6eJ3AFKUFUWVgwduRqeqNzku5Yg+GAi2yACwEaDEuFt6OnFibGd/zJigytxzvMlx4KD3QlscCjdeonxwdnzSqW5Vy+ucoEZ9qlel8pEbHlSiJRQR5pR/GKxp2l3SafKDtDyu6vmzQ9WxNp7P3lSiBSj/sNwbhdX0QNGuDFwqi4cfvJ1etoNWjlXjdqdPp9ZKGca0fxrPRulvvncbL3tm3FV1fH/WDyzoNO43eqaoN2hem375Q/abrEofs3pX4N/e7ia15Wmq1X9hNC7s9A9mcAjJezfKR4LFr6i6ksFYSlsaNVeqlyDh45wLsWOm0pVaRmeegMZpSvfxxLN1MJo/wuZJP5IlPOvSsSdudYN8NzQVwASOBxLc6x98MTfwbgilwEQFjGk1x2h2PZKhTbky5tEMSrfKs+OAmSov/SBaLO2S/SmOqLEbFSfejKAM7eU5xRm6LYJ5zjewcNKRoURdPun1wXgIcaJWNDg15K/oIOv0qryby7q+A/tc8T5VKBL4LNF/gYaBuFKNSMRqWRN+2ZQcSD4j30bMDiaxEvDHtmzDrcAIazxWX9rAsh4VuVuj+mSZtht2rzn/F8vbhJ7/9+x4ICQAA"
-        /></Footer>{/* END_FILESTORAGE_USER_FETCH_SUPPORTED_FIELDS */}
-      tags:
-        - subpackage_users
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-        - name: include_remote_data
-          in: query
-          description: Whether to include the original data Merge fetched from the third-party to produce these models.
-          required: false
-          schema:
-            type: boolean
-        - name: include_shell_data
-          in: query
-          description: >-
-            Whether to include shell records. Shell records are empty records (they may contain some metadata but all
-            other fields are null).
-          required: false
-          schema:
-            type: boolean
-        - name: Authorization
-          in: header
-          description: Token-based authentication with required prefix "Bearer"
-          required: true
-          schema:
-            type: string
-        - name: X-Account-Token
-          in: header
-          description: Token identifying the end user.
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-  /filestorage/v1/account-details:
+  /account-details:
     get:
       operationId: retrieve
       summary: Retrieve
@@ -1294,7 +877,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AccountDetails'
-  /filestorage/v1/account-token/{public_token}:
+  /account-token/{public_token}:
     get:
       operationId: retrieve
       summary: Retrieve
@@ -1320,7 +903,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AccountToken'
-  /filestorage/v1/account-token/regenerate:
+  /account-token/regenerate:
     post:
       operationId: regenerate-create
       summary: Regenerate Create
@@ -1347,7 +930,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RegenerateAccountToken'
-  /filestorage/v1/delete-account:
+  /delete-account:
     post:
       operationId: delete
       summary: Delete
@@ -1374,7 +957,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/deleteAccount_delete_Response_200'
-  /filestorage/v1/issues:
+  /issues:
     get:
       operationId: list
       summary: List
@@ -1480,7 +1063,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaginatedIssueList'
-  /filestorage/v1/issues/{id}:
+  /issues/{id}:
     get:
       operationId: retrieve
       summary: Retrieve
@@ -1507,7 +1090,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Issue'
-  /filestorage/v1/linked-accounts:
+  /linked-accounts:
     get:
       operationId: list
       summary: List
@@ -1610,7 +1193,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaginatedAccountDetailsAndActionsList'
-  /filestorage/v1/link-token:
+  /link-token:
     post:
       operationId: create
       summary: Create
@@ -1636,7 +1219,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/EndUserDetailsRequest'
-  /filestorage/v1/field-mappings:
+  /field-mappings:
     get:
       operationId: field-mappings-retrieve
       summary: Field Mappings Retrieve
@@ -1724,7 +1307,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/CreateFieldMappingRequest'
-  /filestorage/v1/field-mappings/{field_mapping_id}:
+  /field-mappings/{field_mapping_id}:
     delete:
       operationId: field-mappings-destroy
       summary: Field Mappings Destroy
@@ -1807,7 +1390,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/PatchedEditFieldMappingRequest'
-  /filestorage/v1/remote-fields:
+  /remote-fields:
     get:
       operationId: remote-fields-retrieve
       summary: Remote Fields Retrieve
@@ -1853,7 +1436,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RemoteFieldAPIResponse'
-  /filestorage/v1/target-fields:
+  /target-fields:
     get:
       operationId: target-fields-retrieve
       summary: Target Fields Retrieve
@@ -1917,7 +1500,34 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/CreateTargetFieldRequest'
-  /filestorage/v1/default-scopes:
+  /available-actions:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a list of models and actions available for an account.
+      tags:
+        - subpackage_availableActions
+      parameters:
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+        - name: X-Account-Token
+          in: header
+          description: Token identifying the end user.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AvailableActions'
+  /default-scopes:
     get:
       operationId: default-scopes-retrieve
       summary: Default Scopes Retrieve
@@ -1940,7 +1550,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CommonModelScopeAPI'
-  /filestorage/v1/linked-account-scopes:
+  /linked-account-scopes:
     get:
       operationId: linked-account-scopes-retrieve
       summary: Linked Account Scopes Retrieve
@@ -2003,40 +1613,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/LinkedAccountCommonModelScopeDeserializerRequest'
-  /filestorage/v1/sync-status/resync:
-    post:
-      operationId: sync-status-resync-create
-      summary: Sync Status Resync Create
-      description: >-
-        Force re-sync of all models. This endpoint is available for monthly, quarterly, and highest sync frequency
-        customers on the Professional or Enterprise plans. Doing so will consume a sync credit for the relevant linked
-        account. Force re-syncs can also be triggered manually in the Merge Dashboard and is available for all
-        customers.
-      tags:
-        - subpackage_forceResync
-      parameters:
-        - name: Authorization
-          in: header
-          description: Token-based authentication with required prefix "Bearer"
-          required: true
-          schema:
-            type: string
-        - name: X-Account-Token
-          in: header
-          description: Token identifying the end user.
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/SyncStatus'
-  /filestorage/v1/passthrough:
+  /passthrough:
     post:
       operationId: create
       summary: Create
@@ -2068,7 +1645,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/DataPassthroughRequest'
-  /filestorage/v1/async-passthrough:
+  /async-passthrough:
     post:
       operationId: create
       summary: Create
@@ -2100,7 +1677,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/DataPassthroughRequest'
-  /filestorage/v1/async-passthrough/{async_passthrough_receipt_id}:
+  /async-passthrough/{async_passthrough_receipt_id}:
     get:
       operationId: retrieve
       summary: Retrieve
@@ -2133,7 +1710,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RemoteResponse'
-  /filestorage/v1/sync-status:
+  /sync-status:
     get:
       operationId: list
       summary: List
@@ -2179,7 +1756,40 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaginatedSyncStatusList'
-  /filestorage/v1/generate-key:
+  /sync-status/resync:
+    post:
+      operationId: sync-status-resync-create
+      summary: Sync Status Resync Create
+      description: >-
+        Force re-sync of all models. This endpoint is available for monthly, quarterly, and highest sync frequency
+        customers on the Professional or Enterprise plans. Doing so will consume a sync credit for the relevant linked
+        account. Force re-syncs can also be triggered manually in the Merge Dashboard and is available for all
+        customers.
+      tags:
+        - subpackage_forceResync
+      parameters:
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+        - name: X-Account-Token
+          in: header
+          description: Token identifying the end user.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SyncStatus'
+  /generate-key:
     post:
       operationId: create
       summary: Create
@@ -2205,7 +1815,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/GenerateRemoteKeyRequest'
-  /filestorage/v1/regenerate-key:
+  /regenerate-key:
     post:
       operationId: create
       summary: Create
@@ -2231,7 +1841,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/RemoteKeyForRegenerationRequest'
-  /filestorage/v1/audit-trail:
+  /audit-trail:
     get:
       operationId: list
       summary: List
@@ -2307,12 +1917,28 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedAuditLogEventList'
 servers:
-  - url: https://api.merge.dev/api
-  - url: https://api-eu.merge.dev/api
-  - url: https://api-ap.merge.dev/api
+  - url: https://api.merge.dev/api/chat/v1
+  - url: https://api-eu.merge.dev/api/chat/v1
+  - url: https://api-ap.merge.dev/api/chat/v1
 components:
   schemas:
-    DriveFieldMappings:
+    ConversationsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+        - members
+      title: ConversationsGetParametersExpandSchemaItems
+    TypeEnum:
+      type: string
+      enum:
+        - PRIVATE_INTERNAL
+        - PRIVATE_EXTERNAL
+        - PUBLIC_INTERNAL
+        - PUBLIC_EXTERNAL
+        - ONE_ON_ONE_CHAT
+        - GROUP_CHAT
+        - MEETING_CHAT
+      title: TypeEnum
+    ConversationFieldMappings:
       type: object
       properties:
         organization_defined_targets:
@@ -2323,7 +1949,7 @@ components:
           type: object
           additionalProperties:
             description: Any type
-      title: DriveFieldMappings
+      title: ConversationFieldMappings
     RemoteData:
       type: object
       properties:
@@ -2342,7 +1968,7 @@ components:
         ### Usage Example
         TODO
       title: RemoteData
-    Drive:
+    Conversation:
       type: object
       properties:
         id:
@@ -2365,24 +1991,40 @@ components:
           type:
             - string
             - 'null'
-          description: The drive's name.
+          description: The name of the conversation
+        description:
+          type:
+            - string
+            - 'null'
+          description: The description of the conversation.
+        url:
+          type:
+            - string
+            - 'null'
+          format: uri
+          description: The url of the conversation.
+        type:
+          oneOf:
+            - $ref: '#/components/schemas/TypeEnum'
+            - type: 'null'
+          description: The type of the conversation.
+        members:
+          type: array
+          items:
+            type: string
+            format: uuid
         remote_created_at:
           type:
             - string
             - 'null'
           format: date-time
-          description: When the third party's drive was created.
-        drive_url:
+          description: When the third party's conversation was created.
+        remote_updated_at:
           type:
             - string
             - 'null'
-          description: The drive's url.
-        size:
-          type:
-            - integer
-            - 'null'
-          format: int64
-          description: The drive's size, in bytes.
+          format: date-time
+          description: When the third party's conversation was updated.
         remote_was_deleted:
           type: boolean
           description: >-
@@ -2391,7 +2033,7 @@ components:
             more](https://docs.merge.dev/integrations/hris/supported-features/).
         field_mappings:
           oneOf:
-            - $ref: '#/components/schemas/DriveFieldMappings'
+            - $ref: '#/components/schemas/ConversationFieldMappings'
             - type: 'null'
         remote_data:
           type:
@@ -2400,13 +2042,14 @@ components:
           items:
             $ref: '#/components/schemas/RemoteData'
       description: |-
-        # The Drive Object
+        # The Conversation Object
         ### Description
-        The `Drive` object is used to represent a drive that contains the folders and files in the user's workspace.
+        The `Conversation` object is used to represent a conversation within the Chat account.
+
         ### Usage Example
-        Fetch from the `GET /api/filestorage/v1/drives` endpoint and view their drives.
-      title: Drive
-    PaginatedDriveList:
+        Fetch from the `GET /api/chat/v1/conversations` endpoint and view their conversations.
+      title: Conversation
+    PaginatedConversationList:
       type: object
       properties:
         next:
@@ -2420,39 +2063,126 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/Drive'
-      title: PaginatedDriveList
-    FilesGetParametersExpandSchemaItems:
+            $ref: '#/components/schemas/Conversation'
+      title: PaginatedConversationList
+    ConversationsIdGetParametersExpandSchemaItems:
       type: string
       enum:
-        - drive
-        - folder
-        - permissions
-      title: FilesGetParametersExpandSchemaItems
-    FilesGetParametersOrderBy:
+        - members
+      title: ConversationsIdGetParametersExpandSchemaItems
+    MessagesGetParametersOrderBy:
       type: string
       enum:
-        - '-created_at'
-        - '-modified_at'
-        - created_at
-        - modified_at
-      title: FilesGetParametersOrderBy
-    TypeEnum:
+        - '-remote_created_at'
+        - remote_created_at
+      title: MessagesGetParametersOrderBy
+    Message:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+            - string
+            - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        user_id:
+          type:
+            - string
+            - 'null'
+          format: uuid
+          description: The user that sent the message.
+        conversation_id:
+          type:
+            - string
+            - 'null'
+          format: uuid
+          description: The conversation this message belongs to.
+        body:
+          type:
+            - string
+            - 'null'
+          description: The body of the message.
+        subject_line:
+          type:
+            - string
+            - 'null'
+          description: The subject line of the message.
+        root_message_id:
+          type:
+            - string
+            - 'null'
+          format: uuid
+          description: The root message this message belongs to.
+        url:
+          type:
+            - string
+            - 'null'
+          format: uri
+          description: The url of the message.
+        remote_created_at:
+          type:
+            - string
+            - 'null'
+          format: date-time
+          description: When the third party's conversation was created.
+        remote_updated_at:
+          type:
+            - string
+            - 'null'
+          format: date-time
+          description: When the third party's conversation was updated.
+        remote_was_deleted:
+          type: boolean
+          description: >-
+            Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion
+            detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn
+            more](https://docs.merge.dev/integrations/hris/supported-features/).
+      description: |-
+        # The Message Object
+        ### Description
+        The `Message` object is used to represent a message within the Chat account.
+        ### Usage Example
+        Fetch from the `GET /api/chat/v1/messages` endpoint and view their message.
+      title: Message
+    PaginatedMessageList:
+      type: object
+      properties:
+        next:
+          type:
+            - string
+            - 'null'
+        previous:
+          type:
+            - string
+            - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+      title: PaginatedMessageList
+    MessagesMessageIdRepliesGetParametersOrderBy:
       type: string
       enum:
-        - USER
-        - GROUP
-        - COMPANY
-        - ANYONE
-      title: TypeEnum
-    RolesEnum:
+        - '-remote_created_at'
+        - remote_created_at
+      title: MessagesMessageIdRepliesGetParametersOrderBy
+    ConversationsConversationIdMembersGetParametersExpandSchemaItems:
       type: string
       enum:
-        - READ
-        - WRITE
-        - OWNER
-      title: RolesEnum
-    PermissionFieldMappings:
+        - group
+        - user
+      title: ConversationsConversationIdMembersGetParametersExpandSchemaItems
+    MemberFieldMappings:
       type: object
       properties:
         organization_defined_targets:
@@ -2463,8 +2193,8 @@ components:
           type: object
           additionalProperties:
             description: Any type
-      title: PermissionFieldMappings
-    Permission:
+      title: MemberFieldMappings
+    Member:
       type: object
       properties:
         id:
@@ -2488,151 +2218,25 @@ components:
             - string
             - 'null'
           format: uuid
-          description: The user that is granted this permission. This will only be populated if the type is `USER`.
+          description: The user that is a member of the conversation. Only populated if the member is a user.
         group:
           type:
             - string
             - 'null'
           format: uuid
-          description: The group that is granted this permission. This will only be populated if the type is `GROUP`.
-        type:
-          oneOf:
-            - $ref: '#/components/schemas/TypeEnum'
-            - type: 'null'
-          description: Denotes what type of people have access to the file.
-        roles:
-          type:
-            - array
-            - 'null'
-          items:
-            $ref: '#/components/schemas/RolesEnum'
-          description: >-
-            The permissions that the user or group has for the File or Folder. It is possible for a user or group to
-            have multiple roles, such as viewing & uploading. Possible values include: `READ`, `WRITE`, `OWNER`. In
-            cases where there is no clear mapping, the original value passed through will be returned.
-        remote_was_deleted:
-          type: boolean
-          description: >-
-            Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion
-            detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn
-            more](https://docs.merge.dev/integrations/hris/supported-features/).
-        field_mappings:
-          oneOf:
-            - $ref: '#/components/schemas/PermissionFieldMappings'
-            - type: 'null'
-      description: >-
-        # The Permission Object
-
-        ### Description
-
-        The Permission object is used to represent a user's or group's access to a File or Folder. Permissions are
-        unexpanded by default.
-
-
-        ### Usage Example
-
-        Fetch from the `GET Files` or `GET Folders` endpoint. Permissions are unexpanded by default. Use the query param
-        `expand=permissions` to see more details.
-      title: Permission
-    FileFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: FileFieldMappings
-    File:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        remote_id:
-          type:
-            - string
-            - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        name:
-          type:
-            - string
-            - 'null'
-          description: The file's name.
-        file_url:
-          type:
-            - string
-            - 'null'
-          description: The URL to access the file.
-        file_thumbnail_url:
-          type:
-            - string
-            - 'null'
-          description: The URL that produces a thumbnail preview of the file. Typically an image.
-        size:
-          type:
-            - integer
-            - 'null'
-          format: int64
-          description: The file's size, in bytes.
-        mime_type:
-          type:
-            - string
-            - 'null'
-          description: The file's mime type.
-        description:
-          type:
-            - string
-            - 'null'
-          description: The file's description.
-        folder:
-          type:
-            - string
-            - 'null'
-          format: uuid
-          description: The folder that the file belongs to.
-        checksum:
-          type:
-            - object
-            - 'null'
-          additionalProperties:
-            description: Any type
-          description: >-
-            This field stores file checksum data. 'type' indicates the algorithm (e.g. crc_32, sha1, sha256, quickXor,
-            or md5), and 'content_hash' is the unique hash used to verify file integrity and detect alterations.
-        permissions:
-          type: array
-          items:
-            $ref: '#/components/schemas/Permission'
-        drive:
-          type:
-            - string
-            - 'null'
-          format: uuid
-          description: The drive that the file belongs to.
+          description: The group that is a member of the conversation. Only populated if the member is a group.
         remote_created_at:
           type:
             - string
             - 'null'
           format: date-time
-          description: When the third party's file was created.
+          description: When the third party's conversation was created.
         remote_updated_at:
           type:
             - string
             - 'null'
           format: date-time
-          description: When the third party's file was updated.
+          description: When the third party's conversation was updated.
         remote_was_deleted:
           type: boolean
           description: >-
@@ -2641,7 +2245,7 @@ components:
             more](https://docs.merge.dev/integrations/hris/supported-features/).
         field_mappings:
           oneOf:
-            - $ref: '#/components/schemas/FileFieldMappings'
+            - $ref: '#/components/schemas/MemberFieldMappings'
             - type: 'null'
         remote_data:
           type:
@@ -2649,19 +2253,15 @@ components:
             - 'null'
           items:
             $ref: '#/components/schemas/RemoteData'
-      description: >-
-        # The File Object
-
+      description: |-
+        # The Member Object
         ### Description
-
-        The `File` object is used to represent a file in the workspace. The Object typically exists under a folder or
-        drive, if it exists.
+        The `Member` object is used to represent a member within the Chat account.
 
         ### Usage Example
-
-        Fetch from the `GET /api/filestorage/v1/files` endpoint and view their files.
-      title: File
-    PaginatedFileList:
+        Fetch from the `GET /api/chat/v1/members` endpoint and view their members.
+      title: Member
+    PaginatedMemberList:
       type: object
       properties:
         next:
@@ -2675,434 +2275,92 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/File'
-      title: PaginatedFileList
-    PermissionRequest:
+            $ref: '#/components/schemas/Member'
+      title: PaginatedMemberList
+    UsersGetParametersExpandSchemaItems:
+      type: string
+      enum:
+        - groups
+      title: UsersGetParametersExpandSchemaItems
+    UserFieldMappings:
       type: object
       properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: UserFieldMappings
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
         remote_id:
           type:
             - string
             - 'null'
           description: The third-party API ID of the matching object.
-        user:
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        username:
           type:
             - string
             - 'null'
-          format: uuid
-          description: The user that is granted this permission. This will only be populated if the type is `USER`.
-        group:
+          description: Username or handle
+        display_name:
           type:
             - string
             - 'null'
-          format: uuid
-          description: The group that is granted this permission. This will only be populated if the type is `GROUP`.
-        type:
-          oneOf:
-            - $ref: '#/components/schemas/TypeEnum'
-            - type: 'null'
-          description: Denotes what type of people have access to the file.
-        roles:
-          type:
-            - array
-            - 'null'
-          items:
-            $ref: '#/components/schemas/RolesEnum'
-          description: >-
-            The permissions that the user or group has for the File or Folder. It is possible for a user or group to
-            have multiple roles, such as viewing & uploading. Possible values include: `READ`, `WRITE`, `OWNER`. In
-            cases where there is no clear mapping, the original value passed through will be returned.
-        integration_params:
-          type:
-            - object
-            - 'null'
-          additionalProperties:
-            description: Any type
-        linked_account_params:
-          type:
-            - object
-            - 'null'
-          additionalProperties:
-            description: Any type
-      description: >-
-        # The Permission Object
-
-        ### Description
-
-        The Permission object is used to represent a user's or group's access to a File or Folder. Permissions are
-        unexpanded by default.
-
-
-        ### Usage Example
-
-        Fetch from the `GET Files` or `GET Folders` endpoint. Permissions are unexpanded by default. Use the query param
-        `expand=permissions` to see more details.
-      title: PermissionRequest
-    FileRequest:
-      type: object
-      properties:
-        name:
+          description: Full name or display name
+        first_name:
           type:
             - string
             - 'null'
-          description: The file's name.
-        file_url:
+          description: The user's first name
+        last_name:
           type:
             - string
             - 'null'
-          description: The URL to access the file.
-        file_thumbnail_url:
+          description: The user's last name
+        is_bot:
           type:
-            - string
+            - boolean
             - 'null'
-          description: The URL that produces a thumbnail preview of the file. Typically an image.
-        size:
-          type:
-            - integer
-            - 'null'
-          format: int64
-          description: The file's size, in bytes.
-        mime_type:
-          type:
-            - string
-            - 'null'
-          description: The file's mime type.
-        description:
-          type:
-            - string
-            - 'null'
-          description: The file's description.
-        folder:
-          type:
-            - string
-            - 'null'
-          format: uuid
-          description: The folder that the file belongs to.
-        checksum:
-          type:
-            - object
-            - 'null'
-          additionalProperties:
-            description: Any type
-          description: >-
-            This field stores file checksum data. 'type' indicates the algorithm (e.g. crc_32, sha1, sha256, quickXor,
-            or md5), and 'content_hash' is the unique hash used to verify file integrity and detect alterations.
-        permissions:
-          type: array
-          items:
-            $ref: '#/components/schemas/PermissionRequest'
-        drive:
-          type:
-            - string
-            - 'null'
-          format: uuid
-          description: The drive that the file belongs to.
-        integration_params:
-          type:
-            - object
-            - 'null'
-          additionalProperties:
-            description: Any type
-        linked_account_params:
-          type:
-            - object
-            - 'null'
-          additionalProperties:
-            description: Any type
-      description: >-
-        # The File Object
-
-        ### Description
-
-        The `File` object is used to represent a file in the workspace. The Object typically exists under a folder or
-        drive, if it exists.
-
-        ### Usage Example
-
-        Fetch from the `GET /api/filestorage/v1/files` endpoint and view their files.
-      title: FileRequest
-    FileStorageFileEndpointRequest:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/FileRequest'
-      required:
-        - model
-      title: FileStorageFileEndpointRequest
-    ValidationProblemSource:
-      type: object
-      properties:
-        pointer:
-          type: string
-      required:
-        - pointer
-      title: ValidationProblemSource
-    WarningValidationProblem:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
-          type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
-      required:
-        - title
-        - detail
-        - problem_type
-      title: WarningValidationProblem
-    ErrorValidationProblem:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
-          type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
-      required:
-        - title
-        - detail
-        - problem_type
-      title: ErrorValidationProblem
-    DebugModelLogSummary:
-      type: object
-      properties:
-        url:
-          type: string
-        method:
-          type: string
-        status_code:
-          type: integer
-      required:
-        - url
-        - method
-        - status_code
-      title: DebugModelLogSummary
-    DebugModeLog:
-      type: object
-      properties:
-        log_id:
-          type: string
-        dashboard_view:
-          type: string
-        log_summary:
-          $ref: '#/components/schemas/DebugModelLogSummary'
-      required:
-        - log_id
-        - dashboard_view
-        - log_summary
-      title: DebugModeLog
-    FileStorageFileResponse:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/File'
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/WarningValidationProblem'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorValidationProblem'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/DebugModeLog'
-      required:
-        - model
-        - warnings
-        - errors
-      title: FileStorageFileResponse
-    FilesIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-        - drive
-        - folder
-        - permissions
-      title: FilesIdGetParametersExpandSchemaItems
-    DownloadRequestMeta:
-      type: object
-      properties:
-        id:
-          type: string
-        url:
-          type: string
-        method:
-          type: string
-        headers:
-          type: object
-          additionalProperties:
-            description: Any type
-      required:
-        - id
-        - url
-        - method
-        - headers
-      title: DownloadRequestMeta
-    FilesDownloadRequestMetaGetParametersOrderBy:
-      type: string
-      enum:
-        - '-created_at'
-        - '-modified_at'
-        - created_at
-        - modified_at
-      title: FilesDownloadRequestMetaGetParametersOrderBy
-    PaginatedDownloadRequestMetaList:
-      type: object
-      properties:
-        next:
-          type:
-            - string
-            - 'null'
-        previous:
-          type:
-            - string
-            - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/DownloadRequestMeta'
-      title: PaginatedDownloadRequestMetaList
-    LinkedAccountStatus:
-      type: object
-      properties:
-        linked_account_status:
-          type: string
-        can_make_request:
-          type: boolean
-      required:
-        - linked_account_status
-        - can_make_request
-      title: LinkedAccountStatus
-    MetaResponse:
-      type: object
-      properties:
-        request_schema:
-          type: object
-          additionalProperties:
-            description: Any type
-        status:
-          $ref: '#/components/schemas/LinkedAccountStatus'
-        has_conditional_params:
-          type: boolean
-        has_required_linked_account_params:
-          type: boolean
-        remote_fields:
+          description: Returns true if the user is a bot
+        groups:
           type: array
           items:
             type: string
             format: uuid
-          description: Remote field values to populate
-      required:
-        - request_schema
-        - has_conditional_params
-        - has_required_linked_account_params
-      title: MetaResponse
-    FoldersGetParametersExpandSchemaItems:
-      type: string
-      enum:
-        - drive
-        - parent_folder
-        - permissions
-      title: FoldersGetParametersExpandSchemaItems
-    FolderFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: FolderFieldMappings
-    Folder:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        remote_id:
+        avatar:
           type:
             - string
             - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        name:
-          type:
-            - string
-            - 'null'
-          description: The folder's name.
-        folder_url:
-          type:
-            - string
-            - 'null'
-          description: The URL to access the folder.
-        size:
-          type:
-            - integer
-            - 'null'
-          format: int64
-          description: The folder's size, in bytes.
-        description:
-          type:
-            - string
-            - 'null'
-          description: The folder's description.
-        parent_folder:
-          type:
-            - string
-            - 'null'
-          format: uuid
-          description: The folder that the folder belongs to.
-        drive:
-          type:
-            - string
-            - 'null'
-          format: uuid
-          description: The drive that the folder belongs to.
-        permissions:
-          type: array
-          items:
-            $ref: '#/components/schemas/Permission'
+          format: uri
+          description: The user's avatar image
         remote_created_at:
           type:
             - string
             - 'null'
           format: date-time
-          description: When the third party's folder was created.
+          description: When the third party's user was created.
         remote_updated_at:
           type:
             - string
             - 'null'
           format: date-time
-          description: When the third party's folder was updated.
+          description: When the third party's user was updated.
         remote_was_deleted:
           type: boolean
           description: >-
@@ -3111,7 +2369,7 @@ components:
             more](https://docs.merge.dev/integrations/hris/supported-features/).
         field_mappings:
           oneOf:
-            - $ref: '#/components/schemas/FolderFieldMappings'
+            - $ref: '#/components/schemas/UserFieldMappings'
             - type: 'null'
         remote_data:
           type:
@@ -3119,19 +2377,15 @@ components:
             - 'null'
           items:
             $ref: '#/components/schemas/RemoteData'
-      description: >-
-        # The Folder Object
-
+      description: |-
+        # The User Object
         ### Description
-
-        The `Folder` object is used to represent a collection of files and/or folders in the workspace. Could be within
-        a drive, if it exists.
+        The `User` object is used to represent a user within the Chat account.
 
         ### Usage Example
-
-        Fetch from the `GET /api/filestorage/v1/folders` endpoint and view their folders.
-      title: Folder
-    PaginatedFolderList:
+        Fetch from the `GET /api/chat/v1/users` endpoint and view their users.
+      title: User
+    PaginatedUserList:
       type: object
       properties:
         next:
@@ -3145,113 +2399,16 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/Folder'
-      title: PaginatedFolderList
-    FolderRequest:
-      type: object
-      properties:
-        name:
-          type:
-            - string
-            - 'null'
-          description: The folder's name.
-        folder_url:
-          type:
-            - string
-            - 'null'
-          description: The URL to access the folder.
-        size:
-          type:
-            - integer
-            - 'null'
-          format: int64
-          description: The folder's size, in bytes.
-        description:
-          type:
-            - string
-            - 'null'
-          description: The folder's description.
-        parent_folder:
-          type:
-            - string
-            - 'null'
-          format: uuid
-          description: The folder that the folder belongs to.
-        drive:
-          type:
-            - string
-            - 'null'
-          format: uuid
-          description: The drive that the folder belongs to.
-        permissions:
-          type: array
-          items:
-            $ref: '#/components/schemas/PermissionRequest'
-        integration_params:
-          type:
-            - object
-            - 'null'
-          additionalProperties:
-            description: Any type
-        linked_account_params:
-          type:
-            - object
-            - 'null'
-          additionalProperties:
-            description: Any type
-      description: >-
-        # The Folder Object
-
-        ### Description
-
-        The `Folder` object is used to represent a collection of files and/or folders in the workspace. Could be within
-        a drive, if it exists.
-
-        ### Usage Example
-
-        Fetch from the `GET /api/filestorage/v1/folders` endpoint and view their folders.
-      title: FolderRequest
-    FileStorageFolderEndpointRequest:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/FolderRequest'
-      required:
-        - model
-      title: FileStorageFolderEndpointRequest
-    FileStorageFolderResponse:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/Folder'
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/WarningValidationProblem'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorValidationProblem'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/DebugModeLog'
-      required:
-        - model
-        - warnings
-        - errors
-      title: FileStorageFolderResponse
-    FoldersIdGetParametersExpandSchemaItems:
+            $ref: '#/components/schemas/User'
+      title: PaginatedUserList
+    UsersIdGetParametersExpandSchemaItems:
       type: string
       enum:
-        - drive
-        - parent_folder
-        - permissions
-      title: FoldersIdGetParametersExpandSchemaItems
+        - groups
+      title: UsersIdGetParametersExpandSchemaItems
     GroupsGetParametersExpandSchemaItems:
       type: string
       enum:
-        - child_groups
         - users
       title: GroupsGetParametersExpandSchemaItems
     GroupFieldMappings:
@@ -3289,21 +2446,24 @@ components:
           type:
             - string
             - 'null'
-          description: The group's name.
+          description: The name of the Group
         users:
           type: array
           items:
             type: string
             format: uuid
-          description: >-
-            The users that belong in the group. If null, this typically means it's either a domain or the third-party
-            platform does not surface this information.
-        child_groups:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: Groups that inherit the permissions of the parent group.
+        remote_created_at:
+          type:
+            - string
+            - 'null'
+          format: date-time
+          description: When the third party's group was created.
+        remote_updated_at:
+          type:
+            - string
+            - 'null'
+          format: date-time
+          description: When the third party's group was updated.
         remote_was_deleted:
           type: boolean
           description: >-
@@ -3320,14 +2480,12 @@ components:
             - 'null'
           items:
             $ref: '#/components/schemas/RemoteData'
-      required:
-        - users
       description: |-
         # The Group Object
         ### Description
-        The `Group` object is used to represent any subset of `Users`. This can extend to company domains as well.
+        The `Group` object is used to represent any subset of `Users`.
         ### Usage Example
-        Fetch from the `GET /api/filestorage/v1/groups` endpoint and view their groups.
+        Fetch from the `GET /api/chat/v1/groups` endpoint and view their groups.
       title: Group
     PaginatedGroupList:
       type: object
@@ -3348,92 +2506,8 @@ components:
     GroupsIdGetParametersExpandSchemaItems:
       type: string
       enum:
-        - child_groups
         - users
       title: GroupsIdGetParametersExpandSchemaItems
-    UserFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: UserFieldMappings
-    User:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        remote_id:
-          type:
-            - string
-            - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        name:
-          type:
-            - string
-            - 'null'
-          description: The user's name.
-        email_address:
-          type:
-            - string
-            - 'null'
-          description: The user's email address. This is typically used to identify a user across linked accounts.
-        is_me:
-          type: boolean
-          description: Whether the user is the one who linked this account.
-        remote_was_deleted:
-          type: boolean
-          description: >-
-            Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion
-            detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn
-            more](https://docs.merge.dev/integrations/hris/supported-features/).
-        field_mappings:
-          oneOf:
-            - $ref: '#/components/schemas/UserFieldMappings'
-            - type: 'null'
-        remote_data:
-          type:
-            - array
-            - 'null'
-          items:
-            $ref: '#/components/schemas/RemoteData'
-      description: |-
-        # The User Object
-        ### Description
-        The `User` object is used to represent a user within the File Storage account.
-        ### Usage Example
-        Fetch from the `GET /api/filestorage/v1/users` endpoint and view their users.
-      title: User
-    PaginatedUserList:
-      type: object
-      properties:
-        next:
-          type:
-            - string
-            - 'null'
-        previous:
-          type:
-            - string
-            - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/User'
-      title: PaginatedUserList
     CategoryEnum:
       type: string
       enum:
@@ -4108,15 +3182,7 @@ components:
     FieldMappingApiInstanceResponse:
       type: object
       properties:
-        File:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        Folder:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        Drive:
+        User:
           type: array
           items:
             $ref: '#/components/schemas/FieldMappingApiInstance'
@@ -4124,7 +3190,11 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/FieldMappingApiInstance'
-        User:
+        Conversation:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        Member:
           type: array
           items:
             $ref: '#/components/schemas/FieldMappingApiInstance'
@@ -4179,6 +3249,86 @@ components:
         - remote_url_path
         - common_model_name
       title: CreateFieldMappingRequest
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+        - pointer
+      title: ValidationProblemSource
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+        - title
+        - detail
+        - problem_type
+      title: WarningValidationProblem
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+        - title
+        - detail
+        - problem_type
+      title: ErrorValidationProblem
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+        - url
+        - method
+        - status_code
+      title: DebugModelLogSummary
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+        - log_id
+        - dashboard_view
+        - log_summary
+      title: DebugModeLog
     FieldMappingInstanceResponse:
       type: object
       properties:
@@ -4299,15 +3449,7 @@ components:
     RemoteFieldAPIResponse:
       type: object
       properties:
-        File:
-          type: array
-          items:
-            $ref: '#/components/schemas/RemoteFieldAPI'
-        Folder:
-          type: array
-          items:
-            $ref: '#/components/schemas/RemoteFieldAPI'
-        Drive:
+        User:
           type: array
           items:
             $ref: '#/components/schemas/RemoteFieldAPI'
@@ -4315,7 +3457,11 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/RemoteFieldAPI'
-        User:
+        Conversation:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldAPI'
+        Member:
           type: array
           items:
             $ref: '#/components/schemas/RemoteFieldAPI'
@@ -4339,15 +3485,7 @@ components:
     ExternalTargetFieldAPIResponse:
       type: object
       properties:
-        File:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalTargetFieldAPI'
-        Folder:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalTargetFieldAPI'
-        Drive:
+        User:
           type: array
           items:
             $ref: '#/components/schemas/ExternalTargetFieldAPI'
@@ -4355,7 +3493,11 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ExternalTargetFieldAPI'
-        User:
+        Conversation:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalTargetFieldAPI'
+        Member:
           type: array
           items:
             $ref: '#/components/schemas/ExternalTargetFieldAPI'
@@ -4377,6 +3519,28 @@ components:
         - name
         - common_model
       title: CreateTargetFieldRequest
+    AvailableActions:
+      type: object
+      properties:
+        integration:
+          $ref: '#/components/schemas/AccountIntegration'
+        passthrough_available:
+          type: boolean
+        available_model_operations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ModelOperation'
+      required:
+        - integration
+        - passthrough_available
+      description: |-
+        # The AvailableActions Object
+        ### Description
+        The `Activity` object is used to see all available model/operation combinations for an integration.
+
+        ### Usage Example
+        Fetch all the actions available for the `Zenefits` integration.
+      title: AvailableActions
     ModelPermissionDeserializer:
       type: object
       properties:
@@ -4431,69 +3595,6 @@ components:
       required:
         - common_models
       title: LinkedAccountCommonModelScopeDeserializerRequest
-    LastSyncResultEnum:
-      type: string
-      enum:
-        - SYNCING
-        - DONE
-        - FAILED
-        - DISABLED
-        - PAUSED
-        - PARTIALLY_SYNCED
-      title: LastSyncResultEnum
-    StatusFd5Enum:
-      type: string
-      enum:
-        - SYNCING
-        - DONE
-        - FAILED
-        - DISABLED
-        - PAUSED
-        - PARTIALLY_SYNCED
-      title: StatusFd5Enum
-    SelectiveSyncConfigurationsUsageEnum:
-      type: string
-      enum:
-        - IN_NEXT_SYNC
-        - IN_LAST_SYNC
-      title: SelectiveSyncConfigurationsUsageEnum
-    SyncStatus:
-      type: object
-      properties:
-        model_name:
-          type: string
-        model_id:
-          type: string
-        last_sync_start:
-          type: string
-          format: date-time
-        next_sync_start:
-          type: string
-          format: date-time
-        last_sync_result:
-          $ref: '#/components/schemas/LastSyncResultEnum'
-        last_sync_finished:
-          type: string
-          format: date-time
-        status:
-          $ref: '#/components/schemas/StatusFd5Enum'
-        is_initial_sync:
-          type: boolean
-        selective_sync_configurations_usage:
-          $ref: '#/components/schemas/SelectiveSyncConfigurationsUsageEnum'
-      required:
-        - model_name
-        - model_id
-        - status
-        - is_initial_sync
-      description: |-
-        # The SyncStatus Object
-        ### Description
-        The `SyncStatus` object is used to represent the syncing state of an account
-
-        ### Usage Example
-        View the `SyncStatus` for an account to see how recently its models were synced.
-      title: SyncStatus
     MethodEnum:
       type: string
       enum:
@@ -4660,6 +3761,69 @@ components:
       required:
         - async_passthrough_receipt_id
       title: AsyncPassthroughReciept
+    LastSyncResultEnum:
+      type: string
+      enum:
+        - SYNCING
+        - DONE
+        - FAILED
+        - DISABLED
+        - PAUSED
+        - PARTIALLY_SYNCED
+      title: LastSyncResultEnum
+    StatusFd5Enum:
+      type: string
+      enum:
+        - SYNCING
+        - DONE
+        - FAILED
+        - DISABLED
+        - PAUSED
+        - PARTIALLY_SYNCED
+      title: StatusFd5Enum
+    SelectiveSyncConfigurationsUsageEnum:
+      type: string
+      enum:
+        - IN_NEXT_SYNC
+        - IN_LAST_SYNC
+      title: SelectiveSyncConfigurationsUsageEnum
+    SyncStatus:
+      type: object
+      properties:
+        model_name:
+          type: string
+        model_id:
+          type: string
+        last_sync_start:
+          type: string
+          format: date-time
+        next_sync_start:
+          type: string
+          format: date-time
+        last_sync_result:
+          $ref: '#/components/schemas/LastSyncResultEnum'
+        last_sync_finished:
+          type: string
+          format: date-time
+        status:
+          $ref: '#/components/schemas/StatusFd5Enum'
+        is_initial_sync:
+          type: boolean
+        selective_sync_configurations_usage:
+          $ref: '#/components/schemas/SelectiveSyncConfigurationsUsageEnum'
+      required:
+        - model_name
+        - model_id
+        - status
+        - is_initial_sync
+      description: |-
+        # The SyncStatus Object
+        ### Description
+        The `SyncStatus` object is used to represent the syncing state of an account
+
+        ### Usage Example
+        View the `SyncStatus` for an account to see how recently its models were synced.
+      title: SyncStatus
     PaginatedSyncStatusList:
       type: object
       properties:

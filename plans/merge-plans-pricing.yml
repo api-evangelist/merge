@@ -4,14 +4,18 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Merge
 providerId: merge
 created: '2026-05-04'
-modified: '2026-05-04'
+modified: '2026-05-22'
 reconciled: true
 tags:
   - Unified API
   - Integrations
-description: Merge unified API plans across Launch / Professional / Enterprise.
+  - Agent Handler
+  - Gateway
+description: Merge plans spanning Unified API (Launch / Professional / Enterprise), Agent Handler (consumption-based), and Gateway (margin + BYOK token fee).
 sources:
   - https://www.merge.dev/pricing
+  - https://www.merge.dev/merge-agent-handler
+  - https://www.merge.dev/gateway
 plans:
   - id: merge-launch
     name: Launch
@@ -104,3 +108,57 @@ plans:
       - name: 600 req/min rate limit
       - name: 90+ day log retention
       - name: White-glove onboarding
+  - id: merge-agent-handler
+    name: Agent Handler
+    type: usage-based
+    description: Consumption-based pricing for AI agent tool orchestration, with a free tier allocation and contract pricing for enterprise.
+    entries:
+      - label: Free tier allocation
+        name: free
+        type: quota
+        metric: invocation
+        limit: -1
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '0.00'
+        userMultiplied: false
+      - label: Consumption (contract)
+        name: usage
+        type: metered
+        metric: invocation
+        limit: -1
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: custom
+        userMultiplied: false
+    elements:
+      - name: Pre-built connectors to thousands of enterprise tools
+      - name: MCP server surface for agents
+      - name: Built-in authentication and credential management
+      - name: Data governance with standard entity rules and custom regex rules
+      - name: Tool Packs grouping connectors per agent
+      - name: Registered Users for end-user identity
+  - id: merge-gateway-byok
+    name: Gateway (BYOK)
+    type: usage-based
+    description: Bring-Your-Own-Key Gateway billing — Merge charges $0.05 per million tokens routed when customer supplies upstream LLM provider keys.
+    entries:
+      - label: Per million tokens
+        name: tokens
+        type: metered
+        metric: million-tokens
+        limit: -1
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '0.05'
+        userMultiplied: false
+    elements:
+      - name: One unified API across OpenAI, Anthropic, Google, Mistral, Cohere, xAI
+      - name: Intelligent routing (cost / latency / quality)
+      - name: Context compression and response caching
+      - name: Spend limits by team, project, or customer tier
+      - name: Request-level logging and audit trail
+      - name: Failover and reliability management

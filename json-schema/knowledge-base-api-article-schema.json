@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/merge/refs/heads/main/json-schema/knowledge-base-api-article-schema.json",
+  "title": "Article",
+  "description": "Represents a knowledge base article from a connected platform (Confluence, Notion, etc.) via the Merge Knowledge Base Unified API.",
+  "type": "object",
+  "properties": {
+    "id": { "type": "string", "format": "uuid", "description": "The unique Merge-generated identifier." },
+    "remote_id": { "type": "string", "description": "The third-party ID of this article." },
+    "title": { "type": "string", "description": "The article title." },
+    "content": { "type": "string", "description": "Article body content, typically Markdown or HTML." },
+    "container": { "type": "string", "format": "uuid", "description": "The Merge ID of the parent container (space/page)." },
+    "author": { "type": "string", "format": "uuid", "description": "The Merge ID of the article author." },
+    "url": { "type": "string", "format": "uri", "description": "Canonical URL on the source platform." },
+    "permissions": {
+      "type": "array",
+      "description": "ACL entries (users or groups) with permission level.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "principal": { "type": "string", "format": "uuid" },
+          "principal_type": { "type": "string", "enum": ["USER", "GROUP", "COMPANY"] },
+          "level": { "type": "string", "enum": ["READ", "WRITE", "ADMIN"] }
+        }
+      }
+    },
+    "remote_was_deleted": { "type": "boolean", "description": "Whether the record was deleted upstream." },
+    "created_at": { "type": "string", "format": "date-time" },
+    "modified_at": { "type": "string", "format": "date-time" }
+  }
+}

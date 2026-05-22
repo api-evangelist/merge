@@ -1,0 +1,117 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Merge Agent Handler — Access Keys
+  description: 'Merge Agent Handler — Access Keys. Lead operation: List Access Keys. Self-contained capability for production/test
+    key lifecycle including regenerate and revoke.'
+  tags:
+  - Merge
+  - Agent Handler
+  - Access Keys
+  - Security
+  created: '2026-05-22'
+  modified: '2026-05-22'
+binds:
+- namespace: env
+  keys:
+    MERGE_AH_API_KEY: MERGE_AH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: agent-handler-access-keys
+    baseUri: https://ah-api.merge.dev/api/v1
+    description: Merge Agent Handler — Access Keys business capability.
+    resources:
+    - name: access-keys
+      path: /access-keys/
+      operations:
+      - name: listaccesskeys
+        method: GET
+        description: List Access Keys
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: access-keys-id
+      path: /access-keys/{key_id}/
+      operations:
+      - name: getaccesskey
+        method: GET
+        description: Get Access Key
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: access-keys-regenerate
+      path: /access-keys/{key_id}/regenerate/
+      operations:
+      - name: regenerateaccesskey
+        method: POST
+        description: Regenerate Access Key
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: access-keys-revoke
+      path: /access-keys/{key_id}/revoke/
+      operations:
+      - name: revokeaccesskey
+        method: POST
+        description: Revoke Access Key
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.MERGE_AH_API_KEY}}'
+  exposes:
+  - type: mcp
+    namespace: agent-handler-access-keys-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Merge Agent Handler — Access Keys.
+    tools:
+    - name: ah-list-access-keys
+      description: List Access Keys
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: agent-handler-access-keys.listaccesskeys
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: ah-get-access-key
+      description: Get Access Key
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: agent-handler-access-keys.getaccesskey
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: ah-regenerate-access-key
+      description: Regenerate Access Key
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: false
+      call: agent-handler-access-keys.regenerateaccesskey
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: ah-revoke-access-key
+      description: Revoke Access Key
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: agent-handler-access-keys.revokeaccesskey
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,95 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Merge Chat API — Messages
+  description: 'Merge Chat API — Messages. 3 operations. Lead operation: Merge List Messages. Self-contained Naftiko capability
+    covering chat messages and threaded replies.'
+  tags:
+  - Merge
+  - Chat
+  - Messages
+  created: '2026-05-22'
+  modified: '2026-05-22'
+binds:
+- namespace: env
+  keys:
+    MERGE_API_KEY: MERGE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: chat-messages
+    baseUri: https://api.merge.dev/api/chat/v1
+    description: Merge Chat API — Messages business capability.
+    resources:
+    - name: messages
+      path: /messages
+      operations:
+      - name: listmessages
+        method: GET
+        description: Merge List Messages
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: messages-id
+      path: /messages/{id}
+      operations:
+      - name: getmessage
+        method: GET
+        description: Merge Get Message
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: messages-replies
+      path: /messages/{message_id}/replies
+      operations:
+      - name: listmessagereplies
+        method: GET
+        description: Merge List Message Replies
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.MERGE_API_KEY}}'
+  exposes:
+  - type: mcp
+    namespace: chat-messages-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Merge Chat API — Messages.
+    tools:
+    - name: merge-list-messages
+      description: Merge List Messages
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: chat-messages.listmessages
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: merge-get-message
+      description: Merge Get Message
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: chat-messages.getmessage
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: merge-list-message-replies
+      description: Merge List Message Replies
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: chat-messages.listmessagereplies
+      outputParameters:
+      - type: object
+        mapping: $.

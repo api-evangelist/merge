@@ -1,0 +1,74 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Merge Chat API — Users
+  description: 'Merge Chat API — Users. 2 operations. Lead operation: Merge List Users. Self-contained Naftiko capability for
+    chat user identities.'
+  tags:
+  - Merge
+  - Chat
+  - Users
+  created: '2026-05-22'
+  modified: '2026-05-22'
+binds:
+- namespace: env
+  keys:
+    MERGE_API_KEY: MERGE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: chat-users
+    baseUri: https://api.merge.dev/api/chat/v1
+    description: Merge Chat API — Users business capability.
+    resources:
+    - name: users
+      path: /users
+      operations:
+      - name: listusers
+        method: GET
+        description: Merge List Users
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: users-id
+      path: /users/{id}
+      operations:
+      - name: getuser
+        method: GET
+        description: Merge Get User
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.MERGE_API_KEY}}'
+  exposes:
+  - type: mcp
+    namespace: chat-users-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Merge Chat API — Users.
+    tools:
+    - name: merge-list-chat-users
+      description: Merge List Users
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: chat-users.listusers
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: merge-get-chat-user
+      description: Merge Get User
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: chat-users.getuser
+      outputParameters:
+      - type: object
+        mapping: $.

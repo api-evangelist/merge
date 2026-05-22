@@ -1,0 +1,110 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Merge Agent Handler — Tool Packs
+  description: 'Merge Agent Handler — Tool Packs. Lead operation: List Tool Packs. Self-contained capability covering tool
+    pack definitions, the unit of agent-available toolset.'
+  tags:
+  - Merge
+  - Agent Handler
+  - Tool Packs
+  - MCP
+  created: '2026-05-22'
+  modified: '2026-05-22'
+binds:
+- namespace: env
+  keys:
+    MERGE_AH_API_KEY: MERGE_AH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: agent-handler-tool-packs
+    baseUri: https://ah-api.merge.dev/api/v1
+    description: Merge Agent Handler — Tool Packs business capability.
+    resources:
+    - name: tool-packs
+      path: /tool-packs/
+      operations:
+      - name: listtoolpacks
+        method: GET
+        description: List Tool Packs
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createtoolpack
+        method: POST
+        description: Create Tool Pack
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Tool pack definition payload.
+          required: true
+    - name: tool-packs-id
+      path: /tool-packs/{id}/
+      operations:
+      - name: gettoolpack
+        method: GET
+        description: Get Tool Pack
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: tool-packs-connectors
+      path: /tool-packs/{tool_pack_id}/connectors/
+      operations:
+      - name: listtoolpackconnectors
+        method: GET
+        description: List Connectors Attached to Tool Pack
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.MERGE_AH_API_KEY}}'
+  exposes:
+  - type: mcp
+    namespace: agent-handler-tool-packs-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Merge Agent Handler — Tool Packs.
+    tools:
+    - name: ah-list-tool-packs
+      description: List Tool Packs
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: agent-handler-tool-packs.listtoolpacks
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: ah-get-tool-pack
+      description: Get Tool Pack
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: agent-handler-tool-packs.gettoolpack
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: ah-list-tool-pack-connectors
+      description: List Connectors Attached to Tool Pack
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: agent-handler-tool-packs.listtoolpackconnectors
+      outputParameters:
+      - type: object
+        mapping: $.
