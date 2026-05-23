@@ -1,0 +1,133 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/TimeOff",
+  "title": "TimeOff",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "remote_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The third-party API ID of the matching object."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was created by Merge."
+    },
+    "modified_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was modified by Merge."
+    },
+    "employee": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The employee requesting time off."
+    },
+    "approver": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The Merge ID of the employee with the ability to approve the time off request."
+    },
+    "status": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/TimeOffStatusEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The status of this time off request."
+    },
+    "employee_note": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The employee note for this time off request."
+    },
+    "units": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/UnitsEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The measurement that the third-party integration uses to count time requested."
+    },
+    "amount": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "The time off quantity measured by the prescribed \u201cunits\u201d."
+    },
+    "request_type": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/RequestTypeEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The type of time off request."
+    },
+    "start_time": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The day and time of the start of the time requested off."
+    },
+    "end_time": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The day and time of the end of the time requested off."
+    },
+    "remote_was_deleted": {
+      "type": "boolean",
+      "description": "Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/)."
+    },
+    "field_mappings": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/TimeOffFieldMappings"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "remote_data": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/components/schemas/RemoteData"
+      }
+    }
+  },
+  "description": "# The TimeOff Object\n### Description\nThe `TimeOff` object is used to represent all employees' Time Off entries.\n\n### Usage Example\nFetch from the `LIST TimeOffs` endpoint and filter by `ID` to show all time off requests."
+}

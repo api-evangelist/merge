@@ -1,0 +1,133 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/PaymentRequest",
+  "title": "PaymentRequest",
+  "type": "object",
+  "properties": {
+    "transaction_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The payment's transaction date."
+    },
+    "contact": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The supplier, or customer involved in the payment."
+    },
+    "account": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The supplier\u2019s or customer\u2019s account in which the payment is made."
+    },
+    "payment_method": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The method which this payment was made by."
+    },
+    "currency": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/TransactionCurrencyEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The payment's currency. The currency code in ISO 4217 format."
+    },
+    "exchange_rate": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "decimal",
+      "description": "The payment's exchange rate."
+    },
+    "company": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The company the payment belongs to."
+    },
+    "total_amount": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "The total amount of money being paid to the supplier, or customer, after taxes."
+    },
+    "type": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/PaymentTypeEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The type of the invoice."
+    },
+    "tracking_categories": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "accounting_period": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The accounting period that the Payment was generated in."
+    },
+    "applied_to_lines": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/PaymentLineItemRequest"
+      },
+      "description": "A list of \u201cPayment Applied to Lines\u201d objects."
+    },
+    "integration_params": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "description": "Any type"
+      }
+    },
+    "linked_account_params": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "description": "Any type"
+      }
+    },
+    "remote_fields": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/RemoteFieldRequest"
+      }
+    }
+  },
+  "description": "# The Payment Object\n### Description\nThe `Payment` object represents general payments made towards a specific transaction.\n\n### Usage Example\nFetch from the `GET Payment` endpoint and view an invoice's payment."
+}

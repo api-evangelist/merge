@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Deduction",
+  "title": "Deduction",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "remote_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The third-party API ID of the matching object."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was created by Merge."
+    },
+    "modified_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was modified by Merge."
+    },
+    "employee_payroll_run": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid"
+    },
+    "name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The deduction's name."
+    },
+    "employee_deduction": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "The amount of money that is withheld from an employee's gross pay by the employee."
+    },
+    "company_deduction": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "The amount of money that is withheld on behalf of an employee by the company."
+    },
+    "remote_was_deleted": {
+      "type": "boolean",
+      "description": "Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/)."
+    },
+    "field_mappings": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/DeductionFieldMappings"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "remote_data": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/components/schemas/RemoteData"
+      }
+    }
+  },
+  "description": "# The Deduction Object\n### Description\nThe `Deduction` object is used to represent an array of the wages withheld from total earnings for the purpose of paying taxes.\n\n### Usage Example\nFetch from the `LIST Deductions` endpoint and filter by `ID` to show all deductions."
+}

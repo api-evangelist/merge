@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/EEOC",
+  "title": "EEOC",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "remote_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The third-party API ID of the matching object."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was created by Merge."
+    },
+    "modified_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was modified by Merge."
+    },
+    "candidate": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The candidate being represented."
+    },
+    "submitted_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "When the information was submitted."
+    },
+    "race": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/RaceEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The candidate's race."
+    },
+    "gender": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/GenderEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The candidate's gender."
+    },
+    "veteran_status": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/VeteranStatusEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The candidate's veteran status."
+    },
+    "disability_status": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/DisabilityStatusEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The candidate's disability status."
+    },
+    "remote_was_deleted": {
+      "type": "boolean",
+      "description": "Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/)."
+    },
+    "field_mappings": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/EeocFieldMappings"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "remote_data": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/components/schemas/RemoteData"
+      }
+    }
+  },
+  "description": "# The EEOC Object\n### Description\nThe `EEOC` object is used to represent the Equal Employment Opportunity Commission information for a candidate (race, gender, veteran status, disability status).\n### Usage Example\nFetch from the `LIST EEOCs` endpoint and filter by `candidate` to show all EEOC information for a candidate."
+}

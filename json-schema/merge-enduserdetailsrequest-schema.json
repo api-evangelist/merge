@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/EndUserDetailsRequest",
+  "title": "EndUserDetailsRequest",
+  "type": "object",
+  "properties": {
+    "end_user_email_address": {
+      "type": "string",
+      "description": "Your end user's email address. This is purely for identification purposes - setting this value will not cause any emails to be sent."
+    },
+    "end_user_organization_name": {
+      "type": "string",
+      "description": "Your end user's organization."
+    },
+    "end_user_origin_id": {
+      "type": "string",
+      "description": "This unique identifier typically represents the ID for your end user in your product's database. This value must be distinct from other Linked Accounts' unique identifiers."
+    },
+    "categories": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/CategoriesEnum"
+      },
+      "description": "The integration categories to show in Merge Link."
+    },
+    "integration": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The slug of a specific pre-selected integration for this linking flow token. For examples of slugs, see https://docs.merge.dev/guides/merge-link/single-integration/."
+    },
+    "link_expiry_mins": {
+      "type": "integer",
+      "default": 30,
+      "description": "An integer number of minutes between [30, 720 or 10080 if for a Magic Link URL] for how long this token is valid. Defaults to 30."
+    },
+    "should_create_magic_link_url": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "default": false,
+      "description": "Whether to generate a Magic Link URL. Defaults to false. For more information on Magic Link, see https://merge.dev/blog/integrations-fast-say-hello-to-magic-link."
+    },
+    "hide_admin_magic_link": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "default": false,
+      "description": "Whether to generate a Magic Link URL on the Admin Needed screen during the linking flow. Defaults to false. For more information on Magic Link, see https://merge.dev/blog/integrations-fast-say-hello-to-magic-link."
+    },
+    "common_models": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/components/schemas/CommonModelScopesBodyRequest"
+      },
+      "description": "An array of objects to specify the models and fields that will be disabled for a given Linked Account. Each object uses model_id, enabled_actions, and disabled_fields to specify the model, method, and fields that are scoped for a given Linked Account."
+    },
+    "category_common_model_scopes": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/IndividualCommonModelScopeDeserializerRequest"
+        }
+      },
+      "description": "When creating a Link Token, you can set permissions for Common Models that will apply to the account that is going to be linked. Any model or field not specified in link token payload will default to existing settings."
+    },
+    "language": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/LanguageEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The following subset of IETF language tags can be used to configure localization."
+    },
+    "are_syncs_disabled": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "default": false,
+      "description": "The boolean that indicates whether initial, periodic, and force syncs will be disabled."
+    },
+    "integration_specific_config": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "description": "Any type"
+      },
+      "description": "A JSON object containing integration-specific configuration options."
+    },
+    "completed_account_initial_screen": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/CompletedAccountInitialScreenEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "When creating a Link token, you can specifiy the initial screen of Linking Flow for a completed Linked Account."
+    },
+    "linked_destination_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The UUID of the linked destination that you want this Linked Account to be tied to."
+    },
+    "credential_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The id of the credential that you want this Linked Account to be tied to."
+    },
+    "ekm_enabled": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether to enable EKM (External Key Management) for this Linked Account."
+    }
+  },
+  "required": [
+    "end_user_email_address",
+    "end_user_organization_name",
+    "end_user_origin_id",
+    "categories"
+  ]
+}

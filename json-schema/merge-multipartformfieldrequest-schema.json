@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/MultipartFormFieldRequest",
+  "title": "MultipartFormFieldRequest",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "The name of the form field"
+    },
+    "data": {
+      "type": "string",
+      "description": "The data for the form field."
+    },
+    "encoding": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/EncodingEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The encoding of the value of `data`. Defaults to `RAW` if not defined."
+    },
+    "file_name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The file name of the form field, if the field is for a file."
+    },
+    "content_type": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The MIME type of the file, if the field is for a file."
+    }
+  },
+  "required": [
+    "name",
+    "data"
+  ],
+  "description": "# The MultipartFormField Object\n### Description\nThe `MultipartFormField` object is used to represent fields in an HTTP request using `multipart/form-data`.\n\n### Usage Example\nCreate a `MultipartFormField` to define a multipart form entry."
+}

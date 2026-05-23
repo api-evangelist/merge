@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/RegisteredUserPublicRequest",
+  "title": "RegisteredUserPublicRequest",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "origin_user_id": {
+      "type": "string",
+      "description": "Unique identifier for Registered User"
+    },
+    "origin_user_name": {
+      "type": "string",
+      "description": "The human readable name of Registered User"
+    },
+    "shared_credential_group": {
+      "$ref": "#/components/schemas/SharedCredentialGroup",
+      "description": "Object used to identify which the groupings a Registered User is part of and can share credentials across."
+    },
+    "user_type": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/RegisteredUserPublicRequestUserType"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "ENUM of `HUMAN` or `SYSTEM`\n\n* `HUMAN` - HUMAN\n* `SYSTEM` - SYSTEM"
+    }
+  },
+  "required": [
+    "id",
+    "origin_user_id",
+    "origin_user_name"
+  ]
+}

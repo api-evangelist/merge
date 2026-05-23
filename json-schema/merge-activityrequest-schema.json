@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ActivityRequest",
+  "title": "ActivityRequest",
+  "type": "object",
+  "properties": {
+    "user": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The user that performed the action."
+    },
+    "activity_type": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/ActivityTypeEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The activity's type."
+    },
+    "subject": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The activity's subject."
+    },
+    "body": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The activity's body."
+    },
+    "visibility": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/VisibilityEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The activity's visibility."
+    },
+    "candidate": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid"
+    },
+    "integration_params": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "description": "Any type"
+      }
+    },
+    "linked_account_params": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "description": "Any type"
+      }
+    }
+  },
+  "description": "# The Activity Object\n### Description\nThe `Activity` object is used to represent an activity for a candidate performed by a user.\n### Usage Example\nFetch from the `LIST Activities` endpoint and filter by `ID` to show all activities."
+}

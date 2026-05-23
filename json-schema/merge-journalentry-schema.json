@@ -1,0 +1,179 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/JournalEntry",
+  "title": "JournalEntry",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "remote_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The third-party API ID of the matching object."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was created by Merge."
+    },
+    "modified_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was modified by Merge."
+    },
+    "transaction_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The journal entry's transaction date."
+    },
+    "payments": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "description": "Array of `Payment` object IDs."
+    },
+    "applied_payments": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "description": "A list of the Payment Applied to Lines common models related to a given Invoice, Credit Note, or Journal Entry."
+    },
+    "memo": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The journal entry's private note."
+    },
+    "currency": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/TransactionCurrencyEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The journal's currency. The currency code in ISO 4217 format."
+    },
+    "exchange_rate": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "decimal",
+      "description": "The journal entry's exchange rate."
+    },
+    "company": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The company the journal entry belongs to."
+    },
+    "inclusive_of_tax": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "description": "If the transaction is inclusive or exclusive of tax. `True` if inclusive, `False` if exclusive."
+    },
+    "lines": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/JournalLine"
+      }
+    },
+    "journal_number": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Reference number for identifying journal entries."
+    },
+    "tracking_categories": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "remote_was_deleted": {
+      "type": "boolean",
+      "description": "Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/)."
+    },
+    "posting_status": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/PostingStatusEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The journal's posting status."
+    },
+    "accounting_period": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The accounting period that the JournalEntry was generated in."
+    },
+    "remote_created_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "When the third party's journal entry was created."
+    },
+    "remote_updated_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "When the third party's journal entry was updated."
+    },
+    "field_mappings": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/JournalEntryFieldMappings"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "remote_data": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/components/schemas/RemoteData"
+      }
+    },
+    "remote_fields": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/RemoteField"
+      }
+    }
+  },
+  "description": "# The JournalEntry Object\n### Description\nA `JournalEntry` is a record of a transaction or event that is entered into a company's accounting system.\n\nThe `JournalEntry` common model contains records that are automatically created as a result of a certain type of transaction, like an Invoice, and records that are manually created against a company\u2019s ledger.\n\nThe lines of a given `JournalEntry` object should always sum to 0. A positive `net_amount` means the line represents a debit and a negative net_amount represents a credit.\n\n### Usage Example\nFetch from the `GET JournalEntry` endpoint and view a company's journey entry."
+}

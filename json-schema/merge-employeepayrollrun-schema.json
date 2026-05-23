@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/EmployeePayrollRun",
+  "title": "EmployeePayrollRun",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "remote_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The third-party API ID of the matching object."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was created by Merge."
+    },
+    "modified_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was modified by Merge."
+    },
+    "employee": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The employee whose payroll is being run."
+    },
+    "payroll_run": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The payroll being run."
+    },
+    "gross_pay": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "The total earnings throughout a given period for an employee before any deductions are made."
+    },
+    "net_pay": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "The take-home pay throughout a given period for an employee after deductions are made."
+    },
+    "start_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The day and time the payroll run started."
+    },
+    "end_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The day and time the payroll run ended."
+    },
+    "check_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The day and time the payroll run was checked."
+    },
+    "earnings": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/Earning"
+      }
+    },
+    "deductions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/Deduction"
+      }
+    },
+    "taxes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/Tax"
+      }
+    },
+    "remote_was_deleted": {
+      "type": "boolean",
+      "description": "Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/)."
+    },
+    "field_mappings": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/EmployeePayrollRunFieldMappings"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "remote_data": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/components/schemas/RemoteData"
+      }
+    }
+  },
+  "description": "# The EmployeePayrollRun Object\n### Description\nThe `EmployeePayrollRun` object is used to represent an employee's pay statement for a specific payroll run.\n\n### Usage Example\nFetch from the `LIST EmployeePayrollRun` endpoint and filter by `ID` to show all employee payroll runs."
+}

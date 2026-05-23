@@ -1,0 +1,175 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/InvoiceLineItem",
+  "title": "InvoiceLineItem",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "remote_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The third-party API ID of the matching object."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was created by Merge."
+    },
+    "modified_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was modified by Merge."
+    },
+    "description": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The line item's description."
+    },
+    "unit_price": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "The line item's unit price."
+    },
+    "quantity": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "The line item's quantity."
+    },
+    "total_amount": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "The line item's total amount."
+    },
+    "employee": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The employee this overall transaction relates to."
+    },
+    "project": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid"
+    },
+    "contact": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The invoice's contact."
+    },
+    "currency": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/TransactionCurrencyEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The line item's currency. The currency code in ISO 4217 format."
+    },
+    "exchange_rate": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "decimal",
+      "description": "The line item's exchange rate."
+    },
+    "item": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid"
+    },
+    "account": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid"
+    },
+    "tax_rate": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The tax rate that applies to this line item."
+    },
+    "tracking_category": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid"
+    },
+    "tracking_categories": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "description": "The invoice line item's associated tracking categories."
+    },
+    "company": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The company the invoice belongs to."
+    },
+    "remote_was_deleted": {
+      "type": "boolean",
+      "description": "Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/)."
+    },
+    "is_billable": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "description": "Indicates if the line item can be charged to the client/customer."
+    },
+    "field_mappings": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/InvoiceLineItemFieldMappings"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "remote_fields": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/RemoteField"
+      }
+    }
+  },
+  "description": "# The InvoiceLineItem Object\n### Description\nThe `InvoiceLineItem` object represents an itemized record of goods and/or services sold to a customer.\n\n### Usage Example\nFetch from the `GET Invoice` endpoint and view the invoice's line items."
+}

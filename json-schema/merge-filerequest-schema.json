@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/FileRequest",
+  "title": "FileRequest",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The file's name."
+    },
+    "file_url": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The URL to access the file."
+    },
+    "file_thumbnail_url": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The URL that produces a thumbnail preview of the file. Typically an image."
+    },
+    "size": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "format": "int64",
+      "description": "The file's size, in bytes."
+    },
+    "mime_type": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The file's mime type."
+    },
+    "description": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The file's description."
+    },
+    "folder": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The folder that the file belongs to."
+    },
+    "checksum": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "description": "Any type"
+      },
+      "description": "This field stores file checksum data. 'type' indicates the algorithm (e.g. crc_32, sha1, sha256, quickXor, or md5), and 'content_hash' is the unique hash used to verify file integrity and detect alterations."
+    },
+    "permissions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/PermissionRequest"
+      }
+    },
+    "drive": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The drive that the file belongs to."
+    },
+    "integration_params": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "description": "Any type"
+      }
+    },
+    "linked_account_params": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "description": "Any type"
+      }
+    }
+  },
+  "description": "# The File Object\n### Description\nThe `File` object is used to represent a file in the workspace. The Object typically exists under a folder or drive, if it exists.\n### Usage Example\nFetch from the `GET /api/filestorage/v1/files` endpoint and view their files."
+}

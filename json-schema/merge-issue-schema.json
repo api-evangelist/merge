@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Issue",
+  "title": "Issue",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "status": {
+      "$ref": "#/components/schemas/IssueStatusEnum",
+      "description": "Status of the issue."
+    },
+    "error_description": {
+      "type": "string"
+    },
+    "end_user": {
+      "type": "object",
+      "additionalProperties": {
+        "description": "Any type"
+      }
+    },
+    "first_incident_time": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "last_incident_time": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "is_muted": {
+      "type": "boolean"
+    },
+    "error_details": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "error_description"
+  ]
+}

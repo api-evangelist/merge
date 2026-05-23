@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ItemFulfillment",
+  "title": "ItemFulfillment",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "remote_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The third-party API ID of the matching object."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was created by Merge."
+    },
+    "modified_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was modified by Merge."
+    },
+    "sales_order": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The ID of the sales order that the item fulfillment originated from."
+    },
+    "fulfillment_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The date the fulfillment was created."
+    },
+    "customer": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The customer associated with the item fulfillment."
+    },
+    "company": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The subsidiary associated with the fulfillment."
+    },
+    "status": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/ItemFulfillmentStatusEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The status of the item fulfillment."
+    },
+    "memo": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Comment attached to the fulfillment."
+    },
+    "lines": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/ItemFulfillmentLine"
+      }
+    },
+    "remote_created_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "When the third party's item fulfillment was created."
+    },
+    "remote_updated_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "When the third party's item fulfillment was updated."
+    },
+    "remote_was_deleted": {
+      "type": "boolean",
+      "description": "Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/)."
+    },
+    "field_mappings": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/ItemFulfillmentFieldMappings"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "remote_data": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/components/schemas/RemoteData"
+      }
+    },
+    "remote_fields": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/RemoteField"
+      }
+    }
+  },
+  "description": "# The ItemFulfillment Object\n### Description\nThe `ItemFulfillment` object represents the recorded shipment or delivery of some or all items on an associated sales order.\n\n### Usage Example\nFetch from the `LIST ItemFulfillments` endpoint and view a company's item fulfillments."
+}

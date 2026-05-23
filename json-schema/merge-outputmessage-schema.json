@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/OutputMessage",
+  "title": "OutputMessage",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "message"
+      ]
+    },
+    "role": {
+      "type": "string",
+      "enum": [
+        "assistant"
+      ]
+    },
+    "finish_reason": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/OutputMessageFinishReason"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "content": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/OutputMessageContentItems"
+      }
+    }
+  },
+  "required": [
+    "id",
+    "content"
+  ],
+  "description": "An output message from the assistant."
+}

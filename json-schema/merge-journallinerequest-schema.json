@@ -1,0 +1,133 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/JournalLineRequest",
+  "title": "JournalLineRequest",
+  "type": "object",
+  "properties": {
+    "remote_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The third-party API ID of the matching object."
+    },
+    "account": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid"
+    },
+    "net_amount": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "The value of the line item including taxes and other fees."
+    },
+    "tracking_category": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid"
+    },
+    "tracking_categories": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "description": "The journal line item's associated tracking categories."
+    },
+    "currency": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/TransactionCurrencyEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The journal line item's currency. The currency code in ISO 4217 format."
+    },
+    "company": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The company the journal entry belongs to."
+    },
+    "employee": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid"
+    },
+    "project": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid"
+    },
+    "contact": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid"
+    },
+    "tax_rate": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The tax rate that applies to this line item."
+    },
+    "description": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The line's description."
+    },
+    "exchange_rate": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "decimal",
+      "description": "The journal line item's exchange rate."
+    },
+    "integration_params": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "description": "Any type"
+      }
+    },
+    "linked_account_params": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "description": "Any type"
+      }
+    },
+    "remote_fields": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/RemoteFieldRequest"
+      }
+    }
+  },
+  "description": "# The JournalLine Object\n### Description\nThe `JournalLine` object is used to represent a journal entry's line items.\n\n### Usage Example\nFetch from the `GET JournalEntry` endpoint and view the journal entry's line items."
+}

@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Comment",
+  "title": "Comment",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "remote_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The third-party API ID of the matching object."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was created by Merge."
+    },
+    "modified_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was modified by Merge."
+    },
+    "user": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The author of the Comment, if the author is a User. If the third party does not support specifying an author, we will append \"[Posted on behalf of {name}]\" to the comment."
+    },
+    "contact": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The author of the Comment, if the author is a Contact.If the third party does not support specifying an author, we will append \"[Posted on behalf of {name}]\" to the comment."
+    },
+    "body": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The comment's text body."
+    },
+    "html_body": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The comment's text body formatted as html."
+    },
+    "ticket": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The ticket associated with the comment. "
+    },
+    "is_private": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "description": "Whether or not the comment is internal."
+    },
+    "remote_created_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "When the third party's comment was created."
+    },
+    "remote_was_deleted": {
+      "type": "boolean",
+      "description": "Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/)."
+    },
+    "field_mappings": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/CommentFieldMappings"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "remote_data": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/components/schemas/RemoteData"
+      }
+    }
+  },
+  "description": "# The Comment Object\n### Description\nThe `Comment` object is used to represent a comment on a ticket.\n\n### Usage Example\nTODO"
+}

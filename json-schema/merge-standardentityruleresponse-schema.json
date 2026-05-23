@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/StandardEntityRuleResponse",
+  "title": "StandardEntityRuleResponse",
+  "type": "object",
+  "properties": {
+    "entity_type": {
+      "type": "string"
+    },
+    "region": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "detection_method": {
+      "type": "string"
+    },
+    "is_active": {
+      "type": "boolean"
+    },
+    "outbound_action": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/StandardEntityRuleResponseOutboundAction"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "* `BLOCK` - BLOCK\n* `REDACT` - REDACT\n* `LOG` - LOG\n* `NONE` - NONE"
+    },
+    "defined_at": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "entity_type",
+    "region",
+    "description",
+    "detection_method",
+    "is_active",
+    "outbound_action",
+    "defined_at"
+  ],
+  "description": "Standard entity rule for an organization."
+}

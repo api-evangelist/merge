@@ -1,0 +1,154 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/PurchaseOrderRequest",
+  "title": "PurchaseOrderRequest",
+  "type": "object",
+  "properties": {
+    "status": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/PurchaseOrderStatusEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The purchase order's status."
+    },
+    "issue_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The purchase order's issue date."
+    },
+    "delivery_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The purchase order's delivery date."
+    },
+    "delivery_address": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The purchase order's delivery address."
+    },
+    "customer": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The contact making the purchase order."
+    },
+    "vendor": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The party fulfilling the purchase order."
+    },
+    "memo": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "A memo attached to the purchase order."
+    },
+    "company": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The company the purchase order belongs to."
+    },
+    "total_amount": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "The purchase order's total amount."
+    },
+    "payment_term": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The payment term that applies to this transaction."
+    },
+    "currency": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/TransactionCurrencyEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The purchase order's currency. The currency code in ISO 4217 format."
+    },
+    "inclusive_of_tax": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "description": "If the transaction is inclusive or exclusive of tax. `True` if inclusive, `False` if exclusive."
+    },
+    "exchange_rate": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "decimal",
+      "description": "The purchase order's exchange rate."
+    },
+    "tracking_categories": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "line_items": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/PurchaseOrderLineItemRequest"
+      }
+    },
+    "integration_params": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "description": "Any type"
+      }
+    },
+    "linked_account_params": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "description": "Any type"
+      }
+    },
+    "remote_fields": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/RemoteFieldRequest"
+      }
+    }
+  },
+  "description": "# The PurchaseOrder Object\n### Description\nThe `PurchaseOrder` object is a record of request for a product or service between a buyer and seller.\n\n### Usage Example\nFetch from the `LIST PurchaseOrders` endpoint and view a company's purchase orders."
+}

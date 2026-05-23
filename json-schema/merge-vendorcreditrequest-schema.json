@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/VendorCreditRequest",
+  "title": "VendorCreditRequest",
+  "type": "object",
+  "properties": {
+    "number": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The vendor credit's number."
+    },
+    "transaction_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The vendor credit's transaction date."
+    },
+    "vendor": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The vendor that owes the gift or refund."
+    },
+    "total_amount": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "The vendor credit's total amount."
+    },
+    "currency": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/TransactionCurrencyEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The vendor credit's currency. The currency code in ISO 4217 format."
+    },
+    "exchange_rate": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "decimal",
+      "description": "The vendor credit's exchange rate."
+    },
+    "inclusive_of_tax": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "description": "If the transaction is inclusive or exclusive of tax. `True` if inclusive, `False` if exclusive."
+    },
+    "company": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The company the vendor credit belongs to."
+    },
+    "tracking_categories": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "applied_to_lines": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/VendorCreditApplyLineForVendorCreditRequest"
+      },
+      "description": "A list of VendorCredit Applied to Lines objects."
+    },
+    "accounting_period": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The accounting period that the VendorCredit was generated in."
+    },
+    "integration_params": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "description": "Any type"
+      }
+    },
+    "linked_account_params": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "description": "Any type"
+      }
+    }
+  },
+  "description": "# The VendorCredit Object\n### Description\nA `VendorCredit` is transaction issued by a vendor to the accounting company, indicating a reduction or cancellation of the amount owed to the vendor. It is most generally used as an adjustment note used to rectify errors, returns, or overpayments related to a purchasing transaction. A `VendorCredit` can be applied to `Accounts Payable` Invoices to decrease the overall amount of the `Invoice`.\n\n### Usage Example\nFetch from the `GET VendorCredit` endpoint and view a company's vendor credits."
+}

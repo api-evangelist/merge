@@ -1,0 +1,152 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ExpenseReport",
+  "title": "ExpenseReport",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "remote_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The third-party API ID of the matching object."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was created by Merge."
+    },
+    "modified_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was modified by Merge."
+    },
+    "report_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The date of the expense report."
+    },
+    "report_identifier": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Human-readable expense report identifier."
+    },
+    "employee": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "Identifier for the employee who submitted or is associated with the expense report"
+    },
+    "status": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/ExpenseReportStatusEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Overall status of the expense report. One of DRAFT, SUBMITTED, APPROVED, REJECTED"
+    },
+    "total_amount": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "Total amount of the expense report"
+    },
+    "lines": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/ExpenseReportLine"
+      }
+    },
+    "currency": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/TransactionCurrencyEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Currency code for the expense report. The currency code in ISO 4217 format."
+    },
+    "description": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "A brief description or purpose for the expense report"
+    },
+    "accounting_period": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The accounting period the report was posted in"
+    },
+    "company": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The subsidiary that the expense report is created in"
+    },
+    "tracking_categories": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "description": "The related tracking categories associated with the expense report"
+    },
+    "remote_was_deleted": {
+      "type": "boolean",
+      "description": "Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/)."
+    },
+    "field_mappings": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/ExpenseReportFieldMappings"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "remote_data": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/components/schemas/RemoteData"
+      }
+    },
+    "remote_fields": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/RemoteField"
+      }
+    }
+  },
+  "required": [
+    "tracking_categories"
+  ],
+  "description": "# The ExpenseReport Object\n### Description\nThe `ExpenseReport` object represents a collection of expenses submitted for review and reimbursement.\nIt includes details about the submitter, status, amounts, and associated metadata.\n\n### Usage Example\nFetch from the `GET ExpenseReport` endpoint to view details of expense reports and their line items."
+}

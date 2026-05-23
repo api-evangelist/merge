@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Opportunity",
+  "title": "Opportunity",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "remote_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The third-party API ID of the matching object."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was created by Merge."
+    },
+    "modified_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was modified by Merge."
+    },
+    "name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The opportunity's name."
+    },
+    "description": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The opportunity's description."
+    },
+    "amount": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "description": "The opportunity's amount."
+    },
+    "owner": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The opportunity's owner."
+    },
+    "account": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The account of the opportunity."
+    },
+    "stage": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The stage of the opportunity."
+    },
+    "status": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/OpportunityStatusEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The opportunity's status."
+    },
+    "last_activity_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "When the opportunity's last activity occurred."
+    },
+    "close_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "When the opportunity was closed."
+    },
+    "remote_created_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "When the third party's opportunity was created."
+    },
+    "opportunity_url": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uri",
+      "description": "The opportunity's URL in the remote system."
+    },
+    "remote_was_deleted": {
+      "type": "boolean",
+      "description": "Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/)."
+    },
+    "field_mappings": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/OpportunityFieldMappings"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "remote_data": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/components/schemas/RemoteData"
+      }
+    },
+    "remote_fields": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/RemoteField"
+      }
+    }
+  },
+  "description": "# The Opportunity Object\n### Description\nThe `Opportunity` object is used to represent a deal opportunity in a CRM system.\n### Usage Example\nTODO"
+}

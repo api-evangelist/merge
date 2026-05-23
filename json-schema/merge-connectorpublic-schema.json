@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ConnectorPublic",
+  "title": "ConnectorPublic",
+  "type": "object",
+  "properties": {
+    "slug": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "source_url": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "logo_url": {
+      "type": "string"
+    },
+    "categories": {
+      "type": "array",
+      "items": {
+        "description": "Any type"
+      }
+    },
+    "auth_scope": {
+      "$ref": "#/components/schemas/ConnectorPublicAuthScope",
+      "description": "How credentials are shared for this connector.\n\n- `INDIVIDUAL`: each registered user authenticates with their own credential\n- `SHARED`: users in the same registered_company share one credential\n- `ORGANIZATION`: one credential is used for the whole organization\n\n* `INDIVIDUAL` - INDIVIDUAL\n* `SHARED` - SHARED\n* `ORGANIZATION` - ORGANIZATION"
+    },
+    "tools": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/ConnectorTool"
+      }
+    },
+    "connector_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "DEPRECATED \u2014 alias for the connector UUID. Prefer `slug` as the primary identifier. Retained for backward compatibility."
+    }
+  },
+  "required": [
+    "slug",
+    "name",
+    "source_url",
+    "logo_url",
+    "categories",
+    "auth_scope",
+    "tools",
+    "connector_id"
+  ],
+  "description": "Public tool-pack-scoped connector shape.\n\nUsed across public endpoints that return a connector attached to a tool\npack: both the nested `connectors[]` in `GET /api/v1/tool-packs/{id}/`\nand the items in `/api/v1/tool-packs/{id}/connectors/` (GET/PATCH/PUT).\nSee the \"Consolidating connector response\" tech-debt spec (column E)."
+}

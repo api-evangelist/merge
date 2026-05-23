@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Dependent",
+  "title": "Dependent",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "remote_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The third-party API ID of the matching object."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was created by Merge."
+    },
+    "modified_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was modified by Merge."
+    },
+    "first_name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The dependents's first name."
+    },
+    "middle_name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The dependents's middle name."
+    },
+    "last_name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The dependents's last name."
+    },
+    "relationship": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/RelationshipEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The dependent's relationship to the employee."
+    },
+    "employee": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The employee this person is a dependent of."
+    },
+    "date_of_birth": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The dependent's date of birth."
+    },
+    "gender": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/GenderEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The dependent's gender."
+    },
+    "phone_number": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The dependent's phone number."
+    },
+    "home_location": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The dependents's home address."
+    },
+    "is_student": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "description": "Whether or not the dependent is a student"
+    },
+    "ssn": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The dependents's social security number."
+    },
+    "remote_was_deleted": {
+      "type": "boolean",
+      "description": "Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/)."
+    },
+    "field_mappings": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/DependentFieldMappings"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "remote_data": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/components/schemas/RemoteData"
+      }
+    }
+  },
+  "description": "# The Dependent Object\n### Description\nThe `Dependent` object is used to represent a dependent (e.g. child, spouse, domestic partner, etc) of an `Employee`\n\n### Usage Example\nFetch from the `LIST Dependents` endpoint and filter by `ID` to show all dependents."
+}

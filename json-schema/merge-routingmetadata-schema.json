@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/RoutingMetadata",
+  "title": "RoutingMetadata",
+  "type": "object",
+  "properties": {
+    "policy_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "policy_name": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "strategy": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "intelligent_routing_used": {
+      "type": "boolean",
+      "default": false
+    },
+    "complexity_score": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "ML-computed prompt complexity score (0-1)"
+    },
+    "adjusted_score": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "Strategy-adjusted complexity score"
+    },
+    "selected_tier": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "total_tiers": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "routing_reason": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Human-readable explanation of the routing decision"
+    },
+    "model_requested": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "model_used": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The actual model selected by routing"
+    },
+    "cost_usd": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "Estimated cost in USD computed from token usage and pricing data"
+    },
+    "latency": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/RoutingLatency"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "description": "Metadata about how the request was routed."
+}

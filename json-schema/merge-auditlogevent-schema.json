@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/AuditLogEvent",
+  "title": "AuditLogEvent",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "user_name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The User's full name at the time of this Event occurring."
+    },
+    "user_email": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "email",
+      "description": "The User's email at the time of this Event occurring."
+    },
+    "role": {
+      "$ref": "#/components/schemas/RoleEnum",
+      "description": "Designates the role of the user (or SYSTEM/API if action not taken by a user) at the time of this Event occurring."
+    },
+    "ip_address": {
+      "type": "string"
+    },
+    "event_type": {
+      "$ref": "#/components/schemas/EventTypeEnum",
+      "description": "Designates the type of event that occurred."
+    },
+    "event_description": {
+      "type": "string"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "role",
+    "ip_address",
+    "event_type",
+    "event_description"
+  ]
+}

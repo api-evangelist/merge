@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/PatchedToolPackPublicWrite",
+  "title": "PatchedToolPackPublicWrite",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "connectors": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/ToolPackConnectorInput"
+      },
+      "description": "Full-replace list of connectors. Any connector not in this array is detached from the tool pack. For incremental add/remove, use the `/tool-packs/{id}/connectors/` sub-resource endpoints."
+    }
+  }
+}

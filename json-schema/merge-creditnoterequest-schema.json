@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/CreditNoteRequest",
+  "title": "CreditNoteRequest",
+  "type": "object",
+  "properties": {
+    "transaction_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The credit note's transaction date."
+    },
+    "status": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/CreditNoteStatusEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The credit note's status."
+    },
+    "number": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The credit note's number."
+    },
+    "contact": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The credit note's contact."
+    },
+    "company": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The company the credit note belongs to."
+    },
+    "exchange_rate": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "decimal",
+      "description": "The credit note's exchange rate."
+    },
+    "total_amount": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "The credit note's total amount."
+    },
+    "remaining_credit": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "The amount of value remaining in the credit note that the customer can use."
+    },
+    "inclusive_of_tax": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "description": "If the transaction is inclusive or exclusive of tax. `True` if inclusive, `False` if exclusive."
+    },
+    "line_items": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/components/schemas/CreditNoteLineItemRequest"
+      }
+    },
+    "tracking_categories": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "currency": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/TransactionCurrencyEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The credit note's currency. The currency code in ISO 4217 format."
+    },
+    "payments": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "description": "Array of `Payment` object IDs"
+    },
+    "applied_payments": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "description": "A list of the Payment Applied to Lines common models related to a given Invoice, Credit Note, or Journal Entry."
+    },
+    "accounting_period": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The accounting period that the CreditNote was generated in."
+    },
+    "applied_to_lines": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/CreditNoteApplyLineForCreditNoteRequest"
+      },
+      "description": "A list of the CreditNote Applied to Lines common models related to a given Credit Note"
+    },
+    "integration_params": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "description": "Any type"
+      }
+    },
+    "linked_account_params": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "description": "Any type"
+      }
+    }
+  },
+  "description": "# The CreditNote Object\n### Description\nA `CreditNote` is transaction issued to a customer, indicating a reduction or cancellation of the amount owed by the customer. It is most generally used as an adjustment note used to rectify errors, returns, or overpayments related to a sales transaction. A `CreditNote` can be applied to *Accounts Receivable* Invoices to decrease the overall amount of the Invoice.\n\n### Usage Example\nFetch from the `LIST CreditNotes` endpoint and view a company's credit notes."
+}

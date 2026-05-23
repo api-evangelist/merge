@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Benefit",
+  "title": "Benefit",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "remote_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The third-party API ID of the matching object."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was created by Merge."
+    },
+    "modified_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was modified by Merge."
+    },
+    "employee": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The employee on the plan."
+    },
+    "provider_name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The name of the benefit provider."
+    },
+    "benefit_plan_type": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The type of benefit plan"
+    },
+    "employee_contribution": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "The employee's contribution."
+    },
+    "company_contribution": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "The company's contribution."
+    },
+    "start_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The day and time the benefit started."
+    },
+    "end_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The day and time the benefit ended."
+    },
+    "employer_benefit": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The employer benefit plan the employee is enrolled in."
+    },
+    "remote_was_deleted": {
+      "type": "boolean",
+      "description": "Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/)."
+    },
+    "field_mappings": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/BenefitFieldMappings"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "remote_data": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/components/schemas/RemoteData"
+      }
+    }
+  },
+  "description": "# The Benefit Object\n### Description\nThe `Benefit` object is used to represent a benefit that an employee has enrolled in.\n\n### Usage Example\nFetch from the `LIST Benefits` endpoint and filter by `ID` to show all benefits."
+}

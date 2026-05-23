@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ItemFulfillmentRequestRequest",
+  "title": "ItemFulfillmentRequestRequest",
+  "type": "object",
+  "properties": {
+    "sales_order": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The ID of the sales order that the item fulfillment originated from."
+    },
+    "fulfillment_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The date the fulfillment was created."
+    },
+    "customer": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The customer associated with the item fulfillment."
+    },
+    "company": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The subsidiary associated with the fulfillment."
+    },
+    "status": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/ItemFulfillmentStatusEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The status of the item fulfillment."
+    },
+    "memo": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Comment attached to the fulfillment."
+    },
+    "lines": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/ItemFulfillmentLineRequest"
+      }
+    },
+    "integration_params": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "description": "Any type"
+      }
+    },
+    "linked_account_params": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "description": "Any type"
+      }
+    },
+    "remote_fields": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/RemoteFieldRequest"
+      }
+    }
+  },
+  "description": "# The ItemFulfillment Object\n### Description\nThe `ItemFulfillment` object represents the recorded shipment or delivery of some or all items on an associated sales order.\n\n### Usage Example\nFetch from the `LIST ItemFulfillments` endpoint and view a company's item fulfillments."
+}

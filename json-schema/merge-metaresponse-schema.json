@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/MetaResponse",
+  "title": "MetaResponse",
+  "type": "object",
+  "properties": {
+    "request_schema": {
+      "type": "object",
+      "additionalProperties": {
+        "description": "Any type"
+      }
+    },
+    "status": {
+      "$ref": "#/components/schemas/LinkedAccountStatus"
+    },
+    "has_conditional_params": {
+      "type": "boolean"
+    },
+    "has_required_linked_account_params": {
+      "type": "boolean"
+    },
+    "remote_fields": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "description": "Remote field values to populate"
+    }
+  },
+  "required": [
+    "request_schema",
+    "has_conditional_params",
+    "has_required_linked_account_params"
+  ]
+}

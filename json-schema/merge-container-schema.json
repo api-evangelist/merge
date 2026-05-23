@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Container",
+  "title": "Container",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "remote_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The third-party API ID of the matching object."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was created by Merge."
+    },
+    "modified_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was modified by Merge."
+    },
+    "name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Name of the container."
+    },
+    "description": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Description of the container."
+    },
+    "status": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/Status3c6Enum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The container's status.\n\n* `DRAFT` - DRAFT\n* `PUBLISHED` - PUBLISHED\n* `ARCHIVED` - ARCHIVED\n* `TRASH` - TRASH"
+    },
+    "container_url": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The URL to the webpage of the container."
+    },
+    "type": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/ContainerTypeEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The container's type.\n\n* `FOLDER` - FOLDER\n* `SPACE` - SPACE\n* `COLLECTION` - COLLECTION\n* `SECTION` - SECTION\n* `CATEGORY` - CATEGORY\n* `DATABASE` - DATABASE"
+    },
+    "visibility": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/VisibilityEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The container's visibility.\n\n* `PUBLIC` - PUBLIC\n* `INTERNAL` - INTERNAL\n* `RESTRICTED` - RESTRICTED"
+    },
+    "remote_created_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "When the third party's container was created."
+    },
+    "remote_updated_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "When the third party's container was updated."
+    },
+    "parent_article": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The parent article a container is nested within."
+    },
+    "parent_container": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The parent container a container is nested within."
+    },
+    "permissions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/Permission"
+      }
+    },
+    "remote_was_deleted": {
+      "type": "boolean",
+      "description": "Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/)."
+    },
+    "field_mappings": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/ContainerFieldMappings"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "remote_data": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/components/schemas/RemoteData"
+      }
+    }
+  },
+  "description": "# The Container Object\n### Description\nThe Container object is used to represent a grouping of articles in the knowledge base. This can include Spaces, Folders, Databases, etc.\n### Usage Example\nFetch from the `GET /api/knowledgebase/containers` endpoint and view their containers."
+}

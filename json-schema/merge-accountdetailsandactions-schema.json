@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/AccountDetailsAndActions",
+  "title": "AccountDetailsAndActions",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "category": {
+      "$ref": "#/components/schemas/CategoryEnum"
+    },
+    "status": {
+      "$ref": "#/components/schemas/AccountDetailsAndActionsStatusEnum"
+    },
+    "status_detail": {
+      "type": "string"
+    },
+    "end_user_origin_id": {
+      "type": "string"
+    },
+    "end_user_organization_name": {
+      "type": "string"
+    },
+    "end_user_email_address": {
+      "type": "string"
+    },
+    "subdomain": {
+      "type": "string",
+      "description": "The tenant or domain the customer has provided access to."
+    },
+    "webhook_listener_url": {
+      "type": "string"
+    },
+    "is_duplicate": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "description": "Whether a Production Linked Account's credentials match another existing Production Linked Account. This field is `null` for Test Linked Accounts, incomplete Production Linked Accounts, and ignored duplicate Production Linked Account sets."
+    },
+    "integration": {
+      "$ref": "#/components/schemas/AccountDetailsAndActionsIntegration"
+    },
+    "account_type": {
+      "type": "string"
+    },
+    "completed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "integration_specific_fields": {
+      "type": "object",
+      "additionalProperties": {
+        "description": "Any type"
+      }
+    }
+  },
+  "required": [
+    "id",
+    "status",
+    "end_user_organization_name",
+    "end_user_email_address",
+    "webhook_listener_url",
+    "account_type",
+    "completed_at"
+  ],
+  "description": "# The LinkedAccount Object\n### Description\nThe `LinkedAccount` object is used to represent an end user's link with a specific integration.\n\n### Usage Example\nView a list of your organization's `LinkedAccount` objects."
+}

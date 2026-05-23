@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/JobPosting",
+  "title": "JobPosting",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "remote_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The third-party API ID of the matching object."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was created by Merge."
+    },
+    "modified_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was modified by Merge."
+    },
+    "title": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The job posting\u2019s title."
+    },
+    "job_posting_urls": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/Url"
+      },
+      "description": "The Url object is used to represent hyperlinks for a candidate to apply to a given job."
+    },
+    "job": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "ID of `Job` object for this `JobPosting`."
+    },
+    "status": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/JobPostingStatusEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The job posting's status."
+    },
+    "content": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The job posting\u2019s content."
+    },
+    "remote_created_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "When the third party's job posting was created."
+    },
+    "remote_updated_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "When the third party's job posting was updated."
+    },
+    "is_internal": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "description": "Indicates whether the job posting is internal or external."
+    },
+    "remote_was_deleted": {
+      "type": "boolean",
+      "description": "Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/)."
+    },
+    "field_mappings": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/JobPostingFieldMappings"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "remote_data": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/components/schemas/RemoteData"
+      }
+    }
+  },
+  "description": "# The JobPosting Object\n### Description\nThe `JobPosting` object represents an external announcement on a job board created by an organization to attract qualified candidates to apply for a specific `Job` opening\n### Usage Example\nFetch from the `LIST JobPostings` endpoint to show all job postings."
+}

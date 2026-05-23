@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/PatchedContactRequest",
+  "title": "PatchedContactRequest",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The contact's name."
+    },
+    "is_supplier": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "description": "Whether the contact is a supplier."
+    },
+    "is_customer": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "description": "Whether the contact is a customer."
+    },
+    "email_address": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The contact's email address."
+    },
+    "tax_number": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The contact's tax number."
+    },
+    "status": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/Status7d1Enum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The contact's status"
+    },
+    "currency": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The currency the contact's transactions are in."
+    },
+    "company": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The company the contact belongs to."
+    },
+    "addresses": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/AddressRequest"
+      },
+      "description": "`Address` object IDs for the given `Contacts` object."
+    },
+    "phone_numbers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/AccountingPhoneNumberRequest"
+      },
+      "description": "`AccountingPhoneNumber` object for the given `Contacts` object."
+    },
+    "integration_params": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "description": "Any type"
+      }
+    },
+    "linked_account_params": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "description": "Any type"
+      }
+    },
+    "remote_fields": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/RemoteFieldRequest"
+      }
+    }
+  },
+  "description": "# The Contact Object\n### Description\nA `Contact` is an individual or business entity to which products and services are sold to or purchased from. The `Contact` model contains both Customers, in which products and services are sold to, and Vendors (or Suppliers), in which products and services are purchased from.\n* A `Contact` is a Vendor/Supplier if the `is_supplier` property is true.\n* A `Contact` is a customer if the `is_customer` property is true.\n\n### Usage Example\nFetch from the `LIST Contacts` endpoint and view a company's contacts."
+}

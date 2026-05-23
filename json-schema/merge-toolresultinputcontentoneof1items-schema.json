@@ -1,0 +1,137 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ToolResultInputContentOneOf1Items",
+  "title": "ToolResultInputContentOneOf1Items",
+  "oneOf": [
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "text"
+          ],
+          "description": "Discriminator value: text"
+        },
+        "text": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "text"
+      ],
+      "description": "Text content block."
+    },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "image_url"
+          ],
+          "description": "Discriminator value: image_url"
+        },
+        "url": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "url"
+      ],
+      "description": "Image URL content block for vision models."
+    },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "image"
+          ]
+        },
+        "source_type": {
+          "$ref": "#/components/schemas/ImageContentSourceType"
+        },
+        "media_type": {
+          "type": "string",
+          "description": "e.g. 'image/png', 'image/jpeg'"
+        },
+        "data": {
+          "type": "string",
+          "description": "Base64-encoded image data or URL"
+        }
+      },
+      "required": [
+        "type",
+        "media_type",
+        "data"
+      ],
+      "description": "Image content block with explicit source type."
+    },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "document"
+          ]
+        },
+        "source_type": {
+          "$ref": "#/components/schemas/DocumentContentSourceType"
+        },
+        "media_type": {
+          "type": "string",
+          "description": "e.g. 'application/pdf'"
+        },
+        "data": {
+          "type": "string",
+          "description": "Base64-encoded content or URL"
+        }
+      },
+      "required": [
+        "type",
+        "media_type",
+        "data"
+      ],
+      "description": "Document content block (PDF, etc.) for document-understanding models."
+    },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "tool_use"
+          ],
+          "description": "Discriminator value: tool_use"
+        },
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "input": {
+          "type": "object",
+          "additionalProperties": {
+            "description": "Any type"
+          }
+        }
+      },
+      "required": [
+        "type",
+        "id",
+        "name",
+        "input"
+      ],
+      "description": "Tool use content block (in assistant output)."
+    }
+  ],
+  "discriminator": {
+    "propertyName": "type"
+  }
+}

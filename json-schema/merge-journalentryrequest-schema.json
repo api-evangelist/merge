@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/JournalEntryRequest",
+  "title": "JournalEntryRequest",
+  "type": "object",
+  "properties": {
+    "transaction_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The journal entry's transaction date."
+    },
+    "payments": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "description": "Array of `Payment` object IDs."
+    },
+    "memo": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The journal entry's private note."
+    },
+    "currency": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/TransactionCurrencyEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The journal's currency. The currency code in ISO 4217 format."
+    },
+    "exchange_rate": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "decimal",
+      "description": "The journal entry's exchange rate."
+    },
+    "company": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The company the journal entry belongs to."
+    },
+    "tracking_categories": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "inclusive_of_tax": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "description": "If the transaction is inclusive or exclusive of tax. `True` if inclusive, `False` if exclusive."
+    },
+    "lines": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/JournalLineRequest"
+      }
+    },
+    "journal_number": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Reference number for identifying journal entries."
+    },
+    "posting_status": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/PostingStatusEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The journal's posting status."
+    },
+    "integration_params": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "description": "Any type"
+      }
+    },
+    "linked_account_params": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "description": "Any type"
+      }
+    },
+    "remote_fields": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/RemoteFieldRequest"
+      }
+    }
+  },
+  "description": "# The JournalEntry Object\n### Description\nThe `JournalEntry` object is used to get a record of all manually created entries made in a company\u2019s general ledger. The journal line items for each journal entry should sum to zero.\n\n### Usage Example\nFetch from the `GET JournalEntry` endpoint and view a company's journey entry."
+}

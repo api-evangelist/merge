@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/TimeOffRequest",
+  "title": "TimeOffRequest",
+  "type": "object",
+  "properties": {
+    "employee": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The employee requesting time off."
+    },
+    "approver": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The Merge ID of the employee with the ability to approve the time off request."
+    },
+    "status": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/TimeOffStatusEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The status of this time off request."
+    },
+    "employee_note": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The employee note for this time off request."
+    },
+    "units": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/UnitsEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The measurement that the third-party integration uses to count time requested."
+    },
+    "amount": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "The time off quantity measured by the prescribed \u201cunits\u201d."
+    },
+    "request_type": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/RequestTypeEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The type of time off request."
+    },
+    "start_time": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The day and time of the start of the time requested off."
+    },
+    "end_time": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The day and time of the end of the time requested off."
+    },
+    "integration_params": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "description": "Any type"
+      }
+    },
+    "linked_account_params": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "description": "Any type"
+      }
+    }
+  },
+  "description": "# The TimeOff Object\n### Description\nThe `TimeOff` object is used to represent all employees' Time Off entries.\n\n### Usage Example\nFetch from the `LIST TimeOffs` endpoint and filter by `ID` to show all time off requests."
+}

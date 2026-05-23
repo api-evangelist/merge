@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ToolPackConnectorInput",
+  "title": "ToolPackConnectorInput",
+  "type": "object",
+  "properties": {
+    "slug": {
+      "type": "string",
+      "description": "Connector slug \u2014 primary identifier."
+    },
+    "connector_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "DEPRECATED \u2014 prefer `slug`. Retained for backward compatibility."
+    },
+    "auth_scope": {
+      "$ref": "#/components/schemas/ToolPackConnectorInputAuthScope",
+      "description": "How credentials are shared for this connector.\n\n- `INDIVIDUAL`: each registered user authenticates with their own credential\n- `SHARED`: users in the same registered_company share one credential\n- `ORGANIZATION`: one credential is used for the whole organization\n\n* `INDIVIDUAL` - INDIVIDUAL\n* `SHARED` - SHARED\n* `ORGANIZATION` - ORGANIZATION"
+    },
+    "tool_names": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Tool names to enable for this connector. Omit to enable all tools."
+    }
+  },
+  "description": "Shared validation for connector identifier inputs.\n\nAt least one identifier must be provided. When both are set, `slug` wins\nand the deprecated `connector_id` is discarded."
+}

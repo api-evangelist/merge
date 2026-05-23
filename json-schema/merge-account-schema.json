@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Account",
+  "title": "Account",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "remote_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The third-party API ID of the matching object."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was created by Merge."
+    },
+    "modified_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was modified by Merge."
+    },
+    "name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The account's name."
+    },
+    "description": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The account's description."
+    },
+    "classification": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/ClassificationEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The account's broadest grouping."
+    },
+    "type": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The account's type is a narrower and more specific grouping within the account's classification."
+    },
+    "account_type": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/AccountAccountTypeEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Normalized account type- which is a narrower and more specific grouping within the account's classification."
+    },
+    "status": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/AccountStatusEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The account's status."
+    },
+    "current_balance": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "The account's current balance."
+    },
+    "currency": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/TransactionCurrencyEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The account's currency. The currency code in ISO 4217 format."
+    },
+    "account_number": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The account's number."
+    },
+    "parent_account": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "ID of the parent account."
+    },
+    "company": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The company the account belongs to."
+    },
+    "remote_was_deleted": {
+      "type": "boolean",
+      "description": "Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/)."
+    },
+    "field_mappings": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/AccountFieldMappings"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "remote_data": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/components/schemas/RemoteData"
+      }
+    }
+  },
+  "description": "# The Account Object\n### Description\nAn `Account` represents a category in a company\u2019s ledger in which a financial transaction is recorded against. The aggregation of each `Account` object is often referred to as the **Chart of Accounts**.\n\nAn `Account` can be classified into one of the following categories, determined through the `classification` field:\n* __Asset:__ Accounts Receivable and Bank Accounts\n* __Liability:__ Accounts Payable and Credit Card Accounts\n* __Equity:__ Treasury Accounts and Retained Earnings\n* __Revenue:__ Income and Other Income\n* __Expense:__ Cost of Goods Sold and Office Expenses\n\n### Usage Example\nFetch from the `LIST Accounts` endpoint and view a company's accounts."
+}

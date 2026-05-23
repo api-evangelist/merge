@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ApplicationRequest",
+  "title": "ApplicationRequest",
+  "type": "object",
+  "properties": {
+    "candidate": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The candidate applying."
+    },
+    "job": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The job being applied for."
+    },
+    "applied_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "When the application was submitted."
+    },
+    "rejected_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "When the application was rejected."
+    },
+    "offers": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "source": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The application's source."
+    },
+    "credited_to": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The user credited for this application."
+    },
+    "screening_question_answers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/ScreeningQuestionAnswerRequest"
+      }
+    },
+    "current_stage": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The application's current stage."
+    },
+    "reject_reason": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The application's reason for rejection."
+    },
+    "remote_template_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "integration_params": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "description": "Any type"
+      }
+    },
+    "linked_account_params": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "description": "Any type"
+      }
+    }
+  },
+  "description": "# The Application Object\n### Description\nThe Application Object is used to represent a candidate's journey through a particular Job's recruiting process. If a Candidate applies for multiple Jobs, there will be a separate Application for each Job if the third-party integration allows it.\n\n### Usage Example\nFetch from the `LIST Applications` endpoint and filter by `ID` to show all applications."
+}

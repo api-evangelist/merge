@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/PublicModel",
+  "title": "PublicModel",
+  "type": "object",
+  "properties": {
+    "model": {
+      "type": "string",
+      "description": "Model ID in format 'provider/model-name'"
+    },
+    "provider": {
+      "type": "string"
+    },
+    "display_name": {
+      "type": "string"
+    },
+    "vendors": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/components/schemas/PublicVendorModelInfo"
+      }
+    },
+    "availability_status": {
+      "$ref": "#/components/schemas/PublicModelAvailabilityStatus"
+    },
+    "created_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "model",
+    "provider",
+    "display_name",
+    "vendors",
+    "availability_status"
+  ],
+  "description": "A canonical model in Merge Gateway's catalog. Identified by `model` (fully-qualified provider/model ID) and exposes the set of `vendors` that can execute it, each with its own capabilities, context window, pricing, and ZDR flag."
+}

@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/AssociationType",
+  "title": "AssociationType",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "remote_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The third-party API ID of the matching object."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was created by Merge."
+    },
+    "modified_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was modified by Merge."
+    },
+    "source_object_class": {
+      "type": "object",
+      "additionalProperties": {
+        "description": "Any type"
+      },
+      "description": "The class of the source object (Custom Object or Common Model) for the association type."
+    },
+    "target_object_classes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/AssociationSubType"
+      }
+    },
+    "remote_key_name": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "display_name": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "cardinality": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/CardinalityEnum"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "is_required": {
+      "type": "boolean"
+    }
+  },
+  "description": "# The AssociationType Object\n### Description\nThe `Association Type` object represents the relationship between two objects.\n### Usage Example\nTODO"
+}

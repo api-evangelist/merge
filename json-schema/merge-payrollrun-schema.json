@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/PayrollRun",
+  "title": "PayrollRun",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "remote_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The third-party API ID of the matching object."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was created by Merge."
+    },
+    "modified_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was modified by Merge."
+    },
+    "run_state": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/RunStateEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The state of the payroll run"
+    },
+    "run_type": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/RunTypeEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The type of the payroll run"
+    },
+    "start_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The day and time the payroll run started."
+    },
+    "end_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The day and time the payroll run ended."
+    },
+    "check_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The day and time the payroll run was checked."
+    },
+    "remote_was_deleted": {
+      "type": "boolean",
+      "description": "Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/)."
+    },
+    "field_mappings": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/PayrollRunFieldMappings"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "remote_data": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/components/schemas/RemoteData"
+      }
+    }
+  },
+  "description": "# The PayrollRun Object\n### Description\nThe `PayrollRun` object is used to represent a group of pay statements for a specific pay schedule.\n\n### Usage Example\nFetch from the `LIST PayrollRuns` endpoint and filter by `ID` to show all payroll runs."
+}

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/PatchedCustomRegexRuleUpdateInput",
+  "title": "PatchedCustomRegexRuleUpdateInput",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "regex": {
+      "type": "string"
+    },
+    "score": {
+      "type": "number",
+      "format": "double"
+    },
+    "inbound_action": {
+      "$ref": "#/components/schemas/PatchedCustomRegexRuleUpdateInputInboundAction",
+      "description": "* `BLOCK` - BLOCK\n* `REDACT` - REDACT\n* `LOG` - LOG\n* `NONE` - NONE"
+    },
+    "outbound_action": {
+      "$ref": "#/components/schemas/PatchedCustomRegexRuleUpdateInputOutboundAction",
+      "description": "* `BLOCK` - BLOCK\n* `REDACT` - REDACT\n* `LOG` - LOG\n* `NONE` - NONE"
+    },
+    "context_keywords": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "is_active": {
+      "type": "boolean"
+    }
+  },
+  "description": "Shared field validators for create and update input serializers.\n\nThe presidio validate_* functions raise RequestValidationError (a DRF APIException),\nwhich bypasses the serializer's field error mapping. We catch and re-raise as\nserializers.ValidationError so errors are attributed to the correct field."
+}

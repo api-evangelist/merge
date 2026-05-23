@@ -1,0 +1,142 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ResponseRequest",
+  "title": "ResponseRequest",
+  "type": "object",
+  "properties": {
+    "model": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Model ID in format 'provider/model-name'. Optional if a routing policy is configured."
+    },
+    "input": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/ResponseRequestInputItems"
+      },
+      "description": "Conversation history"
+    },
+    "tools": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/components/schemas/FunctionTool"
+      },
+      "description": "Available tools"
+    },
+    "tool_choice": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/ResponseRequestToolChoice"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Tool choice policy: 'auto', 'none', 'required', or {'type': 'function', 'function': {'name': '...'}}"
+    },
+    "max_tokens": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "description": "Maximum tokens to generate"
+    },
+    "temperature": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "Sampling temperature"
+    },
+    "top_p": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "Nucleus sampling parameter"
+    },
+    "stop": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "string"
+      },
+      "description": "Stop sequences"
+    },
+    "response_format": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/ResponseFormatJson"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Response format"
+    },
+    "stream": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether to stream the response"
+    },
+    "tags": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/components/schemas/TagInput"
+      },
+      "description": "Tags to attach to this request for categorization (key-value pairs)"
+    },
+    "project_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Optional project ID (UUID) to associate with this request"
+    },
+    "routing_policy_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Override the default routing policy (for testing)"
+    },
+    "include_routing_metadata": {
+      "type": "boolean",
+      "default": false,
+      "description": "Include detailed routing metadata in response"
+    },
+    "vendor": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Restrict routing to a specific vendor (hosting platform)"
+    },
+    "vendors": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "string"
+      },
+      "description": "Ordered list of acceptable vendors. First available wins."
+    }
+  },
+  "required": [
+    "input"
+  ],
+  "description": "Request body for POST /v1/responses."
+}

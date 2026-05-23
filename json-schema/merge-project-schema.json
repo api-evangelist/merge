@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Project",
+  "title": "Project",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "remote_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The third-party API ID of the matching object."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was created by Merge."
+    },
+    "modified_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was modified by Merge."
+    },
+    "name": {
+      "type": "string",
+      "description": "The project\u2019s name"
+    },
+    "is_active": {
+      "type": "boolean",
+      "description": "`True` if the project is active, `False` if the project is not active."
+    },
+    "company": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The subsidiary that the project belongs to."
+    },
+    "contact": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The supplier, or customer involved in the project."
+    },
+    "field_mappings": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/ProjectFieldMappings"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "remote_data": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/components/schemas/RemoteData"
+      }
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "description": "# The Project Object\n### Description\nThe `Project` object is used to track and manage time, costs, resources, and revenue for specific initiatives or work efforts.\nIt provides classification on transactions for allocating expenses, revenue, and activities to a specific project for financial reporting.\n\n### Usage Example\nFetch from the `GET Project` endpoint and view project information."
+}

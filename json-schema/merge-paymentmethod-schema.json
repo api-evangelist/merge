@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/PaymentMethod",
+  "title": "PaymentMethod",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "remote_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The third-party API ID of the matching object."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was created by Merge."
+    },
+    "modified_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was modified by Merge."
+    },
+    "method_type": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/MethodTypeEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The type of the payment method."
+    },
+    "name": {
+      "type": "string",
+      "description": "The payment method\u2019s name"
+    },
+    "is_active": {
+      "type": "boolean",
+      "description": "`True` if the payment method is active, `False` if not."
+    },
+    "remote_updated_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "When the third party's payment method was updated."
+    },
+    "field_mappings": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/PaymentMethodFieldMappings"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "remote_data": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/components/schemas/RemoteData"
+      }
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "description": "# The PaymentMethod Object\n### Description\nThe `PaymentMethod` object defines how a payment against an invoice is made.\n\n### Usage Example\nFetch from the `GET PaymentMethod` endpoint and view payment method information."
+}

@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/TaxRate",
+  "title": "TaxRate",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "remote_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The third-party API ID of the matching object."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was created by Merge."
+    },
+    "modified_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was modified by Merge."
+    },
+    "company": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The subsidiary that the tax rate belongs to (in the case of multi-entity systems)."
+    },
+    "code": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The tax code associated with this tax rate or group of tax rates from the third-party platform."
+    },
+    "name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The tax rate\u2019s name."
+    },
+    "description": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The tax rate's description."
+    },
+    "status": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/Status7d1Enum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The tax rate\u2019s status - `ACTIVE` if an active tax rate, `ARCHIVED` if not active."
+    },
+    "country": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The country the tax rate is associated with."
+    },
+    "total_tax_rate": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "The tax\u2019s total tax rate - sum of the tax components (not compounded)."
+    },
+    "effective_tax_rate": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "The tax rate\u2019s effective tax rate - total amount of tax with compounding."
+    },
+    "tax_components": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/TaxComponent"
+      },
+      "description": "The related tax components of the tax rate."
+    },
+    "remote_was_deleted": {
+      "type": "boolean",
+      "description": "Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/)."
+    },
+    "field_mappings": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/TaxRateFieldMappings"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "remote_data": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/components/schemas/RemoteData"
+      }
+    }
+  },
+  "description": "# The TaxRate Object\n### Description\nThe `TaxRate` object is used to represent a tax rate.\n\n### Usage Example\nFetch from the `LIST TaxRates` endpoint and view tax rates relevant to a company."
+}

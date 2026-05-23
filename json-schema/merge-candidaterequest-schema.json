@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/CandidateRequest",
+  "title": "CandidateRequest",
+  "type": "object",
+  "properties": {
+    "first_name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The candidate's first name."
+    },
+    "last_name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The candidate's last name."
+    },
+    "company": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The candidate's current company."
+    },
+    "title": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The candidate's current title."
+    },
+    "last_interaction_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "When the most recent interaction with the candidate occurred."
+    },
+    "is_private": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "description": "Whether or not the candidate is private."
+    },
+    "can_email": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "description": "Whether or not the candidate can be emailed."
+    },
+    "locations": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "string"
+      },
+      "description": "The candidate's locations."
+    },
+    "phone_numbers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/PhoneNumberRequest"
+      }
+    },
+    "email_addresses": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/EmailAddressRequest"
+      }
+    },
+    "urls": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/UrlRequest"
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Array of `Tag` names as strings."
+    },
+    "applications": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "description": "Array of `Application` object IDs."
+    },
+    "attachments": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "description": "Array of `Attachment` object IDs."
+    },
+    "remote_template_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "integration_params": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "description": "Any type"
+      }
+    },
+    "linked_account_params": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "description": "Any type"
+      }
+    }
+  },
+  "description": "# The Candidate Object\n### Description\nThe `Candidate` object is used to represent profile information about a given Candidate. Because it is specific to a Candidate, this information stays constant across applications.\n### Usage Example\nFetch from the `LIST Candidates` endpoint and filter by `ID` to show all candidates."
+}

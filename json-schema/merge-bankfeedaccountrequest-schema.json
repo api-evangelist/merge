@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/BankFeedAccountRequest",
+  "title": "BankFeedAccountRequest",
+  "type": "object",
+  "properties": {
+    "source_account_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The unique identifier of the source account from our customer\u2019s platform."
+    },
+    "target_account_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The unique identifier of the target account from the third party software."
+    },
+    "source_account_name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The name of the source account as stored in our customer\u2019s platform."
+    },
+    "source_account_number": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The human-readable account number of the source account as stored in our customer\u2019s platform."
+    },
+    "target_account_name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The name of the target account from the third party software."
+    },
+    "currency": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/TransactionCurrencyEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The currency code of the bank feed. The currency code in ISO 4217 format."
+    },
+    "feed_status": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/FeedStatusEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The status of the bank feed."
+    },
+    "feed_start_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The start date of the bank feed\u2019s transactions."
+    },
+    "source_account_balance": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "The current balance of funds in the source account."
+    },
+    "account_type": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/BankFeedAccountAccountTypeEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The type of the account."
+    },
+    "integration_params": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "description": "Any type"
+      }
+    },
+    "linked_account_params": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "description": "Any type"
+      }
+    }
+  },
+  "description": "# The BankFeedAccount Object\n### Description\nThe `BankFeedAccount` object represents a bank feed account, detailing various attributes including account identifiers, names, currency, and balance information. This object is central to managing and tracking bank feed accounts within the system.\n\n### Usage Example\nFetch from the `GET BankFeedAccount` endpoint to view details of a bank feed account."
+}

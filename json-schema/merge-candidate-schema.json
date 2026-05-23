@@ -1,0 +1,170 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Candidate",
+  "title": "Candidate",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "remote_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The third-party API ID of the matching object."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was created by Merge."
+    },
+    "modified_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was modified by Merge."
+    },
+    "first_name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The candidate's first name."
+    },
+    "last_name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The candidate's last name."
+    },
+    "company": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The candidate's current company."
+    },
+    "title": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The candidate's current title."
+    },
+    "remote_created_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "When the third party's candidate was created."
+    },
+    "remote_updated_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "When the third party's candidate was updated."
+    },
+    "last_interaction_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "When the most recent interaction with the candidate occurred."
+    },
+    "is_private": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "description": "Whether or not the candidate is private."
+    },
+    "can_email": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "description": "Whether or not the candidate can be emailed."
+    },
+    "locations": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "string"
+      },
+      "description": "The candidate's locations."
+    },
+    "phone_numbers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/PhoneNumber"
+      }
+    },
+    "email_addresses": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/EmailAddress"
+      }
+    },
+    "urls": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/Url"
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Array of `Tag` names as strings."
+    },
+    "applications": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "description": "Array of `Application` object IDs."
+    },
+    "attachments": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "description": "Array of `Attachment` object IDs."
+    },
+    "remote_was_deleted": {
+      "type": "boolean",
+      "description": "Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/)."
+    },
+    "field_mappings": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/CandidateFieldMappings"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "remote_data": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/components/schemas/RemoteData"
+      }
+    }
+  },
+  "description": "# The Candidate Object\n### Description\nThe `Candidate` object is used to represent profile information about a given Candidate. Because it is specific to a Candidate, this information stays constant across applications.\n### Usage Example\nFetch from the `LIST Candidates` endpoint and filter by `ID` to show all candidates."
+}

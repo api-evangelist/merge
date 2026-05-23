@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Employment",
+  "title": "Employment",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "remote_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The third-party API ID of the matching object."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was created by Merge."
+    },
+    "modified_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was modified by Merge."
+    },
+    "employee": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The employee holding this position."
+    },
+    "job_title": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The position's title."
+    },
+    "pay_rate": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "The position's pay rate."
+    },
+    "pay_period": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/PayPeriodEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The time period this pay rate encompasses."
+    },
+    "pay_frequency": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/PayFrequencyEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The position's pay frequency."
+    },
+    "pay_currency": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/PayCurrencyEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The position's currency code. The currency code in ISO 4217 format."
+    },
+    "pay_group": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The employment's pay group"
+    },
+    "flsa_status": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/FlsaStatusEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The position's FLSA status."
+    },
+    "effective_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The position's effective date."
+    },
+    "employment_type": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/EmploymentTypeEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The position's type of employment."
+    },
+    "remote_was_deleted": {
+      "type": "boolean",
+      "description": "Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/)."
+    },
+    "field_mappings": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/EmploymentFieldMappings"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "remote_data": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/components/schemas/RemoteData"
+      }
+    }
+  },
+  "description": "# The Employment Object\n### Description\nThe `Employment` object is used to represent a job position at a company.\n\nIf an integration supports historical tracking of employments, it will be reflected in the data. If not, a new `Employment` object will be created whenever there is a change in job title or pay. The `effective_date` field should be used to order `Employment` objects, with the most recent date corresponding to the latest employment record for an employee.\n\n### Usage Example\nFetch from the `LIST Employments` endpoint and filter by `ID` to show all employees."
+}

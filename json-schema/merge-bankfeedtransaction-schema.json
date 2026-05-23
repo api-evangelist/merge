@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/BankFeedTransaction",
+  "title": "BankFeedTransaction",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "remote_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The third-party API ID of the matching object."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was created by Merge."
+    },
+    "modified_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was modified by Merge."
+    },
+    "bank_feed_account": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The bank feed account associated with the transaction."
+    },
+    "transaction_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The date that the transaction occurred."
+    },
+    "posted_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The date the transaction was posted to the bank account."
+    },
+    "amount": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "The amount of the transaction."
+    },
+    "description": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The description of the transaction."
+    },
+    "transaction_type": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The underlying type of the transaction."
+    },
+    "payee": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The person or merchant who initiated the transaction, or alternatively, to whom the transaction was paid."
+    },
+    "credit_or_debit": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/CreditOrDebitEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "If the transaction is of type debit or credit."
+    },
+    "source_transaction_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The customer\u2019s identifier for the transaction."
+    },
+    "remote_was_deleted": {
+      "type": "boolean",
+      "description": "Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/)."
+    },
+    "is_processed": {
+      "type": "boolean",
+      "description": "Whether or not this transaction has been processed by the external system. For example, NetSuite writes this field as True when the SuiteApp has processed the transaction."
+    }
+  },
+  "description": "# The BankFeedTransaction Object\n### Description\nThe `BankFeedTransaction` object is used to represent transactions linked to a bank feed account. This includes details about the transaction such as the date, amount, description, and type.\n\n### Usage Example\nFetch from the `GET BankFeedTransaction` endpoint to view details of a transaction associated with a bank feed account."
+}

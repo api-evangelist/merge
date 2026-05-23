@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/AttachmentRequest",
+  "title": "AttachmentRequest",
+  "type": "object",
+  "properties": {
+    "file_name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The attachment's name."
+    },
+    "file_url": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uri",
+      "description": "The attachment's url."
+    },
+    "candidate": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid"
+    },
+    "attachment_type": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/AttachmentTypeEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The attachment's type."
+    },
+    "integration_params": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "description": "Any type"
+      }
+    },
+    "linked_account_params": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "description": "Any type"
+      }
+    }
+  },
+  "description": "# The Attachment Object\n### Description\nThe `Attachment` object is used to represent a file attached to a candidate.\n### Usage Example\nFetch from the `LIST Attachments` endpoint and view attachments accessible by a company."
+}

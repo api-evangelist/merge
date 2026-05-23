@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/PaymentTerm",
+  "title": "PaymentTerm",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "remote_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The third-party API ID of the matching object."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was created by Merge."
+    },
+    "modified_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was modified by Merge."
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the payment term."
+    },
+    "is_active": {
+      "type": "boolean",
+      "description": "`True` if the payment term is active, `False` if not."
+    },
+    "company": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The subsidiary that the payment term belongs to."
+    },
+    "days_until_due": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "description": "The number of days after the invoice date that payment is due."
+    },
+    "discount_days": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "description": "The number of days the invoice must be paid before discounts expire."
+    },
+    "remote_last_modified_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "When the third party's payment term was modified."
+    },
+    "field_mappings": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/PaymentTermFieldMappings"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "remote_data": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/components/schemas/RemoteData"
+      }
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "description": "# The PaymentTerm Object\n### Description\nThe `PaymentTerm` object is the agreed-upon conditions between a buyer and a seller that define the timing,\namount, and conditions under which payment for goods or services must be made.\n\n### Usage Example\nFetch from the `GET PaymentTerm` endpoint and view payment term information."
+}

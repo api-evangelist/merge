@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/CreateFieldMappingRequest",
+  "title": "CreateFieldMappingRequest",
+  "type": "object",
+  "properties": {
+    "target_field_name": {
+      "type": "string",
+      "description": "The name of the target field you want this remote field to map to. Required if organization_wide_target_field is not provided."
+    },
+    "target_field_description": {
+      "type": "string",
+      "description": "The description of the target field you want this remote field to map to. Required if organization_wide_target_field is not provided."
+    },
+    "organization_wide_target_field": {
+      "type": "string",
+      "description": "The name or key of an existing Organization-wide target field to map to. When provided, target_field_name and target_field_description are optional."
+    },
+    "is_integration_wide": {
+      "type": "boolean",
+      "default": false,
+      "description": "If true, creates an integration-wide field mapping that applies to all Linked Accounts for the integration. Requires organization_wide_target_field."
+    },
+    "remote_field_traversal_path": {
+      "type": "array",
+      "items": {
+        "description": "Any type"
+      },
+      "description": "The field traversal path of the remote field listed when you hit the GET /remote-fields endpoint."
+    },
+    "remote_method": {
+      "type": "string",
+      "description": "The method of the remote endpoint where the remote field is coming from."
+    },
+    "remote_url_path": {
+      "type": "string",
+      "description": "The path of the remote endpoint where the remote field is coming from."
+    },
+    "common_model_name": {
+      "type": "string",
+      "description": "The name of the Common Model that the remote field corresponds to in a given category."
+    },
+    "jmes_path": {
+      "type": "string",
+      "description": "DEPRECATED: Use 'advanced_mapping_expression' instead."
+    },
+    "advanced_mapping_expression": {
+      "type": "string",
+      "description": "A JSONata expression used to transform the remote field data."
+    }
+  },
+  "required": [
+    "remote_field_traversal_path",
+    "remote_method",
+    "remote_url_path",
+    "common_model_name"
+  ]
+}

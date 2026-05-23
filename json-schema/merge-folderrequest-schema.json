@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/FolderRequest",
+  "title": "FolderRequest",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The folder's name."
+    },
+    "folder_url": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The URL to access the folder."
+    },
+    "size": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "format": "int64",
+      "description": "The folder's size, in bytes."
+    },
+    "description": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The folder's description."
+    },
+    "parent_folder": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The folder that the folder belongs to."
+    },
+    "drive": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The drive that the folder belongs to."
+    },
+    "permissions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/PermissionRequest"
+      }
+    },
+    "integration_params": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "description": "Any type"
+      }
+    },
+    "linked_account_params": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "description": "Any type"
+      }
+    }
+  },
+  "description": "# The Folder Object\n### Description\nThe `Folder` object is used to represent a collection of files and/or folders in the workspace. Could be within a drive, if it exists.\n### Usage Example\nFetch from the `GET /api/filestorage/v1/folders` endpoint and view their folders."
+}

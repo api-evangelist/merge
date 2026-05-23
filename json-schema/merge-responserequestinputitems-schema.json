@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ResponseRequestInputItems",
+  "title": "ResponseRequestInputItems",
+  "oneOf": [
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "message"
+          ],
+          "description": "Discriminator value: message"
+        },
+        "role": {
+          "$ref": "#/components/schemas/ResponseRequestInputItemsDiscriminatorMappingMessageRole"
+        },
+        "content": {
+          "$ref": "#/components/schemas/ResponseRequestInputItemsDiscriminatorMappingMessageContent"
+        }
+      },
+      "required": [
+        "type",
+        "role",
+        "content"
+      ],
+      "description": "A message in the conversation."
+    },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "tool_result"
+          ]
+        },
+        "tool_use_id": {
+          "type": "string"
+        },
+        "content": {
+          "$ref": "#/components/schemas/ToolResultInputContent"
+        }
+      },
+      "required": [
+        "type",
+        "tool_use_id",
+        "content"
+      ],
+      "description": "Result from a tool call, sent back to continue the conversation."
+    }
+  ],
+  "discriminator": {
+    "propertyName": "type"
+  }
+}

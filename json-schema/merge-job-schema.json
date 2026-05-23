@@ -1,0 +1,165 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Job",
+  "title": "Job",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "remote_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The third-party API ID of the matching object."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was created by Merge."
+    },
+    "modified_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was modified by Merge."
+    },
+    "name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The job's name."
+    },
+    "description": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The job's description."
+    },
+    "code": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The job's code. Typically an additional identifier used to reference the particular job that is displayed on the ATS."
+    },
+    "status": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/JobStatusEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The job's status."
+    },
+    "type": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/JobTypeEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The job's type."
+    },
+    "job_postings": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "description": "IDs of `JobPosting` objects that serve as job postings for this `Job`."
+    },
+    "job_posting_urls": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/Url"
+      }
+    },
+    "remote_created_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "When the third party's job was created."
+    },
+    "remote_updated_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "When the third party's job was updated."
+    },
+    "confidential": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "description": "Whether the job is confidential."
+    },
+    "departments": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "description": "IDs of `Department` objects for this `Job`."
+    },
+    "offices": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "description": "IDs of `Office` objects for this `Job`."
+    },
+    "hiring_managers": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "description": "IDs of `RemoteUser` objects that serve as hiring managers for this `Job`."
+    },
+    "recruiters": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "description": "IDs of `RemoteUser` objects that serve as recruiters for this `Job`."
+    },
+    "remote_was_deleted": {
+      "type": "boolean",
+      "description": "Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/)."
+    },
+    "field_mappings": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/JobFieldMappings"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "remote_data": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/components/schemas/RemoteData"
+      }
+    }
+  },
+  "description": "# The Job Object\n### Description\nThe `Job` object can be used to track any jobs that are currently or will be open/closed for applications.\n### Usage Example\nFetch from the `LIST Jobs` endpoint to show all job postings."
+}

@@ -1,0 +1,160 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ExpenseLineRequest",
+  "title": "ExpenseLineRequest",
+  "type": "object",
+  "properties": {
+    "remote_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The third-party API ID of the matching object."
+    },
+    "item": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The line's item."
+    },
+    "net_amount": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "The line's net amount."
+    },
+    "tracking_category": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid"
+    },
+    "tracking_categories": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "description": "The expense line item's associated tracking categories."
+    },
+    "company": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The company the expense belongs to."
+    },
+    "employee": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The employee this overall transaction relates to."
+    },
+    "currency": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/TransactionCurrencyEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The expense line item's currency. The currency code in ISO 4217 format."
+    },
+    "account": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The expense's payment account."
+    },
+    "contact": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The expense's contact."
+    },
+    "project": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid"
+    },
+    "description": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The description of the item that was purchased by the company."
+    },
+    "exchange_rate": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "decimal",
+      "description": "The expense line item's exchange rate."
+    },
+    "tax_rate": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The tax rate that applies to this line item."
+    },
+    "quantity": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "decimal",
+      "description": "Number of items for the expense line."
+    },
+    "unit_price": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "decimal",
+      "description": "Unit price of the item for the expense line."
+    },
+    "integration_params": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "description": "Any type"
+      }
+    },
+    "linked_account_params": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "description": "Any type"
+      }
+    },
+    "remote_fields": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/RemoteFieldRequest"
+      }
+    }
+  },
+  "description": "# The ExpenseLine Object\n### Description\nThe `ExpenseLine` object is used to represent an expense's line items.\n\n### Usage Example\nFetch from the `GET Expense` endpoint and view the expense's line items."
+}

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ToolPackConnectorBulkInput",
+  "title": "ToolPackConnectorBulkInput",
+  "type": "object",
+  "properties": {
+    "slug": {
+      "type": "string",
+      "description": "Connector slug \u2014 primary identifier."
+    },
+    "connector_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "DEPRECATED \u2014 prefer `slug`. Retained for backward compatibility."
+    },
+    "auth_scope": {
+      "$ref": "#/components/schemas/ToolPackConnectorBulkInputAuthScope",
+      "description": "Authentication scope. INDIVIDUAL: each user authenticates separately. SHARED: users in the same registered_company share one credential. Defaults to INDIVIDUAL when creating a new connector.\n\n* `INDIVIDUAL` - INDIVIDUAL\n* `SHARED` - SHARED\n* `ORGANIZATION` - ORGANIZATION"
+    },
+    "tool_names": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Tool names to enable on this connector.\n- Omitted (new connector): all tools are enabled.\n- Omitted (existing connector, PATCH): the connector's tools are left unchanged.\n- `[]` (empty list): the connector is removed from the tool pack.\n- Otherwise: exactly these tools are enabled."
+    }
+  },
+  "description": "One item in a tool pack connector update request."
+}

@@ -1,0 +1,190 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Article",
+  "title": "Article",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "remote_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The third-party API ID of the matching object."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was created by Merge."
+    },
+    "modified_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was modified by Merge."
+    },
+    "title": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The title of the article."
+    },
+    "description": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Description of the article."
+    },
+    "author": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The user who created the article."
+    },
+    "last_edited_by": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The user to last update the article."
+    },
+    "visibility": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/VisibilityEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The visibility of the article.\n\n* `PUBLIC` - PUBLIC\n* `INTERNAL` - INTERNAL\n* `RESTRICTED` - RESTRICTED"
+    },
+    "article_content_download_url": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The presigned S3 URL to fetch article content."
+    },
+    "checksum": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The SHA256 checksum of the article content."
+    },
+    "article_url": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The URL to the webpage of the article."
+    },
+    "status": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/Status3c6Enum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The status of the article.\n\n* `DRAFT` - DRAFT\n* `PUBLISHED` - PUBLISHED\n* `ARCHIVED` - ARCHIVED\n* `TRASH` - TRASH"
+    },
+    "type": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/ArticleTypeEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The type of the article.\n\n* `PAGE` - PAGE\n* `BLOG_POST` - BLOG_POST\n* `SMART_LINK` - SMART_LINK"
+    },
+    "remote_created_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "When the third party's article was created."
+    },
+    "remote_updated_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "When the third party's article was updated."
+    },
+    "parent_article": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The parent article an article is nested within."
+    },
+    "parent_container": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The parent container an article is nested within."
+    },
+    "root_container": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The top-level container in the hierarchy that holds this article. This will reference a container object that will typically be a SPACE or WORKSPACE type."
+    },
+    "permissions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/Permission"
+      }
+    },
+    "attachments": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "remote_was_deleted": {
+      "type": "boolean",
+      "description": "Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/)."
+    },
+    "field_mappings": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/ArticleFieldMappings"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "remote_data": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/components/schemas/RemoteData"
+      }
+    }
+  },
+  "description": "# The Article Object\n### Description\nThe `Article` object is used to represent a form of content in the knowledge base, such as an article or page.\n### Usage Example\nFetch from the `GET /api/knowledgebase/articles` endpoint and view their articles."
+}

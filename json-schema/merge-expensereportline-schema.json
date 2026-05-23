@@ -1,0 +1,182 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ExpenseReportLine",
+  "title": "ExpenseReportLine",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "remote_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The third-party API ID of the matching object."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was created by Merge."
+    },
+    "modified_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was modified by Merge."
+    },
+    "account": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid"
+    },
+    "description": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Description of the individual expense."
+    },
+    "expense_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The date the individual expense was incurred."
+    },
+    "amount": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "The amount of the expense for the line item."
+    },
+    "currency": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/TransactionCurrencyEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Currency of the expense line (if different from the report currency). The currency code in ISO 4217 format."
+    },
+    "exchange_rate": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "decimal",
+      "description": "Exchange rate used if the line item is in a foreign currency."
+    },
+    "is_billable": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "description": "Whether the expense line is billable to a client or project."
+    },
+    "tracking_categories": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "description": "The related tracking categories associated with the expense report (Department, Location, Class, Expense Category)"
+    },
+    "employee": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "Identifier for the employee who submitted or is associated with the expense report"
+    },
+    "project": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid"
+    },
+    "company": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The subsidiary that the expense report is created in"
+    },
+    "contact": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid"
+    },
+    "quantity": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "Quantity for the expense line (e.g., miles driven, items purchased)."
+    },
+    "unit_price": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "Price per unit for the expense line (if applicable)."
+    },
+    "non_reimbursable": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "description": "Whether the expense line is non-reimbursable (e.g., paid via company card)."
+    },
+    "tax_amount": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "Tax amount applicable for the line item."
+    },
+    "inclusive_of_tax": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "description": "Whether the amount is inclusive of tax."
+    },
+    "tax_rate": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid"
+    },
+    "remote_was_deleted": {
+      "type": "boolean",
+      "description": "Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/)."
+    },
+    "remote_fields": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/RemoteField"
+      }
+    }
+  },
+  "required": [
+    "tracking_categories"
+  ],
+  "description": "# The ExpenseReportLine Object\n### Description\nThe `ExpenseReportLine` object represents an individual line item within an expense report, containing details about\na specific expense such as amount, description, and associated metadata.\n\n### Usage Example\nFetch from the `GET ExpenseReport` endpoint and expand the lines field to view all line items in the expense report."
+}

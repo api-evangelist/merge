@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/AccountIntegration",
+  "title": "AccountIntegration",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Company name."
+    },
+    "abbreviated_name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Optional. This shortened name appears in places with limited space, usually in conjunction with the platform's logo (e.g., Merge Link menu).<br><br>Example: <i>Workforce Now (in lieu of ADP Workforce Now), SuccessFactors (in lieu of SAP SuccessFactors)</i>"
+    },
+    "categories": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/CategoriesEnum"
+      },
+      "description": "Category or categories this integration belongs to. Multiple categories should be comma separated, i.e. [ats, hris]."
+    },
+    "image": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uri",
+      "description": "Company logo in rectangular shape."
+    },
+    "square_image": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uri",
+      "description": "Company logo in square shape."
+    },
+    "color": {
+      "type": "string",
+      "description": "The color of this integration used for buttons and text throughout the app and landing pages. <b>Choose a darker, saturated color.</b>"
+    },
+    "slug": {
+      "type": "string"
+    },
+    "api_endpoints_to_documentation_urls": {
+      "type": "object",
+      "additionalProperties": {
+        "description": "Any type"
+      },
+      "description": "Mapping of API endpoints to documentation urls for support. Example: {'GET': [['/common-model-scopes', 'https://docs.merge.dev/accounting/common-model-scopes/#common_model_scopes_retrieve'],['/common-model-actions', 'https://docs.merge.dev/accounting/common-model-actions/#common_model_actions_retrieve']], 'POST': []}"
+    },
+    "webhook_setup_guide_url": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Setup guide URL for third party webhook creation. Exposed in Merge Docs."
+    },
+    "category_beta_status": {
+      "$ref": "#/components/schemas/AccountIntegrationCategoryBetaStatus",
+      "description": "Category or categories this integration is in beta status for."
+    }
+  },
+  "required": [
+    "name"
+  ]
+}

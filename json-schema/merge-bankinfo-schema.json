@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/BankInfo",
+  "title": "BankInfo",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "remote_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The third-party API ID of the matching object."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was created by Merge."
+    },
+    "modified_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was modified by Merge."
+    },
+    "employee": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The employee with this bank account."
+    },
+    "account_number": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The account number."
+    },
+    "routing_number": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The routing number."
+    },
+    "bank_name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The bank name."
+    },
+    "account_type": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/AccountTypeEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The bank account type"
+    },
+    "remote_created_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "When the matching bank object was created in the third party system."
+    },
+    "remote_was_deleted": {
+      "type": "boolean",
+      "description": "Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/)."
+    },
+    "field_mappings": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/BankInfoFieldMappings"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "remote_data": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/components/schemas/RemoteData"
+      }
+    }
+  },
+  "description": "# The BankInfo Object\n### Description\nThe `BankInfo` object is used to represent the Bank Account information for an Employee.\n\n### Usage Example\nFetch from the `LIST BankInfo` endpoint and filter by `ID` to show all bank information."
+}

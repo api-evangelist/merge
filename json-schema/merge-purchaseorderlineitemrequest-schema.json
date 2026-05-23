@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/PurchaseOrderLineItemRequest",
+  "title": "PurchaseOrderLineItemRequest",
+  "type": "object",
+  "properties": {
+    "remote_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The third-party API ID of the matching object."
+    },
+    "description": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "A description of the good being purchased."
+    },
+    "unit_price": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "The line item's unit price."
+    },
+    "quantity": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "The line item's quantity."
+    },
+    "item": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid"
+    },
+    "account": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The purchase order line item's account."
+    },
+    "tracking_category": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The purchase order line item's associated tracking category."
+    },
+    "tracking_categories": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "description": "The purchase order line item's associated tracking categories."
+    },
+    "tax_amount": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "decimal",
+      "description": "The purchase order line item's tax amount."
+    },
+    "total_line_amount": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "decimal",
+      "description": "The purchase order line item's total amount."
+    },
+    "currency": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/TransactionCurrencyEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The purchase order line item's currency. The currency code in ISO 4217 format."
+    },
+    "tax_rate": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The tax rate that applies to this line item."
+    },
+    "exchange_rate": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "decimal",
+      "description": "The purchase order line item's exchange rate."
+    },
+    "company": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The company the purchase order line item belongs to."
+    },
+    "integration_params": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "description": "Any type"
+      }
+    },
+    "linked_account_params": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "description": "Any type"
+      }
+    },
+    "remote_fields": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/RemoteFieldRequest"
+      }
+    }
+  },
+  "description": "# The PurchaseOrderLineItem Object\n### Description\nThe `PurchaseOrderLineItem` object is used to represent a purchase order's line item.\n\n### Usage Example\nFetch from the `GET PurchaseOrder` endpoint and view a company's purchase orders."
+}

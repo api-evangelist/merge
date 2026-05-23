@@ -1,0 +1,290 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Invoice",
+  "title": "Invoice",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "remote_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The third-party API ID of the matching object."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was created by Merge."
+    },
+    "modified_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was modified by Merge."
+    },
+    "type": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/InvoiceTypeEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Whether the invoice is an accounts receivable or accounts payable. If `type` is `ACCOUNTS_PAYABLE`, the invoice is a bill. If `type` is `ACCOUNTS_RECEIVABLE`, it is an invoice."
+    },
+    "contact": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The invoice's contact."
+    },
+    "number": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The invoice's number."
+    },
+    "issue_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The invoice's issue date."
+    },
+    "due_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The invoice's due date."
+    },
+    "paid_on_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The invoice's paid date."
+    },
+    "memo": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The invoice's private note."
+    },
+    "company": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The company the invoice belongs to."
+    },
+    "employee": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The employee this overall transaction relates to."
+    },
+    "currency": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/TransactionCurrencyEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The invoice's currency. The currency code in ISO 4217 format."
+    },
+    "exchange_rate": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "decimal",
+      "description": "The invoice's exchange rate."
+    },
+    "payment_term": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The payment term that applies to this transaction."
+    },
+    "total_discount": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "The total discounts applied to the total cost."
+    },
+    "sub_total": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "The total amount being paid before taxes."
+    },
+    "status": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/InvoiceStatusEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The status of the invoice."
+    },
+    "total_tax_amount": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "The total amount being paid in taxes."
+    },
+    "total_amount": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "The invoice's total amount."
+    },
+    "balance": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "The invoice's remaining balance."
+    },
+    "remote_updated_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "When the third party's invoice entry was updated."
+    },
+    "tracking_categories": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "accounting_period": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The accounting period that the Invoice was generated in."
+    },
+    "purchase_orders": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "sales_orders": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "payments": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "description": "Array of `Payment` object IDs."
+    },
+    "applied_payments": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "description": "A list of the Payment Applied to Lines common models related to a given Invoice, Credit Note, or Journal Entry."
+    },
+    "line_items": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/InvoiceLineItem"
+      }
+    },
+    "applied_credit_notes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/CreditNoteApplyLineForInvoice"
+      },
+      "description": "`CreditNoteApplyLines` applied to the Invoice."
+    },
+    "applied_vendor_credits": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/VendorCreditApplyLineForInvoice"
+      },
+      "description": "`VendorCreditApplyLines` applied to the Invoice."
+    },
+    "inclusive_of_tax": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "description": "If the transaction is inclusive or exclusive of tax. `True` if inclusive, `False` if exclusive."
+    },
+    "remote_was_deleted": {
+      "type": "boolean",
+      "description": "Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/)."
+    },
+    "field_mappings": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/InvoiceFieldMappings"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "remote_data": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/components/schemas/RemoteData"
+      }
+    },
+    "remote_fields": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/RemoteField"
+      }
+    }
+  },
+  "description": "# The Invoice Object\n### Description\nThe `Invoice` object represents an itemized record of goods and/or services sold to a customer or bought from a vendor.\n\n\nRepresents a Bill when the `Invoice` type is `ACCOUNTS_PAYABLE`. References an Invoice when the `Invoice` type is `ACCOUNTS_RECEIVABLE`.\n\n### Usage Example\nFetch from the `LIST Invoices` endpoint and view a company's invoices."
+}

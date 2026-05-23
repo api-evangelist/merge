@@ -1,0 +1,187 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/TicketRequest",
+  "title": "TicketRequest",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The ticket's name."
+    },
+    "assignees": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "description": "The individual `Users` who are assigned to this ticket. This does not include `Users` who just have view access to this ticket. To fetch all `Users` and `Teams` that can access the ticket, use the `GET /tickets/{ticket_id}/viewers` [endpoint](https://docs.merge.dev/ticketing/tickets/#tickets_viewers_list)."
+    },
+    "assigned_teams": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "description": "The `Teams` that are assigned to this ticket. This does not include `Teams` who just have view access to this ticket. To fetch all `Users` and `Teams` that can access this ticket, use the `GET /tickets/{ticket_id}/viewers` [endpoint](https://docs.merge.dev/ticketing/tickets/#tickets_viewers_list)."
+    },
+    "creator": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The user who created this ticket."
+    },
+    "due_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The ticket's due date."
+    },
+    "status": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/TicketStatusEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The current status of the ticket."
+    },
+    "description": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The ticket\u2019s description. HTML version of description is mapped if supported by the third-party platform."
+    },
+    "collections": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "description": "The `Collections` that this `Ticket` is included in."
+    },
+    "ticket_type": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The sub category of the ticket within the 3rd party system. Examples include incident, task, subtask or to-do."
+    },
+    "account": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The account associated with the ticket."
+    },
+    "contact": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The contact associated with the ticket."
+    },
+    "parent_ticket": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The ticket's parent ticket."
+    },
+    "attachments": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "access_level": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/TicketAccessLevelEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The description of who is able to access a given ticket, or where access is inherited from."
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "roles": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "ticket_url": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uri",
+      "description": "The 3rd party url of the Ticket."
+    },
+    "priority": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/PriorityEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The priority or urgency of the Ticket."
+    },
+    "completed_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "When the ticket was completed."
+    },
+    "integration_params": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "description": "Any type"
+      }
+    },
+    "linked_account_params": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "description": "Any type"
+      }
+    },
+    "remote_fields": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/RemoteFieldRequest"
+      }
+    }
+  },
+  "description": "# The Ticket Object\n### Description\nThe `Ticket` object is used to represent a ticket, issue, task or case.\n### Usage Example\nTODO"
+}

@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/RegisteredUserPublicResponse",
+  "title": "RegisteredUserPublicResponse",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "origin_user_id": {
+      "type": "string",
+      "description": "Unique identifier for Registered User"
+    },
+    "origin_user_name": {
+      "type": "string",
+      "default": "Yash",
+      "description": "The human readable name of Registered User"
+    },
+    "shared_credential_group": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/SharedCredentialGroup"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Object used to identify which the groupings a Registered User is part of and can share credentials across."
+    },
+    "user_type": {
+      "type": "string",
+      "default": "HUMAN",
+      "description": "ENUM of `HUMAN` or `SYSTEM`"
+    },
+    "authenticated_connectors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of connector slugs that the user has authenticated with"
+    },
+    "is_test": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether this is a test user or production user"
+    }
+  },
+  "required": [
+    "id",
+    "origin_user_id",
+    "shared_credential_group",
+    "authenticated_connectors"
+  ]
+}

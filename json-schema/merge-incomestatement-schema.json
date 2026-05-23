@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/IncomeStatement",
+  "title": "IncomeStatement",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "remote_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The third-party API ID of the matching object."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was created by Merge."
+    },
+    "modified_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was modified by Merge."
+    },
+    "name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The income statement's name."
+    },
+    "currency": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/TransactionCurrencyEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The income statement's currency. The currency code in ISO 4217 format."
+    },
+    "company": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The company the income statement belongs to."
+    },
+    "start_period": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The income statement's start period."
+    },
+    "end_period": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The income statement's end period."
+    },
+    "income": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/ReportItem"
+      }
+    },
+    "cost_of_sales": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/ReportItem"
+      }
+    },
+    "gross_profit": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "The revenue minus the cost of sale."
+    },
+    "operating_expenses": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/ReportItem"
+      }
+    },
+    "net_operating_income": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "The revenue minus the operating expenses."
+    },
+    "non_operating_expenses": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/ReportItem"
+      }
+    },
+    "net_income": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "The gross profit minus the total expenses."
+    },
+    "remote_was_deleted": {
+      "type": "boolean",
+      "description": "Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/)."
+    },
+    "field_mappings": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/IncomeStatementFieldMappings"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "remote_data": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/components/schemas/RemoteData"
+      }
+    }
+  },
+  "description": "# The IncomeStatement Object\n### Description\nThe `IncomeStatement` object is used to represent a company\u2019s income, the cost of sales, operating expenses, and other non-operating expenses. The object also includes other important values like gross profit, gross operating profit, and net income. This represents a period of time (month, quarter, or year).\n\n### Usage Example\nFetch from the `GET IncomeStatement` endpoint and view a company's income statement for a given period."
+}

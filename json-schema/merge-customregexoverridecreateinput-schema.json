@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/CustomRegexOverrideCreateInput",
+  "title": "CustomRegexOverrideCreateInput",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "regex": {
+      "type": "string"
+    },
+    "score": {
+      "type": "number",
+      "format": "double"
+    },
+    "context_keywords": {
+      "description": "Any type"
+    },
+    "is_active": {
+      "type": "boolean"
+    },
+    "inbound_action": {
+      "$ref": "#/components/schemas/CustomRegexOverrideCreateInputInboundAction",
+      "description": "* `BLOCK` - BLOCK\n* `REDACT` - REDACT\n* `LOG` - LOG\n* `NONE` - NONE"
+    },
+    "outbound_action": {
+      "$ref": "#/components/schemas/CustomRegexOverrideCreateInputOutboundAction",
+      "description": "* `BLOCK` - BLOCK\n* `REDACT` - REDACT\n* `LOG` - LOG\n* `NONE` - NONE"
+    }
+  },
+  "required": [
+    "name",
+    "regex",
+    "score",
+    "context_keywords",
+    "is_active",
+    "inbound_action",
+    "outbound_action"
+  ],
+  "description": "Input serializer for POST /tool-packs/<id>/custom-regex-rules/."
+}

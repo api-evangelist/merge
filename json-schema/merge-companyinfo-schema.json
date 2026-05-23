@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/CompanyInfo",
+  "title": "CompanyInfo",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "remote_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The third-party API ID of the matching object."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was created by Merge."
+    },
+    "modified_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was modified by Merge."
+    },
+    "name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The company's name."
+    },
+    "legal_name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The company's legal name."
+    },
+    "tax_number": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The company's tax number."
+    },
+    "fiscal_year_end_month": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "description": "The company's fiscal year end month."
+    },
+    "fiscal_year_end_day": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "description": "The company's fiscal year end day."
+    },
+    "currency": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/TransactionCurrencyEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The currency set in the company's accounting platform. The currency code in ISO 4217 format."
+    },
+    "remote_created_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "When the third party's company was created."
+    },
+    "urls": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "string"
+      },
+      "description": "The company's urls."
+    },
+    "addresses": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/Address"
+      }
+    },
+    "phone_numbers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/AccountingPhoneNumber"
+      }
+    },
+    "remote_was_deleted": {
+      "type": "boolean",
+      "description": "Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/)."
+    },
+    "field_mappings": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/CompanyInfoFieldMappings"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "remote_data": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/components/schemas/RemoteData"
+      }
+    }
+  },
+  "description": "# The CompanyInfo Object\n### Description\nThe `CompanyInfo` object contains information about the company of the linked account. If the company has multiple entities (also known as subsidiaries), each entity may show up as a single `CompanyInfo` record.\n\n### Usage Example\nFetch from the `GET CompanyInfo` endpoint and view a company's information."
+}

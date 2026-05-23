@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/BatchObjectsResponse",
+  "title": "BatchObjectsResponse",
+  "type": "object",
+  "properties": {
+    "batch_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "The ID of the batch."
+    },
+    "status": {
+      "$ref": "#/components/schemas/BatchObjectsResponseStatusEnum",
+      "description": "Possible overall statuses:\n\n* `ENQUEUED` - The request has been received and a task has been enqueued for processing\n* `IN_PROGRESS` - The enqueued task is being processed\n* `PARTIAL_SUCCESS` - The task has been processed, but not all objects were written successfully\n* `SUCCESS` - The task has been processed, and all objects were written successfully\n* `FAILED` - The task has been processed, but ran into an error while processing\n* `RATE_LIMITED` - The request was received but ran into rate limits while processing. The rate limited objects are being retried."
+    },
+    "total_count": {
+      "type": "integer",
+      "description": "The total number of objects in the batch."
+    },
+    "objects": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/BatchObject"
+      }
+    }
+  },
+  "required": [
+    "batch_id",
+    "status",
+    "total_count",
+    "objects"
+  ],
+  "description": "Response serializer for GET bulk/{batch_id} - returns batch status and objects"
+}

@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ScheduledInterviewRequest",
+  "title": "ScheduledInterviewRequest",
+  "type": "object",
+  "properties": {
+    "application": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The application being interviewed."
+    },
+    "job_interview_stage": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The stage of the interview."
+    },
+    "organizer": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The user organizing the interview."
+    },
+    "interviewers": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "description": "Array of `RemoteUser` IDs."
+    },
+    "location": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The interview's location."
+    },
+    "start_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "When the interview was started."
+    },
+    "end_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "When the interview was ended."
+    },
+    "status": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/ScheduledInterviewStatusEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The interview's status."
+    },
+    "integration_params": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "description": "Any type"
+      }
+    },
+    "linked_account_params": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "description": "Any type"
+      }
+    }
+  },
+  "description": "# The ScheduledInterview Object\n### Description\nThe `ScheduledInterview` object is used to represent a scheduled interview for a given candidate\u2019s application to a job. An `Application` can have multiple `ScheduledInterview`s depending on the particular hiring process.\n### Usage Example\nFetch from the `LIST ScheduledInterviews` endpoint and filter by `interviewers` to show all office locations."
+}

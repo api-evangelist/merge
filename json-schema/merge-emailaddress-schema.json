@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/EmailAddress",
+  "title": "EmailAddress",
+  "type": "object",
+  "properties": {
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was created by Merge."
+    },
+    "modified_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was modified by Merge."
+    },
+    "value": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "email",
+      "description": "The email address."
+    },
+    "email_address_type": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/EmailAddressTypeEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The type of email address."
+    },
+    "remote_was_deleted": {
+      "type": "boolean",
+      "description": "Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/)."
+    }
+  },
+  "description": "# The EmailAddress Object\n### Description\nThe `EmailAddress` object is used to represent a candidate's email address.\n### Usage Example\nFetch from the `GET Candidate` endpoint and view their email addresses."
+}

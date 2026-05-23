@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/BatchObject",
+  "title": "BatchObject",
+  "type": "object",
+  "properties": {
+    "item_id": {
+      "type": "string"
+    },
+    "status": {
+      "$ref": "#/components/schemas/BatchObjectStatusEnum",
+      "description": "Possible per-object statuses:\n\n* `PENDING` - This object has not been processed yet\n* `SUCCESS` - This object was successfully POSTed\n* `FAILURE` - This object was not successfully POSTed"
+    },
+    "response": {
+      "$ref": "#/components/schemas/BatchObjectItemResponse"
+    }
+  },
+  "required": [
+    "item_id",
+    "status"
+  ],
+  "description": "Individual batch object with status"
+}

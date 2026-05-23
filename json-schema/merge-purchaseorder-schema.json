@@ -1,0 +1,211 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/PurchaseOrder",
+  "title": "PurchaseOrder",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "remote_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The third-party API ID of the matching object."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was created by Merge."
+    },
+    "modified_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was modified by Merge."
+    },
+    "status": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/PurchaseOrderStatusEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The purchase order's status."
+    },
+    "issue_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The purchase order's issue date."
+    },
+    "purchase_order_number": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The human-readable number of the purchase order."
+    },
+    "delivery_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "The purchase order's delivery date."
+    },
+    "delivery_address": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The purchase order's delivery address."
+    },
+    "customer": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The contact making the purchase order."
+    },
+    "vendor": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The party fulfilling the purchase order."
+    },
+    "memo": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "A memo attached to the purchase order."
+    },
+    "company": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The company the purchase order belongs to."
+    },
+    "total_amount": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "double",
+      "description": "The purchase order's total amount."
+    },
+    "currency": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/TransactionCurrencyEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The purchase order's currency. The currency code in ISO 4217 format."
+    },
+    "exchange_rate": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "decimal",
+      "description": "The purchase order's exchange rate."
+    },
+    "payment_term": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The payment term that applies to this transaction."
+    },
+    "line_items": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/PurchaseOrderLineItem"
+      }
+    },
+    "inclusive_of_tax": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "description": "If the transaction is inclusive or exclusive of tax. `True` if inclusive, `False` if exclusive."
+    },
+    "tracking_categories": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      }
+    },
+    "accounting_period": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "The accounting period that the PurchaseOrder was generated in."
+    },
+    "remote_created_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "When the third party's purchase order note was created."
+    },
+    "remote_updated_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "When the third party's purchase order note was updated."
+    },
+    "remote_was_deleted": {
+      "type": "boolean",
+      "description": "Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/)."
+    },
+    "field_mappings": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/PurchaseOrderFieldMappings"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "remote_data": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/components/schemas/RemoteData"
+      }
+    },
+    "remote_fields": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/RemoteField"
+      }
+    }
+  },
+  "description": "# The PurchaseOrder Object\n### Description\nA `PurchaseOrder` represents a request to purchase goods or services from a vendor. It outlines the details of the purchase, such as the items or services requested, quantities, prices, and delivery details.\n\nA `PurchaseOrder` is a crucial component of the procurement process, but does not typically result in any impact on the company\u2019s general ledger. The general ledger is typically only affected when the `PurchaseOrder` is fulfilled as an *Accounts Payable* `Invoice` object (also known as a Bill).\n\n### Usage Example\nFetch from the `LIST PurchaseOrders` endpoint and view a company's purchase orders."
+}

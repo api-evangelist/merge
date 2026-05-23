@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/AccessKey",
+  "title": "AccessKey",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Human-readable label for the key."
+    },
+    "key_masked": {
+      "type": "string",
+      "description": "Truncated form of the secret safe to display in UIs."
+    },
+    "tool_pack_ids": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "description": "Tool packs this key can access. `null` means unrestricted access."
+    },
+    "registered_user_ids": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "description": "Registered users this key can access. `null` means unrestricted access."
+    },
+    "scopes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Limits which actions this key can perform. Available scopes: `runtime:all` (MCP tool calls), `management:all` (resource management endpoints)."
+    },
+    "is_test": {
+      "type": "boolean",
+      "description": "If true, the key can only authenticate test registered users."
+    },
+    "expires_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "Expiration timestamp. `null` means never expires."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "key_masked",
+    "scopes",
+    "is_test",
+    "expires_at",
+    "created_at"
+  ],
+  "description": "Access key shape returned by list and detail endpoints."
+}

@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/PublicVendorsListResponse",
+  "title": "PublicVendorsListResponse",
+  "type": "object",
+  "properties": {
+    "object": {
+      "type": "string",
+      "enum": [
+        "list"
+      ]
+    },
+    "data": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/PublicVendor"
+      }
+    },
+    "has_more": {
+      "type": "boolean",
+      "default": false
+    },
+    "next_cursor": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "data"
+  ],
+  "description": "Paginated response wrapper for `GET /v1/vendors`. Use the `next_cursor` field to page through results when `has_more` is true."
+}

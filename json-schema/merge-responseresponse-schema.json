@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ResponseResponse",
+  "title": "ResponseResponse",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "object": {
+      "type": "string",
+      "enum": [
+        "response"
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "model": {
+      "type": "string",
+      "description": "The model that generated the response, in 'provider/model-name' format"
+    },
+    "vendor": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The execution vendor that served the request"
+    },
+    "provider_request_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The upstream provider's request ID"
+    },
+    "output": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/OutputMessage"
+      }
+    },
+    "usage": {
+      "$ref": "#/components/schemas/Usage"
+    },
+    "routing": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/RoutingMetadata"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Routing metadata (only present when include_routing_metadata=true)"
+    }
+  },
+  "required": [
+    "id",
+    "created_at",
+    "model",
+    "output",
+    "usage"
+  ],
+  "description": "Response body for POST /v1/responses."
+}

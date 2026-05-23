@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/AccessKeyCreate",
+  "title": "AccessKeyCreate",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable label for the key. Auto-generated if omitted."
+    },
+    "key": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Raw secret value. Returned only on create or regenerate."
+    },
+    "key_masked": {
+      "type": "string",
+      "description": "Truncated form of the secret safe to display in UIs."
+    },
+    "tool_pack_ids": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "description": "Tool packs this key can access. Must be a subset of the parent key's `tool_pack_ids`. Pass `null` for unrestricted access to all tool packs in the organization."
+    },
+    "registered_user_ids": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "string",
+        "format": "uuid"
+      },
+      "description": "Registered users this key can access. Must be a subset of the parent key's `registered_user_ids`. Pass `null` for unrestricted access to all registered users in the organization."
+    },
+    "scopes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Limits which actions this key can perform. Available scopes: `runtime:all` (MCP tool calls), `management:all` (resource management endpoints)."
+    },
+    "is_test": {
+      "type": "boolean",
+      "default": false,
+      "description": "If true, the key can only authenticate test registered users."
+    },
+    "expires_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "Expiration timestamp. Must be before the parent key's `expires_at`. Defaults to 90 days from now if omitted. Pass `null` explicitly for a key that never expires."
+    },
+    "expires_in": {
+      "type": "integer",
+      "description": "Seconds until the key expires. Alternative to `expires_at`."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "id",
+    "key",
+    "key_masked",
+    "created_at"
+  ],
+  "description": "Request and response shape for creating or regenerating an access key."
+}

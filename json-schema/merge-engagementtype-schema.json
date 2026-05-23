@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/EngagementType",
+  "title": "EngagementType",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "remote_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The third-party API ID of the matching object."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was created by Merge."
+    },
+    "modified_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The datetime that this object was modified by Merge."
+    },
+    "activity_type": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/ActivityTypeEnum"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The engagement type's activity type."
+    },
+    "name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The engagement type's name."
+    },
+    "remote_fields": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/RemoteField"
+      }
+    }
+  },
+  "description": "# The Engagement Type Object\n### Description\nThe `Engagement Type` object is used to represent an interaction activity. A given `Engagement` typically has an `Engagement Type` object represented in the engagement_type field.\n### Usage Example\nTODO"
+}

@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/RemoteFieldAPI",
+  "title": "RemoteFieldAPI",
+  "type": "object",
+  "properties": {
+    "schema": {
+      "type": "object",
+      "additionalProperties": {
+        "description": "Any type"
+      }
+    },
+    "remote_key_name": {
+      "type": "string"
+    },
+    "remote_endpoint_info": {
+      "$ref": "#/components/schemas/RemoteEndpointInfo"
+    },
+    "example_values": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "description": "Any type"
+      }
+    },
+    "advanced_metadata": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/AdvancedMetadata"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "coverage": {
+      "oneOf": [
+        {
+          "$ref": "#/components/schemas/RemoteFieldApiCoverage"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "schema",
+    "remote_key_name",
+    "remote_endpoint_info",
+    "advanced_metadata"
+  ]
+}
