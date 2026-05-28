@@ -1,0 +1,225 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Merge Agent Onboarding (Meta-Gateway)
+  description: 'Merge Agent Onboarding — the meta-gateway pattern. Merge stands in front of
+    hundreds of underlying SaaS APIs (Workday, Salesforce, Greenhouse, NetSuite, Notion,
+    Slack, etc.). The agent onboards once at Merge and receives an account_token that fans
+    out across many downstream APIs via Merge''s Linked Account model. Distinct from the
+    other adapter shapes because the credential covers the meta-platform, not a single API.'
+  tags:
+  - Merge.dev
+  - Unified API
+  - Meta-Gateway
+  - Linked Accounts
+  - Agent Onboarding
+  - LLM Gateway
+  - Agent Handler
+  - Naftiko Capability
+  created: '2026-05-28'
+  modified: '2026-05-28'
+  related:
+  - https://apievangelist.com/2026/05/27/automated-agent-onboarding-is-a-naftiko-capability-not-a-gateway-feature/
+  - https://github.com/api-evangelist/merge
+binds:
+- namespace: env
+  keys:
+    MERGE_API_KEY: MERGE_API_KEY
+    MERGE_ACCOUNT_ID: MERGE_ACCOUNT_ID
+    AGENT_TRUSTED_ISSUERS: AGENT_TRUSTED_ISSUERS
+    AGENT_CONSENT_HASH: AGENT_CONSENT_HASH
+capability:
+  consumes:
+  - type: http
+    namespace: merge-api
+    baseUri: https://api.merge.dev/api
+    description: Merge Unified API — Linked Account provisioning, account-token exchange,
+      integration discovery, and linked-account scope adjustments.
+    resources:
+    - name: create-link-token
+      path: /integrations/create-link-token
+      operations:
+      - name: createlinktoken
+        method: POST
+        description: Create the magic-link / DCR-shaped initialization token bound to the
+          requesting account. The agent receives the link_token in the onboarding response
+          and exchanges it for an account_token in the next step.
+        outputRawFormat: json
+        outputParameters:
+        - { name: result, type: object, value: $. }
+        inputParameters:
+        - { name: body, in: body, type: object, required: true }
+    - name: account-token
+      path: /integrations/account-token/{public_token}
+      operations:
+      - name: getaccounttoken
+        method: GET
+        description: Exchange the public link token for a permanent account_token (the
+          credential the agent uses for all subsequent Unified API calls).
+        outputRawFormat: json
+        outputParameters:
+        - { name: result, type: object, value: $. }
+        inputParameters:
+        - { name: public_token, in: path, type: string, required: true }
+    - name: integrations
+      path: /integrations
+      operations:
+      - name: listintegrations
+        method: GET
+        description: Discover which downstream SaaS providers are available to the agent
+          once Linked.
+        outputRawFormat: json
+        outputParameters:
+        - { name: result, type: object, value: $. }
+    - name: linked-accounts
+      path: /integrations/linked-accounts/{id}
+      operations:
+      - name: patchlinkedaccount
+        method: PATCH
+        description: Adjust scope or metadata on the linked account post-creation.
+        outputRawFormat: json
+        outputParameters:
+        - { name: result, type: object, value: $. }
+        inputParameters:
+        - { name: id, in: path, type: string, required: true }
+        - { name: body, in: body, type: object, required: true }
+      - name: deletelinkedaccount
+        method: DELETE
+        description: Revoke the agent's linked account; all downstream SaaS access is
+          severed simultaneously.
+        outputRawFormat: json
+        outputParameters:
+        - { name: result, type: object, value: $. }
+    authentication:
+      type: bearer
+      token: '{{env.MERGE_API_KEY}}'
+  orchestration:
+  - name: onboard-agent
+    description: Verify Web Bot Auth, classify scopes against Merge's unified vocabulary,
+      create a link_token bound to the agent's operator account, exchange for account_token,
+      annotate the linked account with the agent identity metadata, emit audit via Merge's
+      own logging surface.
+    inputs:
+    - { name: signature, type: object, required: true }
+    - { name: signature_agent, type: string, required: true }
+    - { name: skill_id, type: string, required: true }
+    - { name: requested_scopes, type: array, required: true, description: 'Merge unified scopes — e.g. read:hris.employees, write:accounting.invoices.' }
+    - { name: end_user_identifier, type: string, required: true, description: 'Merge requires an end-user identifier even for agent flows; typically the operator''s account-level identifier.' }
+    - { name: consent_hash, type: string, required: true }
+    - { name: contact, type: object, required: true }
+    steps:
+    - id: verify_signature
+      type: builtin.web-bot-auth.verify
+      with:
+        signature: '${input.signature}'
+        agent: '${input.signature_agent}'
+        trusted_issuers: '{{env.AGENT_TRUSTED_ISSUERS}}'
+      on_failure: deny
+    - id: verify_consent
+      type: builtin.policy.assert
+      with:
+        assert: '${input.consent_hash} == {{env.AGENT_CONSENT_HASH}}'
+      on_failure: deny
+    - id: classify_scopes
+      type: builtin.policy.scope-classify
+      description: Map Merge unified scopes to (auto-issue | approval-required | forbidden)
+        per the provider's declared policy.
+      with:
+        requested: '${input.requested_scopes}'
+    - id: create_link_token
+      call: merge-api.createlinktoken
+      with:
+        body:
+          end_user_origin_id: '${input.end_user_identifier}'
+          end_user_organization_name: '${input.contact.operator}'
+          end_user_email_address: 'agent-${steps.verify_signature.agent_id}@${input.contact.operator}'
+          categories: '${steps.classify_scopes.merge_categories}'
+          link_expiry_mins: 30
+    - id: exchange_for_account_token
+      call: merge-api.getaccounttoken
+      with:
+        public_token: '${steps.create_link_token.link_token}'
+    - id: annotate_linked_account
+      call: merge-api.patchlinkedaccount
+      description: Attach the Web Bot Auth signature metadata + consent hash to the
+        linked account so subsequent audit queries can attribute traffic.
+      with:
+        id: '${steps.exchange_for_account_token.id}'
+        body:
+          custom_metadata:
+            naftiko_agent_id: '${steps.verify_signature.agent_id}'
+            naftiko_operator: '${input.contact.operator}'
+            naftiko_consent_hash: '${input.consent_hash}'
+            naftiko_signature_keyid: '${steps.verify_signature.keyid}'
+            naftiko_skill_id: '${input.skill_id}'
+    - id: emit_audit
+      type: builtin.audit.emit
+      description: Merge's own audit/logging picks up the per-vendor calls. The orchestration
+        emits a synthetic onboarding event tagged with the agent identity for joinability.
+      with:
+        target: merge-api.integrations
+        custom_event:
+          event_type: agent.onboarded
+          agent_id: '${steps.verify_signature.agent_id}'
+          operator: '${input.contact.operator}'
+          merge_categories: '${steps.classify_scopes.merge_categories}'
+          linked_account_id: '${steps.exchange_for_account_token.id}'
+          consent_hash: '${input.consent_hash}'
+    output:
+      agent_id: '${steps.verify_signature.agent_id}'
+      linked_account_id: '${steps.exchange_for_account_token.id}'
+      credential:
+        type: Bearer
+        header: Authorization
+        value: '${steps.exchange_for_account_token.account_token}'
+        revocation_url: '/v1/agents/${steps.verify_signature.agent_id}/revoke'
+      merge_categories: '${steps.classify_scopes.merge_categories}'
+      reachable_integrations: '${steps.classify_scopes.merge_categories}'
+  - name: revoke-agent
+    description: Delete the linked account; severs access to all downstream SaaS integrations
+      in one call.
+    inputs:
+    - { name: linked_account_id, type: string, required: true }
+    steps:
+    - id: delete_la
+      call: merge-api.deletelinkedaccount
+      with:
+        id: '${input.linked_account_id}'
+    output:
+      revoked: true
+  exposes:
+  - type: rest
+    namespace: merge-agent-onboarding-rest
+    port: 8080
+    resources:
+    - path: /v1/agents/onboard
+      operations:
+      - { method: POST, name: onboardagent, call: orchestration.onboard-agent }
+    - path: /v1/agents/{agent_id}/revoke
+      operations:
+      - { method: POST, name: revokeagent, call: orchestration.revoke-agent }
+  - type: mcp
+    namespace: merge-agent-onboarding-mcp
+    port: 9090
+    transport: http
+    tools:
+    - name: agent-register
+      hints: { readOnly: false, destructive: false, idempotent: false }
+      call: orchestration.onboard-agent
+    - name: agent-revoke
+      hints: { readOnly: false, destructive: true, idempotent: true }
+      call: orchestration.revoke-agent
+  - type: agent-skill
+    namespace: merge-agent-onboarding-skill
+    description: 'Agent skill at /skills/onboard-agent.md. Merge-specific addendum:
+      one onboarding call yields a credential the agent uses for every downstream SaaS Merge
+      proxies to; the agent does not need to know which underlying SaaS is behind any
+      given Unified API endpoint.'
+    skill:
+      name: onboard-agent
+      file: skills/onboard-agent.md
+  governance:
+  - { id: require-web-bot-auth, severity: blocking, description: 'All onboard calls must carry a valid RFC 9421 signature.', enforce_at: [runtime] }
+  - { id: require-consent-hash-match, severity: blocking, description: 'Submitted consent_hash must match AGENT_CONSENT_HASH.', enforce_at: [runtime] }
+  - { id: forbidden-scopes-deny, severity: blocking, description: 'Forbidden scopes return 403.', enforce_at: [runtime] }
+  - { id: approval-required-defer, severity: advisory, description: 'Approval-required scopes return 202 + status URL.', enforce_at: [runtime] }
+  - { id: meta-gateway-scope-translation, severity: advisory, description: 'Scopes in the agent request map to Merge Unified categories, not to underlying-SaaS-native scopes. The provider policy file declares which Merge categories an agent tier can subscribe to; per-vendor scope is delegated to Merge.', enforce_at: [runtime] }
