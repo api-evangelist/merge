@@ -5,7 +5,7 @@ info:
     hundreds of underlying SaaS APIs (Workday, Salesforce, Greenhouse, NetSuite, Notion,
     Slack, etc.). The agent onboards once at Merge and receives an account_token that fans
     out across many downstream APIs via Merge''s Linked Account model. Distinct from the
-    other adapter shapes because the credential covers the meta-platform, not a single API.'
+    other adapter shapes because the credential covers the meta-platform, not a single API. Runtime policy enforcement (signature verify, consent check, scope classify, audit emit) lives in the orchestration.steps below — each step that gates issuance carries on_failure: deny. Lint-time validation of this capability shape lives in the companion Polychro ruleset at https://github.com/api-evangelist/posts/blob/main/polychro/agent-onboarding-rules.yaml — Polychro is Naftiko''s governance layer, separate from the capability spec, and is the correct home for cross-object consistency rules that apply across every agent-onboarding capability.'
   tags:
   - Merge.dev
   - Unified API
@@ -217,9 +217,3 @@ capability:
     skill:
       name: onboard-agent
       file: skills/onboard-agent.md
-  governance:
-  - { id: require-web-bot-auth, severity: blocking, description: 'All onboard calls must carry a valid RFC 9421 signature.', enforce_at: [runtime] }
-  - { id: require-consent-hash-match, severity: blocking, description: 'Submitted consent_hash must match AGENT_CONSENT_HASH.', enforce_at: [runtime] }
-  - { id: forbidden-scopes-deny, severity: blocking, description: 'Forbidden scopes return 403.', enforce_at: [runtime] }
-  - { id: approval-required-defer, severity: advisory, description: 'Approval-required scopes return 202 + status URL.', enforce_at: [runtime] }
-  - { id: meta-gateway-scope-translation, severity: advisory, description: 'Scopes in the agent request map to Merge Unified categories, not to underlying-SaaS-native scopes. The provider policy file declares which Merge categories an agent tier can subscribe to; per-vendor scope is delegated to Merge.', enforce_at: [runtime] }
