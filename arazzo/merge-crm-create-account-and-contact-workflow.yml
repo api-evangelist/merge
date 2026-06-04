@@ -1,0 +1,120 @@
+arazzo: 1.0.1
+info:
+  title: Merge CRM Create an Account with a Contact
+  summary: Create a CRM account, attach a primary contact to it, and confirm the contact was written.
+  description: >-
+    A common CRM write pattern for standing up a new customer record. The
+    workflow creates an account, then creates a contact linked to that account,
+    and finally reads the created contact back to confirm it was persisted with
+    the correct account association. Every step spells out its request inline so
+    the flow can be read and executed without opening the underlying OpenAPI
+    description.
+  version: 1.0.0
+sourceDescriptions:
+- name: crmApi
+  url: ../openapi/merge-crm-api-openapi.yaml
+  type: openapi
+workflows:
+- workflowId: create-account-and-contact
+  summary: Create a CRM account and attach a primary contact to it.
+  description: >-
+    Creates an account, creates a contact tied to that account, and confirms
+    the contact.
+  inputs:
+    type: object
+    required:
+    - authorization
+    - accountToken
+    - accountName
+    - contactFirstName
+    - contactLastName
+    properties:
+      authorization:
+        type: string
+        description: Production access token with the required "Bearer " prefix.
+      accountToken:
+        type: string
+        description: The account token identifying the linked CRM end user.
+      accountName:
+        type: string
+        description: The name of the account to create.
+      industry:
+        type: string
+        description: The account's industry.
+      website:
+        type: string
+        description: The account's website URL.
+      contactFirstName:
+        type: string
+        description: The primary contact's first name.
+      contactLastName:
+        type: string
+        description: The primary contact's last name.
+  steps:
+  - stepId: createAccount
+    description: >-
+      Create the CRM account from the supplied name and optional firmographics.
+    operationPath: '{$sourceDescriptions.crmApi.url}#/paths/~1crm~1v1~1accounts/post'
+    parameters:
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    - name: X-Account-Token
+      in: header
+      value: $inputs.accountToken
+    requestBody:
+      contentType: application/json
+      payload:
+        model:
+          name: $inputs.accountName
+          industry: $inputs.industry
+          website: $inputs.website
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      accountId: $response.body#/model/id
+  - stepId: createContact
+    description: >-
+      Create a contact linked to the newly created account.
+    operationPath: '{$sourceDescriptions.crmApi.url}#/paths/~1crm~1v1~1contacts/post'
+    parameters:
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    - name: X-Account-Token
+      in: header
+      value: $inputs.accountToken
+    requestBody:
+      contentType: application/json
+      payload:
+        model:
+          first_name: $inputs.contactFirstName
+          last_name: $inputs.contactLastName
+          account: $steps.createAccount.outputs.accountId
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      contactId: $response.body#/model/id
+  - stepId: confirmContact
+    description: >-
+      Read the created contact back to confirm it was persisted with the
+      correct account association.
+    operationPath: '{$sourceDescriptions.crmApi.url}#/paths/~1crm~1v1~1contacts~1{id}/get'
+    parameters:
+    - name: id
+      in: path
+      value: $steps.createContact.outputs.contactId
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    - name: X-Account-Token
+      in: header
+      value: $inputs.accountToken
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      contactId: $response.body#/id
+      account: $response.body#/account
+  outputs:
+    accountId: $steps.createAccount.outputs.accountId
+    contactId: $steps.confirmContact.outputs.contactId

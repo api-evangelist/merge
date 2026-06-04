@@ -1,0 +1,134 @@
+arazzo: 1.0.1
+info:
+  title: Merge Accounting Bill a Customer
+  summary: Create a customer contact, raise an invoice against that contact, and confirm the invoice.
+  description: >-
+    A core accounting write pattern for billing a customer. The workflow
+    creates a contact flagged as a customer, raises an invoice of type
+    ACCOUNTS_RECEIVABLE against that contact, and then reads the invoice back to
+    confirm it was persisted. Every step spells out its request inline so the
+    flow can be read and executed without opening the underlying OpenAPI
+    description.
+  version: 1.0.0
+sourceDescriptions:
+- name: accountingApi
+  url: ../openapi/merge-accounting-api-openapi.yaml
+  type: openapi
+workflows:
+- workflowId: create-contact-and-invoice
+  summary: Create a customer contact and raise an invoice against it.
+  description: >-
+    Creates a customer contact, raises an invoice referencing that contact, and
+    confirms the invoice.
+  inputs:
+    type: object
+    required:
+    - authorization
+    - accountToken
+    - contactName
+    - invoiceType
+    - totalAmount
+    properties:
+      authorization:
+        type: string
+        description: Production access token with the required "Bearer " prefix.
+      accountToken:
+        type: string
+        description: The account token identifying the linked accounting end user.
+      contactName:
+        type: string
+        description: The name of the contact (customer) to create.
+      emailAddress:
+        type: string
+        description: The contact's email address.
+      invoiceType:
+        type: string
+        description: The invoice type, e.g. ACCOUNTS_RECEIVABLE or ACCOUNTS_PAYABLE.
+      number:
+        type: string
+        description: The invoice number.
+      issueDate:
+        type: string
+        description: The invoice issue date (ISO 8601).
+      dueDate:
+        type: string
+        description: The invoice due date (ISO 8601).
+      totalAmount:
+        type: number
+        description: The total amount of the invoice.
+      memo:
+        type: string
+        description: An optional memo for the invoice.
+  steps:
+  - stepId: createContact
+    description: >-
+      Create the contact and flag it as a customer.
+    operationPath: '{$sourceDescriptions.accountingApi.url}#/paths/~1accounting~1v1~1contacts/post'
+    parameters:
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    - name: X-Account-Token
+      in: header
+      value: $inputs.accountToken
+    requestBody:
+      contentType: application/json
+      payload:
+        model:
+          name: $inputs.contactName
+          email_address: $inputs.emailAddress
+          is_customer: true
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      contactId: $response.body#/model/id
+  - stepId: createInvoice
+    description: >-
+      Raise an invoice against the newly created contact.
+    operationPath: '{$sourceDescriptions.accountingApi.url}#/paths/~1accounting~1v1~1invoices/post'
+    parameters:
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    - name: X-Account-Token
+      in: header
+      value: $inputs.accountToken
+    requestBody:
+      contentType: application/json
+      payload:
+        model:
+          type: $inputs.invoiceType
+          contact: $steps.createContact.outputs.contactId
+          number: $inputs.number
+          issue_date: $inputs.issueDate
+          due_date: $inputs.dueDate
+          total_amount: $inputs.totalAmount
+          memo: $inputs.memo
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      invoiceId: $response.body#/model/id
+  - stepId: confirmInvoice
+    description: >-
+      Read the created invoice back to confirm it was persisted against the
+      contact.
+    operationPath: '{$sourceDescriptions.accountingApi.url}#/paths/~1accounting~1v1~1invoices~1{id}/get'
+    parameters:
+    - name: id
+      in: path
+      value: $steps.createInvoice.outputs.invoiceId
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    - name: X-Account-Token
+      in: header
+      value: $inputs.accountToken
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      invoiceId: $response.body#/id
+      totalAmount: $response.body#/total_amount
+      contact: $response.body#/contact
+  outputs:
+    contactId: $steps.createContact.outputs.contactId
+    invoiceId: $steps.confirmInvoice.outputs.invoiceId

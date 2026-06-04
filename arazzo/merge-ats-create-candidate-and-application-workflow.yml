@@ -1,0 +1,125 @@
+arazzo: 1.0.1
+info:
+  title: Merge ATS Add a Candidate and Application
+  summary: Create a candidate, resolve an open job, and submit an application linking the candidate to that job.
+  description: >-
+    The core ATS write pattern for onboarding a new applicant. The workflow
+    creates a candidate record, resolves an open job by code, and then creates
+    an application that ties the new candidate to that job. Every step spells
+    out its request inline so the flow can be read and executed without opening
+    the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: atsApi
+  url: ../openapi/merge-ats-api-openapi.yaml
+  type: openapi
+workflows:
+- workflowId: create-candidate-and-application
+  summary: Create a candidate and submit an application to an open job.
+  description: >-
+    Creates a candidate, resolves a job by its code, and submits an application
+    linking the candidate to the resolved job.
+  inputs:
+    type: object
+    required:
+    - authorization
+    - accountToken
+    - firstName
+    - lastName
+    - jobCode
+    properties:
+      authorization:
+        type: string
+        description: Production access token with the required "Bearer " prefix.
+      accountToken:
+        type: string
+        description: The account token identifying the linked ATS end user.
+      firstName:
+        type: string
+        description: The candidate's first name.
+      lastName:
+        type: string
+        description: The candidate's last name.
+      jobCode:
+        type: string
+        description: The code of the job to apply the candidate to.
+      source:
+        type: string
+        description: The application's source label (e.g. "LinkedIn").
+  steps:
+  - stepId: createCandidate
+    description: >-
+      Create the candidate record from the supplied name.
+    operationPath: '{$sourceDescriptions.atsApi.url}#/paths/~1ats~1v1~1candidates/post'
+    parameters:
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    - name: X-Account-Token
+      in: header
+      value: $inputs.accountToken
+    requestBody:
+      contentType: application/json
+      payload:
+        model:
+          first_name: $inputs.firstName
+          last_name: $inputs.lastName
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      candidateId: $response.body#/model/id
+  - stepId: resolveJob
+    description: >-
+      Resolve the open job to apply to by matching on its code, returning at
+      most one match.
+    operationPath: '{$sourceDescriptions.atsApi.url}#/paths/~1ats~1v1~1jobs/get'
+    parameters:
+    - name: code
+      in: query
+      value: $inputs.jobCode
+    - name: status
+      in: query
+      value: OPEN
+    - name: page_size
+      in: query
+      value: 1
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    - name: X-Account-Token
+      in: header
+      value: $inputs.accountToken
+    successCriteria:
+    - condition: $statusCode == 200
+    - context: $response.body
+      condition: $.results.length > 0
+      type: jsonpath
+    outputs:
+      jobId: $response.body#/results/0/id
+  - stepId: createApplication
+    description: >-
+      Submit an application linking the new candidate to the resolved job.
+    operationPath: '{$sourceDescriptions.atsApi.url}#/paths/~1ats~1v1~1applications/post'
+    parameters:
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    - name: X-Account-Token
+      in: header
+      value: $inputs.accountToken
+    requestBody:
+      contentType: application/json
+      payload:
+        model:
+          candidate: $steps.createCandidate.outputs.candidateId
+          job: $steps.resolveJob.outputs.jobId
+          source: $inputs.source
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      applicationId: $response.body#/model/id
+      currentStage: $response.body#/model/current_stage
+  outputs:
+    candidateId: $steps.createCandidate.outputs.candidateId
+    jobId: $steps.resolveJob.outputs.jobId
+    applicationId: $steps.createApplication.outputs.applicationId

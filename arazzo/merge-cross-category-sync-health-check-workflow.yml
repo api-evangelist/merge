@@ -1,0 +1,115 @@
+arazzo: 1.0.1
+info:
+  title: Merge Cross-Category Sync Health Check
+  summary: Read sync status and open issues for both an HRIS and a CRM linked account in a single monitoring pass.
+  description: >-
+    An operational monitoring pattern that spans two Merge categories. The
+    workflow reads the sync status for an HRIS linked account and its currently
+    ongoing issues, then does the same for a CRM linked account, giving a
+    consumer a single combined view of integration health across both
+    categories. Because Merge reuses the same operationId across paths and
+    specs, each step references its operation by JSON pointer through its source
+    description. Every step spells out its request inline so the flow can be
+    read and executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: hrisApi
+  url: ../openapi/merge-hris-api-openapi.yaml
+  type: openapi
+- name: crmApi
+  url: ../openapi/merge-crm-api-openapi.yaml
+  type: openapi
+workflows:
+- workflowId: cross-category-sync-health-check
+  summary: Read sync status and open issues for an HRIS and a CRM linked account.
+  description: >-
+    Reads the HRIS sync status and ongoing issues, then the CRM sync status and
+    ongoing issues, producing a combined health view.
+  inputs:
+    type: object
+    required:
+    - authorization
+    - hrisAccountToken
+    - crmAccountToken
+    properties:
+      authorization:
+        type: string
+        description: Production access token with the required "Bearer " prefix.
+      hrisAccountToken:
+        type: string
+        description: The account token identifying the linked HRIS end user.
+      crmAccountToken:
+        type: string
+        description: The account token identifying the linked CRM end user.
+  steps:
+  - stepId: hrisSyncStatus
+    description: >-
+      Read the sync status for the HRIS linked account.
+    operationPath: '{$sourceDescriptions.hrisApi.url}#/paths/~1hris~1v1~1sync-status/get'
+    parameters:
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    - name: X-Account-Token
+      in: header
+      value: $inputs.hrisAccountToken
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      hrisSyncStatuses: $response.body#/results
+  - stepId: hrisOpenIssues
+    description: >-
+      List the currently ongoing issues for the HRIS linked account.
+    operationPath: '{$sourceDescriptions.hrisApi.url}#/paths/~1hris~1v1~1issues/get'
+    parameters:
+    - name: status
+      in: query
+      value: ONGOING
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    - name: X-Account-Token
+      in: header
+      value: $inputs.hrisAccountToken
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      hrisIssues: $response.body#/results
+  - stepId: crmSyncStatus
+    description: >-
+      Read the sync status for the CRM linked account.
+    operationPath: '{$sourceDescriptions.crmApi.url}#/paths/~1crm~1v1~1sync-status/get'
+    parameters:
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    - name: X-Account-Token
+      in: header
+      value: $inputs.crmAccountToken
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      crmSyncStatuses: $response.body#/results
+  - stepId: crmOpenIssues
+    description: >-
+      List the currently ongoing issues for the CRM linked account.
+    operationPath: '{$sourceDescriptions.crmApi.url}#/paths/~1crm~1v1~1issues/get'
+    parameters:
+    - name: status
+      in: query
+      value: ONGOING
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    - name: X-Account-Token
+      in: header
+      value: $inputs.crmAccountToken
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      crmIssues: $response.body#/results
+  outputs:
+    hrisSyncStatuses: $steps.hrisSyncStatus.outputs.hrisSyncStatuses
+    hrisIssues: $steps.hrisOpenIssues.outputs.hrisIssues
+    crmSyncStatuses: $steps.crmSyncStatus.outputs.crmSyncStatuses
+    crmIssues: $steps.crmOpenIssues.outputs.crmIssues

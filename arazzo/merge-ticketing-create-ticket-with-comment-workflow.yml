@@ -1,0 +1,114 @@
+arazzo: 1.0.1
+info:
+  title: Merge Ticketing Open a Ticket with a First Comment
+  summary: Create a ticket on a linked ticketing system, add an opening comment to it, and confirm the ticket.
+  description: >-
+    A core ticketing write pattern. The workflow creates a ticket with a name,
+    description, and status, posts an opening comment onto the new ticket, and
+    then reads the ticket back to confirm it was persisted. Every step spells
+    out its request inline so the flow can be read and executed without opening
+    the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: ticketingApi
+  url: ../openapi/merge-ticketing-api-openapi.yaml
+  type: openapi
+workflows:
+- workflowId: create-ticket-with-comment
+  summary: Create a ticket and post an opening comment onto it.
+  description: >-
+    Creates a ticket, adds a first comment referencing the created ticket, and
+    confirms the ticket.
+  inputs:
+    type: object
+    required:
+    - authorization
+    - accountToken
+    - ticketName
+    - commentBody
+    properties:
+      authorization:
+        type: string
+        description: Production access token with the required "Bearer " prefix.
+      accountToken:
+        type: string
+        description: The account token identifying the linked ticketing end user.
+      ticketName:
+        type: string
+        description: The title of the ticket to create.
+      description:
+        type: string
+        description: The ticket's body description.
+      status:
+        type: string
+        description: The ticket status (e.g. OPEN, IN_PROGRESS, ON_HOLD, CLOSED).
+      commentBody:
+        type: string
+        description: The text of the opening comment to post on the ticket.
+  steps:
+  - stepId: createTicket
+    description: >-
+      Create the ticket from the supplied name, description, and status.
+    operationPath: '{$sourceDescriptions.ticketingApi.url}#/paths/~1ticketing~1v1~1tickets/post'
+    parameters:
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    - name: X-Account-Token
+      in: header
+      value: $inputs.accountToken
+    requestBody:
+      contentType: application/json
+      payload:
+        model:
+          name: $inputs.ticketName
+          description: $inputs.description
+          status: $inputs.status
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      ticketId: $response.body#/model/id
+  - stepId: addComment
+    description: >-
+      Post an opening comment onto the newly created ticket.
+    operationPath: '{$sourceDescriptions.ticketingApi.url}#/paths/~1ticketing~1v1~1comments/post'
+    parameters:
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    - name: X-Account-Token
+      in: header
+      value: $inputs.accountToken
+    requestBody:
+      contentType: application/json
+      payload:
+        model:
+          ticket: $steps.createTicket.outputs.ticketId
+          body: $inputs.commentBody
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      commentId: $response.body#/model/id
+  - stepId: confirmTicket
+    description: >-
+      Read the created ticket back to confirm it was persisted.
+    operationPath: '{$sourceDescriptions.ticketingApi.url}#/paths/~1ticketing~1v1~1tickets~1{id}/get'
+    parameters:
+    - name: id
+      in: path
+      value: $steps.createTicket.outputs.ticketId
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    - name: X-Account-Token
+      in: header
+      value: $inputs.accountToken
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      ticketId: $response.body#/id
+      status: $response.body#/status
+  outputs:
+    ticketId: $steps.confirmTicket.outputs.ticketId
+    commentId: $steps.addComment.outputs.commentId
+    status: $steps.confirmTicket.outputs.status

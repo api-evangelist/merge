@@ -1,0 +1,123 @@
+arazzo: 1.0.1
+info:
+  title: Merge CRM Open an Opportunity
+  summary: Resolve a pipeline stage and an account, then create an opportunity placed at that stage on that account.
+  description: >-
+    A CRM sales pattern for opening a deal. The workflow lists the pipeline
+    stages and selects the one matching the supplied stage name, resolves the
+    target account by name, and then creates an opportunity for that account
+    placed at the resolved stage. Every step spells out its request inline so
+    the flow can be read and executed without opening the underlying OpenAPI
+    description.
+  version: 1.0.0
+sourceDescriptions:
+- name: crmApi
+  url: ../openapi/merge-crm-api-openapi.yaml
+  type: openapi
+workflows:
+- workflowId: create-opportunity
+  summary: Create a CRM opportunity for an account at a named pipeline stage.
+  description: >-
+    Resolves a pipeline stage by name and an account by name, then creates an
+    opportunity tied to both.
+  inputs:
+    type: object
+    required:
+    - authorization
+    - accountToken
+    - opportunityName
+    - amount
+    - stageName
+    - accountName
+    properties:
+      authorization:
+        type: string
+        description: Production access token with the required "Bearer " prefix.
+      accountToken:
+        type: string
+        description: The account token identifying the linked CRM end user.
+      opportunityName:
+        type: string
+        description: The name of the opportunity to create.
+      amount:
+        type: integer
+        description: The opportunity's monetary amount.
+      stageName:
+        type: string
+        description: The name of the pipeline stage to place the opportunity in.
+      accountName:
+        type: string
+        description: The name of the account the opportunity belongs to.
+  steps:
+  - stepId: resolveStage
+    description: >-
+      List the pipeline stages and select the one whose name matches the
+      supplied stage name.
+    operationPath: '{$sourceDescriptions.crmApi.url}#/paths/~1crm~1v1~1stages/get'
+    parameters:
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    - name: X-Account-Token
+      in: header
+      value: $inputs.accountToken
+    successCriteria:
+    - condition: $statusCode == 200
+    - context: $response.body
+      condition: $.results[?(@.name == '$inputs.stageName')]
+      type: jsonpath
+    outputs:
+      stageId: $response.body#/results/0/id
+  - stepId: resolveAccount
+    description: >-
+      Resolve the target account by matching on its name, returning at most one
+      match.
+    operationPath: '{$sourceDescriptions.crmApi.url}#/paths/~1crm~1v1~1accounts/get'
+    parameters:
+    - name: name
+      in: query
+      value: $inputs.accountName
+    - name: page_size
+      in: query
+      value: 1
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    - name: X-Account-Token
+      in: header
+      value: $inputs.accountToken
+    successCriteria:
+    - condition: $statusCode == 200
+    - context: $response.body
+      condition: $.results.length > 0
+      type: jsonpath
+    outputs:
+      accountId: $response.body#/results/0/id
+  - stepId: createOpportunity
+    description: >-
+      Create the opportunity for the resolved account at the resolved stage.
+    operationPath: '{$sourceDescriptions.crmApi.url}#/paths/~1crm~1v1~1opportunities/post'
+    parameters:
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    - name: X-Account-Token
+      in: header
+      value: $inputs.accountToken
+    requestBody:
+      contentType: application/json
+      payload:
+        model:
+          name: $inputs.opportunityName
+          amount: $inputs.amount
+          stage: $steps.resolveStage.outputs.stageId
+          account: $steps.resolveAccount.outputs.accountId
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      opportunityId: $response.body#/model/id
+      status: $response.body#/model/status
+  outputs:
+    stageId: $steps.resolveStage.outputs.stageId
+    accountId: $steps.resolveAccount.outputs.accountId
+    opportunityId: $steps.createOpportunity.outputs.opportunityId

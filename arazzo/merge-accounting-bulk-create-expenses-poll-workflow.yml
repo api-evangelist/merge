@@ -1,0 +1,155 @@
+arazzo: 1.0.1
+info:
+  title: Merge Accounting Bulk Create Expenses and Poll the Batch
+  summary: Submit a batch of expenses asynchronously, then poll the batch until it finishes and branch on the final status.
+  description: >-
+    The asynchronous bulk write pattern for the Accounting category. The
+    workflow submits a batch of expenses for asynchronous creation, which
+    returns only a batch id, then polls the batch objects endpoint. While the
+    batch is still ENQUEUED or IN_PROGRESS the workflow loops back to poll
+    again, and once the batch reaches a terminal state it branches to report
+    success or surface a failure. Every step spells out its request inline so
+    the flow can be read and executed without opening the underlying OpenAPI
+    description.
+  version: 1.0.0
+sourceDescriptions:
+- name: accountingApi
+  url: ../openapi/merge-accounting-api-openapi.yaml
+  type: openapi
+workflows:
+- workflowId: bulk-create-expenses-poll
+  summary: Asynchronously create a batch of expenses and poll until the batch completes.
+  description: >-
+    Submits a batch of expenses for asynchronous creation, polls the batch
+    until it leaves the ENQUEUED/IN_PROGRESS states, and branches on the
+    terminal status.
+  inputs:
+    type: object
+    required:
+    - authorization
+    - accountToken
+    - batchItems
+    properties:
+      authorization:
+        type: string
+        description: Production access token with the required "Bearer " prefix.
+      accountToken:
+        type: string
+        description: The account token identifying the linked accounting end user.
+      batchItems:
+        type: array
+        description: >-
+          The array of batch items to create. Each item has an item_id and a
+          payload describing one ExpenseRequest.
+        items:
+          type: object
+  steps:
+  - stepId: submitBatch
+    description: >-
+      Submit the batch of expenses for asynchronous creation; the response
+      returns only the batch id.
+    operationPath: '{$sourceDescriptions.accountingApi.url}#/paths/~1accounting~1v1~1expenses~1bulk/post'
+    parameters:
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    - name: X-Account-Token
+      in: header
+      value: $inputs.accountToken
+    requestBody:
+      contentType: application/json
+      payload:
+        batch_items: $inputs.batchItems
+    successCriteria:
+    - condition: $statusCode == 202
+    outputs:
+      batchId: $response.body#/batch_id
+  - stepId: pollBatch
+    description: >-
+      Poll the batch objects endpoint to read the current overall status of the
+      batch.
+    operationPath: '{$sourceDescriptions.accountingApi.url}#/paths/~1accounting~1v1~1expenses~1bulk~1{batch_id}/get'
+    parameters:
+    - name: batch_id
+      in: path
+      value: $steps.submitBatch.outputs.batchId
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    - name: X-Account-Token
+      in: header
+      value: $inputs.accountToken
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      status: $response.body#/status
+      totalCount: $response.body#/total_count
+    onSuccess:
+    - name: stillRunning
+      type: goto
+      stepId: pollBatch
+      criteria:
+      - context: $response.body
+        condition: $.status == 'ENQUEUED' || $.status == 'IN_PROGRESS'
+        type: jsonpath
+    - name: succeeded
+      type: goto
+      stepId: reportSuccess
+      criteria:
+      - context: $response.body
+        condition: $.status == 'SUCCESS' || $.status == 'PARTIAL_SUCCESS'
+        type: jsonpath
+    - name: failed
+      type: goto
+      stepId: reportFailure
+      criteria:
+      - context: $response.body
+        condition: $.status == 'FAILED' || $.status == 'RATE_LIMITED'
+        type: jsonpath
+  - stepId: reportSuccess
+    description: >-
+      Re-read the completed batch to capture the final object set after a
+      successful or partially successful run.
+    operationPath: '{$sourceDescriptions.accountingApi.url}#/paths/~1accounting~1v1~1expenses~1bulk~1{batch_id}/get'
+    parameters:
+    - name: batch_id
+      in: path
+      value: $steps.submitBatch.outputs.batchId
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    - name: X-Account-Token
+      in: header
+      value: $inputs.accountToken
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      finalStatus: $response.body#/status
+      objects: $response.body#/objects
+    onSuccess:
+    - name: done
+      type: end
+  - stepId: reportFailure
+    description: >-
+      Re-read the failed batch to capture the final status and any per-object
+      errors for troubleshooting.
+    operationPath: '{$sourceDescriptions.accountingApi.url}#/paths/~1accounting~1v1~1expenses~1bulk~1{batch_id}/get'
+    parameters:
+    - name: batch_id
+      in: path
+      value: $steps.submitBatch.outputs.batchId
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    - name: X-Account-Token
+      in: header
+      value: $inputs.accountToken
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      finalStatus: $response.body#/status
+      objects: $response.body#/objects
+  outputs:
+    batchId: $steps.submitBatch.outputs.batchId
+    successStatus: $steps.reportSuccess.outputs.finalStatus
+    failureStatus: $steps.reportFailure.outputs.finalStatus

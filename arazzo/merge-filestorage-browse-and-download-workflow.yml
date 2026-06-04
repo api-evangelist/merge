@@ -1,0 +1,107 @@
+arazzo: 1.0.1
+info:
+  title: Merge File Storage Browse and Download a File
+  summary: List files in a linked file storage account, read the first file's metadata, and download its contents.
+  description: >-
+    A file storage read pattern that walks from a folder listing to file
+    contents. The workflow lists files in the linked account, retrieves the
+    metadata for the first file returned, and then downloads that file's binary
+    contents. Every step spells out its request inline so the flow can be read
+    and executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: fileStorageApi
+  url: ../openapi/merge-file-storage-api-openapi.yaml
+  type: openapi
+workflows:
+- workflowId: browse-and-download
+  summary: List files, read one file's metadata, and download its contents.
+  description: >-
+    Lists files on a linked account, retrieves the first file's metadata, and
+    downloads that file.
+  inputs:
+    type: object
+    required:
+    - authorization
+    - accountToken
+    properties:
+      authorization:
+        type: string
+        description: Production access token with the required "Bearer " prefix.
+      accountToken:
+        type: string
+        description: The account token identifying the linked file storage end user.
+      folderId:
+        type: string
+        description: Optional folder to scope the listing to.
+      pageSize:
+        type: integer
+        description: Number of files to return per page (maximum 100).
+  steps:
+  - stepId: listFiles
+    description: >-
+      List files on the linked account, optionally scoped to a folder.
+    operationPath: '{$sourceDescriptions.fileStorageApi.url}#/paths/~1filestorage~1v1~1files/get'
+    parameters:
+    - name: folder_id
+      in: query
+      value: $inputs.folderId
+    - name: page_size
+      in: query
+      value: $inputs.pageSize
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    - name: X-Account-Token
+      in: header
+      value: $inputs.accountToken
+    successCriteria:
+    - condition: $statusCode == 200
+    - context: $response.body
+      condition: $.results.length > 0
+      type: jsonpath
+    outputs:
+      files: $response.body#/results
+      firstFileId: $response.body#/results/0/id
+  - stepId: getFile
+    description: >-
+      Retrieve the metadata for the first file returned by the listing.
+    operationPath: '{$sourceDescriptions.fileStorageApi.url}#/paths/~1filestorage~1v1~1files~1{id}/get'
+    parameters:
+    - name: id
+      in: path
+      value: $steps.listFiles.outputs.firstFileId
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    - name: X-Account-Token
+      in: header
+      value: $inputs.accountToken
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      fileId: $response.body#/id
+      fileName: $response.body#/name
+      mimeType: $response.body#/mime_type
+  - stepId: downloadFile
+    description: >-
+      Download the binary contents of the resolved file.
+    operationPath: '{$sourceDescriptions.fileStorageApi.url}#/paths/~1filestorage~1v1~1files~1{id}~1download/get'
+    parameters:
+    - name: id
+      in: path
+      value: $steps.getFile.outputs.fileId
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    - name: X-Account-Token
+      in: header
+      value: $inputs.accountToken
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      statusCode: $statusCode
+  outputs:
+    files: $steps.listFiles.outputs.files
+    fileId: $steps.getFile.outputs.fileId
+    fileName: $steps.getFile.outputs.fileName

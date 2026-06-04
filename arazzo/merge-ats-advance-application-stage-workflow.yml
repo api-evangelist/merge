@@ -1,0 +1,117 @@
+arazzo: 1.0.1
+info:
+  title: Merge ATS Advance an Application Stage
+  summary: Find a candidate's application, resolve a target interview stage for its job, and move the application into that stage.
+  description: >-
+    An ATS pipeline pattern that moves a candidate forward. The workflow lists
+    the applications for a candidate, reads the first application to learn which
+    job it belongs to, resolves the named interview stage on that job, and then
+    changes the application's stage to the resolved stage. Every step spells out
+    its request inline so the flow can be read and executed without opening the
+    underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: atsApi
+  url: ../openapi/merge-ats-api-openapi.yaml
+  type: openapi
+workflows:
+- workflowId: advance-application-stage
+  summary: Move a candidate's application into a named interview stage.
+  description: >-
+    Resolves the candidate's application and its job, finds the target
+    interview stage on that job, and changes the application's stage.
+  inputs:
+    type: object
+    required:
+    - authorization
+    - accountToken
+    - candidateId
+    - targetStageName
+    properties:
+      authorization:
+        type: string
+        description: Production access token with the required "Bearer " prefix.
+      accountToken:
+        type: string
+        description: The account token identifying the linked ATS end user.
+      candidateId:
+        type: string
+        description: The candidate whose application should be advanced.
+      targetStageName:
+        type: string
+        description: The name of the interview stage to move the application into.
+  steps:
+  - stepId: findApplication
+    description: >-
+      List the applications belonging to the candidate and select the first
+      one.
+    operationPath: '{$sourceDescriptions.atsApi.url}#/paths/~1ats~1v1~1applications/get'
+    parameters:
+    - name: candidate_id
+      in: query
+      value: $inputs.candidateId
+    - name: page_size
+      in: query
+      value: 1
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    - name: X-Account-Token
+      in: header
+      value: $inputs.accountToken
+    successCriteria:
+    - condition: $statusCode == 200
+    - context: $response.body
+      condition: $.results.length > 0
+      type: jsonpath
+    outputs:
+      applicationId: $response.body#/results/0/id
+      jobId: $response.body#/results/0/job
+  - stepId: resolveStage
+    description: >-
+      Resolve the target interview stage on the application's job by matching on
+      the supplied stage name.
+    operationPath: '{$sourceDescriptions.atsApi.url}#/paths/~1ats~1v1~1job-interview-stages/get'
+    parameters:
+    - name: job_id
+      in: query
+      value: $steps.findApplication.outputs.jobId
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    - name: X-Account-Token
+      in: header
+      value: $inputs.accountToken
+    successCriteria:
+    - condition: $statusCode == 200
+    - context: $response.body
+      condition: $.results[?(@.name == '$inputs.targetStageName')]
+      type: jsonpath
+    outputs:
+      stageId: $response.body#/results/0/id
+  - stepId: changeStage
+    description: >-
+      Move the application into the resolved interview stage.
+    operationPath: '{$sourceDescriptions.atsApi.url}#/paths/~1ats~1v1~1applications~1{id}~1change-stage/post'
+    parameters:
+    - name: id
+      in: path
+      value: $steps.findApplication.outputs.applicationId
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    - name: X-Account-Token
+      in: header
+      value: $inputs.accountToken
+    requestBody:
+      contentType: application/json
+      payload:
+        job_interview_stage: $steps.resolveStage.outputs.stageId
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      applicationId: $response.body#/model/id
+      currentStage: $response.body#/model/current_stage
+  outputs:
+    applicationId: $steps.changeStage.outputs.applicationId
+    currentStage: $steps.changeStage.outputs.currentStage

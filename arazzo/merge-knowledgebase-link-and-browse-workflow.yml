@@ -1,0 +1,112 @@
+arazzo: 1.0.1
+info:
+  title: Merge Knowledge Base Link and Browse Articles
+  summary: Exchange a public token for an account token, list knowledge base containers, and list the articles within the first container.
+  description: >-
+    An end-to-end Knowledge Base pattern that links an account and immediately
+    reads content from it. The workflow exchanges the public token from the
+    Merge Link frontend flow for a durable account token, confirms the linked
+    account, lists the knowledge base containers (spaces or categories), and
+    then lists the articles inside the first container. Every step spells out
+    its request inline so the flow can be read and executed without opening the
+    underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: knowledgeBaseApi
+  url: ../openapi/merge-knowledge-base-api-openapi.yaml
+  type: openapi
+workflows:
+- workflowId: link-and-browse-knowledge-base
+  summary: Link a knowledge base account and browse its containers and articles.
+  description: >-
+    Exchanges a public token for an account token, confirms the account, lists
+    containers, and lists the articles inside the first container.
+  inputs:
+    type: object
+    required:
+    - authorization
+    - publicToken
+    properties:
+      authorization:
+        type: string
+        description: Production access token with the required "Bearer " prefix.
+      publicToken:
+        type: string
+        description: The public token returned by the Merge Link frontend after the user finishes linking.
+  steps:
+  - stepId: exchangePublicToken
+    description: >-
+      Exchange the public token returned by the Merge Link frontend flow for a
+      durable account token used on all subsequent data requests.
+    operationPath: '{$sourceDescriptions.knowledgeBaseApi.url}#/paths/~1knowledgebase~1v1~1account-token~1{public_token}/get'
+    parameters:
+    - name: public_token
+      in: path
+      value: $inputs.publicToken
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      accountToken: $response.body#/account_token
+      linkedAccountId: $response.body#/id
+  - stepId: confirmAccount
+    description: >-
+      Read the linked account details to confirm the integration and surface
+      the connected knowledge base platform.
+    operationPath: '{$sourceDescriptions.knowledgeBaseApi.url}#/paths/~1knowledgebase~1v1~1account-details/get'
+    parameters:
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    - name: X-Account-Token
+      in: header
+      value: $steps.exchangePublicToken.outputs.accountToken
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      integration: $response.body#/integration
+      status: $response.body#/status
+  - stepId: listContainers
+    description: >-
+      List the knowledge base containers (spaces or categories) on the linked
+      account.
+    operationPath: '{$sourceDescriptions.knowledgeBaseApi.url}#/paths/~1knowledgebase~1v1~1containers/get'
+    parameters:
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    - name: X-Account-Token
+      in: header
+      value: $steps.exchangePublicToken.outputs.accountToken
+    successCriteria:
+    - condition: $statusCode == 200
+    - context: $response.body
+      condition: $.results.length > 0
+      type: jsonpath
+    outputs:
+      containers: $response.body#/results
+      firstContainerId: $response.body#/results/0/id
+  - stepId: listArticles
+    description: >-
+      List the articles that live inside the first container.
+    operationPath: '{$sourceDescriptions.knowledgeBaseApi.url}#/paths/~1knowledgebase~1v1~1articles/get'
+    parameters:
+    - name: parent_container_id
+      in: query
+      value: $steps.listContainers.outputs.firstContainerId
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    - name: X-Account-Token
+      in: header
+      value: $steps.exchangePublicToken.outputs.accountToken
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      articles: $response.body#/results
+  outputs:
+    accountToken: $steps.exchangePublicToken.outputs.accountToken
+    containers: $steps.listContainers.outputs.containers
+    articles: $steps.listArticles.outputs.articles

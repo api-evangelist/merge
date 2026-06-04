@@ -1,0 +1,110 @@
+arazzo: 1.0.1
+info:
+  title: Merge ATS Link an Account
+  summary: Create a Merge Link token for the ATS category, exchange the public token for an account token, and confirm the linked applicant tracking system.
+  description: >-
+    The foundational Merge integration pattern for the ATS category. The
+    workflow creates a single-use Link token from your end user's details,
+    exchanges the public token returned by the Merge Link frontend flow for a
+    durable account token, and reads the linked account details to confirm the
+    integration and surface the connected applicant tracking system. Every step
+    spells out its request inline so the flow can be read and executed without
+    opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: atsApi
+  url: ../openapi/merge-ats-api-openapi.yaml
+  type: openapi
+workflows:
+- workflowId: link-ats-account
+  summary: Link a new end user to an ATS platform and obtain a usable account token.
+  description: >-
+    Creates a Link token scoped to the ATS category, exchanges the public token
+    produced by Merge Link for an account token, and verifies the linked
+    account by reading its details.
+  inputs:
+    type: object
+    required:
+    - authorization
+    - endUserEmailAddress
+    - endUserOrganizationName
+    - endUserOriginId
+    - publicToken
+    properties:
+      authorization:
+        type: string
+        description: Production access token with the required "Bearer " prefix.
+      endUserEmailAddress:
+        type: string
+        description: The end user's email address, used purely for identification.
+      endUserOrganizationName:
+        type: string
+        description: The end user's organization name.
+      endUserOriginId:
+        type: string
+        description: A unique identifier for the end user in your own database.
+      publicToken:
+        type: string
+        description: The public token returned by the Merge Link frontend after the user finishes linking.
+  steps:
+  - stepId: createLinkToken
+    description: >-
+      Create a single-use Link token scoped to the ATS category from the end
+      user's identifying details.
+    operationPath: '{$sourceDescriptions.atsApi.url}#/paths/~1ats~1v1~1link-token/post'
+    parameters:
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    requestBody:
+      contentType: application/json
+      payload:
+        end_user_email_address: $inputs.endUserEmailAddress
+        end_user_organization_name: $inputs.endUserOrganizationName
+        end_user_origin_id: $inputs.endUserOriginId
+        categories:
+        - ats
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      linkToken: $response.body#/link_token
+      integrationName: $response.body#/integration_name
+  - stepId: exchangePublicToken
+    description: >-
+      Exchange the public token returned by the Merge Link frontend flow for a
+      durable account token used on all subsequent data requests.
+    operationPath: '{$sourceDescriptions.atsApi.url}#/paths/~1ats~1v1~1account-token~1{public_token}/get'
+    parameters:
+    - name: public_token
+      in: path
+      value: $inputs.publicToken
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      accountToken: $response.body#/account_token
+      linkedAccountId: $response.body#/id
+  - stepId: confirmAccount
+    description: >-
+      Read the linked account details to confirm the integration completed and
+      surface the connected ATS platform.
+    operationPath: '{$sourceDescriptions.atsApi.url}#/paths/~1ats~1v1~1account-details/get'
+    parameters:
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    - name: X-Account-Token
+      in: header
+      value: $steps.exchangePublicToken.outputs.accountToken
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      integration: $response.body#/integration
+      status: $response.body#/status
+  outputs:
+    accountToken: $steps.exchangePublicToken.outputs.accountToken
+    linkedAccountId: $steps.exchangePublicToken.outputs.linkedAccountId
+    integration: $steps.confirmAccount.outputs.integration
+    status: $steps.confirmAccount.outputs.status

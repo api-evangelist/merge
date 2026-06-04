@@ -1,0 +1,101 @@
+arazzo: 1.0.1
+info:
+  title: Merge HRIS Employee Directory with Time Off
+  summary: List employees from a linked HRIS account, then read each employee's record and time off requests.
+  description: >-
+    A common HRIS read pattern that builds an employee directory view. The
+    workflow lists employees from a linked HRIS account, retrieves the full
+    record for the first employee, and then lists that employee's time off
+    requests so a consumer can render a combined profile and absence summary.
+    Every step spells out its request inline so the flow can be read and
+    executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: hrisApi
+  url: ../openapi/merge-hris-api-openapi.yaml
+  type: openapi
+workflows:
+- workflowId: list-employees-and-time-off
+  summary: List HRIS employees and pull one employee's record and time off requests.
+  description: >-
+    Lists employees on a linked account, retrieves the first employee's full
+    record, and lists their time off requests.
+  inputs:
+    type: object
+    required:
+    - authorization
+    - accountToken
+    properties:
+      authorization:
+        type: string
+        description: Production access token with the required "Bearer " prefix.
+      accountToken:
+        type: string
+        description: The account token identifying the linked HRIS end user.
+      pageSize:
+        type: integer
+        description: Number of employees to return per page (maximum 100).
+  steps:
+  - stepId: listEmployees
+    description: >-
+      List employees from the linked HRIS account, returning the paginated
+      results envelope.
+    operationPath: '{$sourceDescriptions.hrisApi.url}#/paths/~1hris~1v1~1employees/get'
+    parameters:
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    - name: X-Account-Token
+      in: header
+      value: $inputs.accountToken
+    - name: page_size
+      in: query
+      value: $inputs.pageSize
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      employees: $response.body#/results
+      firstEmployeeId: $response.body#/results/0/id
+      next: $response.body#/next
+  - stepId: getEmployee
+    description: >-
+      Retrieve the full record for the first employee returned by the listing.
+    operationPath: '{$sourceDescriptions.hrisApi.url}#/paths/~1hris~1v1~1employees~1{id}/get'
+    parameters:
+    - name: id
+      in: path
+      value: $steps.listEmployees.outputs.firstEmployeeId
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    - name: X-Account-Token
+      in: header
+      value: $inputs.accountToken
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      employeeId: $response.body#/id
+      displayFullName: $response.body#/display_full_name
+      workEmail: $response.body#/work_email
+  - stepId: listTimeOff
+    description: >-
+      List the time off requests belonging to the resolved employee.
+    operationPath: '{$sourceDescriptions.hrisApi.url}#/paths/~1hris~1v1~1time-off/get'
+    parameters:
+    - name: employee_id
+      in: query
+      value: $steps.getEmployee.outputs.employeeId
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    - name: X-Account-Token
+      in: header
+      value: $inputs.accountToken
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      timeOff: $response.body#/results
+  outputs:
+    employees: $steps.listEmployees.outputs.employees
+    employeeId: $steps.getEmployee.outputs.employeeId
+    timeOff: $steps.listTimeOff.outputs.timeOff

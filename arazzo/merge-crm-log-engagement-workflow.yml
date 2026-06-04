@@ -1,0 +1,124 @@
+arazzo: 1.0.1
+info:
+  title: Merge CRM Log an Engagement on a Contact
+  summary: Resolve a contact by email, log an engagement against that contact, and confirm the engagement.
+  description: >-
+    A CRM activity-logging pattern used to record a call, meeting, or email. The
+    workflow resolves a contact by email address, creates an engagement that
+    references that contact, and reads the engagement back to confirm it was
+    persisted. Every step spells out its request inline so the flow can be read
+    and executed without opening the underlying OpenAPI description.
+  version: 1.0.0
+sourceDescriptions:
+- name: crmApi
+  url: ../openapi/merge-crm-api-openapi.yaml
+  type: openapi
+workflows:
+- workflowId: log-engagement
+  summary: Log an engagement against a contact resolved by email.
+  description: >-
+    Resolves a contact by email address, creates an engagement referencing that
+    contact, and confirms the engagement.
+  inputs:
+    type: object
+    required:
+    - authorization
+    - accountToken
+    - contactEmail
+    - content
+    - direction
+    properties:
+      authorization:
+        type: string
+        description: Production access token with the required "Bearer " prefix.
+      accountToken:
+        type: string
+        description: The account token identifying the linked CRM end user.
+      contactEmail:
+        type: string
+        description: The email address used to resolve the contact.
+      content:
+        type: string
+        description: The body content of the engagement.
+      subject:
+        type: string
+        description: The subject of the engagement.
+      direction:
+        type: string
+        description: The direction of the engagement (INBOUND or OUTBOUND).
+      startTime:
+        type: string
+        description: When the engagement started (ISO 8601).
+  steps:
+  - stepId: resolveContact
+    description: >-
+      Resolve the contact by matching on the supplied email address, returning
+      at most one match.
+    operationPath: '{$sourceDescriptions.crmApi.url}#/paths/~1crm~1v1~1contacts/get'
+    parameters:
+    - name: email_addresses
+      in: query
+      value: $inputs.contactEmail
+    - name: page_size
+      in: query
+      value: 1
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    - name: X-Account-Token
+      in: header
+      value: $inputs.accountToken
+    successCriteria:
+    - condition: $statusCode == 200
+    - context: $response.body
+      condition: $.results.length > 0
+      type: jsonpath
+    outputs:
+      contactId: $response.body#/results/0/id
+  - stepId: createEngagement
+    description: >-
+      Create the engagement and reference the resolved contact.
+    operationPath: '{$sourceDescriptions.crmApi.url}#/paths/~1crm~1v1~1engagements/post'
+    parameters:
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    - name: X-Account-Token
+      in: header
+      value: $inputs.accountToken
+    requestBody:
+      contentType: application/json
+      payload:
+        model:
+          content: $inputs.content
+          subject: $inputs.subject
+          direction: $inputs.direction
+          start_time: $inputs.startTime
+          contacts:
+          - $steps.resolveContact.outputs.contactId
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      engagementId: $response.body#/model/id
+  - stepId: confirmEngagement
+    description: >-
+      Read the created engagement back to confirm it was persisted.
+    operationPath: '{$sourceDescriptions.crmApi.url}#/paths/~1crm~1v1~1engagements~1{id}/get'
+    parameters:
+    - name: id
+      in: path
+      value: $steps.createEngagement.outputs.engagementId
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    - name: X-Account-Token
+      in: header
+      value: $inputs.accountToken
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      engagementId: $response.body#/id
+      direction: $response.body#/direction
+  outputs:
+    contactId: $steps.resolveContact.outputs.contactId
+    engagementId: $steps.confirmEngagement.outputs.engagementId

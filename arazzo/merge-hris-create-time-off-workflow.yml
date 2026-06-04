@@ -1,0 +1,137 @@
+arazzo: 1.0.1
+info:
+  title: Merge HRIS Submit a Time Off Request
+  summary: Resolve an employee on a linked HRIS account and submit a time off request on their behalf.
+  description: >-
+    A write-oriented HRIS pattern. The workflow resolves the target employee by
+    listing employees and matching on display name, then creates a time off
+    request for that employee and finally reads the created request back to
+    confirm it was written. Every step spells out its request inline so the
+    flow can be read and executed without opening the underlying OpenAPI
+    description.
+  version: 1.0.0
+sourceDescriptions:
+- name: hrisApi
+  url: ../openapi/merge-hris-api-openapi.yaml
+  type: openapi
+workflows:
+- workflowId: create-time-off
+  summary: Submit a time off request for a named employee on a linked HRIS account.
+  description: >-
+    Resolves an employee by display name, creates a time off request for that
+    employee, and confirms the created request.
+  inputs:
+    type: object
+    required:
+    - authorization
+    - accountToken
+    - employeeDisplayName
+    - requestType
+    - startTime
+    - endTime
+    - units
+    - amount
+    properties:
+      authorization:
+        type: string
+        description: Production access token with the required "Bearer " prefix.
+      accountToken:
+        type: string
+        description: The account token identifying the linked HRIS end user.
+      employeeDisplayName:
+        type: string
+        description: The display full name of the employee to match.
+      requestType:
+        type: string
+        description: The type of time off (e.g. VACATION, SICK, PERSONAL).
+      startTime:
+        type: string
+        description: The day and time the time off starts (ISO 8601).
+      endTime:
+        type: string
+        description: The day and time the time off ends (ISO 8601).
+      units:
+        type: string
+        description: The measurement unit for the amount (e.g. DAYS, HOURS).
+      amount:
+        type: number
+        description: The quantity of units requested.
+      employeeNote:
+        type: string
+        description: An optional note from the employee.
+  steps:
+  - stepId: resolveEmployee
+    description: >-
+      Find the employee whose display full name matches the supplied value,
+      returning at most one match.
+    operationPath: '{$sourceDescriptions.hrisApi.url}#/paths/~1hris~1v1~1employees/get'
+    parameters:
+    - name: display_full_name
+      in: query
+      value: $inputs.employeeDisplayName
+    - name: page_size
+      in: query
+      value: 1
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    - name: X-Account-Token
+      in: header
+      value: $inputs.accountToken
+    successCriteria:
+    - condition: $statusCode == 200
+    - context: $response.body
+      condition: $.results.length > 0
+      type: jsonpath
+    outputs:
+      employeeId: $response.body#/results/0/id
+  - stepId: createTimeOff
+    description: >-
+      Create a time off request for the resolved employee using the supplied
+      window, type, and amount.
+    operationPath: '{$sourceDescriptions.hrisApi.url}#/paths/~1hris~1v1~1time-off/post'
+    parameters:
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    - name: X-Account-Token
+      in: header
+      value: $inputs.accountToken
+    requestBody:
+      contentType: application/json
+      payload:
+        model:
+          employee: $steps.resolveEmployee.outputs.employeeId
+          request_type: $inputs.requestType
+          start_time: $inputs.startTime
+          end_time: $inputs.endTime
+          units: $inputs.units
+          amount: $inputs.amount
+          employee_note: $inputs.employeeNote
+    successCriteria:
+    - condition: $statusCode == 201
+    outputs:
+      timeOffId: $response.body#/model/id
+  - stepId: confirmTimeOff
+    description: >-
+      Read the created time off request back to confirm it was persisted.
+    operationPath: '{$sourceDescriptions.hrisApi.url}#/paths/~1hris~1v1~1time-off~1{id}/get'
+    parameters:
+    - name: id
+      in: path
+      value: $steps.createTimeOff.outputs.timeOffId
+    - name: Authorization
+      in: header
+      value: $inputs.authorization
+    - name: X-Account-Token
+      in: header
+      value: $inputs.accountToken
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      timeOffId: $response.body#/id
+      status: $response.body#/status
+  outputs:
+    employeeId: $steps.resolveEmployee.outputs.employeeId
+    timeOffId: $steps.confirmTimeOff.outputs.timeOffId
+    status: $steps.confirmTimeOff.outputs.status
