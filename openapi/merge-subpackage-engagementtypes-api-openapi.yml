@@ -1,0 +1,415 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_engagementTypes API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_engagementTypes
+paths:
+  /crm/v1/engagement-types:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `EngagementType` objects.{/* BEGIN_CRM_ENGAGEMENTTYPE_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA9WYbW/aMBDHvwrySxTIWka7Ik0Tg660U9IOsoeuqqLDORKDE7u2A4Vp331KeFi7VdPWumK8TOT72/75f3dxvhEKBmOh5qRFqEqJQ1IRISctcpzFEGOKmQnmEolDQDIfUlwODKf7xCE6l1Iog9E7hjzSPYUj0iJuiirGWp6xEcPIpSp1WWYwVmCYyLS7iaqNyjDiEM6yCUZtSkWemT/oLMfVYDnwl0ftcqYNcYgErU2iRB4nfbzJUf9JslgNL/cJvBaBAfdOeE0t4x96V6w7Qo4Goy4Y6KJBWmxwNVVijNQt102Qy3o5bT3CqYuZC8owylG7zcbR/uFRs7ZSKWd/E8b89V51fDMUw8NqGFMeQl71AnrrB6czfxy/9Dsvb/3Fx6a/mCz88eRFNYyh6gVe8zy4bJx323vnDwwIBwdfjj697b4986t0cdzwx5czP6B7XkAnw8Vp4+yEzs56H279xeW+1/3Y8IPj5tmJ2Dvv9LXX6QuvXa8Th9w9R9K6+nb3xcocbUqRi/tjT1OI8Q6T5SmAZDWZDzmjdd2oQwoLkcFM16lI3RQjBu4FBzMSKoVSM9Q3OSisyyxeo2ci23AvPOv32n7nuHvfA+0pMA5DjqRlVI6/2Za0rghQw6bMzEOzNDtu3E8ckhU7u3ZIcfBMYXQBClI0qIrQ6+/OwxgMm2IHUgkszuzguK+5xjGWO4CjA1LnHO3aYiW6JUMUAFJhMGTRP9PgQttmUUhuyQsbEkUBu/8USjDJP+MRUqKyzKfU/F8BPcFLvXw4kMLYodXLh1oKs53Soh9ZW04zzeLE8LkdBhu57fabJ1jiPYK0mz0TBLlT7ddjVAktRqbSnWeQMqorjYNmZQActV00a/3GQbNU3w6mx+aOnxudIOd2mKzVdi9lLpjESLGp5a68kd1WKX3OzlPafcRBWYb2U/d/bdePAiUUfRZQhe6OVJtBHoPq9D27GHShWvyT2KUGFSCkHCGy9Z37U2/3im+x9plQk4p1a6yVw07f2+59+TkL8SfDYtv3pWmpuVMp9RWzCPWkMrD2PbOGsVIOX83MfhB83hEcIhH2M2ohErG1WvsXfef6+w/Zmkaa1BYAAA==" /></Footer>{/* END_CRM_ENGAGEMENTTYPE_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_engagementTypes
+      parameters:
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_fields
+        in: query
+        description: Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedEngagementTypeList'
+  /crm/v1/engagement-types/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns an `EngagementType` object with the given `id`.{/* BEGIN_CRM_ENGAGEMENTTYPE_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA9WYbW/aMBDHvwrySxTIWka7Ik0Tg660U9IOsoeuqqLDORKDE7u2A4Vp331KeFi7VdPWumK8TOT72/75f3dxvhEKBmOh5qRFqEqJQ1IRISctcpzFEGOKmQnmEolDQDIfUlwODKf7xCE6l1Iog9E7hjzSPYUj0iJuiirGWp6xEcPIpSp1WWYwVmCYyLS7iaqNyjDiEM6yCUZtSkWemT/oLMfVYDnwl0ftcqYNcYgErU2iRB4nfbzJUf9JslgNL/cJvBaBAfdOeE0t4x96V6w7Qo4Goy4Y6KJBWmxwNVVijNQt102Qy3o5bT3CqYuZC8owylG7zcbR/uFRs7ZSKWd/E8b89V51fDMUw8NqGFMeQl71AnrrB6czfxy/9Dsvb/3Fx6a/mCz88eRFNYyh6gVe8zy4bJx323vnDwwIBwdfjj697b4986t0cdzwx5czP6B7XkAnw8Vp4+yEzs56H279xeW+1/3Y8IPj5tmJ2Dvv9LXX6QuvXa8Th9w9R9K6+nb3xcocbUqRi/tjT1OI8Q6T5SmAZDWZDzmjdd2oQwoLkcFM16lI3RQjBu4FBzMSKoVSM9Q3OSisyyxeo2ci23AvPOv32n7nuHvfA+0pMA5DjqRlVI6/2Za0rghQw6bMzEOzNDtu3E8ckhU7u3ZIcfBMYXQBClI0qIrQ6+/OwxgMm2IHUgkszuzguK+5xjGWO4CjA1LnHO3aYiW6JUMUAFJhMGTRP9PgQttmUUhuyQsbEkUBu/8USjDJP+MRUqKyzKfU/F8BPcFLvXw4kMLYodXLh1oKs53Soh9ZW04zzeLE8LkdBhu57fabJ1jiPYK0mz0TBLlT7ddjVAktRqbSnWeQMqorjYNmZQActV00a/3GQbNU3w6mx+aOnxudIOd2mKzVdi9lLpjESLGp5a68kd1WKX3OzlPafcRBWYb2U/d/bdePAiUUfRZQhe6OVJtBHoPq9D27GHShWvyT2KUGFSCkHCGy9Z37U2/3im+x9plQk4p1a6yVw07f2+59+TkL8SfDYtv3pWmpuVMp9RWzCPWkMrD2PbOGsVIOX83MfhB83hEcIhH2M2ohErG1WvsXfef6+w/Zmkaa1BYAAA==" /></Footer>{/* END_CRM_ENGAGEMENTTYPE_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_engagementTypes
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_fields
+        in: query
+        description: Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EngagementType'
+  /crm/v1/engagement-types/remote-field-classes:
+    get:
+      operationId: remote-field-classes-list
+      summary: Remote Field Classes List
+      description: Returns a list of `RemoteFieldClass` objects.{/* BEGIN_CRM_ENGAGEMENTTYPE_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA9WYbW/aMBDHvwrySxTIWka7Ik0Tg660U9IOsoeuqqLDORKDE7u2A4Vp331KeFi7VdPWumK8TOT72/75f3dxvhEKBmOh5qRFqEqJQ1IRISctcpzFEGOKmQnmEolDQDIfUlwODKf7xCE6l1Iog9E7hjzSPYUj0iJuiirGWp6xEcPIpSp1WWYwVmCYyLS7iaqNyjDiEM6yCUZtSkWemT/oLMfVYDnwl0ftcqYNcYgErU2iRB4nfbzJUf9JslgNL/cJvBaBAfdOeE0t4x96V6w7Qo4Goy4Y6KJBWmxwNVVijNQt102Qy3o5bT3CqYuZC8owylG7zcbR/uFRs7ZSKWd/E8b89V51fDMUw8NqGFMeQl71AnrrB6czfxy/9Dsvb/3Fx6a/mCz88eRFNYyh6gVe8zy4bJx323vnDwwIBwdfjj697b4986t0cdzwx5czP6B7XkAnw8Vp4+yEzs56H279xeW+1/3Y8IPj5tmJ2Dvv9LXX6QuvXa8Th9w9R9K6+nb3xcocbUqRi/tjT1OI8Q6T5SmAZDWZDzmjdd2oQwoLkcFM16lI3RQjBu4FBzMSKoVSM9Q3OSisyyxeo2ci23AvPOv32n7nuHvfA+0pMA5DjqRlVI6/2Za0rghQw6bMzEOzNDtu3E8ckhU7u3ZIcfBMYXQBClI0qIrQ6+/OwxgMm2IHUgkszuzguK+5xjGWO4CjA1LnHO3aYiW6JUMUAFJhMGTRP9PgQttmUUhuyQsbEkUBu/8USjDJP+MRUqKyzKfU/F8BPcFLvXw4kMLYodXLh1oKs53Soh9ZW04zzeLE8LkdBhu57fabJ1jiPYK0mz0TBLlT7ddjVAktRqbSnWeQMqorjYNmZQActV00a/3GQbNU3w6mx+aOnxudIOd2mKzVdi9lLpjESLGp5a68kd1WKX3OzlPafcRBWYb2U/d/bdePAiUUfRZQhe6OVJtBHoPq9D27GHShWvyT2KUGFSCkHCGy9Z37U2/3im+x9plQk4p1a6yVw07f2+59+TkL8SfDYtv3pWmpuVMp9RWzCPWkMrD2PbOGsVIOX83MfhB83hEcIhH2M2ohErG1WvsXfef6+w/Zmkaa1BYAAA==" /></Footer>{/* END_CRM_ENGAGEMENTTYPE_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_engagementTypes
+      parameters:
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_fields
+        in: query
+        description: Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: is_common_model_field
+        in: query
+        description: If provided, will only return remote field classes with this is_common_model_field value
+        required: false
+        schema:
+          type: boolean
+      - name: is_custom
+        in: query
+        description: If provided, will only return remote fields classes with this is_custom value
+        required: false
+        schema:
+          type: boolean
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRemoteFieldClassList'
+components:
+  schemas:
+    ActivityTypeEnum:
+      type: string
+      enum:
+      - CALL
+      - MEETING
+      - EMAIL
+      title: ActivityTypeEnum
+    FieldFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldFormatEnum
+    PaginatedRemoteFieldClassList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldClass'
+      title: PaginatedRemoteFieldClassList
+    ItemSchema:
+      type: object
+      properties:
+        item_type:
+          $ref: '#/components/schemas/ItemTypeEnum'
+        item_format:
+          $ref: '#/components/schemas/ItemFormatEnum'
+        item_choices:
+          type: array
+          items:
+            type: string
+      title: ItemSchema
+    FieldTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldTypeEnum
+    RemoteField:
+      type: object
+      properties:
+        remote_field_class:
+          $ref: '#/components/schemas/RemoteFieldClass'
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteField
+    ItemTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemTypeEnum
+    ItemFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemFormatEnum
+    EngagementType:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        activity_type:
+          oneOf:
+          - $ref: '#/components/schemas/ActivityTypeEnum'
+          - type: 'null'
+          description: The engagement type's activity type.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The engagement type's name.
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteField'
+      description: '# The Engagement Type Object
+
+        ### Description
+
+        The `Engagement Type` object is used to represent an interaction activity. A given `Engagement` typically has an `Engagement Type` object represented in the engagement_type field.
+
+        ### Usage Example
+
+        TODO'
+      title: EngagementType
+    RemoteFieldClass:
+      type: object
+      properties:
+        id:
+          type: string
+        display_name:
+          type: string
+        remote_key_name:
+          type: string
+        description:
+          type: string
+        is_custom:
+          type: boolean
+        is_common_model_field:
+          type: boolean
+        is_required:
+          type: boolean
+        field_type:
+          $ref: '#/components/schemas/FieldTypeEnum'
+        field_format:
+          $ref: '#/components/schemas/FieldFormatEnum'
+        field_choices:
+          type: array
+          items:
+            type: string
+        item_schema:
+          $ref: '#/components/schemas/ItemSchema'
+      title: RemoteFieldClass
+    PaginatedEngagementTypeList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/EngagementType'
+      title: PaginatedEngagementTypeList
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

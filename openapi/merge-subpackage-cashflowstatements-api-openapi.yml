@@ -1,0 +1,698 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_cashFlowStatements API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_cashFlowStatements
+paths:
+  /accounting/v1/cash-flow-statements:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `CashFlowStatement` objects.{/* BEGIN_ACCOUNTING_CASHFLOWSTATEMENT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA81U70/bMBD9VyZ/rNpkbSmIStNUWn5qTQeUCYSQdXWuiVvHDrbTQhH/++S0g4QVARKMfcx7vufzu3e5IwwsRkrfkjYBxlQmLZcRqZJEhShIm3TBxHtCzU8tWExQWlIlkPIAEiyV0FmDVInJ0lRpi+EeRxGaA41j0iZ+gjrCWib5mGPoPxb5XFqMNFiupPEfimvjvJpUieByimFnWfCy3PJ4bYU8+TS+4Ma1n4IxNtYqi+ITvM7QvELZ9Sby94OohWDBL6jU9FJmHeZeEaJAi2EPLPTQInPPXd0YW5uatu/HKFIvv90Lceaj9EFbzgQav9Xcbmxtt2orlfz27zQS3+qVyfVIjbYqNGKCQlbpD9lNMDycB5NoI+hu3ASLs1awmC6CyfRrhUZQ6Q/7rcHwojnodeqDNQfo6eb59q+d3s5RUGGL3WYwuZgHQ1bvD9l0tDhsHu2z+dHB8U2wuGj0e2fNYLjbOtpX9UH3xPS7J6rf8TxSJcWpkvblXRFYBWdPo4l3lJo6fwr0YQIRFnxZDgRSXkuzkeDMM00PElgoCXPjMZX4CYYc/Ec9enqdgUb6Q0XKm6Quy7lzXMkH80mb7AYHnaC72yvnoTMDLmAkkLStzvCvQJP2JTlBhxxaTLwRCJAMqYkRXbIKFAMT07FQc2oKm1M4wCVTCT7HSmdTCVE6RF2GUtAoLeUWkzKhMVEWqUvKswRNwcZl1mSjXMyUYXubPullBiJzUP5IsHSEEZfS/QXUmKaouQoLLMqwjGdao2S3pEoc9YCXu17Tqs47eGjRWND2T/mVo68zrjH8CRoStKjduK7uq+vyF6A9zbjF90lfgNY4NWry7Hmp/NDYvTU6Kyt5+Lq5vtHK44yzab56XwZScPlOnj7K1pau0rNxY3Nnq/7R7v7LpX5pg5+O7JM3dPWAVyxqDkUoUYPFkIJ93/U9R63eJ2ZOaRWwTwwW/79y8/w0ru5/AzZbRHYzCgAA" /></Footer>{/* END_ACCOUNTING_CASHFLOWSTATEMENT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_cashFlowStatements
+      parameters:
+      - name: company_id
+        in: query
+        description: If provided, will only return cash flow statements for this company.
+        required: false
+        schema:
+          type: string
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/CashFlowStatementsGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCashFlowStatementList'
+  /accounting/v1/cash-flow-statements/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `CashFlowStatement` object with the given `id`.{/* BEGIN_ACCOUNTING_CASHFLOWSTATEMENT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA81U70/bMBD9VyZ/rNpkbSmIStNUWn5qTQeUCYSQdXWuiVvHDrbTQhH/++S0g4QVARKMfcx7vufzu3e5IwwsRkrfkjYBxlQmLZcRqZJEhShIm3TBxHtCzU8tWExQWlIlkPIAEiyV0FmDVInJ0lRpi+EeRxGaA41j0iZ+gjrCWib5mGPoPxb5XFqMNFiupPEfimvjvJpUieByimFnWfCy3PJ4bYU8+TS+4Ma1n4IxNtYqi+ITvM7QvELZ9Sby94OohWDBL6jU9FJmHeZeEaJAi2EPLPTQInPPXd0YW5uatu/HKFIvv90Lceaj9EFbzgQav9Xcbmxtt2orlfz27zQS3+qVyfVIjbYqNGKCQlbpD9lNMDycB5NoI+hu3ASLs1awmC6CyfRrhUZQ6Q/7rcHwojnodeqDNQfo6eb59q+d3s5RUGGL3WYwuZgHQ1bvD9l0tDhsHu2z+dHB8U2wuGj0e2fNYLjbOtpX9UH3xPS7J6rf8TxSJcWpkvblXRFYBWdPo4l3lJo6fwr0YQIRFnxZDgRSXkuzkeDMM00PElgoCXPjMZX4CYYc/Ec9enqdgUb6Q0XKm6Quy7lzXMkH80mb7AYHnaC72yvnoTMDLmAkkLStzvCvQJP2JTlBhxxaTLwRCJAMqYkRXbIKFAMT07FQc2oKm1M4wCVTCT7HSmdTCVE6RF2GUtAoLeUWkzKhMVEWqUvKswRNwcZl1mSjXMyUYXubPullBiJzUP5IsHSEEZfS/QXUmKaouQoLLMqwjGdao2S3pEoc9YCXu17Tqs47eGjRWND2T/mVo68zrjH8CRoStKjduK7uq+vyF6A9zbjF90lfgNY4NWry7Hmp/NDYvTU6Kyt5+Lq5vtHK44yzab56XwZScPlOnj7K1pau0rNxY3Nnq/7R7v7LpX5pg5+O7JM3dPWAVyxqDkUoUYPFkIJ93/U9R63eJ2ZOaRWwTwwW/79y8/w0ru5/AzZbRHYzCgAA" /></Footer>{/* END_ACCOUNTING_CASHFLOWSTATEMENT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_cashFlowStatements
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/CashFlowStatementsIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CashFlowStatement'
+components:
+  schemas:
+    CashFlowStatementsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - company
+      title: CashFlowStatementsGetParametersExpandSchemaItems
+    CashFlowStatementFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: CashFlowStatementFieldMappings
+    TransactionCurrencyEnum:
+      type: string
+      enum:
+      - XUA
+      - AFN
+      - AFA
+      - ALL
+      - ALK
+      - DZD
+      - ADP
+      - AOA
+      - AOK
+      - AON
+      - AOR
+      - ARA
+      - ARS
+      - ARM
+      - ARP
+      - ARL
+      - AMD
+      - AWG
+      - AUD
+      - ATS
+      - AZN
+      - AZM
+      - BSD
+      - BHD
+      - BDT
+      - BBD
+      - BYN
+      - BYB
+      - BYR
+      - BEF
+      - BEC
+      - BEL
+      - BZD
+      - BMD
+      - BTN
+      - BOB
+      - BOL
+      - BOV
+      - BOP
+      - BAM
+      - BAD
+      - BAN
+      - BWP
+      - BRC
+      - BRZ
+      - BRE
+      - BRR
+      - BRN
+      - BRB
+      - BRL
+      - GBP
+      - BND
+      - BGL
+      - BGN
+      - BGO
+      - BGM
+      - BUK
+      - BIF
+      - XPF
+      - KHR
+      - CAD
+      - CVE
+      - KYD
+      - XAF
+      - CLE
+      - CLP
+      - CLF
+      - CNX
+      - CNY
+      - CNH
+      - COP
+      - COU
+      - KMF
+      - CDF
+      - CRC
+      - HRD
+      - HRK
+      - CUC
+      - CUP
+      - CYP
+      - CZK
+      - CSK
+      - DKK
+      - DJF
+      - DOP
+      - NLG
+      - XCD
+      - DDM
+      - ECS
+      - ECV
+      - EGP
+      - GQE
+      - ERN
+      - EEK
+      - ETB
+      - EUR
+      - XBA
+      - XEU
+      - XBB
+      - XBC
+      - XBD
+      - FKP
+      - FJD
+      - FIM
+      - FRF
+      - XFO
+      - XFU
+      - GMD
+      - GEK
+      - GEL
+      - DEM
+      - GHS
+      - GHC
+      - GIP
+      - XAU
+      - GRD
+      - GTQ
+      - GWP
+      - GNF
+      - GNS
+      - GYD
+      - HTG
+      - HNL
+      - HKD
+      - HUF
+      - IMP
+      - ISK
+      - ISJ
+      - INR
+      - IDR
+      - IRR
+      - IQD
+      - IEP
+      - ILS
+      - ILP
+      - ILR
+      - ITL
+      - JMD
+      - JPY
+      - JOD
+      - KZT
+      - KES
+      - KWD
+      - KGS
+      - LAK
+      - LVL
+      - LVR
+      - LBP
+      - LSL
+      - LRD
+      - LYD
+      - LTL
+      - LTT
+      - LUL
+      - LUC
+      - LUF
+      - MOP
+      - MKD
+      - MKN
+      - MGA
+      - MGF
+      - MWK
+      - MYR
+      - MVR
+      - MVP
+      - MLF
+      - MTL
+      - MTP
+      - MRU
+      - MRO
+      - MUR
+      - MXV
+      - MXN
+      - MXP
+      - MDC
+      - MDL
+      - MCF
+      - MNT
+      - MAD
+      - MAF
+      - MZE
+      - MZN
+      - MZM
+      - MMK
+      - NAD
+      - NPR
+      - ANG
+      - TWD
+      - NZD
+      - NIO
+      - NIC
+      - NGN
+      - KPW
+      - NOK
+      - OMR
+      - PKR
+      - XPD
+      - PAB
+      - PGK
+      - PYG
+      - PEI
+      - PEN
+      - PES
+      - PHP
+      - XPT
+      - PLN
+      - PLZ
+      - PTE
+      - GWE
+      - QAR
+      - XRE
+      - RHD
+      - RON
+      - ROL
+      - RUB
+      - RUR
+      - RWF
+      - SVC
+      - WST
+      - SAR
+      - RSD
+      - CSD
+      - SCR
+      - SLL
+      - XAG
+      - SGD
+      - SKK
+      - SIT
+      - SBD
+      - SOS
+      - ZAR
+      - ZAL
+      - KRH
+      - KRW
+      - KRO
+      - SSP
+      - SUR
+      - ESP
+      - ESA
+      - ESB
+      - XDR
+      - LKR
+      - SHP
+      - XSU
+      - SDD
+      - SDG
+      - SDP
+      - SRD
+      - SRG
+      - SZL
+      - SEK
+      - CHF
+      - SYP
+      - STN
+      - STD
+      - TVD
+      - TJR
+      - TJS
+      - TZS
+      - XTS
+      - THB
+      - XXX
+      - TPE
+      - TOP
+      - TTD
+      - TND
+      - TRY
+      - TRL
+      - TMT
+      - TMM
+      - USD
+      - USN
+      - USS
+      - UGX
+      - UGS
+      - UAH
+      - UAK
+      - AED
+      - UYW
+      - UYU
+      - UYP
+      - UYI
+      - UZS
+      - VUV
+      - VES
+      - VEB
+      - VEF
+      - VND
+      - VNN
+      - CHE
+      - CHW
+      - XOF
+      - YDD
+      - YER
+      - YUN
+      - YUD
+      - YUM
+      - YUR
+      - ZWN
+      - ZRN
+      - ZRZ
+      - ZMW
+      - ZMK
+      - ZWD
+      - ZWR
+      - ZWL
+      description: The currency code in ISO 4217 format.
+      title: TransactionCurrencyEnum
+    CashFlowStatement:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The cash flow statement's name.
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: The cash flow statement's currency. The currency code in ISO 4217 format.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the cash flow statement belongs to.
+        start_period:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The cash flow statement's start period.
+        end_period:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The cash flow statement's end period.
+        cash_at_beginning_of_period:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: Cash and cash equivalents at the beginning of the cash flow statement's period.
+        cash_at_end_of_period:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: Cash and cash equivalents at the beginning of the cash flow statement's period.
+        operating_activities:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportItem'
+        investing_activities:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportItem'
+        financing_activities:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportItem'
+        remote_generated_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The time that cash flow statement was generated by the accounting system.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/CashFlowStatementFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The CashFlowStatement Object
+
+        ### Description
+
+        The `CashFlowStatement` object shows operating activities, investing activities, and financing activities over a period of time (month, quarter, or year).
+
+
+        ### Usage Example
+
+        Fetch from the `LIST CashFlowStatements` endpoint and view a company''s cash flow statements.'
+      title: CashFlowStatement
+    CashFlowStatementsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - company
+      title: CashFlowStatementsIdGetParametersExpandSchemaItems
+    PaginatedCashFlowStatementList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CashFlowStatement'
+      title: PaginatedCashFlowStatementList
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    ReportItem:
+      type: object
+      properties:
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The report item's name.
+        value:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The report item's value.
+        sub_items:
+          type: object
+          additionalProperties:
+            description: Any type
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the report item belongs to.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+      description: '# The ReportItem Object
+
+        ### Description
+
+        The `ReportItem` object is used to represent a report item for a Balance Sheet, Cash Flow Statement or Profit and Loss Report.
+
+
+        ### Usage Example
+
+        Fetch from the `GET BalanceSheet` endpoint and view the balance sheet''s report items.'
+      title: ReportItem
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

@@ -1,0 +1,1029 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_linkedAccounts API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_linkedAccounts
+paths:
+  /accounting/v1/linked-accounts:
+    get:
+      operationId: list
+      summary: List
+      description: List linked accounts for your organization.
+      tags:
+      - subpackage_linkedAccounts
+      parameters:
+      - name: category
+        in: query
+        description: 'Options: `hris`, `ats`, `accounting`, `ticketing`, `crm`, `mktg`, `filestorage`, `knowledgebase`, `chat`'
+        required: false
+        schema:
+          $ref: '#/components/schemas/LinkedAccountsGetParametersCategory'
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: end_user_email_address
+        in: query
+        description: If provided, will only return linked accounts associated with the given email address.
+        required: false
+        schema:
+          type: string
+      - name: end_user_organization_name
+        in: query
+        description: If provided, will only return linked accounts associated with the given organization name.
+        required: false
+        schema:
+          type: string
+      - name: end_user_origin_id
+        in: query
+        description: If provided, will only return linked accounts associated with the given origin ID.
+        required: false
+        schema:
+          type: string
+      - name: end_user_origin_ids
+        in: query
+        description: Comma-separated list of EndUser origin IDs, making it possible to specify multiple EndUsers at once.
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
+      - name: ids
+        in: query
+        description: Comma-separated list of LinkedAccount IDs, making it possible to specify multiple LinkedAccounts at once.
+        required: false
+        schema:
+          type: string
+      - name: include_duplicates
+        in: query
+        description: If `true`, will include complete production duplicates of the account specified by the `id` query parameter in the response. `id` must be for a complete production linked account.
+        required: false
+        schema:
+          type: boolean
+      - name: integration_name
+        in: query
+        description: If provided, will only return linked accounts associated with the given integration name.
+        required: false
+        schema:
+          type: string
+      - name: is_test_account
+        in: query
+        description: If included, will only include test linked accounts. If not included, will only include non-test linked accounts.
+        required: false
+        schema:
+          type: string
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: status
+        in: query
+        description: 'Filter by status. Options: `COMPLETE`, `IDLE`, `INCOMPLETE`, `RELINK_NEEDED`'
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAccountDetailsAndActionsList'
+  /ats/v1/linked-accounts:
+    get:
+      operationId: list
+      summary: List
+      description: List linked accounts for your organization.
+      tags:
+      - subpackage_linkedAccounts
+      parameters:
+      - name: category
+        in: query
+        description: 'Options: `hris`, `ats`, `accounting`, `ticketing`, `crm`, `mktg`, `filestorage`, `knowledgebase`, `chat`'
+        required: false
+        schema:
+          $ref: '#/components/schemas/LinkedAccountsGetParametersCategory'
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: end_user_email_address
+        in: query
+        description: If provided, will only return linked accounts associated with the given email address.
+        required: false
+        schema:
+          type: string
+      - name: end_user_organization_name
+        in: query
+        description: If provided, will only return linked accounts associated with the given organization name.
+        required: false
+        schema:
+          type: string
+      - name: end_user_origin_id
+        in: query
+        description: If provided, will only return linked accounts associated with the given origin ID.
+        required: false
+        schema:
+          type: string
+      - name: end_user_origin_ids
+        in: query
+        description: Comma-separated list of EndUser origin IDs, making it possible to specify multiple EndUsers at once.
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
+      - name: ids
+        in: query
+        description: Comma-separated list of LinkedAccount IDs, making it possible to specify multiple LinkedAccounts at once.
+        required: false
+        schema:
+          type: string
+      - name: include_duplicates
+        in: query
+        description: If `true`, will include complete production duplicates of the account specified by the `id` query parameter in the response. `id` must be for a complete production linked account.
+        required: false
+        schema:
+          type: boolean
+      - name: integration_name
+        in: query
+        description: If provided, will only return linked accounts associated with the given integration name.
+        required: false
+        schema:
+          type: string
+      - name: is_test_account
+        in: query
+        description: If included, will only include test linked accounts. If not included, will only include non-test linked accounts.
+        required: false
+        schema:
+          type: string
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: status
+        in: query
+        description: 'Filter by status. Options: `COMPLETE`, `IDLE`, `INCOMPLETE`, `RELINK_NEEDED`'
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAccountDetailsAndActionsList'
+  /linked-accounts:
+    get:
+      operationId: list
+      summary: List
+      description: List linked accounts for your organization.
+      tags:
+      - subpackage_linkedAccounts
+      parameters:
+      - name: category
+        in: query
+        description: 'Options: `hris`, `ats`, `accounting`, `ticketing`, `crm`, `mktg`, `filestorage`, `knowledgebase`, `chat`'
+        required: false
+        schema:
+          $ref: '#/components/schemas/LinkedAccountsGetParametersCategory'
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: end_user_email_address
+        in: query
+        description: If provided, will only return linked accounts associated with the given email address.
+        required: false
+        schema:
+          type: string
+      - name: end_user_organization_name
+        in: query
+        description: If provided, will only return linked accounts associated with the given organization name.
+        required: false
+        schema:
+          type: string
+      - name: end_user_origin_id
+        in: query
+        description: If provided, will only return linked accounts associated with the given origin ID.
+        required: false
+        schema:
+          type: string
+      - name: end_user_origin_ids
+        in: query
+        description: Comma-separated list of EndUser origin IDs, making it possible to specify multiple EndUsers at once.
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
+      - name: ids
+        in: query
+        description: Comma-separated list of LinkedAccount IDs, making it possible to specify multiple LinkedAccounts at once.
+        required: false
+        schema:
+          type: string
+      - name: include_duplicates
+        in: query
+        description: If `true`, will include complete production duplicates of the account specified by the `id` query parameter in the response. `id` must be for a complete production linked account.
+        required: false
+        schema:
+          type: boolean
+      - name: integration_name
+        in: query
+        description: If provided, will only return linked accounts associated with the given integration name.
+        required: false
+        schema:
+          type: string
+      - name: is_test_account
+        in: query
+        description: If included, will only include test linked accounts. If not included, will only include non-test linked accounts.
+        required: false
+        schema:
+          type: string
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: status
+        in: query
+        description: 'Filter by status. Options: `COMPLETE`, `IDLE`, `INCOMPLETE`, `RELINK_NEEDED`'
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAccountDetailsAndActionsList'
+  /crm/v1/linked-accounts:
+    get:
+      operationId: list
+      summary: List
+      description: List linked accounts for your organization.
+      tags:
+      - subpackage_linkedAccounts
+      parameters:
+      - name: category
+        in: query
+        description: 'Options: `hris`, `ats`, `accounting`, `ticketing`, `crm`, `mktg`, `filestorage`, `knowledgebase`, `chat`'
+        required: false
+        schema:
+          $ref: '#/components/schemas/LinkedAccountsGetParametersCategory'
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: end_user_email_address
+        in: query
+        description: If provided, will only return linked accounts associated with the given email address.
+        required: false
+        schema:
+          type: string
+      - name: end_user_organization_name
+        in: query
+        description: If provided, will only return linked accounts associated with the given organization name.
+        required: false
+        schema:
+          type: string
+      - name: end_user_origin_id
+        in: query
+        description: If provided, will only return linked accounts associated with the given origin ID.
+        required: false
+        schema:
+          type: string
+      - name: end_user_origin_ids
+        in: query
+        description: Comma-separated list of EndUser origin IDs, making it possible to specify multiple EndUsers at once.
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
+      - name: ids
+        in: query
+        description: Comma-separated list of LinkedAccount IDs, making it possible to specify multiple LinkedAccounts at once.
+        required: false
+        schema:
+          type: string
+      - name: include_duplicates
+        in: query
+        description: If `true`, will include complete production duplicates of the account specified by the `id` query parameter in the response. `id` must be for a complete production linked account.
+        required: false
+        schema:
+          type: boolean
+      - name: integration_name
+        in: query
+        description: If provided, will only return linked accounts associated with the given integration name.
+        required: false
+        schema:
+          type: string
+      - name: is_test_account
+        in: query
+        description: If included, will only include test linked accounts. If not included, will only include non-test linked accounts.
+        required: false
+        schema:
+          type: string
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: status
+        in: query
+        description: 'Filter by status. Options: `COMPLETE`, `IDLE`, `INCOMPLETE`, `RELINK_NEEDED`'
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAccountDetailsAndActionsList'
+  /filestorage/v1/linked-accounts:
+    get:
+      operationId: list
+      summary: List
+      description: List linked accounts for your organization.
+      tags:
+      - subpackage_linkedAccounts
+      parameters:
+      - name: category
+        in: query
+        description: 'Options: `hris`, `ats`, `accounting`, `ticketing`, `crm`, `mktg`, `filestorage`, `knowledgebase`, `chat`'
+        required: false
+        schema:
+          $ref: '#/components/schemas/LinkedAccountsGetParametersCategory'
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: end_user_email_address
+        in: query
+        description: If provided, will only return linked accounts associated with the given email address.
+        required: false
+        schema:
+          type: string
+      - name: end_user_organization_name
+        in: query
+        description: If provided, will only return linked accounts associated with the given organization name.
+        required: false
+        schema:
+          type: string
+      - name: end_user_origin_id
+        in: query
+        description: If provided, will only return linked accounts associated with the given origin ID.
+        required: false
+        schema:
+          type: string
+      - name: end_user_origin_ids
+        in: query
+        description: Comma-separated list of EndUser origin IDs, making it possible to specify multiple EndUsers at once.
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
+      - name: ids
+        in: query
+        description: Comma-separated list of LinkedAccount IDs, making it possible to specify multiple LinkedAccounts at once.
+        required: false
+        schema:
+          type: string
+      - name: include_duplicates
+        in: query
+        description: If `true`, will include complete production duplicates of the account specified by the `id` query parameter in the response. `id` must be for a complete production linked account.
+        required: false
+        schema:
+          type: boolean
+      - name: integration_name
+        in: query
+        description: If provided, will only return linked accounts associated with the given integration name.
+        required: false
+        schema:
+          type: string
+      - name: is_test_account
+        in: query
+        description: If included, will only include test linked accounts. If not included, will only include non-test linked accounts.
+        required: false
+        schema:
+          type: string
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: status
+        in: query
+        description: 'Filter by status. Options: `COMPLETE`, `IDLE`, `INCOMPLETE`, `RELINK_NEEDED`'
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAccountDetailsAndActionsList'
+  /hris/v1/linked-accounts:
+    get:
+      operationId: list
+      summary: List
+      description: List linked accounts for your organization.
+      tags:
+      - subpackage_linkedAccounts
+      parameters:
+      - name: category
+        in: query
+        description: 'Options: `hris`, `ats`, `accounting`, `ticketing`, `crm`, `mktg`, `filestorage`, `knowledgebase`, `chat`'
+        required: false
+        schema:
+          $ref: '#/components/schemas/LinkedAccountsGetParametersCategory'
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: end_user_email_address
+        in: query
+        description: If provided, will only return linked accounts associated with the given email address.
+        required: false
+        schema:
+          type: string
+      - name: end_user_organization_name
+        in: query
+        description: If provided, will only return linked accounts associated with the given organization name.
+        required: false
+        schema:
+          type: string
+      - name: end_user_origin_id
+        in: query
+        description: If provided, will only return linked accounts associated with the given origin ID.
+        required: false
+        schema:
+          type: string
+      - name: end_user_origin_ids
+        in: query
+        description: Comma-separated list of EndUser origin IDs, making it possible to specify multiple EndUsers at once.
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
+      - name: ids
+        in: query
+        description: Comma-separated list of LinkedAccount IDs, making it possible to specify multiple LinkedAccounts at once.
+        required: false
+        schema:
+          type: string
+      - name: include_duplicates
+        in: query
+        description: If `true`, will include complete production duplicates of the account specified by the `id` query parameter in the response. `id` must be for a complete production linked account.
+        required: false
+        schema:
+          type: boolean
+      - name: integration_name
+        in: query
+        description: If provided, will only return linked accounts associated with the given integration name.
+        required: false
+        schema:
+          type: string
+      - name: is_test_account
+        in: query
+        description: If included, will only include test linked accounts. If not included, will only include non-test linked accounts.
+        required: false
+        schema:
+          type: string
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: status
+        in: query
+        description: 'Filter by status. Options: `COMPLETE`, `IDLE`, `INCOMPLETE`, `RELINK_NEEDED`'
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAccountDetailsAndActionsList'
+  /knowledgebase/v1/linked-accounts:
+    get:
+      operationId: list
+      summary: List
+      description: List linked accounts for your organization.
+      tags:
+      - subpackage_linkedAccounts
+      parameters:
+      - name: category
+        in: query
+        description: 'Options: `accounting`, `ats`, `crm`, `filestorage`, `hris`, `knowledgebase`, `mktg`, `ticketing`
+
+
+          * `hris` - hris
+
+          * `ats` - ats
+
+          * `accounting` - accounting
+
+          * `ticketing` - ticketing
+
+          * `crm` - crm
+
+          * `mktg` - mktg
+
+          * `filestorage` - filestorage
+
+          * `datawarehouse` - datawarehouse
+
+          * `knowledgebase` - knowledgebase
+
+          * `communication` - communication
+
+          * `chat` - chat'
+        required: false
+        schema:
+          $ref: '#/components/schemas/LinkedAccountsGetParametersCategory_2'
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: end_user_email_address
+        in: query
+        description: If provided, will only return linked accounts associated with the given email address.
+        required: false
+        schema:
+          type: string
+      - name: end_user_organization_name
+        in: query
+        description: If provided, will only return linked accounts associated with the given organization name.
+        required: false
+        schema:
+          type: string
+      - name: end_user_origin_id
+        in: query
+        description: If provided, will only return linked accounts associated with the given origin ID.
+        required: false
+        schema:
+          type: string
+      - name: end_user_origin_ids
+        in: query
+        description: Comma-separated list of EndUser origin IDs, making it possible to specify multiple EndUsers at once.
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
+      - name: ids
+        in: query
+        description: Comma-separated list of LinkedAccount IDs, making it possible to specify multiple LinkedAccounts at once.
+        required: false
+        schema:
+          type: string
+      - name: include_duplicates
+        in: query
+        description: If `true`, will include complete production duplicates of the account specified by the `id` query parameter in the response. `id` must be for a complete production linked account.
+        required: false
+        schema:
+          type: boolean
+      - name: integration_name
+        in: query
+        description: If provided, will only return linked accounts associated with the given integration name.
+        required: false
+        schema:
+          type: string
+      - name: is_test_account
+        in: query
+        description: If included, will only include test linked accounts. If not included, will only include non-test linked accounts.
+        required: false
+        schema:
+          type: string
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: status
+        in: query
+        description: 'Filter by status. Options: `COMPLETE`, `IDLE`, `INCOMPLETE`, `RELINK_NEEDED`'
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAccountDetailsAndActionsList'
+  /ticketing/v1/linked-accounts:
+    get:
+      operationId: list
+      summary: List
+      description: List linked accounts for your organization.
+      tags:
+      - subpackage_linkedAccounts
+      parameters:
+      - name: category
+        in: query
+        description: 'Options: `hris`, `ats`, `accounting`, `ticketing`, `crm`, `mktg`, `filestorage`, `knowledgebase`, `chat`'
+        required: false
+        schema:
+          $ref: '#/components/schemas/LinkedAccountsGetParametersCategory'
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: end_user_email_address
+        in: query
+        description: If provided, will only return linked accounts associated with the given email address.
+        required: false
+        schema:
+          type: string
+      - name: end_user_organization_name
+        in: query
+        description: If provided, will only return linked accounts associated with the given organization name.
+        required: false
+        schema:
+          type: string
+      - name: end_user_origin_id
+        in: query
+        description: If provided, will only return linked accounts associated with the given origin ID.
+        required: false
+        schema:
+          type: string
+      - name: end_user_origin_ids
+        in: query
+        description: Comma-separated list of EndUser origin IDs, making it possible to specify multiple EndUsers at once.
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
+      - name: ids
+        in: query
+        description: Comma-separated list of LinkedAccount IDs, making it possible to specify multiple LinkedAccounts at once.
+        required: false
+        schema:
+          type: string
+      - name: include_duplicates
+        in: query
+        description: If `true`, will include complete production duplicates of the account specified by the `id` query parameter in the response. `id` must be for a complete production linked account.
+        required: false
+        schema:
+          type: boolean
+      - name: integration_name
+        in: query
+        description: If provided, will only return linked accounts associated with the given integration name.
+        required: false
+        schema:
+          type: string
+      - name: is_test_account
+        in: query
+        description: If included, will only include test linked accounts. If not included, will only include non-test linked accounts.
+        required: false
+        schema:
+          type: string
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: status
+        in: query
+        description: 'Filter by status. Options: `COMPLETE`, `IDLE`, `INCOMPLETE`, `RELINK_NEEDED`'
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAccountDetailsAndActionsList'
+components:
+  schemas:
+    ModelOperation:
+      type: object
+      properties:
+        model_name:
+          type: string
+        available_operations:
+          type: array
+          items:
+            type: string
+        required_post_parameters:
+          type: array
+          items:
+            type: string
+        supported_fields:
+          type: array
+          items:
+            type: string
+      required:
+      - model_name
+      - available_operations
+      - required_post_parameters
+      - supported_fields
+      description: '# The ModelOperation Object
+
+        ### Description
+
+        The `ModelOperation` object is used to represent the operations that are currently supported for a given model.
+
+
+        ### Usage Example
+
+        View what operations are supported for the `Candidate` endpoint.'
+      title: ModelOperation
+    PaginatedAccountDetailsAndActionsList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountDetailsAndActions'
+      title: PaginatedAccountDetailsAndActionsList
+    CategoryEnum:
+      type: string
+      enum:
+      - hris
+      - ats
+      - accounting
+      - ticketing
+      - crm
+      - mktg
+      - filestorage
+      - knowledgebase
+      title: CategoryEnum
+    CategoriesEnum:
+      type: string
+      enum:
+      - hris
+      - ats
+      - accounting
+      - ticketing
+      - crm
+      - mktg
+      - filestorage
+      - knowledgebase
+      title: CategoriesEnum
+    LinkedAccountsGetParametersCategory_2:
+      type: string
+      enum:
+      - accounting
+      - ats
+      - chat
+      - communication
+      - crm
+      - datawarehouse
+      - filestorage
+      - hris
+      - knowledgebase
+      - mktg
+      - ticketing
+      title: LinkedAccountsGetParametersCategory
+    AccountDetailsAndActionsIntegration:
+      type: object
+      properties:
+        name:
+          type: string
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/CategoriesEnum'
+        image:
+          type: string
+        square_image:
+          type: string
+        color:
+          type: string
+        slug:
+          type: string
+        passthrough_available:
+          type: boolean
+        available_model_operations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ModelOperation'
+      required:
+      - name
+      - categories
+      - color
+      - slug
+      - passthrough_available
+      title: AccountDetailsAndActionsIntegration
+    AccountDetailsAndActions:
+      type: object
+      properties:
+        id:
+          type: string
+        category:
+          $ref: '#/components/schemas/CategoryEnum'
+        status:
+          $ref: '#/components/schemas/AccountDetailsAndActionsStatusEnum'
+        status_detail:
+          type: string
+        end_user_origin_id:
+          type: string
+        end_user_organization_name:
+          type: string
+        end_user_email_address:
+          type: string
+        subdomain:
+          type: string
+          description: The tenant or domain the customer has provided access to.
+        webhook_listener_url:
+          type: string
+        is_duplicate:
+          type:
+          - boolean
+          - 'null'
+          description: Whether a Production Linked Account's credentials match another existing Production Linked Account. This field is `null` for Test Linked Accounts, incomplete Production Linked Accounts, and ignored duplicate Production Linked Account sets.
+        integration:
+          $ref: '#/components/schemas/AccountDetailsAndActionsIntegration'
+        account_type:
+          type: string
+        completed_at:
+          type: string
+          format: date-time
+        integration_specific_fields:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - id
+      - status
+      - end_user_organization_name
+      - end_user_email_address
+      - webhook_listener_url
+      - account_type
+      - completed_at
+      description: '# The LinkedAccount Object
+
+        ### Description
+
+        The `LinkedAccount` object is used to represent an end user''s link with a specific integration.
+
+
+        ### Usage Example
+
+        View a list of your organization''s `LinkedAccount` objects.'
+      title: AccountDetailsAndActions
+    LinkedAccountsGetParametersCategory:
+      type: string
+      enum:
+      - accounting
+      - ats
+      - chat
+      - crm
+      - filestorage
+      - hris
+      - knowledgebase
+      - mktg
+      - ticketing
+      title: LinkedAccountsGetParametersCategory
+    AccountDetailsAndActionsStatusEnum:
+      type: string
+      enum:
+      - COMPLETE
+      - INCOMPLETE
+      - RELINK_NEEDED
+      - IDLE
+      title: AccountDetailsAndActionsStatusEnum
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

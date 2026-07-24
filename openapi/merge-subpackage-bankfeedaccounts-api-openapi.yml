@@ -1,0 +1,880 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_bankFeedAccounts API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_bankFeedAccounts
+paths:
+  /accounting/v1/bank-feed-accounts:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `BankFeedAccount` objects.{/* BEGIN_ACCOUNTING_BANKFEEDACCOUNT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA41T72/aMBD9X/wRJfEoZVUjTRMF+gMpZuvSqVVVRYd9BINjB9uBNlX/9ylAW9iqbR/v+e7d3XvnZ8LBY27sE4kJcG4q7aXOSUAKI1CRmJyBXpwjit72kQQESsmgwIOCbHVEAuKqsjTWoziXqIS7tDglMaEF2hzDSsupREHfi6jUHnMLXhrt6FtxON1Uk4AoqRdvnf9Nt00Pd8hvoaNKumb8EpzzM2uqfHaNywrdfzA3syksUHtQoQAPdI8ltFuaj7BmC4EKPYoBeBigR96su+s48750MaUzVGW06R4JXFHUFKyXXKGj3c7p0clpN9yxbLp/zXL1pd2aLydmctLKcq4yqFpJyh9ZerVm8/yY9Y8fWX3TZfWiZvPFp1aWQytJk+44veuMB732+IOE7Mfn29OfZ4OzEWvxethh87s1S3k7SfliUl91Rhd8Pbr8/sjqu6NkcNNh6bA7ujDtcf/aJf1rk/SiiARk31US3z/vA7vDuUVrDjOvCshxT5GtFVDKsKwmSvLIdSIooDYa1i7ipqAFCgm0YQrdsgKLUbk53I1Q0ug3rUlMhuyyx/rDwaH9vRVIBROFJPa2wj/ul8T3ryee+acSSUB4ZS1q/kQCMkUUmfPgq8Zki4XxmDXuHEZZCX72DknR/BNTWY7ZK/cG82Bz9H/FdCPeQ0O1rKRF8Q0sFOjRNpM+vDy8/AI+geQLzgMAAA==" /></Footer>{/* END_ACCOUNTING_BANKFEEDACCOUNT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_bankFeedAccounts
+      parameters:
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBankFeedAccountList'
+    post:
+      operationId: create
+      summary: Create
+      description: Creates a `BankFeedAccount` object with the given values.{/* BEGIN_ACCOUNTING_BANKFEEDACCOUNT_CREATE_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST" data="H4sIAAAAAAAAA81T207jMBD9lZUfq1y2LQURabXqjUuluguUFQihaOpMUzeOHWyHQhH/vkpvtDTS8sBqeczJzJlz5oxfCAOLsdLPJCDAmMql5TImDklVhIIEpAUyOUGMmsufxCGQcQop7jSEjzXiEJNnmdIWoxOOIjJnGsckIH6KOkY3l3zMMfLfmnwuLcYaLFfS+Jtmd7zoJg4RXCabyX+nW5a7K+Tdp/EFN4X8DIyxE63yeHKJDzmaDzAX2gSmKC0INwIL/haLq5c0ZVjhIkKBFqMOWOigRVbYXU2cWJuZwPcnKDJvMd2L8NFH6YO2nAk0fqN+XDs6brgrlsX0n2EsflQr04eRGh1VwpiJEPJKf8ie6PB8RqfxAW0fPNH5dYPOkzmdJt8rYQyV/rDfGAxv64NOszooKQivDm+Of7c6rR6tsHm3Tqe3Mzpk1f6QJaP5eb13yma9s4snOr+t9TvXdTrsNnqnqjpoX5p++1L1m55HHLKdKgnuXraB1eFQtFc5t7hbfZ5CjFtbWcYBGXezfCQ480zdgxTmSsLMeEylfooRB5+iNQVbaB5y0OhliwNeLIwrudk5CUiXnjVpu9vZPYPmI3ABI4EksDrHvTsmwd361EP7nBWqWa41SvZMHDJGjEJjQdswgoWlNWLzIn6jcs0wXBOMQIBkuP+DR/uYLNa1j+bpCDVxiAUdo91leIctGO4dUtwj1xj9Ag0pWtRlrj6uaH/y/atTlvRFzlnSUiox3wZScPlJkb/RusvQw+tx7bB1VP1P4f/jqD8zwBVjeVw3qNXnJFQwuV/yQWpMlcXS5Xzlx8neHG7FE2ZFT2FrH/Q2DCpBWV7yXtFafZn/Dzt6vX/9A4YPRyVZCAAA" /></Footer>{/* END_ACCOUNTING_BANKFEEDACCOUNT_CREATE_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_bankFeedAccounts
+      parameters:
+      - name: is_debug_mode
+        in: query
+        description: Whether to include debug fields (such as log file links) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: run_async
+        in: query
+        description: Whether or not third-party updates should be run asynchronously.
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BankFeedAccountResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BankFeedAccountEndpointRequest'
+  /accounting/v1/bank-feed-accounts/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `BankFeedAccount` object with the given `id`.{/* BEGIN_ACCOUNTING_BANKFEEDACCOUNT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA41T72/aMBD9X/wRJfEoZVUjTRMF+gMpZuvSqVVVRYd9BINjB9uBNlX/9ylAW9iqbR/v+e7d3XvnZ8LBY27sE4kJcG4q7aXOSUAKI1CRmJyBXpwjit72kQQESsmgwIOCbHVEAuKqsjTWoziXqIS7tDglMaEF2hzDSsupREHfi6jUHnMLXhrt6FtxON1Uk4AoqRdvnf9Nt00Pd8hvoaNKumb8EpzzM2uqfHaNywrdfzA3syksUHtQoQAPdI8ltFuaj7BmC4EKPYoBeBigR96su+s48750MaUzVGW06R4JXFHUFKyXXKGj3c7p0clpN9yxbLp/zXL1pd2aLydmctLKcq4yqFpJyh9ZerVm8/yY9Y8fWX3TZfWiZvPFp1aWQytJk+44veuMB732+IOE7Mfn29OfZ4OzEWvxethh87s1S3k7SfliUl91Rhd8Pbr8/sjqu6NkcNNh6bA7ujDtcf/aJf1rk/SiiARk31US3z/vA7vDuUVrDjOvCshxT5GtFVDKsKwmSvLIdSIooDYa1i7ipqAFCgm0YQrdsgKLUbk53I1Q0ug3rUlMhuyyx/rDwaH9vRVIBROFJPa2wj/ul8T3ryee+acSSUB4ZS1q/kQCMkUUmfPgq8Zki4XxmDXuHEZZCX72DknR/BNTWY7ZK/cG82Bz9H/FdCPeQ0O1rKRF8Q0sFOjRNpM+vDy8/AI+geQLzgMAAA==" /></Footer>{/* END_ACCOUNTING_BANKFEEDACCOUNT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_bankFeedAccounts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BankFeedAccount'
+  /accounting/v1/bank-feed-accounts/meta/post:
+    get:
+      operationId: meta-post-retrieve
+      summary: Meta Post Retrieve
+      description: Returns metadata for `BankFeedAccount` POSTs.{/* BEGIN_ACCOUNTING_BANKFEEDACCOUNT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA41T72/aMBD9X/wRJfEoZVUjTRMF+gMpZuvSqVVVRYd9BINjB9uBNlX/9ylAW9iqbR/v+e7d3XvnZ8LBY27sE4kJcG4q7aXOSUAKI1CRmJyBXpwjit72kQQESsmgwIOCbHVEAuKqsjTWoziXqIS7tDglMaEF2hzDSsupREHfi6jUHnMLXhrt6FtxON1Uk4AoqRdvnf9Nt00Pd8hvoaNKumb8EpzzM2uqfHaNywrdfzA3syksUHtQoQAPdI8ltFuaj7BmC4EKPYoBeBigR96su+s48750MaUzVGW06R4JXFHUFKyXXKGj3c7p0clpN9yxbLp/zXL1pd2aLydmctLKcq4yqFpJyh9ZerVm8/yY9Y8fWX3TZfWiZvPFp1aWQytJk+44veuMB732+IOE7Mfn29OfZ4OzEWvxethh87s1S3k7SfliUl91Rhd8Pbr8/sjqu6NkcNNh6bA7ujDtcf/aJf1rk/SiiARk31US3z/vA7vDuUVrDjOvCshxT5GtFVDKsKwmSvLIdSIooDYa1i7ipqAFCgm0YQrdsgKLUbk53I1Q0ug3rUlMhuyyx/rDwaH9vRVIBROFJPa2wj/ul8T3ryee+acSSUB4ZS1q/kQCMkUUmfPgq8Zki4XxmDXuHEZZCX72DknR/BNTWY7ZK/cG82Bz9H/FdCPeQ0O1rKRF8Q0sFOjRNpM+vDy8/AI+geQLzgMAAA==" /></Footer>{/* END_ACCOUNTING_BANKFEEDACCOUNT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_bankFeedAccounts
+      parameters:
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaResponse'
+components:
+  schemas:
+    BankFeedAccountResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/BankFeedAccount'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: BankFeedAccountResponse
+    BankFeedAccount:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        source_account_id:
+          type:
+          - string
+          - 'null'
+          description: The unique identifier of the source account from our customer’s platform.
+        target_account_id:
+          type:
+          - string
+          - 'null'
+          description: The unique identifier of the target account from the third party software.
+        source_account_name:
+          type:
+          - string
+          - 'null'
+          description: The name of the source account as stored in our customer’s platform.
+        source_account_number:
+          type:
+          - string
+          - 'null'
+          description: The human-readable account number of the source account as stored in our customer’s platform.
+        target_account_name:
+          type:
+          - string
+          - 'null'
+          description: The name of the target account from the third party software.
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: The currency code of the bank feed. The currency code in ISO 4217 format.
+        feed_status:
+          oneOf:
+          - $ref: '#/components/schemas/FeedStatusEnum'
+          - type: 'null'
+          description: The status of the bank feed.
+        feed_start_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The start date of the bank feed’s transactions.
+        source_account_balance:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The current balance of funds in the source account.
+        account_type:
+          oneOf:
+          - $ref: '#/components/schemas/BankFeedAccountAccountTypeEnum'
+          - type: 'null'
+          description: The type of the account.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/BankFeedAccountFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The BankFeedAccount Object
+
+        ### Description
+
+        The `BankFeedAccount` object represents a bank feed account, detailing various attributes including account identifiers, names, currency, and balance information. This object is central to managing and tracking bank feed accounts within the system.
+
+
+        ### Usage Example
+
+        Fetch from the `GET BankFeedAccount` endpoint to view details of a bank feed account.'
+      title: BankFeedAccount
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    BankFeedAccountRequest:
+      type: object
+      properties:
+        source_account_id:
+          type:
+          - string
+          - 'null'
+          description: The unique identifier of the source account from our customer’s platform.
+        target_account_id:
+          type:
+          - string
+          - 'null'
+          description: The unique identifier of the target account from the third party software.
+        source_account_name:
+          type:
+          - string
+          - 'null'
+          description: The name of the source account as stored in our customer’s platform.
+        source_account_number:
+          type:
+          - string
+          - 'null'
+          description: The human-readable account number of the source account as stored in our customer’s platform.
+        target_account_name:
+          type:
+          - string
+          - 'null'
+          description: The name of the target account from the third party software.
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: The currency code of the bank feed. The currency code in ISO 4217 format.
+        feed_status:
+          oneOf:
+          - $ref: '#/components/schemas/FeedStatusEnum'
+          - type: 'null'
+          description: The status of the bank feed.
+        feed_start_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The start date of the bank feed’s transactions.
+        source_account_balance:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The current balance of funds in the source account.
+        account_type:
+          oneOf:
+          - $ref: '#/components/schemas/BankFeedAccountAccountTypeEnum'
+          - type: 'null'
+          description: The type of the account.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The BankFeedAccount Object
+
+        ### Description
+
+        The `BankFeedAccount` object represents a bank feed account, detailing various attributes including account identifiers, names, currency, and balance information. This object is central to managing and tracking bank feed accounts within the system.
+
+
+        ### Usage Example
+
+        Fetch from the `GET BankFeedAccount` endpoint to view details of a bank feed account.'
+      title: BankFeedAccountRequest
+    BankFeedAccountAccountTypeEnum:
+      type: string
+      enum:
+      - BANK
+      - CREDIT_CARD
+      title: BankFeedAccountAccountTypeEnum
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    TransactionCurrencyEnum:
+      type: string
+      enum:
+      - XUA
+      - AFN
+      - AFA
+      - ALL
+      - ALK
+      - DZD
+      - ADP
+      - AOA
+      - AOK
+      - AON
+      - AOR
+      - ARA
+      - ARS
+      - ARM
+      - ARP
+      - ARL
+      - AMD
+      - AWG
+      - AUD
+      - ATS
+      - AZN
+      - AZM
+      - BSD
+      - BHD
+      - BDT
+      - BBD
+      - BYN
+      - BYB
+      - BYR
+      - BEF
+      - BEC
+      - BEL
+      - BZD
+      - BMD
+      - BTN
+      - BOB
+      - BOL
+      - BOV
+      - BOP
+      - BAM
+      - BAD
+      - BAN
+      - BWP
+      - BRC
+      - BRZ
+      - BRE
+      - BRR
+      - BRN
+      - BRB
+      - BRL
+      - GBP
+      - BND
+      - BGL
+      - BGN
+      - BGO
+      - BGM
+      - BUK
+      - BIF
+      - XPF
+      - KHR
+      - CAD
+      - CVE
+      - KYD
+      - XAF
+      - CLE
+      - CLP
+      - CLF
+      - CNX
+      - CNY
+      - CNH
+      - COP
+      - COU
+      - KMF
+      - CDF
+      - CRC
+      - HRD
+      - HRK
+      - CUC
+      - CUP
+      - CYP
+      - CZK
+      - CSK
+      - DKK
+      - DJF
+      - DOP
+      - NLG
+      - XCD
+      - DDM
+      - ECS
+      - ECV
+      - EGP
+      - GQE
+      - ERN
+      - EEK
+      - ETB
+      - EUR
+      - XBA
+      - XEU
+      - XBB
+      - XBC
+      - XBD
+      - FKP
+      - FJD
+      - FIM
+      - FRF
+      - XFO
+      - XFU
+      - GMD
+      - GEK
+      - GEL
+      - DEM
+      - GHS
+      - GHC
+      - GIP
+      - XAU
+      - GRD
+      - GTQ
+      - GWP
+      - GNF
+      - GNS
+      - GYD
+      - HTG
+      - HNL
+      - HKD
+      - HUF
+      - IMP
+      - ISK
+      - ISJ
+      - INR
+      - IDR
+      - IRR
+      - IQD
+      - IEP
+      - ILS
+      - ILP
+      - ILR
+      - ITL
+      - JMD
+      - JPY
+      - JOD
+      - KZT
+      - KES
+      - KWD
+      - KGS
+      - LAK
+      - LVL
+      - LVR
+      - LBP
+      - LSL
+      - LRD
+      - LYD
+      - LTL
+      - LTT
+      - LUL
+      - LUC
+      - LUF
+      - MOP
+      - MKD
+      - MKN
+      - MGA
+      - MGF
+      - MWK
+      - MYR
+      - MVR
+      - MVP
+      - MLF
+      - MTL
+      - MTP
+      - MRU
+      - MRO
+      - MUR
+      - MXV
+      - MXN
+      - MXP
+      - MDC
+      - MDL
+      - MCF
+      - MNT
+      - MAD
+      - MAF
+      - MZE
+      - MZN
+      - MZM
+      - MMK
+      - NAD
+      - NPR
+      - ANG
+      - TWD
+      - NZD
+      - NIO
+      - NIC
+      - NGN
+      - KPW
+      - NOK
+      - OMR
+      - PKR
+      - XPD
+      - PAB
+      - PGK
+      - PYG
+      - PEI
+      - PEN
+      - PES
+      - PHP
+      - XPT
+      - PLN
+      - PLZ
+      - PTE
+      - GWE
+      - QAR
+      - XRE
+      - RHD
+      - RON
+      - ROL
+      - RUB
+      - RUR
+      - RWF
+      - SVC
+      - WST
+      - SAR
+      - RSD
+      - CSD
+      - SCR
+      - SLL
+      - XAG
+      - SGD
+      - SKK
+      - SIT
+      - SBD
+      - SOS
+      - ZAR
+      - ZAL
+      - KRH
+      - KRW
+      - KRO
+      - SSP
+      - SUR
+      - ESP
+      - ESA
+      - ESB
+      - XDR
+      - LKR
+      - SHP
+      - XSU
+      - SDD
+      - SDG
+      - SDP
+      - SRD
+      - SRG
+      - SZL
+      - SEK
+      - CHF
+      - SYP
+      - STN
+      - STD
+      - TVD
+      - TJR
+      - TJS
+      - TZS
+      - XTS
+      - THB
+      - XXX
+      - TPE
+      - TOP
+      - TTD
+      - TND
+      - TRY
+      - TRL
+      - TMT
+      - TMM
+      - USD
+      - USN
+      - USS
+      - UGX
+      - UGS
+      - UAH
+      - UAK
+      - AED
+      - UYW
+      - UYU
+      - UYP
+      - UYI
+      - UZS
+      - VUV
+      - VES
+      - VEB
+      - VEF
+      - VND
+      - VNN
+      - CHE
+      - CHW
+      - XOF
+      - YDD
+      - YER
+      - YUN
+      - YUD
+      - YUM
+      - YUR
+      - ZWN
+      - ZRN
+      - ZRZ
+      - ZMW
+      - ZMK
+      - ZWD
+      - ZWR
+      - ZWL
+      description: The currency code in ISO 4217 format.
+      title: TransactionCurrencyEnum
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    BankFeedAccountEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/BankFeedAccountRequest'
+      required:
+      - model
+      title: BankFeedAccountEndpointRequest
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    FeedStatusEnum:
+      type: string
+      enum:
+      - ACTIVE
+      - INACTIVE
+      title: FeedStatusEnum
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    BankFeedAccountFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: BankFeedAccountFieldMappings
+    PaginatedBankFeedAccountList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BankFeedAccount'
+      title: PaginatedBankFeedAccountList
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

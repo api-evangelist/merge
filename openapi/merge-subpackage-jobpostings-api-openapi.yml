@@ -1,0 +1,387 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_jobPostings API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_jobPostings
+paths:
+  /ats/v1/job-postings:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `JobPosting` objects.{/* BEGIN_ATS_JOBPOSTING_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+1abW/aOhT+K8gfK17WMrYV6eoKSqGwElqg67ppihznJBicONhOKEz771dJoMDW7d62TgHpfiPGeWw/5/3E3xHBClwu5qiKsJIojzxuA0NV1OHWFZeK+i7KIxxQA3uQTjKjE5RHMgwCLhTYTQrMlhcCHFRFJQ+EC4XQpw4Fu4SVLFFfgSuwotyXpYe3Ck7yGsojRv0J2DVCeOirP+Ck8wo4nfjTY/y3VCiPAiylGgkeuqM+TEOQf4KMd8PAA19hVrCxwqWN1wsiff+xsXjfNjBQYDewwg1QQOIDLpcaKRXIaqk0AhYUk2WLNkQl8EtYKEoYyFKlfHry/rRSWKIkq/9tuuyv46Px1OLW+yPTJczE4VF3SO6NYXtmjN23xtnbe2NxUzEWk4Uxnrw5Ml181B12K73hXbnXqB33HplgDt59Pv1Ub9Q7xhFZnJeN8d3MGJLj7pBMrEW73GmRWefi+t5Y3J10GzdlY3he6bT4ce+sL7tnfd6tFYsojzbliKpfv28OLJWjJkfWfHtq28MubFCSCgEHtBCEFqOkKMtF7OEF9/FMFgn3Sh7YFJcSKHMwDbEA85K73CyH17c4mhWDRCMT3ij3H6hHVXRuXNSMs/PGthrUIkwZthigqhIh/KK5qPoV3QhWJNi3qY0VoHzyPObW+pcZpLYgl0OhYKaaB6u5EWZh/JtwX4Ef6yGVZsyC8DFDeZRibeCYoWAxlgCPKzCJAKzANrFaj8Uasf1kBliN1kPURnmkqGKAvsWD05AKsK+wwB4oEPHBvv3IPy6nuWcxXYKKsVaSiqxJy3HkqwnpUTk8lY0Iq1CAHjquGFYOF94SNDMi1tqpg4I69izOL/p6OFihbZpvcRy8ttlqIUYALDS5tBRrJ6TooOKsNhzoISJG2nLtnbfGZMrPD4sOxslkxsVEEycruJ3ox/MY4B6A0nP8PhARUmW2CffNns/mOwjzOrTCLn6iPqF6Y0kjijHNdz18R1wny5CymeY8N5f5b3mLVFiF8rkJTAPPHS6I5pi9Qn2FoP2clDKTJDIM7PVLqSzyKPTpNIwFBb6KqyXxVPk045oMU1+PfFZoW67x1TLMX7jQ5y1a4OnV4BZ45n30iXw8rhxUCt4SAP6Ih1KTRa/x9ifd+jeP+uJS8DGLfpmbXdOY63ArV+dY2LnaVTtjIcGeet8XBbzf+9snCuWCeyBCTa51lIIdSJl60c+dMR7aes5+0TcTtN24iAzDCj1rdwd6A0s7hjRlQtRepUf7kI22fYf6VEGuLrCU/bRlroH8Fe6Sd5PzdzekUz4QY+3gxUJXRynF2uoZ3F6TbqNrH2hfqcOtAeG6mo4rtELGBqqlbdDhluSJ1ek5eQy2pRmXJzfE9q8z0wztmhDRhFE9dMRgr1Io6aXhEqIkBmogIYHa0gh+536Y12934CseC2RPify7+KSkv47oCUwY5JqhpNzPFXLLbh/1XZ35XLqKuQbPMl/5QwWXTZKx5HCIGXA9fCVQB1cf/16Hf+JXQxvrivoBp+mONOTSS7Ss0+hsM5eleYFwGJ9pbf6DaDI+23Lcb4LFuNk8OagPQyv/E2nuTq9xX1uBdLAyqF3lBiEhIGUTE8WF1MPONuaW8tTJZ+4232SiPDto5T0ragw8LNSDfenifBt0i/Txh+jSOb/9/5ZOxilVHLxhodfDpJgH5VbiLfvqcu4o/VSkuAdSP6Ub7gM4+pLDFO8Ai8khYE9hyriminKNt+MrTVpuImovGF/oyYDFqrYqCkFT2qRSWFOsYF+ve61FhQV2HKrbq6Wg5nhodypfLnfUyP9N/+PpFx4yvCE7FNSCANu6+U9RD7T0u/nYyl0JvtG+0UPPzcfW6hPHSX1q3/fogRjpLReTZFEtNKzQtvLpXsSYwU4PJNbsX3SJSbXxXK8dL0H36kNottf1nsX9Fz56cBZ6BRAjryL7nndDvv34B2NDhVBlNQAA" /></Footer>{/* END_ATS_JOBPOSTING_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_jobPostings
+      parameters:
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobPostingsGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: status
+        in: query
+        description: 'If provided, will only return Job Postings with this status. Options: (''PUBLISHED'', ''CLOSED'', ''DRAFT'', ''INTERNAL'', ''PENDING'')
+
+
+          '
+        required: false
+        schema:
+          $ref: '#/components/schemas/JobPostingsGetParametersStatus'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedJobPostingList'
+  /ats/v1/job-postings/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `JobPosting` object with the given `id`.{/* BEGIN_ATS_JOBPOSTING_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+1abW/aOhT+K8gfK17WMrYV6eoKSqGwElqg67ppihznJBicONhOKEz771dJoMDW7d62TgHpfiPGeWw/5/3E3xHBClwu5qiKsJIojzxuA0NV1OHWFZeK+i7KIxxQA3uQTjKjE5RHMgwCLhTYTQrMlhcCHFRFJQ+EC4XQpw4Fu4SVLFFfgSuwotyXpYe3Ck7yGsojRv0J2DVCeOirP+Ck8wo4nfjTY/y3VCiPAiylGgkeuqM+TEOQf4KMd8PAA19hVrCxwqWN1wsiff+xsXjfNjBQYDewwg1QQOIDLpcaKRXIaqk0AhYUk2WLNkQl8EtYKEoYyFKlfHry/rRSWKIkq/9tuuyv46Px1OLW+yPTJczE4VF3SO6NYXtmjN23xtnbe2NxUzEWk4Uxnrw5Ml181B12K73hXbnXqB33HplgDt59Pv1Ub9Q7xhFZnJeN8d3MGJLj7pBMrEW73GmRWefi+t5Y3J10GzdlY3he6bT4ce+sL7tnfd6tFYsojzbliKpfv28OLJWjJkfWfHtq28MubFCSCgEHtBCEFqOkKMtF7OEF9/FMFgn3Sh7YFJcSKHMwDbEA85K73CyH17c4mhWDRCMT3ij3H6hHVXRuXNSMs/PGthrUIkwZthigqhIh/KK5qPoV3QhWJNi3qY0VoHzyPObW+pcZpLYgl0OhYKaaB6u5EWZh/JtwX4Ef6yGVZsyC8DFDeZRibeCYoWAxlgCPKzCJAKzANrFaj8Uasf1kBliN1kPURnmkqGKAvsWD05AKsK+wwB4oEPHBvv3IPy6nuWcxXYKKsVaSiqxJy3HkqwnpUTk8lY0Iq1CAHjquGFYOF94SNDMi1tqpg4I69izOL/p6OFihbZpvcRy8ttlqIUYALDS5tBRrJ6TooOKsNhzoISJG2nLtnbfGZMrPD4sOxslkxsVEEycruJ3ox/MY4B6A0nP8PhARUmW2CffNns/mOwjzOrTCLn6iPqF6Y0kjijHNdz18R1wny5CymeY8N5f5b3mLVFiF8rkJTAPPHS6I5pi9Qn2FoP2clDKTJDIM7PVLqSzyKPTpNIwFBb6KqyXxVPk045oMU1+PfFZoW67x1TLMX7jQ5y1a4OnV4BZ45n30iXw8rhxUCt4SAP6Ih1KTRa/x9ifd+jeP+uJS8DGLfpmbXdOY63ArV+dY2LnaVTtjIcGeet8XBbzf+9snCuWCeyBCTa51lIIdSJl60c+dMR7aes5+0TcTtN24iAzDCj1rdwd6A0s7hjRlQtRepUf7kI22fYf6VEGuLrCU/bRlroH8Fe6Sd5PzdzekUz4QY+3gxUJXRynF2uoZ3F6TbqNrH2hfqcOtAeG6mo4rtELGBqqlbdDhluSJ1ek5eQy2pRmXJzfE9q8z0wztmhDRhFE9dMRgr1Io6aXhEqIkBmogIYHa0gh+536Y12934CseC2RPify7+KSkv47oCUwY5JqhpNzPFXLLbh/1XZ35XLqKuQbPMl/5QwWXTZKx5HCIGXA9fCVQB1cf/16Hf+JXQxvrivoBp+mONOTSS7Ss0+hsM5eleYFwGJ9pbf6DaDI+23Lcb4LFuNk8OagPQyv/E2nuTq9xX1uBdLAyqF3lBiEhIGUTE8WF1MPONuaW8tTJZ+4232SiPDto5T0ragw8LNSDfenifBt0i/Txh+jSOb/9/5ZOxilVHLxhodfDpJgH5VbiLfvqcu4o/VSkuAdSP6Ub7gM4+pLDFO8Ai8khYE9hyriminKNt+MrTVpuImovGF/oyYDFqrYqCkFT2qRSWFOsYF+ve61FhQV2HKrbq6Wg5nhodypfLnfUyP9N/+PpFx4yvCE7FNSCANu6+U9RD7T0u/nYyl0JvtG+0UPPzcfW6hPHSX1q3/fogRjpLReTZFEtNKzQtvLpXsSYwU4PJNbsX3SJSbXxXK8dL0H36kNottf1nsX9Fz56cBZ6BRAjryL7nndDvv34B2NDhVBlNQAA" /></Footer>{/* END_ATS_JOBPOSTING_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_jobPostings
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobPostingsIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobPosting'
+components:
+  schemas:
+    JobPostingStatusEnum:
+      type: string
+      enum:
+      - PUBLISHED
+      - CLOSED
+      - DRAFT
+      - INTERNAL
+      - PENDING
+      title: JobPostingStatusEnum
+    UrlTypeEnum:
+      type: string
+      enum:
+      - PERSONAL
+      - COMPANY
+      - PORTFOLIO
+      - BLOG
+      - SOCIAL_MEDIA
+      - OTHER
+      - JOB_POSTING
+      title: UrlTypeEnum
+    JobPostingsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - job
+      title: JobPostingsIdGetParametersExpandSchemaItems
+    JobPostingFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: JobPostingFieldMappings
+    Url:
+      type: object
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        value:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The site's url.
+        url_type:
+          oneOf:
+          - $ref: '#/components/schemas/UrlTypeEnum'
+          - type: 'null'
+          description: The type of site.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+      description: '# The Url Object
+
+        ### Description
+
+        The `Url` object is used to represent hyperlinks associated with the parent model.
+
+        ### Usage Example
+
+        Fetch from the `GET Candidate` endpoint and view their website urls.'
+      title: Url
+    JobPosting:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        title:
+          type:
+          - string
+          - 'null'
+          description: The job posting’s title.
+        job_posting_urls:
+          type: array
+          items:
+            $ref: '#/components/schemas/Url'
+          description: The Url object is used to represent hyperlinks for a candidate to apply to a given job.
+        job:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: ID of `Job` object for this `JobPosting`.
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/JobPostingStatusEnum'
+          - type: 'null'
+          description: The job posting's status.
+        content:
+          type:
+          - string
+          - 'null'
+          description: The job posting’s content.
+        remote_created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's job posting was created.
+        remote_updated_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's job posting was updated.
+        is_internal:
+          type:
+          - boolean
+          - 'null'
+          description: Indicates whether the job posting is internal or external.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/JobPostingFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The JobPosting Object
+
+        ### Description
+
+        The `JobPosting` object represents an external announcement on a job board created by an organization to attract qualified candidates to apply for a specific `Job` opening
+
+        ### Usage Example
+
+        Fetch from the `LIST JobPostings` endpoint to show all job postings.'
+      title: JobPosting
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    PaginatedJobPostingList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobPosting'
+      title: PaginatedJobPostingList
+    JobPostingsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - job
+      title: JobPostingsGetParametersExpandSchemaItems
+    JobPostingsGetParametersStatus:
+      type: string
+      enum:
+      - CLOSED
+      - DRAFT
+      - INTERNAL
+      - PENDING
+      - PUBLISHED
+      title: JobPostingsGetParametersStatus
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

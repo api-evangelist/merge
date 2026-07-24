@@ -1,0 +1,169 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_embeddings API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_embeddings
+paths:
+  /embeddings:
+    post:
+      operationId: create
+      summary: Create Embedding
+      description: 'Create text embeddings.
+
+
+        Returns vector representations of the input text.'
+      tags:
+      - subpackage_embeddings
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmbeddingResponseSchema'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmbeddingRequestSchema'
+components:
+  schemas:
+    EmbeddingUsage:
+      type: object
+      properties:
+        prompt_tokens:
+          type: integer
+        total_tokens:
+          type: integer
+      required:
+      - prompt_tokens
+      - total_tokens
+      description: Token usage for embeddings.
+      title: EmbeddingUsage
+    ValidationErrorLocItems:
+      oneOf:
+      - type: string
+      - type: integer
+      title: ValidationErrorLocItems
+    ValidationError:
+      type: object
+      properties:
+        loc:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationErrorLocItems'
+        msg:
+          type: string
+        type:
+          type: string
+        input:
+          description: Any type
+        ctx:
+          $ref: '#/components/schemas/ValidationErrorCtx'
+      required:
+      - loc
+      - msg
+      - type
+      description: Single field-level validation error. `loc` is the JSON path to the offending field, `msg` is a human-readable explanation, and `type` is a stable machine-readable error code.
+      title: ValidationError
+    ValidationErrorCtx:
+      type: object
+      properties: {}
+      title: ValidationErrorCtx
+    EmbeddingDataSchema:
+      type: object
+      properties:
+        object:
+          type: string
+          enum:
+          - embedding
+        embedding:
+          type: array
+          items:
+            type: number
+            format: double
+        index:
+          type: integer
+      required:
+      - embedding
+      - index
+      description: Single embedding result.
+      title: EmbeddingDataSchema
+    EmbeddingResponseSchema:
+      type: object
+      properties:
+        object:
+          type: string
+          enum:
+          - list
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmbeddingDataSchema'
+        model:
+          type: string
+        usage:
+          $ref: '#/components/schemas/EmbeddingUsage'
+      required:
+      - data
+      - model
+      - usage
+      description: Response body for POST /v1/embeddings.
+      title: EmbeddingResponseSchema
+    EmbeddingRequestSchemaInput:
+      oneOf:
+      - type: string
+      - type: array
+        items:
+          type: string
+      description: Text to embed
+      title: EmbeddingRequestSchemaInput
+    EmbeddingRequestSchema:
+      type: object
+      properties:
+        model:
+          type: string
+          description: Model ID in format 'provider/model-name'
+        input:
+          $ref: '#/components/schemas/EmbeddingRequestSchemaInput'
+          description: Text to embed
+        encoding_format:
+          type:
+          - string
+          - 'null'
+          description: Encoding format for embeddings
+        user:
+          type:
+          - string
+          - 'null'
+          description: End-user identifier
+      required:
+      - model
+      - input
+      description: Request body for POST /v1/embeddings.
+      title: EmbeddingRequestSchema
+    HTTPValidationError:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+      description: Standard FastAPI validation error wrapper. Returned with HTTP 422 when the request body or query parameters fail Pydantic validation.
+      title: HTTPValidationError
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

@@ -1,0 +1,229 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_connectors API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_connectors
+paths:
+  /api/v1/connectors/:
+    get:
+      operationId: list
+      summary: List connectors
+      description: Retrieves a list of Connectors
+      tags:
+      - subpackage_connectors
+      parameters:
+      - name: page
+        in: query
+        description: A page number within the paginated result set.
+        required: false
+        schema:
+          type: integer
+      - name: page_size
+        in: query
+        description: Number of results to return per page.
+        required: false
+        schema:
+          type: integer
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedConnectorDetailPublicResponseList'
+  /api/v1/connectors/{slug}/:
+    get:
+      operationId: retrieve
+      summary: Get connector
+      description: Retrieves a Connector by slug
+      tags:
+      - subpackage_connectors
+      parameters:
+      - name: slug
+        in: path
+        description: The slug of the Connector
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectorDetailPublicResponse'
+components:
+  schemas:
+    SecretSchemaPublic:
+      type: object
+      properties:
+        name:
+          type: string
+        human_readable_name:
+          type:
+          - string
+          - 'null'
+        prefix:
+          type:
+          - string
+          - 'null'
+        suffix:
+          type:
+          - string
+          - 'null'
+        field_type:
+          type: string
+        options:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/SecretOptionPublic'
+      required:
+      - name
+      - human_readable_name
+      - prefix
+      - suffix
+      - field_type
+      - options
+      title: SecretSchemaPublic
+    SecretOptionPublic:
+      type: object
+      properties:
+        option_label:
+          type: string
+        value:
+          type: string
+        option_default:
+          type: boolean
+      required:
+      - option_label
+      - value
+      - option_default
+      title: SecretOptionPublic
+    ConnectorToolMini:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        credit_type:
+          type: string
+      required:
+      - name
+      - description
+      - credit_type
+      description: Mini version of ConnectorTool serializer that excludes input_schema details.
+      title: ConnectorToolMini
+    ConnectorDetailPublicResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the Connector
+        name:
+          type: string
+          description: Name of the Connector
+        slug:
+          type: string
+          description: Slug identifier for the Connector
+        description:
+          type: string
+          description: Description of what the Connector does
+        source_url:
+          type:
+          - string
+          - 'null'
+          description: URL to the Connector's source website
+        logo_url:
+          type: string
+          description: URL to the Connector's logo image
+        categories:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: Categories this connector belongs to
+        auth_options:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuthOptionPublic'
+          description: Authentication options available for this connector
+        tools:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConnectorToolMini'
+          description: List of available tools for this connector
+      required:
+      - id
+      - name
+      - slug
+      - description
+      - source_url
+      - logo_url
+      - categories
+      - auth_options
+      - tools
+      title: ConnectorDetailPublicResponse
+    AuthOptionPublic:
+      type: object
+      properties:
+        type:
+          type: string
+        secrets:
+          type: array
+          items:
+            $ref: '#/components/schemas/SecretSchemaPublic'
+      required:
+      - type
+      - secrets
+      title: AuthOptionPublic
+    PaginatedConnectorDetailPublicResponseList:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConnectorDetailPublicResponse'
+      required:
+      - count
+      - results
+      title: PaginatedConnectorDetailPublicResponseList
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

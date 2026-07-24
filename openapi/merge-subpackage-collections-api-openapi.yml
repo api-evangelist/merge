@@ -1,0 +1,636 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_collections API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_collections
+paths:
+  /ticketing/v1/collections:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Collection` objects.{/* BEGIN_TICKETING_COLLECTION_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+1aW2/aSBT+K+w8RoA3SbNVkFYrAmkuKk42Ib2kqqzD+GAmjD3OXCCh6n9f2ebakhDIBNxu3mB8/I39nfsZfyMUNAZC3pMK0Yx2UbMoIEUSCh85qZCa4BypZiIiRQIxcyHEaVGvt0OKRJk4FlKj/44h99WxxDapECdEGWDJRKzN0HfG9zgs0hhISFCVM7631E5vJkXCWdRFv0qpMJFeiJZJlyAT/+GvcjhTmhRJDErpjhQm6FzgrUG1GDh5Mo4hRhp4yQcNzhRISWYo89aSd/CRo0a/DhrqqDMKhxt2tI5VxXE6yONyunnZx56DkQNSM8pROXu7+ztv9/dKQ5R093+8gP+9vXVz2xKtt1teQLkHZqvRpHdu86Tv3gRv3NqbO3dwtecOugP3pvvnlhfAVqPZ2Dtrft49q1e3z+YIeJd/fdr/cFA/OHW36OBw17353HebdLvRpN3W4GT39Ij2T4//vXMHn3ca9atdt3m4d3okts9qF6pRuxCNarlMimRap6Ty5dv0wtBoqh34Y1byJIQApxjJNAExK8WmxRktq90yhDAQEfRVmYrQCdFn4FQ74KlbAxLLcWquKU9MRGOqSYUcusdVt3ZYn1V+tQeMQ4sjqWhp8CfbJZUvhI6N3tP3MZLi9IqRPN1QUcnioWNEyQsm20iMtDcRJkUiMRQaPSoRNPoe6MlaotTZf14MujNZYv7kt4n9CYAyraldEnPLrDb5ZRRKRb4mN94aJtE/Bwkh6mS18uXr9+Jc1SiIwI5uIIEqZdopcRGInfJNjA8pya02Tz4cLq+i5shLz1GGTCkmojKM2Zh7NY45Q9/T4gfqFghLwfEJYhohfIJYpp35YosfC9ttpPqBi2nI9oxJrWaeQCxZCPJ+1j4fE8yM6gGhicXNu2oidmsSC8ZIJ3FVJumDUlTK49jDxIVGrMTjuxIwm743izx6q9nVtftnj2F/FQ8dGImFOvbOYmUpiCaIXoboXab+6r0XgchVSH22KkbEL0n3ASikEMZ2qB6hPZHmVYPiL5y3llUP0y0zDE4W9HPOQbeFDFsj2JesLn4Ig2vxjGeWBzXOaPfKkjMMwV485CzP82J3eBrb1suzdxJVR6HsMYp2Lb49hZzHkvpFwtCUNn4qU5bWjIgsB6EUcqMBaKaS3EC4OWL62LQKJ0qZtPS2QO4R0x3T8jLIHIae3yQvHzH9HlrWVMahlXtdzXOWHChuVdfj4PN7uwEtw1xTWnlOuFqSq2PkceGSCmM5ASS4KoHdcEJeRwpelnLWs1QAJUi/R9e7IpWnTFqa+CVIQypfhMXXWd+mZ32z9rhAYmSjj4g9+Nh5Gyo+fYC4WmG88jgw8blCcrhUqGGkUyYsZqAEfS3zqY1PNlIeL7P+t9CACIL0wM9mYBw21xPw8k38/0o171mEYMlEeYq1uDJ6PVh6PVh6Xg54amOXy1OmealyxVRzznpCAy80JdCutUyTgQ4x19vobDzpXAC33WOnkDmg8QVn50uSfAkcVVtIiuP8XuPC+HZ4n6B7o+k5TdBz1UbmYgy1YtS57Aipqa3RyghtpuN/5LOUXOlqzY7TRAj7QnbtMD9Cy+2sJRdOslIaaUrkXFhSU4o1rSTvo7qr94/ucjl0z+1J7UfJupYmlCnUr/fFyJqj1TVGPqqu3WpqCOrt3zbMJ/budar5+gWj1WHj3NZyU23kMyPeteiIwoEJrLaH16IjJpg56Gssj8m+fv8PQ3zF3noxAAA=" /></Footer>{/* END_TICKETING_COLLECTION_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_collections
+      parameters:
+      - name: collection_type
+        in: query
+        description: If provided, will only return collections of the given type.
+        required: false
+        schema:
+          $ref: '#/components/schemas/CollectionsGetParametersCollectionType'
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/CollectionsGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: name
+        in: query
+        description: If provided, will only return collections with this name.
+        required: false
+        schema:
+          type: string
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: parent_collection_id
+        in: query
+        description: If provided, will only return collections whose parent collection matches the given id.
+        required: false
+        schema:
+          type: string
+      - name: remote_fields
+        in: query
+        description: Deprecated. Use show_enum_origins.
+        required: false
+        schema:
+          $ref: '#/components/schemas/CollectionsGetParametersRemoteFields'
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: show_enum_origins
+        in: query
+        description: A comma separated list of enum field names for which you'd like the original values to be returned, instead of Merge's normalized enum values. [Learn more](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+        required: false
+        schema:
+          $ref: '#/components/schemas/CollectionsGetParametersShowEnumOrigins'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCollectionList'
+  /ticketing/v1/collections/{collection_id}/viewers:
+    get:
+      operationId: viewers-list
+      summary: Viewers List
+      description: Returns a list of `Viewer` objects that point to a User id or Team id that is either an assignee or viewer on a `Collection` with the given id. [Learn more.](https://help.merge.dev/en/articles/10333658-ticketing-access-control-list-acls){/* BEGIN_TICKETING_COLLECTION_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+1aW2/aSBT+K+w8RoA3SbNVkFYrAmkuKk42Ib2kqqzD+GAmjD3OXCCh6n9f2ebakhDIBNxu3mB8/I39nfsZfyMUNAZC3pMK0Yx2UbMoIEUSCh85qZCa4BypZiIiRQIxcyHEaVGvt0OKRJk4FlKj/44h99WxxDapECdEGWDJRKzN0HfG9zgs0hhISFCVM7631E5vJkXCWdRFv0qpMJFeiJZJlyAT/+GvcjhTmhRJDErpjhQm6FzgrUG1GDh5Mo4hRhp4yQcNzhRISWYo89aSd/CRo0a/DhrqqDMKhxt2tI5VxXE6yONyunnZx56DkQNSM8pROXu7+ztv9/dKQ5R093+8gP+9vXVz2xKtt1teQLkHZqvRpHdu86Tv3gRv3NqbO3dwtecOugP3pvvnlhfAVqPZ2Dtrft49q1e3z+YIeJd/fdr/cFA/OHW36OBw17353HebdLvRpN3W4GT39Ij2T4//vXMHn3ca9atdt3m4d3okts9qF6pRuxCNarlMimRap6Ty5dv0wtBoqh34Y1byJIQApxjJNAExK8WmxRktq90yhDAQEfRVmYrQCdFn4FQ74KlbAxLLcWquKU9MRGOqSYUcusdVt3ZYn1V+tQeMQ4sjqWhp8CfbJZUvhI6N3tP3MZLi9IqRPN1QUcnioWNEyQsm20iMtDcRJkUiMRQaPSoRNPoe6MlaotTZf14MujNZYv7kt4n9CYAyraldEnPLrDb5ZRRKRb4mN94aJtE/Bwkh6mS18uXr9+Jc1SiIwI5uIIEqZdopcRGInfJNjA8pya02Tz4cLq+i5shLz1GGTCkmojKM2Zh7NY45Q9/T4gfqFghLwfEJYhohfIJYpp35YosfC9ttpPqBi2nI9oxJrWaeQCxZCPJ+1j4fE8yM6gGhicXNu2oidmsSC8ZIJ3FVJumDUlTK49jDxIVGrMTjuxIwm743izx6q9nVtftnj2F/FQ8dGImFOvbOYmUpiCaIXoboXab+6r0XgchVSH22KkbEL0n3ASikEMZ2qB6hPZHmVYPiL5y3llUP0y0zDE4W9HPOQbeFDFsj2JesLn4Ig2vxjGeWBzXOaPfKkjMMwV485CzP82J3eBrb1suzdxJVR6HsMYp2Lb49hZzHkvpFwtCUNn4qU5bWjIgsB6EUcqMBaKaS3EC4OWL62LQKJ0qZtPS2QO4R0x3T8jLIHIae3yQvHzH9HlrWVMahlXtdzXOWHChuVdfj4PN7uwEtw1xTWnlOuFqSq2PkceGSCmM5ASS4KoHdcEJeRwpelnLWs1QAJUi/R9e7IpWnTFqa+CVIQypfhMXXWd+mZ32z9rhAYmSjj4g9+Nh5Gyo+fYC4WmG88jgw8blCcrhUqGGkUyYsZqAEfS3zqY1PNlIeL7P+t9CACIL0wM9mYBw21xPw8k38/0o171mEYMlEeYq1uDJ6PVh6PVh6Xg54amOXy1OmealyxVRzznpCAy80JdCutUyTgQ4x19vobDzpXAC33WOnkDmg8QVn50uSfAkcVVtIiuP8XuPC+HZ4n6B7o+k5TdBz1UbmYgy1YtS57Aipqa3RyghtpuN/5LOUXOlqzY7TRAj7QnbtMD9Cy+2sJRdOslIaaUrkXFhSU4o1rSTvo7qr94/ucjl0z+1J7UfJupYmlCnUr/fFyJqj1TVGPqqu3WpqCOrt3zbMJ/budar5+gWj1WHj3NZyU23kMyPeteiIwoEJrLaH16IjJpg56Gssj8m+fv8PQ3zF3noxAAA=" /></Footer>{/* END_TICKETING_COLLECTION_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_collections
+      parameters:
+      - name: collection_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/CollectionsCollectionIdViewersGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedViewerList'
+  /ticketing/v1/collections/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `Collection` object with the given `id`.{/* BEGIN_TICKETING_COLLECTION_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+1aW2/aSBT+K+w8RoA3SbNVkFYrAmkuKk42Ib2kqqzD+GAmjD3OXCCh6n9f2ebakhDIBNxu3mB8/I39nfsZfyMUNAZC3pMK0Yx2UbMoIEUSCh85qZCa4BypZiIiRQIxcyHEaVGvt0OKRJk4FlKj/44h99WxxDapECdEGWDJRKzN0HfG9zgs0hhISFCVM7631E5vJkXCWdRFv0qpMJFeiJZJlyAT/+GvcjhTmhRJDErpjhQm6FzgrUG1GDh5Mo4hRhp4yQcNzhRISWYo89aSd/CRo0a/DhrqqDMKhxt2tI5VxXE6yONyunnZx56DkQNSM8pROXu7+ztv9/dKQ5R093+8gP+9vXVz2xKtt1teQLkHZqvRpHdu86Tv3gRv3NqbO3dwtecOugP3pvvnlhfAVqPZ2Dtrft49q1e3z+YIeJd/fdr/cFA/OHW36OBw17353HebdLvRpN3W4GT39Ij2T4//vXMHn3ca9atdt3m4d3okts9qF6pRuxCNarlMimRap6Ty5dv0wtBoqh34Y1byJIQApxjJNAExK8WmxRktq90yhDAQEfRVmYrQCdFn4FQ74KlbAxLLcWquKU9MRGOqSYUcusdVt3ZYn1V+tQeMQ4sjqWhp8CfbJZUvhI6N3tP3MZLi9IqRPN1QUcnioWNEyQsm20iMtDcRJkUiMRQaPSoRNPoe6MlaotTZf14MujNZYv7kt4n9CYAyraldEnPLrDb5ZRRKRb4mN94aJtE/Bwkh6mS18uXr9+Jc1SiIwI5uIIEqZdopcRGInfJNjA8pya02Tz4cLq+i5shLz1GGTCkmojKM2Zh7NY45Q9/T4gfqFghLwfEJYhohfIJYpp35YosfC9ttpPqBi2nI9oxJrWaeQCxZCPJ+1j4fE8yM6gGhicXNu2oidmsSC8ZIJ3FVJumDUlTK49jDxIVGrMTjuxIwm743izx6q9nVtftnj2F/FQ8dGImFOvbOYmUpiCaIXoboXab+6r0XgchVSH22KkbEL0n3ASikEMZ2qB6hPZHmVYPiL5y3llUP0y0zDE4W9HPOQbeFDFsj2JesLn4Ig2vxjGeWBzXOaPfKkjMMwV485CzP82J3eBrb1suzdxJVR6HsMYp2Lb49hZzHkvpFwtCUNn4qU5bWjIgsB6EUcqMBaKaS3EC4OWL62LQKJ0qZtPS2QO4R0x3T8jLIHIae3yQvHzH9HlrWVMahlXtdzXOWHChuVdfj4PN7uwEtw1xTWnlOuFqSq2PkceGSCmM5ASS4KoHdcEJeRwpelnLWs1QAJUi/R9e7IpWnTFqa+CVIQypfhMXXWd+mZ32z9rhAYmSjj4g9+Nh5Gyo+fYC4WmG88jgw8blCcrhUqGGkUyYsZqAEfS3zqY1PNlIeL7P+t9CACIL0wM9mYBw21xPw8k38/0o171mEYMlEeYq1uDJ6PVh6PVh6Xg54amOXy1OmealyxVRzznpCAy80JdCutUyTgQ4x19vobDzpXAC33WOnkDmg8QVn50uSfAkcVVtIiuP8XuPC+HZ4n6B7o+k5TdBz1UbmYgy1YtS57Aipqa3RyghtpuN/5LOUXOlqzY7TRAj7QnbtMD9Cy+2sJRdOslIaaUrkXFhSU4o1rSTvo7qr94/ucjl0z+1J7UfJupYmlCnUr/fFyJqj1TVGPqqu3WpqCOrt3zbMJ/budar5+gWj1WHj3NZyU23kMyPeteiIwoEJrLaH16IjJpg56Gssj8m+fv8PQ3zF3noxAAA=" /></Footer>{/* END_TICKETING_COLLECTION_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_collections
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/CollectionsIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: remote_fields
+        in: query
+        description: Deprecated. Use show_enum_origins.
+        required: false
+        schema:
+          $ref: '#/components/schemas/CollectionsIdGetParametersRemoteFields'
+      - name: show_enum_origins
+        in: query
+        description: A comma separated list of enum field names for which you'd like the original values to be returned, instead of Merge's normalized enum values. [Learn more](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+        required: false
+        schema:
+          $ref: '#/components/schemas/CollectionsIdGetParametersShowEnumOrigins'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Collection'
+components:
+  schemas:
+    PermissionFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: PermissionFieldMappings
+    CollectionsGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - collection_type
+      title: CollectionsGetParametersShowEnumOrigins
+    CollectionAccessLevelEnum:
+      type: string
+      enum:
+      - PRIVATE
+      - COMPANY
+      - PUBLIC
+      - PARENT_COLLECTION
+      title: CollectionAccessLevelEnum
+    ActionsEnum:
+      type: string
+      enum:
+      - VIEW
+      - CREATE
+      - EDIT
+      - DELETE
+      title: ActionsEnum
+    CollectionsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - parent_collection
+      - permissions
+      title: CollectionsIdGetParametersExpandSchemaItems
+    CollectionTypeEnum:
+      type: string
+      enum:
+      - LIST
+      - PROJECT
+      title: CollectionTypeEnum
+    PaginatedViewerList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Viewer'
+      title: PaginatedViewerList
+    CollectionFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: CollectionFieldMappings
+    Viewer:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        team:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The Team this Viewer belongs to.
+        user:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The User this Viewer belongs to.
+      description: '# The Viewer Object
+
+        ### Description
+
+        The `Viewer` object is used to represent a User or Team within a company.
+
+
+        ### Usage Example
+
+        TODO'
+      title: Viewer
+    EffectEnum:
+      type: string
+      enum:
+      - ALLOWED
+      - DENIED
+      - INHERITED
+      title: EffectEnum
+    PaginatedCollectionList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Collection'
+      title: PaginatedCollectionList
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    CollectionsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - parent_collection
+      - permissions
+      title: CollectionsGetParametersExpandSchemaItems
+    Permission:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        effect:
+          oneOf:
+          - $ref: '#/components/schemas/EffectEnum'
+          - type: 'null'
+          description: Outcome of this permission rule for matching users.
+        actions:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/ActionsEnum'
+          description: Operations that this permission applies to. If the entity inherits permission from a parent entity, then this should be an empty array. In that case, the entity would inherit the parent entity’s actions.
+        applied_to_users:
+          type: array
+          items:
+            type: string
+            format: uuid
+        applied_to_roles:
+          type: array
+          items:
+            type: string
+            format: uuid
+        applied_to_teams:
+          type: array
+          items:
+            type: string
+            format: uuid
+        applied_to_collections:
+          type: array
+          items:
+            type: string
+            format: uuid
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/PermissionFieldMappings'
+          - type: 'null'
+      description: '# The Permission Object
+
+        ### Description
+
+        The `Permission` object is used to represent permissions that can be applied to users, roles, teams, collections, and tickets.
+
+
+        ### Usage Example
+
+        TODO'
+      title: Permission
+    CollectionsCollectionIdViewersGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - team
+      - user
+      title: CollectionsCollectionIdViewersGetParametersExpandSchemaItems
+    Collection:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The collection's name.
+        description:
+          type:
+          - string
+          - 'null'
+          description: The collection's description.
+        access_level:
+          oneOf:
+          - $ref: '#/components/schemas/CollectionAccessLevelEnum'
+          - type: 'null'
+          description: The level of access a User has to the Collection and its sub-objects.
+        collection_type:
+          oneOf:
+          - $ref: '#/components/schemas/CollectionTypeEnum'
+          - type: 'null'
+          description: The collection's type.
+        parent_collection:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The parent collection for this collection.
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Permission'
+        collection_url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The 3rd party url of the Collection.
+        remote_created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's collection was created.
+        remote_updated_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's collection was updated.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/CollectionFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The Collection Object
+
+        ### Description
+
+        The `Collection` object is used to represent one or more `Tickets`. There can be a hierarchy of `Collections`, in which a sub-collection belongs to a parent-collection.
+
+
+        ### Usage Example
+
+        TODO'
+      title: Collection
+    CollectionsIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - collection_type
+      title: CollectionsIdGetParametersRemoteFields
+    CollectionsIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - collection_type
+      title: CollectionsIdGetParametersShowEnumOrigins
+    CollectionsGetParametersCollectionType:
+      type: string
+      enum:
+      - ''
+      - LIST
+      - PROJECT
+      title: CollectionsGetParametersCollectionType
+    CollectionsGetParametersRemoteFields:
+      type: string
+      enum:
+      - collection_type
+      title: CollectionsGetParametersRemoteFields
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

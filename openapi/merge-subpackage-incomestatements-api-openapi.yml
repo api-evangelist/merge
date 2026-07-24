@@ -1,0 +1,702 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_incomeStatements API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_incomeStatements
+paths:
+  /accounting/v1/income-statements:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `IncomeStatement` objects.{/* BEGIN_ACCOUNTING_INCOMESTATEMENT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA81Ua08iMRT9K5t+JDCziGgk2Wx4+MAsw4q40RjTXDqXodBpa9sBxfjfNx1YBR/RTXDXj3Nu77mPc+7cEQYOE2VuSY0AYyqTjsuEFEmqYhSkRtqSqRRPHThMUTpSJKB5BCmuJdDpFikSm2mtjMP4gKOI7ZHBIamRMEWTYCmTfMgxDh+TQi4dJgYcV9KGD8mlYZ5NikRwOcG4vkh4m27xvLREnnzaUHDr29dgrRsZlSWjHl5naN/B7HsT+fwgSjE4CFdYSmZB8xLmp4hRoMO4BQ5a6JD5cZcVR85pWwvDEQod5NWDGKchyhCM40ygDauVva3dvWppyZJX/04T8a1cGF8P1GC3QBMmKGSFTp/dRP32LBon21Fz+yaan1Wj+WQejSdfCzSBQqffqXb7F5Vuq17uvvCAnu6c7/1qtBrHUYHN9yvR+GIW9Vm502eTwbxdOT5ks+Ojk5tofrHVaZ1Vov5+9fhQlbvNnu00e6pTDwJSJKuqktrl3SqwNM6BQTtqKDXx+1kJt1NIcGUvC0FA85LOBoKzwFYCSGGuJMxswFQaphhzCB/56Ol1BgbpD5WoYKy9k/PNcSUflk9qZD86qkfN/da6H+pT4AIGAknNmQyfGZrULkkPPdJ2mAYDECAZUjtC9M5aCTGwIzoUakbtyuWsPOD5Wb0WlX5Na4gyMZp1SINB6Sh3mK4HDKbKIfVOeTVANbjRetRmg5zMrsPuVj/pZQoi8xDLjEHJbkmRoIypRsNVTIokMcpaqo0acj+XREcX4y4/lEYvt0we4fWWX+jT5OUf+rMOjPtT8cqHrzNuMP4JBlJ0aLxWV/fFl8wXoTvNuMPNWC9CZz0btbnxAi0/1HN/65vlKnn8blFVqkE+03TJvEEZTjLOJvnNfulKweWG9HikLS0UoWfDrZ3GbvmjlfmXf4O3Tv+p3B922ovOPtuFn6NRm3GTZ1r66D/659PZAz+1J67ufwPuxHr11woAAA==" /></Footer>{/* END_ACCOUNTING_INCOMESTATEMENT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_incomeStatements
+      parameters:
+      - name: company_id
+        in: query
+        description: If provided, will only return income statements for this company.
+        required: false
+        schema:
+          type: string
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/IncomeStatementsGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedIncomeStatementList'
+  /accounting/v1/income-statements/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns an `IncomeStatement` object with the given `id`.{/* BEGIN_ACCOUNTING_INCOMESTATEMENT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA81Ua08iMRT9K5t+JDCziGgk2Wx4+MAsw4q40RjTXDqXodBpa9sBxfjfNx1YBR/RTXDXj3Nu77mPc+7cEQYOE2VuSY0AYyqTjsuEFEmqYhSkRtqSqRRPHThMUTpSJKB5BCmuJdDpFikSm2mtjMP4gKOI7ZHBIamRMEWTYCmTfMgxDh+TQi4dJgYcV9KGD8mlYZ5NikRwOcG4vkh4m27xvLREnnzaUHDr29dgrRsZlSWjHl5naN/B7HsT+fwgSjE4CFdYSmZB8xLmp4hRoMO4BQ5a6JD5cZcVR85pWwvDEQod5NWDGKchyhCM40ygDauVva3dvWppyZJX/04T8a1cGF8P1GC3QBMmKGSFTp/dRP32LBon21Fz+yaan1Wj+WQejSdfCzSBQqffqXb7F5Vuq17uvvCAnu6c7/1qtBrHUYHN9yvR+GIW9Vm502eTwbxdOT5ks+Ojk5tofrHVaZ1Vov5+9fhQlbvNnu00e6pTDwJSJKuqktrl3SqwNM6BQTtqKDXx+1kJt1NIcGUvC0FA85LOBoKzwFYCSGGuJMxswFQaphhzCB/56Ol1BgbpD5WoYKy9k/PNcSUflk9qZD86qkfN/da6H+pT4AIGAknNmQyfGZrULkkPPdJ2mAYDECAZUjtC9M5aCTGwIzoUakbtyuWsPOD5Wb0WlX5Na4gyMZp1SINB6Sh3mK4HDKbKIfVOeTVANbjRetRmg5zMrsPuVj/pZQoi8xDLjEHJbkmRoIypRsNVTIokMcpaqo0acj+XREcX4y4/lEYvt0we4fWWX+jT5OUf+rMOjPtT8cqHrzNuMP4JBlJ0aLxWV/fFl8wXoTvNuMPNWC9CZz0btbnxAi0/1HN/65vlKnn8blFVqkE+03TJvEEZTjLOJvnNfulKweWG9HikLS0UoWfDrZ3GbvmjlfmXf4O3Tv+p3B922ovOPtuFn6NRm3GTZ1r66D/659PZAz+1J67ufwPuxHr11woAAA==" /></Footer>{/* END_ACCOUNTING_INCOMESTATEMENT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_incomeStatements
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/IncomeStatementsIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IncomeStatement'
+components:
+  schemas:
+    IncomeStatementsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - company
+      title: IncomeStatementsGetParametersExpandSchemaItems
+    IncomeStatement:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The income statement's name.
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: The income statement's currency. The currency code in ISO 4217 format.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the income statement belongs to.
+        start_period:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The income statement's start period.
+        end_period:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The income statement's end period.
+        income:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportItem'
+        cost_of_sales:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportItem'
+        gross_profit:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The revenue minus the cost of sale.
+        operating_expenses:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportItem'
+        net_operating_income:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The revenue minus the operating expenses.
+        non_operating_expenses:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportItem'
+        net_income:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The gross profit minus the total expenses.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/IncomeStatementFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The IncomeStatement Object
+
+        ### Description
+
+        The `IncomeStatement` object is used to represent a company’s income, the cost of sales, operating expenses, and other non-operating expenses. The object also includes other important values like gross profit, gross operating profit, and net income. This represents a period of time (month, quarter, or year).
+
+
+        ### Usage Example
+
+        Fetch from the `GET IncomeStatement` endpoint and view a company''s income statement for a given period.'
+      title: IncomeStatement
+    TransactionCurrencyEnum:
+      type: string
+      enum:
+      - XUA
+      - AFN
+      - AFA
+      - ALL
+      - ALK
+      - DZD
+      - ADP
+      - AOA
+      - AOK
+      - AON
+      - AOR
+      - ARA
+      - ARS
+      - ARM
+      - ARP
+      - ARL
+      - AMD
+      - AWG
+      - AUD
+      - ATS
+      - AZN
+      - AZM
+      - BSD
+      - BHD
+      - BDT
+      - BBD
+      - BYN
+      - BYB
+      - BYR
+      - BEF
+      - BEC
+      - BEL
+      - BZD
+      - BMD
+      - BTN
+      - BOB
+      - BOL
+      - BOV
+      - BOP
+      - BAM
+      - BAD
+      - BAN
+      - BWP
+      - BRC
+      - BRZ
+      - BRE
+      - BRR
+      - BRN
+      - BRB
+      - BRL
+      - GBP
+      - BND
+      - BGL
+      - BGN
+      - BGO
+      - BGM
+      - BUK
+      - BIF
+      - XPF
+      - KHR
+      - CAD
+      - CVE
+      - KYD
+      - XAF
+      - CLE
+      - CLP
+      - CLF
+      - CNX
+      - CNY
+      - CNH
+      - COP
+      - COU
+      - KMF
+      - CDF
+      - CRC
+      - HRD
+      - HRK
+      - CUC
+      - CUP
+      - CYP
+      - CZK
+      - CSK
+      - DKK
+      - DJF
+      - DOP
+      - NLG
+      - XCD
+      - DDM
+      - ECS
+      - ECV
+      - EGP
+      - GQE
+      - ERN
+      - EEK
+      - ETB
+      - EUR
+      - XBA
+      - XEU
+      - XBB
+      - XBC
+      - XBD
+      - FKP
+      - FJD
+      - FIM
+      - FRF
+      - XFO
+      - XFU
+      - GMD
+      - GEK
+      - GEL
+      - DEM
+      - GHS
+      - GHC
+      - GIP
+      - XAU
+      - GRD
+      - GTQ
+      - GWP
+      - GNF
+      - GNS
+      - GYD
+      - HTG
+      - HNL
+      - HKD
+      - HUF
+      - IMP
+      - ISK
+      - ISJ
+      - INR
+      - IDR
+      - IRR
+      - IQD
+      - IEP
+      - ILS
+      - ILP
+      - ILR
+      - ITL
+      - JMD
+      - JPY
+      - JOD
+      - KZT
+      - KES
+      - KWD
+      - KGS
+      - LAK
+      - LVL
+      - LVR
+      - LBP
+      - LSL
+      - LRD
+      - LYD
+      - LTL
+      - LTT
+      - LUL
+      - LUC
+      - LUF
+      - MOP
+      - MKD
+      - MKN
+      - MGA
+      - MGF
+      - MWK
+      - MYR
+      - MVR
+      - MVP
+      - MLF
+      - MTL
+      - MTP
+      - MRU
+      - MRO
+      - MUR
+      - MXV
+      - MXN
+      - MXP
+      - MDC
+      - MDL
+      - MCF
+      - MNT
+      - MAD
+      - MAF
+      - MZE
+      - MZN
+      - MZM
+      - MMK
+      - NAD
+      - NPR
+      - ANG
+      - TWD
+      - NZD
+      - NIO
+      - NIC
+      - NGN
+      - KPW
+      - NOK
+      - OMR
+      - PKR
+      - XPD
+      - PAB
+      - PGK
+      - PYG
+      - PEI
+      - PEN
+      - PES
+      - PHP
+      - XPT
+      - PLN
+      - PLZ
+      - PTE
+      - GWE
+      - QAR
+      - XRE
+      - RHD
+      - RON
+      - ROL
+      - RUB
+      - RUR
+      - RWF
+      - SVC
+      - WST
+      - SAR
+      - RSD
+      - CSD
+      - SCR
+      - SLL
+      - XAG
+      - SGD
+      - SKK
+      - SIT
+      - SBD
+      - SOS
+      - ZAR
+      - ZAL
+      - KRH
+      - KRW
+      - KRO
+      - SSP
+      - SUR
+      - ESP
+      - ESA
+      - ESB
+      - XDR
+      - LKR
+      - SHP
+      - XSU
+      - SDD
+      - SDG
+      - SDP
+      - SRD
+      - SRG
+      - SZL
+      - SEK
+      - CHF
+      - SYP
+      - STN
+      - STD
+      - TVD
+      - TJR
+      - TJS
+      - TZS
+      - XTS
+      - THB
+      - XXX
+      - TPE
+      - TOP
+      - TTD
+      - TND
+      - TRY
+      - TRL
+      - TMT
+      - TMM
+      - USD
+      - USN
+      - USS
+      - UGX
+      - UGS
+      - UAH
+      - UAK
+      - AED
+      - UYW
+      - UYU
+      - UYP
+      - UYI
+      - UZS
+      - VUV
+      - VES
+      - VEB
+      - VEF
+      - VND
+      - VNN
+      - CHE
+      - CHW
+      - XOF
+      - YDD
+      - YER
+      - YUN
+      - YUD
+      - YUM
+      - YUR
+      - ZWN
+      - ZRN
+      - ZRZ
+      - ZMW
+      - ZMK
+      - ZWD
+      - ZWR
+      - ZWL
+      description: The currency code in ISO 4217 format.
+      title: TransactionCurrencyEnum
+    IncomeStatementsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - company
+      title: IncomeStatementsIdGetParametersExpandSchemaItems
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    ReportItem:
+      type: object
+      properties:
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The report item's name.
+        value:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The report item's value.
+        sub_items:
+          type: object
+          additionalProperties:
+            description: Any type
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the report item belongs to.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+      description: '# The ReportItem Object
+
+        ### Description
+
+        The `ReportItem` object is used to represent a report item for a Balance Sheet, Cash Flow Statement or Profit and Loss Report.
+
+
+        ### Usage Example
+
+        Fetch from the `GET BalanceSheet` endpoint and view the balance sheet''s report items.'
+      title: ReportItem
+    PaginatedIncomeStatementList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/IncomeStatement'
+      title: PaginatedIncomeStatementList
+    IncomeStatementFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: IncomeStatementFieldMappings
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

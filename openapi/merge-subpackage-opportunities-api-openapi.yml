@@ -1,0 +1,1116 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_opportunities API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_opportunities
+paths:
+  /crm/v1/opportunities:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Opportunity` objects.{/* BEGIN_CRM_OPPORTUNITY_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+1ZYW/iOBD9K8gfUSDXsnS3SKcTC9xCJUKPZnvXXVXR4AzB4MSp7UDLav/7KSFQ2Oux5eTSnNRPEGv87Lw3fjNJvhEKGgMhH0iDUBkSi4TCR04aZBDHQuokYvqBWARi5kCIqyhvfkosopIsAv3fGXJfdSWOSYPYIcoAK0nExgx9m8rQZpHGQIJmIlL2ZlZlnE0jFuEsmqHfpFQkkd6Ds4qrwCrwh0tlc6Y0sUgMSumJFEkwGeJdgmofZLobjiFGGnjFBw321vSKXM1/aizdt48cNfpt0NBGjTS9wXypidaxatj2BHlczZat+ji3MbJBakY5KrteOz99f16v5CjZ6r95Af/1pDy9G4nR+7IXUO5BUu679N5xewtnGrxzWu/uneXnurOcLZ3p7JeyF0C57/brA/emNmg3TwZPBHhXZ3+dX39sf7xwynTZqTnTm4Xj0pO+S2ejZa928YkuLrp/3DvLm9N++3PNcTv1i0/iZNAaqn5rKPrNapVYZFtH0vj6bXsgT44mpcjFbmwvhAC3OFmpADGrxMmIM1pVtSqEsBQRLFSVitAO0WdgX3LQYyFDyDA9dZeAxGocBWvqmYg2vJMG6TjdptPqtHdzoDkHxmHEkTS0TPAfaUsaX0meQmmah/kfyoVCzweN2WqKShZn61iEg9IeUM3mTD94kEZH6d1bJBIa08QQiwglsYjEUGj0qETQ6K9C87FU7d0rLwY9eRxifnrEdErdbTp4lzCJ/iVICFGjTPd9+916WgPN5tiCMAYWRGa02MVcazGNj6LFc+k3THv2qxN1MP/jMctd0wTzOdpx8v+HRD6AtQNJakGsEo5mnSIHffOIn9Of2pth8lPIY1nCHnt+XfNtiTjOljfJbIZZAGoLb73dZHQVC22G/m4yUrHQPy92TtPtXXcK0HY8duyeBjUzpMumTzenUy9SLJhobqhGbuD+D01iQY5Kn1EplBjrUvshgpBRVaqd1UtXwLNcMmhfa/zaWT1DL45Izzg/W0OJ5MWRz0m0miDnZqRaoxVAk8IfnEsWoy/Z3HD7tIF9hULz30rLixyNFyg2KbOcrbZmQrA1XHF9rBgHJTP7MQdp+KQ84r5KS1x4g1rxIyR9Ed5T3D0p/9YLHyxXEoBsDftmxVIpavqq/s2k9rLvIoQcwTdVHR7xilMXCuJLKTULIWcl48m+RvZaw/6R303vsF/MOnytWWD6ldQ8wyyOuRytKB/I/ReMfFSz0pWxR7W1Ajmy92GhT133z2NpUPSPX1/ERJg3mKWYiGcV0yK3P/GRn9f+Xbnb738DpFmuVHggAAA=" /></Footer>{/* END_CRM_OPPORTUNITY_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_opportunities
+      parameters:
+      - name: account_id
+        in: query
+        description: If provided, will only return opportunities with this account.
+        required: false
+        schema:
+          type: string
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/OpportunitiesGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_fields
+        in: query
+        description: Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: owner_id
+        in: query
+        description: If provided, will only return opportunities with this owner.
+        required: false
+        schema:
+          type: string
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_created_after
+        in: query
+        description: If provided, will only return opportunities created in the third party platform after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: remote_fields
+        in: query
+        description: Deprecated. Use show_enum_origins.
+        required: false
+        schema:
+          $ref: '#/components/schemas/OpportunitiesGetParametersRemoteFields'
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: show_enum_origins
+        in: query
+        description: A comma separated list of enum field names for which you'd like the original values to be returned, instead of Merge's normalized enum values. [Learn more](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+        required: false
+        schema:
+          $ref: '#/components/schemas/OpportunitiesGetParametersShowEnumOrigins'
+      - name: stage_id
+        in: query
+        description: If provided, will only return opportunities with this stage.
+        required: false
+        schema:
+          type: string
+      - name: status
+        in: query
+        description: 'If provided, will only return opportunities with this status. Options: (''OPEN'', ''WON'', ''LOST'')
+
+
+          '
+        required: false
+        schema:
+          $ref: '#/components/schemas/OpportunitiesGetParametersStatus'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedOpportunityList'
+    post:
+      operationId: create
+      summary: Create
+      description: Creates an `Opportunity` object with the given values.{/* BEGIN_CRM_OPPORTUNITY_CREATE_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST" data="H4sIAAAAAAAAA91Y72/iOBD9V5A/opBcy9LdIp1OLHALlRJ6bbZ3vVUVDfYQDHac2g4UVvu/nxJSFu7666q0vdtPSZyZZ/u9N+MoXwkFi7HSK9ImVEviEKkYCtImozRV2mYJtyviEEh5ABI3UdHikDjEZEUEsl85CmYGGiekTTyJOsZGlvAJR+ZRLT2eWIw1WK4S422zGpMijThE8GSOrEOpyhL7AM4mrgGbwL89Gk9wY4lDUjDGTrXK4ukZXmdoHoLMVyNQYmJBNBhY8HbSG3qTf9dYvm6GAi2yHljooUWab7CcamptatqeN0WRusW0LsOFh4kH2nIq0Hit5vHh++NWo0QpZv8lisXPB/XZ9ViN39ejmIoIsrof0psgHC6DWfwu6L67CdafW8F6vg5m85/qUQx1P/Rbo/CyOep1DkZ3BETnR38cX3zsfTwJ6nTdbwazy2UQ0gM/pPPxetg8+USXJ4PfboL15aHf+9wMwn7r5JM6GHXPjN89U37HdYlDdnUk7S9fdwdKc3So5QvsgkyBx8l+zlBCjDvcbNSAlDfSbCw4dU3TBQlrlcDSuFRJTyLj4O1jRuY6A43uLI1vJeAq2fJP2qQfDDpBt9/b90JnAVzAWCBpW53hP+xL2l9IaaXc7rK8YWio5mkB7RABxkaQr4fbVQR5QJJv3CFqmaAmDtEolcWIagSLbBNSjnGWF43NSSiuNjPkKn97nXGN7BQ0SLSo86VcfXPuorcLqckEVsPrqQA7UVqWoG6avAGjz6LvX7I2yMbnqbLVsDbIxiZV9nEbBp1weNGvhDIqlMGIgcVqHbntwM9w6D6Gu/sUUQFmB7YMWYDIkNyj0TAxPJ5asapGpS3crU6vZO6XUqqC3uFzqpVRE1vrrRKQnJpa86hVOweBptqGcovfPGoV6C+qwROYf40ec8pTZJovKu7NW9g3aDRv11rKaartMIUVJ0rTiiX6jvuAwX/0w+Dx6nummNtyvFvUEEEKBFZsrgJRv+P9B06MVz0eLiyPq2LxtjQWBeaPdwQ/pQzuoflPTBiaee0chaiW7BI5+rC0h2H4+2vR/eKc7qHdx6qaqlr3zK+W0bWaqvxvx6P+/R909yd92Vx9+wtmWSMlEBIAAA==" /></Footer>{/* END_CRM_OPPORTUNITY_CREATE_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_opportunities
+      parameters:
+      - name: is_debug_mode
+        in: query
+        description: Whether to include debug fields (such as log file links) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: run_async
+        in: query
+        description: Whether or not third-party updates should be run asynchronously.
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpportunityResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpportunityEndpointRequest'
+  /crm/v1/opportunities/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns an `Opportunity` object with the given `id`.{/* BEGIN_CRM_OPPORTUNITY_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+1ZYW/iOBD9K8gfUSDXsnS3SKcTC9xCJUKPZnvXXVXR4AzB4MSp7UDLav/7KSFQ2Oux5eTSnNRPEGv87Lw3fjNJvhEKGgMhH0iDUBkSi4TCR04aZBDHQuokYvqBWARi5kCIqyhvfkosopIsAv3fGXJfdSWOSYPYIcoAK0nExgx9m8rQZpHGQIJmIlL2ZlZlnE0jFuEsmqHfpFQkkd6Ds4qrwCrwh0tlc6Y0sUgMSumJFEkwGeJdgmofZLobjiFGGnjFBw321vSKXM1/aizdt48cNfpt0NBGjTS9wXypidaxatj2BHlczZat+ji3MbJBakY5KrteOz99f16v5CjZ6r95Af/1pDy9G4nR+7IXUO5BUu679N5xewtnGrxzWu/uneXnurOcLZ3p7JeyF0C57/brA/emNmg3TwZPBHhXZ3+dX39sf7xwynTZqTnTm4Xj0pO+S2ejZa928YkuLrp/3DvLm9N++3PNcTv1i0/iZNAaqn5rKPrNapVYZFtH0vj6bXsgT44mpcjFbmwvhAC3OFmpADGrxMmIM1pVtSqEsBQRLFSVitAO0WdgX3LQYyFDyDA9dZeAxGocBWvqmYg2vJMG6TjdptPqtHdzoDkHxmHEkTS0TPAfaUsaX0meQmmah/kfyoVCzweN2WqKShZn61iEg9IeUM3mTD94kEZH6d1bJBIa08QQiwglsYjEUGj0qETQ6K9C87FU7d0rLwY9eRxifnrEdErdbTp4lzCJ/iVICFGjTPd9+916WgPN5tiCMAYWRGa02MVcazGNj6LFc+k3THv2qxN1MP/jMctd0wTzOdpx8v+HRD6AtQNJakGsEo5mnSIHffOIn9Of2pth8lPIY1nCHnt+XfNtiTjOljfJbIZZAGoLb73dZHQVC22G/m4yUrHQPy92TtPtXXcK0HY8duyeBjUzpMumTzenUy9SLJhobqhGbuD+D01iQY5Kn1EplBjrUvshgpBRVaqd1UtXwLNcMmhfa/zaWT1DL45Izzg/W0OJ5MWRz0m0miDnZqRaoxVAk8IfnEsWoy/Z3HD7tIF9hULz30rLixyNFyg2KbOcrbZmQrA1XHF9rBgHJTP7MQdp+KQ84r5KS1x4g1rxIyR9Ed5T3D0p/9YLHyxXEoBsDftmxVIpavqq/s2k9rLvIoQcwTdVHR7xilMXCuJLKTULIWcl48m+RvZaw/6R303vsF/MOnytWWD6ldQ8wyyOuRytKB/I/ReMfFSz0pWxR7W1Ajmy92GhT133z2NpUPSPX1/ERJg3mKWYiGcV0yK3P/GRn9f+Xbnb738DpFmuVHggAAA=" /></Footer>{/* END_CRM_OPPORTUNITY_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_opportunities
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/OpportunitiesIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_fields
+        in: query
+        description: Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: remote_fields
+        in: query
+        description: Deprecated. Use show_enum_origins.
+        required: false
+        schema:
+          $ref: '#/components/schemas/OpportunitiesIdGetParametersRemoteFields'
+      - name: show_enum_origins
+        in: query
+        description: A comma separated list of enum field names for which you'd like the original values to be returned, instead of Merge's normalized enum values. [Learn more](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+        required: false
+        schema:
+          $ref: '#/components/schemas/OpportunitiesIdGetParametersShowEnumOrigins'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Opportunity'
+    patch:
+      operationId: partial-update
+      summary: Partial Update
+      description: Updates an `Opportunity` object with the given `id`.{/* BEGIN_CRM_OPPORTUNITY_EDIT_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="PATCH" data="H4sIAAAAAAAAA+VWYW/aMBD9K5M/opCMUjY10jRRYAWkhI7Sal1VRYdzBIMTG9uBNlX/+xTCGGwt6zaqqtqnyM7du7v3zmffEQoGI6FuiUuoiolFYhEiJy7pSSmUSRNmbolFQDIfYiysgvkBsYhOlxYYfmLIQ91WOCIucWJUEZbThI0Yhg5VscMSg5ECw0SinbVXebR0IxbhLJliWKdUpInZgVPYlaEw/GmpHc60IRaRoLUZK5FG4z7OUtS7IPNsOMaYGODlEAw4G+5lVfg/tJfnHSJHg2ETDDTRIM0LXIUaGyO16zhj5NJehrVDnDuYOKAMoxy1U6seHbw/qpVXKMvoH4OIf6iUJrOhGL4vBRHlAaQlb0Bv/EFn4U+iQ79xeONn5zU/m2b+ZPq2FERQ8gZerTe4rPaa9UrvAYPg7N2Xo4vj5nHXL9GsVfUnlwt/QCvegE6HWafaPaGLbvvzjZ9dHnjN86o/aNW6J6LSa/S11+gLr27bxCKbOhL36m5zY9UcDZA65bht3Ikhwg1SChlAsrJMh5xRW1dtiCETCSy0TUXsxBgycE45mJFQ8QrUlkn0nXUmkjXlxCUtv133G63mtvz1OTAOQ47ENSrFXzqWuFcE4rx5iEUoFxqDEEyefIiaKiaX6BZJ8tosIhYJKmIRhbEwGFCFYDAMIPfWJi/xOv85S5nC8BQUxGhQ5VGu760HyRJSLhH3ydUS057IZ6CqOGj5MPhr0li4Jmv5Nan+U9ba6fBMCrMf2trpUEthAj1LQeEO2vz6oHPRem7SOGgTADVszsxt0VlPaL7V3nqePpHfbT97cxVQDjqH2jaZA0+RPKLLKZMYKjbf8+Ffw76AOK9ZjjPgqEcc1J71+IH7IkPmnyTZw/QpyheKPgutOe6Oa+6/HEKPCPFVjMWbRt/brwyZGIv8gbu6D16nFL97jFzffwNDwGgJ9wsAAA==" /></Footer>{/* END_CRM_OPPORTUNITY_EDIT_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_opportunities
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: is_debug_mode
+        in: query
+        description: Whether to include debug fields (such as log file links) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: run_async
+        in: query
+        description: Whether or not third-party updates should be run asynchronously.
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpportunityResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedOpportunityEndpointRequest'
+  /crm/v1/opportunities/meta/patch/{id}:
+    get:
+      operationId: meta-patch-retrieve
+      summary: Meta Patch Retrieve
+      description: Returns metadata for `Opportunity` PATCHs.{/* BEGIN_CRM_OPPORTUNITY_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+1ZYW/iOBD9K8gfUSDXsnS3SKcTC9xCJUKPZnvXXVXR4AzB4MSp7UDLav/7KSFQ2Oux5eTSnNRPEGv87Lw3fjNJvhEKGgMhH0iDUBkSi4TCR04aZBDHQuokYvqBWARi5kCIqyhvfkosopIsAv3fGXJfdSWOSYPYIcoAK0nExgx9m8rQZpHGQIJmIlL2ZlZlnE0jFuEsmqHfpFQkkd6Ds4qrwCrwh0tlc6Y0sUgMSumJFEkwGeJdgmofZLobjiFGGnjFBw321vSKXM1/aizdt48cNfpt0NBGjTS9wXypidaxatj2BHlczZat+ji3MbJBakY5KrteOz99f16v5CjZ6r95Af/1pDy9G4nR+7IXUO5BUu679N5xewtnGrxzWu/uneXnurOcLZ3p7JeyF0C57/brA/emNmg3TwZPBHhXZ3+dX39sf7xwynTZqTnTm4Xj0pO+S2ejZa928YkuLrp/3DvLm9N++3PNcTv1i0/iZNAaqn5rKPrNapVYZFtH0vj6bXsgT44mpcjFbmwvhAC3OFmpADGrxMmIM1pVtSqEsBQRLFSVitAO0WdgX3LQYyFDyDA9dZeAxGocBWvqmYg2vJMG6TjdptPqtHdzoDkHxmHEkTS0TPAfaUsaX0meQmmah/kfyoVCzweN2WqKShZn61iEg9IeUM3mTD94kEZH6d1bJBIa08QQiwglsYjEUGj0qETQ6K9C87FU7d0rLwY9eRxifnrEdErdbTp4lzCJ/iVICFGjTPd9+916WgPN5tiCMAYWRGa02MVcazGNj6LFc+k3THv2qxN1MP/jMctd0wTzOdpx8v+HRD6AtQNJakGsEo5mnSIHffOIn9Of2pth8lPIY1nCHnt+XfNtiTjOljfJbIZZAGoLb73dZHQVC22G/m4yUrHQPy92TtPtXXcK0HY8duyeBjUzpMumTzenUy9SLJhobqhGbuD+D01iQY5Kn1EplBjrUvshgpBRVaqd1UtXwLNcMmhfa/zaWT1DL45Izzg/W0OJ5MWRz0m0miDnZqRaoxVAk8IfnEsWoy/Z3HD7tIF9hULz30rLixyNFyg2KbOcrbZmQrA1XHF9rBgHJTP7MQdp+KQ84r5KS1x4g1rxIyR9Ed5T3D0p/9YLHyxXEoBsDftmxVIpavqq/s2k9rLvIoQcwTdVHR7xilMXCuJLKTULIWcl48m+RvZaw/6R303vsF/MOnytWWD6ldQ8wyyOuRytKB/I/ReMfFSz0pWxR7W1Ajmy92GhT133z2NpUPSPX1/ERJg3mKWYiGcV0yK3P/GRn9f+Xbnb738DpFmuVHggAAA=" /></Footer>{/* END_CRM_OPPORTUNITY_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_opportunities
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaResponse'
+  /crm/v1/opportunities/meta/post:
+    get:
+      operationId: meta-post-retrieve
+      summary: Meta Post Retrieve
+      description: Returns metadata for `Opportunity` POSTs.{/* BEGIN_CRM_OPPORTUNITY_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+1ZYW/iOBD9K8gfUSDXsnS3SKcTC9xCJUKPZnvXXVXR4AzB4MSp7UDLav/7KSFQ2Oux5eTSnNRPEGv87Lw3fjNJvhEKGgMhH0iDUBkSi4TCR04aZBDHQuokYvqBWARi5kCIqyhvfkosopIsAv3fGXJfdSWOSYPYIcoAK0nExgx9m8rQZpHGQIJmIlL2ZlZlnE0jFuEsmqHfpFQkkd6Ds4qrwCrwh0tlc6Y0sUgMSumJFEkwGeJdgmofZLobjiFGGnjFBw321vSKXM1/aizdt48cNfpt0NBGjTS9wXypidaxatj2BHlczZat+ji3MbJBakY5KrteOz99f16v5CjZ6r95Af/1pDy9G4nR+7IXUO5BUu679N5xewtnGrxzWu/uneXnurOcLZ3p7JeyF0C57/brA/emNmg3TwZPBHhXZ3+dX39sf7xwynTZqTnTm4Xj0pO+S2ejZa928YkuLrp/3DvLm9N++3PNcTv1i0/iZNAaqn5rKPrNapVYZFtH0vj6bXsgT44mpcjFbmwvhAC3OFmpADGrxMmIM1pVtSqEsBQRLFSVitAO0WdgX3LQYyFDyDA9dZeAxGocBWvqmYg2vJMG6TjdptPqtHdzoDkHxmHEkTS0TPAfaUsaX0meQmmah/kfyoVCzweN2WqKShZn61iEg9IeUM3mTD94kEZH6d1bJBIa08QQiwglsYjEUGj0qETQ6K9C87FU7d0rLwY9eRxifnrEdErdbTp4lzCJ/iVICFGjTPd9+916WgPN5tiCMAYWRGa02MVcazGNj6LFc+k3THv2qxN1MP/jMctd0wTzOdpx8v+HRD6AtQNJakGsEo5mnSIHffOIn9Of2pth8lPIY1nCHnt+XfNtiTjOljfJbIZZAGoLb73dZHQVC22G/m4yUrHQPy92TtPtXXcK0HY8duyeBjUzpMumTzenUy9SLJhobqhGbuD+D01iQY5Kn1EplBjrUvshgpBRVaqd1UtXwLNcMmhfa/zaWT1DL45Izzg/W0OJ5MWRz0m0miDnZqRaoxVAk8IfnEsWoy/Z3HD7tIF9hULz30rLixyNFyg2KbOcrbZmQrA1XHF9rBgHJTP7MQdp+KQ84r5KS1x4g1rxIyR9Ed5T3D0p/9YLHyxXEoBsDftmxVIpavqq/s2k9rLvIoQcwTdVHR7xilMXCuJLKTULIWcl48m+RvZaw/6R303vsF/MOnytWWD6ldQ8wyyOuRytKB/I/ReMfFSz0pWxR7W1Ajmy92GhT133z2NpUPSPX1/ERJg3mKWYiGcV0yK3P/GRn9f+Xbnb738DpFmuVHggAAA=" /></Footer>{/* END_CRM_OPPORTUNITY_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_opportunities
+      parameters:
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaResponse'
+  /crm/v1/opportunities/remote-field-classes:
+    get:
+      operationId: remote-field-classes-list
+      summary: Remote Field Classes List
+      description: Returns a list of `RemoteFieldClass` objects.{/* BEGIN_CRM_OPPORTUNITY_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+1ZYW/iOBD9K8gfUSDXsnS3SKcTC9xCJUKPZnvXXVXR4AzB4MSp7UDLav/7KSFQ2Oux5eTSnNRPEGv87Lw3fjNJvhEKGgMhH0iDUBkSi4TCR04aZBDHQuokYvqBWARi5kCIqyhvfkosopIsAv3fGXJfdSWOSYPYIcoAK0nExgx9m8rQZpHGQIJmIlL2ZlZlnE0jFuEsmqHfpFQkkd6Ds4qrwCrwh0tlc6Y0sUgMSumJFEkwGeJdgmofZLobjiFGGnjFBw321vSKXM1/aizdt48cNfpt0NBGjTS9wXypidaxatj2BHlczZat+ji3MbJBakY5KrteOz99f16v5CjZ6r95Af/1pDy9G4nR+7IXUO5BUu679N5xewtnGrxzWu/uneXnurOcLZ3p7JeyF0C57/brA/emNmg3TwZPBHhXZ3+dX39sf7xwynTZqTnTm4Xj0pO+S2ejZa928YkuLrp/3DvLm9N++3PNcTv1i0/iZNAaqn5rKPrNapVYZFtH0vj6bXsgT44mpcjFbmwvhAC3OFmpADGrxMmIM1pVtSqEsBQRLFSVitAO0WdgX3LQYyFDyDA9dZeAxGocBWvqmYg2vJMG6TjdptPqtHdzoDkHxmHEkTS0TPAfaUsaX0meQmmah/kfyoVCzweN2WqKShZn61iEg9IeUM3mTD94kEZH6d1bJBIa08QQiwglsYjEUGj0qETQ6K9C87FU7d0rLwY9eRxifnrEdErdbTp4lzCJ/iVICFGjTPd9+916WgPN5tiCMAYWRGa02MVcazGNj6LFc+k3THv2qxN1MP/jMctd0wTzOdpx8v+HRD6AtQNJakGsEo5mnSIHffOIn9Of2pth8lPIY1nCHnt+XfNtiTjOljfJbIZZAGoLb73dZHQVC22G/m4yUrHQPy92TtPtXXcK0HY8duyeBjUzpMumTzenUy9SLJhobqhGbuD+D01iQY5Kn1EplBjrUvshgpBRVaqd1UtXwLNcMmhfa/zaWT1DL45Izzg/W0OJ5MWRz0m0miDnZqRaoxVAk8IfnEsWoy/Z3HD7tIF9hULz30rLixyNFyg2KbOcrbZmQrA1XHF9rBgHJTP7MQdp+KQ84r5KS1x4g1rxIyR9Ed5T3D0p/9YLHyxXEoBsDftmxVIpavqq/s2k9rLvIoQcwTdVHR7xilMXCuJLKTULIWcl48m+RvZaw/6R303vsF/MOnytWWD6ldQ8wyyOuRytKB/I/ReMfFSz0pWxR7W1Ajmy92GhT133z2NpUPSPX1/ERJg3mKWYiGcV0yK3P/GRn9f+Xbnb738DpFmuVHggAAA=" /></Footer>{/* END_CRM_OPPORTUNITY_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_opportunities
+      parameters:
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_fields
+        in: query
+        description: Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: is_common_model_field
+        in: query
+        description: If provided, will only return remote field classes with this is_common_model_field value
+        required: false
+        schema:
+          type: boolean
+      - name: is_custom
+        in: query
+        description: If provided, will only return remote fields classes with this is_custom value
+        required: false
+        schema:
+          type: boolean
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRemoteFieldClassList'
+components:
+  schemas:
+    OpportunityEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/OpportunityRequest'
+      required:
+      - model
+      title: OpportunityEndpointRequest
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    RemoteFieldRequest:
+      type: object
+      properties:
+        remote_field_class:
+          type: string
+          format: uuid
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteFieldRequest
+    OpportunitiesIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - status
+      title: OpportunitiesIdGetParametersShowEnumOrigins
+    Opportunity:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The opportunity's name.
+        description:
+          type:
+          - string
+          - 'null'
+          description: The opportunity's description.
+        amount:
+          type:
+          - integer
+          - 'null'
+          description: The opportunity's amount.
+        owner:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The opportunity's owner.
+        account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The account of the opportunity.
+        stage:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The stage of the opportunity.
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/OpportunityStatusEnum'
+          - type: 'null'
+          description: The opportunity's status.
+        last_activity_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the opportunity's last activity occurred.
+        close_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the opportunity was closed.
+        remote_created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's opportunity was created.
+        opportunity_url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The opportunity's URL in the remote system.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/OpportunityFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteField'
+      description: '# The Opportunity Object
+
+        ### Description
+
+        The `Opportunity` object is used to represent a deal opportunity in a CRM system.
+
+        ### Usage Example
+
+        TODO'
+      title: Opportunity
+    OpportunitiesIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - account
+      - owner
+      - stage
+      title: OpportunitiesIdGetParametersExpandSchemaItems
+    ItemTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemTypeEnum
+    ItemFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemFormatEnum
+    OpportunityStatusEnum:
+      type: string
+      enum:
+      - OPEN
+      - WON
+      - LOST
+      title: OpportunityStatusEnum
+    OpportunitiesGetParametersStatus:
+      type: string
+      enum:
+      - LOST
+      - OPEN
+      - WON
+      title: OpportunitiesGetParametersStatus
+    PaginatedOpportunityList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Opportunity'
+      title: PaginatedOpportunityList
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    OpportunityRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          description: The opportunity's name.
+        description:
+          type:
+          - string
+          - 'null'
+          description: The opportunity's description.
+        amount:
+          type:
+          - integer
+          - 'null'
+          description: The opportunity's amount.
+        owner:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The opportunity's owner.
+        account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The account of the opportunity.
+        stage:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The stage of the opportunity.
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/OpportunityStatusEnum'
+          - type: 'null'
+          description: The opportunity's status.
+        last_activity_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the opportunity's last activity occurred.
+        close_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the opportunity was closed.
+        opportunity_url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The opportunity's URL in the remote system.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldRequest'
+      description: '# The Opportunity Object
+
+        ### Description
+
+        The `Opportunity` object is used to represent a deal opportunity in a CRM system.
+
+        ### Usage Example
+
+        TODO'
+      title: OpportunityRequest
+    PatchedOpportunityEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/PatchedOpportunityRequest'
+      required:
+      - model
+      title: PatchedOpportunityEndpointRequest
+    PatchedOpportunityRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          description: The opportunity's name.
+        description:
+          type:
+          - string
+          - 'null'
+          description: The opportunity's description.
+        amount:
+          type:
+          - integer
+          - 'null'
+          description: The opportunity's amount.
+        owner:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The opportunity's owner.
+        account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The account of the opportunity.
+        stage:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The stage of the opportunity.
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/OpportunityStatusEnum'
+          - type: 'null'
+          description: The opportunity's status.
+        last_activity_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the opportunity's last activity occurred.
+        close_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the opportunity was closed.
+        opportunity_url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The opportunity's URL in the remote system.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldRequest'
+      description: '# The Opportunity Object
+
+        ### Description
+
+        The `Opportunity` object is used to represent a deal opportunity in a CRM system.
+
+        ### Usage Example
+
+        TODO'
+      title: PatchedOpportunityRequest
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    PaginatedRemoteFieldClassList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldClass'
+      title: PaginatedRemoteFieldClassList
+    OpportunityFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: OpportunityFieldMappings
+    OpportunitiesGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - account
+      - owner
+      - stage
+      title: OpportunitiesGetParametersExpandSchemaItems
+    OpportunitiesGetParametersRemoteFields:
+      type: string
+      enum:
+      - status
+      title: OpportunitiesGetParametersRemoteFields
+    ItemSchema:
+      type: object
+      properties:
+        item_type:
+          $ref: '#/components/schemas/ItemTypeEnum'
+        item_format:
+          $ref: '#/components/schemas/ItemFormatEnum'
+        item_choices:
+          type: array
+          items:
+            type: string
+      title: ItemSchema
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    RemoteFieldClass:
+      type: object
+      properties:
+        id:
+          type: string
+        display_name:
+          type: string
+        remote_key_name:
+          type: string
+        description:
+          type: string
+        is_custom:
+          type: boolean
+        is_common_model_field:
+          type: boolean
+        is_required:
+          type: boolean
+        field_type:
+          $ref: '#/components/schemas/FieldTypeEnum'
+        field_format:
+          $ref: '#/components/schemas/FieldFormatEnum'
+        field_choices:
+          type: array
+          items:
+            type: string
+        item_schema:
+          $ref: '#/components/schemas/ItemSchema'
+      title: RemoteFieldClass
+    RemoteField:
+      type: object
+      properties:
+        remote_field_class:
+          $ref: '#/components/schemas/RemoteFieldClass'
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteField
+    FieldFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldFormatEnum
+    OpportunityResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/Opportunity'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: OpportunityResponse
+    OpportunitiesGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - status
+      title: OpportunitiesGetParametersShowEnumOrigins
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    FieldTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldTypeEnum
+    OpportunitiesIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - status
+      title: OpportunitiesIdGetParametersRemoteFields
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

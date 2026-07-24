@@ -1,0 +1,785 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_timeOff API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_timeOff
+paths:
+  /hris/v1/time-off:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `TimeOff` objects.{/* BEGIN_HRIS_TIMEOFF_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+2ba2/iOBSG/0rkT7sVl3aYbrdIqxUl5dIOKQPpzHRXo+jgHILBiVPHKYXR/PdVLlDauUjtmBa6fEuC/cZ9/Ob4+NIvhIJCT8gZqZKRZBEpEF+4yEmV2MzHi+GQFAiEzAIf8yLOzRtSIFEchkIqdBsMuRu1JA5JlZR9lB4W44ANGbrlpHiZBQo9CYqJICovqxWHaT1SIJwFE3RrlIo4UD8TygoWISv54Db5OVKkQEKIIjWSIvZGPbyOMfqpZtIejj4GCnjRBQXllfpFmQl871nSchc5KnRNUGCiQpr8ifm7RkqFUbVcHiEPS+l7Sy7elDEog1SMcozKh5XjN0fHh8VcJX37347H/zrYG18PxOBoz/EodyDe69j01rLbU2vsvbXqb2+t+eWhNZ/MrfFkf8/xYK9jdw4v7KvKhVk7uPhOAaf/x6fjDyfmyZm1R+enFWt8NbVsetCx6WQwb1fOmnR61np/a82v3nTMy4plnx6eNcXBRb0Xdeo90amVSqRAVnuSVP/9svogN0jN7Brmab1tti8792u0ffBwhUzWGRCyYhgPOKOlqFICH+YigGlUosIv++gyKNfMrmMiZS6Lfad/HYPEUhh4C/xMBEv2pEpOrVbNqp+a941QuwHGYcCRVJWM8Rv3kuq/BMJQihuUpEDQD7mYIa5cOoFQ6X3gOor5yaVEXyh0km67f+eEoEZ3j5ibfC4KpFrUjBSoODFQHDAVkc9J0euYSXS7IMFHhTJp0uevhR8htvBWGU0M9CFOFJ0mBmtF7Cdf6noA55+lo2Yh6uf9UcjJUEiKhiWm+qAvZR1LTHfkH5I/AX8gRKunB/hCLefsvBOeKI3Dnc1z2BJBjVAT60xsFbXTuDr+xxv760W+3ii+viBTH4HkTBP9XOyB1dca0beVuwmzNADrAd/loIZC+gvVVzuKXsdJBQxUkkrLJ8NH5JrBI/JXC/3xgBtAlZAMNFFeyj1fXNku3IJPIkNXvrLwdKrqRK8vLX8i41imb9Hh51TrNaL9RR9LjEYKwdeEeSH3LDOcbc1EmhigZNToN+yuHu5epuhEQxXmJnf8s8rtfvtyM7vgBVKQFjCOM+0xO5N1Wr3niyqPMvS6TNxiAzHQjDKR3FCMzxEXWj2jC1IFqcc1cG31crndOsgPeCercpFmE2eiuxzjDnPsAwSaMOdiz+fobU0yWrHP9CAfxT4r7jLnB3zP4khN9YWPpdwuVn/Xzuc4AT2kJziB3UTwW77BWOgdCVPJzSOte5P2XUypJmumUi8ynG3c8HUxHDLKMG2zBrJLuef246bglEA5GnUuYtdIcqjAqEPIFHCjAwF46bkY47dWvfO7JuDpCzfv63/xjphFCqWuRYhM7RVTfiTdLsyokHqHsTDVfMWMn+jkLoqQo7bltFzNqVGK0SIL3uFewS0jETBdOVqutphtNMQHaB7ZO953vDkELsz0xpJcdC2Yn5jOaYi6vVRVD6mshflyA98dZvkB8j54qG0rIxFzVo4QVQbTt0edXSy4TzsboTQSzwQX1Oltv03Px1tH/df3+fu1rtGP02E/O3aiaUntvua9A4on9JPwGvu7M6F3nYBRcqF1tMs0/8cbev0RhKjLzamWY0oE305OWOTb/DfQGCr3ZIPixrqhsqwFmqZ5S7ltnXJoRGtLZqEykn3o/BPWw9iWLEDlHGwd2/W5+PK8aXSlWPl3k7t1OD3QL8+bixjhwvH7/cNNihGbgL+H4M60s/YQWn9edzfz2NVLY0/crn1S/TET/Qlxq2a3P5yux9vajmA9+pTb56//AVEY9o/UOwAA" /></Footer>{/* END_HRIS_TIMEOFF_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_timeOff
+      parameters:
+      - name: approver_id
+        in: query
+        description: If provided, will only return time off for this approver.
+        required: false
+        schema:
+          type: string
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: employee_id
+        in: query
+        description: If provided, will only return time off for this employee.
+        required: false
+        schema:
+          type: string
+      - name: ended_after
+        in: query
+        description: If provided, will only return employees that ended after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: ended_before
+        in: query
+        description: If provided, will only return time-offs that ended before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeOffGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_fields
+        in: query
+        description: Deprecated. Use show_enum_origins.
+        required: false
+        schema:
+          $ref: '#/components/schemas/TimeOffGetParametersRemoteFields'
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: request_type
+        in: query
+        description: 'If provided, will only return TimeOff with this request type. Options: (''VACATION'', ''SICK'', ''PERSONAL'', ''JURY_DUTY'', ''VOLUNTEER'', ''BEREAVEMENT'')
+
+
+          '
+        required: false
+        schema:
+          $ref: '#/components/schemas/TimeOffGetParametersRequestType'
+      - name: show_enum_origins
+        in: query
+        description: A comma separated list of enum field names for which you'd like the original values to be returned, instead of Merge's normalized enum values. [Learn more](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+        required: false
+        schema:
+          $ref: '#/components/schemas/TimeOffGetParametersShowEnumOrigins'
+      - name: started_after
+        in: query
+        description: If provided, will only return time-offs that started after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: started_before
+        in: query
+        description: If provided, will only return time-offs that started before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: status
+        in: query
+        description: 'If provided, will only return TimeOff with this status. Options: (''REQUESTED'', ''APPROVED'', ''DECLINED'', ''CANCELLED'', ''DELETED'')
+
+
+          '
+        required: false
+        schema:
+          $ref: '#/components/schemas/TimeOffGetParametersStatus'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTimeOffList'
+    post:
+      operationId: create
+      summary: Create
+      description: Creates a `TimeOff` object with the given values.{/* BEGIN_HRIS_TIMEOFF_CREATE_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST" data="H4sIAAAAAAAAA+VXYW/qNhT9K5E/bQiS11JWFWmaKIHS6iWwkte96qmyLs4lGOI4tZ1SeOp/nwKhohvtqJaxTvsWO9fnOucc+958JwwMRlItSJNMFNekSoQMMSZNEnCB/fGYVAmk3AeBRQh9OCZVorM0lcpg2OUYh7qncEyaxBGoIqxlCR9zDJ083OGJwUiB4TLRzvOy2ni1jlRJzJMZhi3GZJaYt4DWgTVYR/5hmL/WhlRJClqbiZJZNLnG+wz1m5j5fmIUmBiIayEYcLbW19QaYNdcvvMQYzQYumDARYMs/8Qi18SYVDcdZ4Jxaq/y2iE+OJg4oAxnMWqnUT87Pj1r1AqUVfZfaBT/fFSZ3o/k6LRCIxZTyCpewB794HLuT6MTv33y6C+/NPzlbOlPZ58qNIKKF3iNfnBb77uto/6OADr86evZzbl7fuVX2LJT96e3cz9gR17AZqPlZf3qgs2ver8++svbY8/9UveDTuPqQh7129faa19Lr2XbpEq2lSTNb9+3JwqDtNyB9ZtUs7FUDC1fzl8uuxQQ4RY9a0Ug5bU0G8Wc2bpug4ClTGCubSaFIzDk4LTcAX2Gpb6c0+F9BgrtNIk2QnCZPKtAmqTj91p+u+O+tETrAXgMoxhJ06gM/+Rj0vxGQOSGIlWCIo3lAnHrkSbSrMZJSA0X+WNhCGoWaT7UBpTZvNMGTJZbJUu40eRuHc0VhgNQINCgylPePVV3kXkOYiRl77ocDjdoBXX0s4ykPU0/AH9CGqQ8LIfL7axbrNE0D9I7J22WaSMFfZH9FU1cWKxMWI4mgxjMWCqxQf0Yfn6/HvdZvgATk1+t6l0a7XWSXhGjq1BPDIIoR41nuIPcLpCmSj6s2Pp3D8q77rRXlOhlAiDR5ehQgB3uovowUvxNFfoKWIxWO5ZZaOUsJlYbUm4gtjxIIFo1OtYPvbb3YzlKrRNS/YGK8SGE2beu5OGr9LTYF5PhfkoOUGmZcFlSmSnQNieqK2/g4jT4/wj27pM0hAitsjqvHIxuNV710fzk1Psvsb8/6fv0UMPWwBpmjKHWXWBGqpLqxkvM7fJBz9lXGXU/Ha7fPbTD/9rS+f9TCItyG9cC9A0v+63g8qbzzzj5EK3qrn3sOhtPd0+/A/gvP8ZOEQAA" /></Footer>{/* END_HRIS_TIMEOFF_CREATE_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_timeOff
+      parameters:
+      - name: is_debug_mode
+        in: query
+        description: Whether to include debug fields (such as log file links) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: run_async
+        in: query
+        description: Whether or not third-party updates should be run asynchronously.
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimeOffResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TimeOffEndpointRequest'
+  /hris/v1/time-off/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `TimeOff` object with the given `id`.{/* BEGIN_HRIS_TIMEOFF_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+2ba2/iOBSG/0rkT7sVl3aYbrdIqxUl5dIOKQPpzHRXo+jgHILBiVPHKYXR/PdVLlDauUjtmBa6fEuC/cZ9/Ob4+NIvhIJCT8gZqZKRZBEpEF+4yEmV2MzHi+GQFAiEzAIf8yLOzRtSIFEchkIqdBsMuRu1JA5JlZR9lB4W44ANGbrlpHiZBQo9CYqJICovqxWHaT1SIJwFE3RrlIo4UD8TygoWISv54Db5OVKkQEKIIjWSIvZGPbyOMfqpZtIejj4GCnjRBQXllfpFmQl871nSchc5KnRNUGCiQpr8ifm7RkqFUbVcHiEPS+l7Sy7elDEog1SMcozKh5XjN0fHh8VcJX37347H/zrYG18PxOBoz/EodyDe69j01rLbU2vsvbXqb2+t+eWhNZ/MrfFkf8/xYK9jdw4v7KvKhVk7uPhOAaf/x6fjDyfmyZm1R+enFWt8NbVsetCx6WQwb1fOmnR61np/a82v3nTMy4plnx6eNcXBRb0Xdeo90amVSqRAVnuSVP/9svogN0jN7Brmab1tti8792u0ffBwhUzWGRCyYhgPOKOlqFICH+YigGlUosIv++gyKNfMrmMiZS6Lfad/HYPEUhh4C/xMBEv2pEpOrVbNqp+a941QuwHGYcCRVJWM8Rv3kuq/BMJQihuUpEDQD7mYIa5cOoFQ6X3gOor5yaVEXyh0km67f+eEoEZ3j5ibfC4KpFrUjBSoODFQHDAVkc9J0euYSXS7IMFHhTJp0uevhR8htvBWGU0M9CFOFJ0mBmtF7Cdf6noA55+lo2Yh6uf9UcjJUEiKhiWm+qAvZR1LTHfkH5I/AX8gRKunB/hCLefsvBOeKI3Dnc1z2BJBjVAT60xsFbXTuDr+xxv760W+3ii+viBTH4HkTBP9XOyB1dca0beVuwmzNADrAd/loIZC+gvVVzuKXsdJBQxUkkrLJ8NH5JrBI/JXC/3xgBtAlZAMNFFeyj1fXNku3IJPIkNXvrLwdKrqRK8vLX8i41imb9Hh51TrNaL9RR9LjEYKwdeEeSH3LDOcbc1EmhigZNToN+yuHu5epuhEQxXmJnf8s8rtfvtyM7vgBVKQFjCOM+0xO5N1Wr3niyqPMvS6TNxiAzHQjDKR3FCMzxEXWj2jC1IFqcc1cG31crndOsgPeCercpFmE2eiuxzjDnPsAwSaMOdiz+fobU0yWrHP9CAfxT4r7jLnB3zP4khN9YWPpdwuVn/Xzuc4AT2kJziB3UTwW77BWOgdCVPJzSOte5P2XUypJmumUi8ynG3c8HUxHDLKMG2zBrJLuef246bglEA5GnUuYtdIcqjAqEPIFHCjAwF46bkY47dWvfO7JuDpCzfv63/xjphFCqWuRYhM7RVTfiTdLsyokHqHsTDVfMWMn+jkLoqQo7bltFzNqVGK0SIL3uFewS0jETBdOVqutphtNMQHaB7ZO953vDkELsz0xpJcdC2Yn5jOaYi6vVRVD6mshflyA98dZvkB8j54qG0rIxFzVo4QVQbTt0edXSy4TzsboTQSzwQX1Oltv03Px1tH/df3+fu1rtGP02E/O3aiaUntvua9A4on9JPwGvu7M6F3nYBRcqF1tMs0/8cbev0RhKjLzamWY0oE305OWOTb/DfQGCr3ZIPixrqhsqwFmqZ5S7ltnXJoRGtLZqEykn3o/BPWw9iWLEDlHGwd2/W5+PK8aXSlWPl3k7t1OD3QL8+bixjhwvH7/cNNihGbgL+H4M60s/YQWn9edzfz2NVLY0/crn1S/TET/Qlxq2a3P5yux9vajmA9+pTb56//AVEY9o/UOwAA" /></Footer>{/* END_HRIS_TIMEOFF_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_timeOff
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeOffIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: remote_fields
+        in: query
+        description: Deprecated. Use show_enum_origins.
+        required: false
+        schema:
+          $ref: '#/components/schemas/TimeOffIdGetParametersRemoteFields'
+      - name: show_enum_origins
+        in: query
+        description: A comma separated list of enum field names for which you'd like the original values to be returned, instead of Merge's normalized enum values. [Learn more](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+        required: false
+        schema:
+          $ref: '#/components/schemas/TimeOffIdGetParametersShowEnumOrigins'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimeOff'
+  /hris/v1/time-off/meta/post:
+    get:
+      operationId: meta-post-retrieve
+      summary: Meta Post Retrieve
+      description: Returns metadata for `TimeOff` POSTs.{/* BEGIN_HRIS_TIMEOFF_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+2ba2/iOBSG/0rkT7sVl3aYbrdIqxUl5dIOKQPpzHRXo+jgHILBiVPHKYXR/PdVLlDauUjtmBa6fEuC/cZ9/Ob4+NIvhIJCT8gZqZKRZBEpEF+4yEmV2MzHi+GQFAiEzAIf8yLOzRtSIFEchkIqdBsMuRu1JA5JlZR9lB4W44ANGbrlpHiZBQo9CYqJICovqxWHaT1SIJwFE3RrlIo4UD8TygoWISv54Db5OVKkQEKIIjWSIvZGPbyOMfqpZtIejj4GCnjRBQXllfpFmQl871nSchc5KnRNUGCiQpr8ifm7RkqFUbVcHiEPS+l7Sy7elDEog1SMcozKh5XjN0fHh8VcJX37347H/zrYG18PxOBoz/EodyDe69j01rLbU2vsvbXqb2+t+eWhNZ/MrfFkf8/xYK9jdw4v7KvKhVk7uPhOAaf/x6fjDyfmyZm1R+enFWt8NbVsetCx6WQwb1fOmnR61np/a82v3nTMy4plnx6eNcXBRb0Xdeo90amVSqRAVnuSVP/9svogN0jN7Brmab1tti8792u0ffBwhUzWGRCyYhgPOKOlqFICH+YigGlUosIv++gyKNfMrmMiZS6Lfad/HYPEUhh4C/xMBEv2pEpOrVbNqp+a941QuwHGYcCRVJWM8Rv3kuq/BMJQihuUpEDQD7mYIa5cOoFQ6X3gOor5yaVEXyh0km67f+eEoEZ3j5ibfC4KpFrUjBSoODFQHDAVkc9J0euYSXS7IMFHhTJp0uevhR8htvBWGU0M9CFOFJ0mBmtF7Cdf6noA55+lo2Yh6uf9UcjJUEiKhiWm+qAvZR1LTHfkH5I/AX8gRKunB/hCLefsvBOeKI3Dnc1z2BJBjVAT60xsFbXTuDr+xxv760W+3ii+viBTH4HkTBP9XOyB1dca0beVuwmzNADrAd/loIZC+gvVVzuKXsdJBQxUkkrLJ8NH5JrBI/JXC/3xgBtAlZAMNFFeyj1fXNku3IJPIkNXvrLwdKrqRK8vLX8i41imb9Hh51TrNaL9RR9LjEYKwdeEeSH3LDOcbc1EmhigZNToN+yuHu5epuhEQxXmJnf8s8rtfvtyM7vgBVKQFjCOM+0xO5N1Wr3niyqPMvS6TNxiAzHQjDKR3FCMzxEXWj2jC1IFqcc1cG31crndOsgPeCercpFmE2eiuxzjDnPsAwSaMOdiz+fobU0yWrHP9CAfxT4r7jLnB3zP4khN9YWPpdwuVn/Xzuc4AT2kJziB3UTwW77BWOgdCVPJzSOte5P2XUypJmumUi8ynG3c8HUxHDLKMG2zBrJLuef246bglEA5GnUuYtdIcqjAqEPIFHCjAwF46bkY47dWvfO7JuDpCzfv63/xjphFCqWuRYhM7RVTfiTdLsyokHqHsTDVfMWMn+jkLoqQo7bltFzNqVGK0SIL3uFewS0jETBdOVqutphtNMQHaB7ZO953vDkELsz0xpJcdC2Yn5jOaYi6vVRVD6mshflyA98dZvkB8j54qG0rIxFzVo4QVQbTt0edXSy4TzsboTQSzwQX1Oltv03Px1tH/df3+fu1rtGP02E/O3aiaUntvua9A4on9JPwGvu7M6F3nYBRcqF1tMs0/8cbev0RhKjLzamWY0oE305OWOTb/DfQGCr3ZIPixrqhsqwFmqZ5S7ltnXJoRGtLZqEykn3o/BPWw9iWLEDlHGwd2/W5+PK8aXSlWPl3k7t1OD3QL8+bixjhwvH7/cNNihGbgL+H4M60s/YQWn9edzfz2NVLY0/crn1S/TET/Qlxq2a3P5yux9vajmA9+pTb56//AVEY9o/UOwAA" /></Footer>{/* END_HRIS_TIMEOFF_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_timeOff
+      parameters:
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaResponse'
+components:
+  schemas:
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    TimeOffGetParametersStatus:
+      type: string
+      enum:
+      - APPROVED
+      - CANCELLED
+      - DECLINED
+      - DELETED
+      - REQUESTED
+      title: TimeOffGetParametersStatus
+    TimeOffRequest:
+      type: object
+      properties:
+        employee:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The employee requesting time off.
+        approver:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The Merge ID of the employee with the ability to approve the time off request.
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/TimeOffStatusEnum'
+          - type: 'null'
+          description: The status of this time off request.
+        employee_note:
+          type:
+          - string
+          - 'null'
+          description: The employee note for this time off request.
+        units:
+          oneOf:
+          - $ref: '#/components/schemas/UnitsEnum'
+          - type: 'null'
+          description: The measurement that the third-party integration uses to count time requested.
+        amount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The time off quantity measured by the prescribed “units”.
+        request_type:
+          oneOf:
+          - $ref: '#/components/schemas/RequestTypeEnum'
+          - type: 'null'
+          description: The type of time off request.
+        start_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The day and time of the start of the time requested off.
+        end_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The day and time of the end of the time requested off.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The TimeOff Object
+
+        ### Description
+
+        The `TimeOff` object is used to represent all employees'' Time Off entries.
+
+
+        ### Usage Example
+
+        Fetch from the `LIST TimeOffs` endpoint and filter by `ID` to show all time off requests.'
+      title: TimeOffRequest
+    TimeOff:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        employee:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The employee requesting time off.
+        approver:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The Merge ID of the employee with the ability to approve the time off request.
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/TimeOffStatusEnum'
+          - type: 'null'
+          description: The status of this time off request.
+        employee_note:
+          type:
+          - string
+          - 'null'
+          description: The employee note for this time off request.
+        units:
+          oneOf:
+          - $ref: '#/components/schemas/UnitsEnum'
+          - type: 'null'
+          description: The measurement that the third-party integration uses to count time requested.
+        amount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The time off quantity measured by the prescribed “units”.
+        request_type:
+          oneOf:
+          - $ref: '#/components/schemas/RequestTypeEnum'
+          - type: 'null'
+          description: The type of time off request.
+        start_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The day and time of the start of the time requested off.
+        end_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The day and time of the end of the time requested off.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/TimeOffFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The TimeOff Object
+
+        ### Description
+
+        The `TimeOff` object is used to represent all employees'' Time Off entries.
+
+
+        ### Usage Example
+
+        Fetch from the `LIST TimeOffs` endpoint and filter by `ID` to show all time off requests.'
+      title: TimeOff
+    TimeOffGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - approver
+      - employee
+      title: TimeOffGetParametersExpandSchemaItems
+    TimeOffGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - request_type
+      - request_type,status
+      - request_type,status,units
+      - request_type,units
+      - status
+      - status,units
+      - units
+      title: TimeOffGetParametersShowEnumOrigins
+    PaginatedTimeOffList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeOff'
+      title: PaginatedTimeOffList
+    TimeOffIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - request_type
+      - request_type,status
+      - request_type,status,units
+      - request_type,units
+      - status
+      - status,units
+      - units
+      title: TimeOffIdGetParametersRemoteFields
+    TimeOffFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: TimeOffFieldMappings
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    TimeOffEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/TimeOffRequest'
+      required:
+      - model
+      title: TimeOffEndpointRequest
+    UnitsEnum:
+      type: string
+      enum:
+      - HOURS
+      - DAYS
+      title: UnitsEnum
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    TimeOffGetParametersRequestType:
+      type: string
+      enum:
+      - BEREAVEMENT
+      - JURY_DUTY
+      - PERSONAL
+      - SICK
+      - VACATION
+      - VOLUNTEER
+      title: TimeOffGetParametersRequestType
+    TimeOffIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - approver
+      - employee
+      title: TimeOffIdGetParametersExpandSchemaItems
+    TimeOffStatusEnum:
+      type: string
+      enum:
+      - REQUESTED
+      - APPROVED
+      - DECLINED
+      - CANCELLED
+      - DELETED
+      title: TimeOffStatusEnum
+    RequestTypeEnum:
+      type: string
+      enum:
+      - VACATION
+      - SICK
+      - PERSONAL
+      - JURY_DUTY
+      - VOLUNTEER
+      - BEREAVEMENT
+      title: RequestTypeEnum
+    TimeOffResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/TimeOff'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: TimeOffResponse
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    TimeOffIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - request_type
+      - request_type,status
+      - request_type,status,units
+      - request_type,units
+      - status
+      - status,units
+      - units
+      title: TimeOffIdGetParametersShowEnumOrigins
+    TimeOffGetParametersRemoteFields:
+      type: string
+      enum:
+      - request_type
+      - request_type,status
+      - request_type,status,units
+      - request_type,units
+      - status
+      - status,units
+      - units
+      title: TimeOffGetParametersRemoteFields
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

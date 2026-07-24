@@ -1,0 +1,1197 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_issues API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_issues
+paths:
+  /accounting/v1/issues:
+    get:
+      operationId: list
+      summary: List
+      description: Gets all issues for Organization.
+      tags:
+      - subpackage_issues
+      parameters:
+      - name: account_token
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: end_date
+        in: query
+        description: If included, will only include issues whose most recent action occurred before this time
+        required: false
+        schema:
+          type: string
+      - name: end_user_organization_name
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: first_incident_time_after
+        in: query
+        description: If provided, will only return issues whose first incident time was after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: first_incident_time_before
+        in: query
+        description: If provided, will only return issues whose first incident time was before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: include_muted
+        in: query
+        description: If true, will include muted issues
+        required: false
+        schema:
+          type: string
+      - name: integration_name
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: last_incident_time_after
+        in: query
+        description: If provided, will only return issues whose last incident time was after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: last_incident_time_before
+        in: query
+        description: If provided, will only return issues whose last incident time was before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: linked_account_id
+        in: query
+        description: If provided, will only include issues pertaining to the linked account passed in.
+        required: false
+        schema:
+          type: string
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: start_date
+        in: query
+        description: If included, will only include issues whose most recent action occurred after this time
+        required: false
+        schema:
+          type: string
+      - name: status
+        in: query
+        description: Status of the issue.
+        required: false
+        schema:
+          $ref: '#/components/schemas/IssuesGetParametersStatus'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedIssueList'
+  /accounting/v1/issues/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Get a specific issue.
+      tags:
+      - subpackage_issues
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Issue'
+  /ats/v1/issues:
+    get:
+      operationId: list
+      summary: List
+      description: Gets all issues for Organization.
+      tags:
+      - subpackage_issues
+      parameters:
+      - name: account_token
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: end_date
+        in: query
+        description: If included, will only include issues whose most recent action occurred before this time
+        required: false
+        schema:
+          type: string
+      - name: end_user_organization_name
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: first_incident_time_after
+        in: query
+        description: If provided, will only return issues whose first incident time was after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: first_incident_time_before
+        in: query
+        description: If provided, will only return issues whose first incident time was before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: include_muted
+        in: query
+        description: If true, will include muted issues
+        required: false
+        schema:
+          type: string
+      - name: integration_name
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: last_incident_time_after
+        in: query
+        description: If provided, will only return issues whose last incident time was after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: last_incident_time_before
+        in: query
+        description: If provided, will only return issues whose last incident time was before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: linked_account_id
+        in: query
+        description: If provided, will only include issues pertaining to the linked account passed in.
+        required: false
+        schema:
+          type: string
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: start_date
+        in: query
+        description: If included, will only include issues whose most recent action occurred after this time
+        required: false
+        schema:
+          type: string
+      - name: status
+        in: query
+        description: Status of the issue.
+        required: false
+        schema:
+          $ref: '#/components/schemas/IssuesGetParametersStatus'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedIssueList'
+  /ats/v1/issues/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Get a specific issue.
+      tags:
+      - subpackage_issues
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Issue'
+  /issues:
+    get:
+      operationId: list
+      summary: List
+      description: Gets all issues for Organization.
+      tags:
+      - subpackage_issues
+      parameters:
+      - name: account_token
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: end_date
+        in: query
+        description: If included, will only include issues whose most recent action occurred before this time
+        required: false
+        schema:
+          type: string
+      - name: end_user_organization_name
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: first_incident_time_after
+        in: query
+        description: If provided, will only return issues whose first incident time was after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: first_incident_time_before
+        in: query
+        description: If provided, will only return issues whose first incident time was before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: include_muted
+        in: query
+        description: If true, will include muted issues
+        required: false
+        schema:
+          type: string
+      - name: integration_name
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: last_incident_time_after
+        in: query
+        description: If provided, will only return issues whose last incident time was after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: last_incident_time_before
+        in: query
+        description: If provided, will only return issues whose last incident time was before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: linked_account_id
+        in: query
+        description: If provided, will only include issues pertaining to the linked account passed in.
+        required: false
+        schema:
+          type: string
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: start_date
+        in: query
+        description: If included, will only include issues whose most recent action occurred after this time
+        required: false
+        schema:
+          type: string
+      - name: status
+        in: query
+        description: Status of the issue.
+        required: false
+        schema:
+          $ref: '#/components/schemas/IssuesGetParametersStatus'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedIssueList'
+  /issues/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Get a specific issue.
+      tags:
+      - subpackage_issues
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Issue'
+  /crm/v1/issues:
+    get:
+      operationId: list
+      summary: List
+      description: Gets all issues for Organization.
+      tags:
+      - subpackage_issues
+      parameters:
+      - name: account_token
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: end_date
+        in: query
+        description: If included, will only include issues whose most recent action occurred before this time
+        required: false
+        schema:
+          type: string
+      - name: end_user_organization_name
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: first_incident_time_after
+        in: query
+        description: If provided, will only return issues whose first incident time was after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: first_incident_time_before
+        in: query
+        description: If provided, will only return issues whose first incident time was before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: include_muted
+        in: query
+        description: If true, will include muted issues
+        required: false
+        schema:
+          type: string
+      - name: integration_name
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: last_incident_time_after
+        in: query
+        description: If provided, will only return issues whose last incident time was after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: last_incident_time_before
+        in: query
+        description: If provided, will only return issues whose last incident time was before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: linked_account_id
+        in: query
+        description: If provided, will only include issues pertaining to the linked account passed in.
+        required: false
+        schema:
+          type: string
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: start_date
+        in: query
+        description: If included, will only include issues whose most recent action occurred after this time
+        required: false
+        schema:
+          type: string
+      - name: status
+        in: query
+        description: Status of the issue.
+        required: false
+        schema:
+          $ref: '#/components/schemas/IssuesGetParametersStatus'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedIssueList'
+  /crm/v1/issues/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Get a specific issue.
+      tags:
+      - subpackage_issues
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Issue'
+  /filestorage/v1/issues:
+    get:
+      operationId: list
+      summary: List
+      description: Gets all issues for Organization.
+      tags:
+      - subpackage_issues
+      parameters:
+      - name: account_token
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: end_date
+        in: query
+        description: If included, will only include issues whose most recent action occurred before this time
+        required: false
+        schema:
+          type: string
+      - name: end_user_organization_name
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: first_incident_time_after
+        in: query
+        description: If provided, will only return issues whose first incident time was after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: first_incident_time_before
+        in: query
+        description: If provided, will only return issues whose first incident time was before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: include_muted
+        in: query
+        description: If true, will include muted issues
+        required: false
+        schema:
+          type: string
+      - name: integration_name
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: last_incident_time_after
+        in: query
+        description: If provided, will only return issues whose last incident time was after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: last_incident_time_before
+        in: query
+        description: If provided, will only return issues whose last incident time was before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: linked_account_id
+        in: query
+        description: If provided, will only include issues pertaining to the linked account passed in.
+        required: false
+        schema:
+          type: string
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: start_date
+        in: query
+        description: If included, will only include issues whose most recent action occurred after this time
+        required: false
+        schema:
+          type: string
+      - name: status
+        in: query
+        description: Status of the issue.
+        required: false
+        schema:
+          $ref: '#/components/schemas/IssuesGetParametersStatus'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedIssueList'
+  /filestorage/v1/issues/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Get a specific issue.
+      tags:
+      - subpackage_issues
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Issue'
+  /hris/v1/issues:
+    get:
+      operationId: list
+      summary: List
+      description: Gets all issues for Organization.
+      tags:
+      - subpackage_issues
+      parameters:
+      - name: account_token
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: end_date
+        in: query
+        description: If included, will only include issues whose most recent action occurred before this time
+        required: false
+        schema:
+          type: string
+      - name: end_user_organization_name
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: first_incident_time_after
+        in: query
+        description: If provided, will only return issues whose first incident time was after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: first_incident_time_before
+        in: query
+        description: If provided, will only return issues whose first incident time was before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: include_muted
+        in: query
+        description: If true, will include muted issues
+        required: false
+        schema:
+          type: string
+      - name: integration_name
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: last_incident_time_after
+        in: query
+        description: If provided, will only return issues whose last incident time was after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: last_incident_time_before
+        in: query
+        description: If provided, will only return issues whose last incident time was before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: linked_account_id
+        in: query
+        description: If provided, will only include issues pertaining to the linked account passed in.
+        required: false
+        schema:
+          type: string
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: start_date
+        in: query
+        description: If included, will only include issues whose most recent action occurred after this time
+        required: false
+        schema:
+          type: string
+      - name: status
+        in: query
+        description: Status of the issue.
+        required: false
+        schema:
+          $ref: '#/components/schemas/IssuesGetParametersStatus'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedIssueList'
+  /hris/v1/issues/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Get a specific issue.
+      tags:
+      - subpackage_issues
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Issue'
+  /knowledgebase/v1/issues:
+    get:
+      operationId: list
+      summary: List
+      description: Gets all issues for Organization.
+      tags:
+      - subpackage_issues
+      parameters:
+      - name: account_token
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: end_date
+        in: query
+        description: If included, will only include issues whose most recent action occurred before this time
+        required: false
+        schema:
+          type: string
+      - name: end_user_organization_name
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: first_incident_time_after
+        in: query
+        description: If provided, will only return issues whose first incident time was after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: first_incident_time_before
+        in: query
+        description: If provided, will only return issues whose first incident time was before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: include_muted
+        in: query
+        description: If true, will include muted issues
+        required: false
+        schema:
+          type: string
+      - name: integration_name
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: last_incident_time_after
+        in: query
+        description: If provided, will only return issues whose last incident time was after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: last_incident_time_before
+        in: query
+        description: If provided, will only return issues whose last incident time was before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: linked_account_id
+        in: query
+        description: If provided, will only include issues pertaining to the linked account passed in.
+        required: false
+        schema:
+          type: string
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: start_date
+        in: query
+        description: If included, will only include issues whose most recent action occurred after this time
+        required: false
+        schema:
+          type: string
+      - name: status
+        in: query
+        description: 'Status of the issue. Options: (''ONGOING'', ''RESOLVED'')
+
+
+          * `ONGOING` - ONGOING
+
+          * `RESOLVED` - RESOLVED'
+        required: false
+        schema:
+          $ref: '#/components/schemas/IssuesGetParametersStatus'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedIssueList'
+  /knowledgebase/v1/issues/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Get a specific issue.
+      tags:
+      - subpackage_issues
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Issue_2'
+  /ticketing/v1/issues:
+    get:
+      operationId: list
+      summary: List
+      description: Gets all issues for Organization.
+      tags:
+      - subpackage_issues
+      parameters:
+      - name: account_token
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: end_date
+        in: query
+        description: If included, will only include issues whose most recent action occurred before this time
+        required: false
+        schema:
+          type: string
+      - name: end_user_organization_name
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: first_incident_time_after
+        in: query
+        description: If provided, will only return issues whose first incident time was after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: first_incident_time_before
+        in: query
+        description: If provided, will only return issues whose first incident time was before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: include_muted
+        in: query
+        description: If true, will include muted issues
+        required: false
+        schema:
+          type: string
+      - name: integration_name
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: last_incident_time_after
+        in: query
+        description: If provided, will only return issues whose last incident time was after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: last_incident_time_before
+        in: query
+        description: If provided, will only return issues whose last incident time was before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: linked_account_id
+        in: query
+        description: If provided, will only include issues pertaining to the linked account passed in.
+        required: false
+        schema:
+          type: string
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: start_date
+        in: query
+        description: If included, will only include issues whose most recent action occurred after this time
+        required: false
+        schema:
+          type: string
+      - name: status
+        in: query
+        description: Status of the issue.
+        required: false
+        schema:
+          $ref: '#/components/schemas/IssuesGetParametersStatus'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedIssueList'
+  /ticketing/v1/issues/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Get a specific issue.
+      tags:
+      - subpackage_issues
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Issue'
+components:
+  schemas:
+    IssueStatusEnum:
+      type: string
+      enum:
+      - ONGOING
+      - RESOLVED
+      title: IssueStatusEnum
+    IssueStatusEnum_2:
+      type: string
+      enum:
+      - ONGOING
+      - RESOLVED
+      description: '* `ONGOING` - ONGOING
+
+        * `RESOLVED` - RESOLVED'
+      title: IssueStatusEnum
+    IssuesGetParametersStatus:
+      type: string
+      enum:
+      - ONGOING
+      - RESOLVED
+      title: IssuesGetParametersStatus
+    PaginatedIssueList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Issue'
+      title: PaginatedIssueList
+    Issue_2:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        status:
+          $ref: '#/components/schemas/IssueStatusEnum_2'
+          description: 'Status of the issue. Options: (''ONGOING'', ''RESOLVED'')
+
+
+            * `ONGOING` - ONGOING
+
+            * `RESOLVED` - RESOLVED'
+        error_description:
+          type: string
+        end_user:
+          type: object
+          additionalProperties:
+            description: Any type
+        first_incident_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        last_incident_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        is_muted:
+          type: boolean
+        error_details:
+          type: array
+          items:
+            type: string
+      required:
+      - error_description
+      title: Issue
+    Issue:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        status:
+          $ref: '#/components/schemas/IssueStatusEnum'
+          description: Status of the issue.
+        error_description:
+          type: string
+        end_user:
+          type: object
+          additionalProperties:
+            description: Any type
+        first_incident_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        last_incident_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        is_muted:
+          type: boolean
+        error_details:
+          type: array
+          items:
+            type: string
+      required:
+      - error_description
+      title: Issue
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

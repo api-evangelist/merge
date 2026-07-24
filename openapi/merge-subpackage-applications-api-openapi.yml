@@ -1,0 +1,843 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_applications API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_applications
+paths:
+  /ats/v1/applications:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Application` objects.{/* BEGIN_ATS_APPLICATION_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="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" /></Footer>{/* END_ATS_APPLICATION_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_applications
+      parameters:
+      - name: candidate_id
+        in: query
+        description: If provided, will only return applications for this candidate.
+        required: false
+        schema:
+          type: string
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: credited_to_id
+        in: query
+        description: If provided, will only return applications credited to this user.
+        required: false
+        schema:
+          type: string
+      - name: current_stage_id
+        in: query
+        description: If provided, will only return applications at this interview stage.
+        required: false
+        schema:
+          type: string
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApplicationsGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: job_id
+        in: query
+        description: If provided, will only return applications for this job.
+        required: false
+        schema:
+          type: string
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: reject_reason_id
+        in: query
+        description: If provided, will only return applications with this reject reason.
+        required: false
+        schema:
+          type: string
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: source
+        in: query
+        description: If provided, will only return applications with this source.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedApplicationList'
+    post:
+      operationId: create
+      summary: Create
+      description: 'Creates an `Application` object with the given values.
+
+        For certain integrations, but not all, our API detects duplicate candidates and will associate applications with existing records in the third-party. New candidates are created and automatically linked to the application.
+
+
+        See our [Help Center article](https://help.merge.dev/en/articles/10012366-updates-to-post-applications-oct-2024) for detailed support per integration.
+
+        {/* BEGIN_ATS_APPLICATION_CREATE_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST" data="H4sIAAAAAAAAA+WZbVPiOhTHvwqTlw4Pq+jdlZk7d3hahJWigst6HSeTpocSSJOapCDs7HffaQsqdxHdMaD33nc0Tf4pv/xPck77HVFiwJdqhkqIGI2yKJAecFRC5TDkjBLDpEBZRELmkADSXnhygLJIR2EolQHvMwPu6RMFA1RChQCUD7lIsAEDr0CMLjBhwFeJki7cj8oNkmEoizgTY/DKlMpImA06ab8cSTv+4zK+rQ3KopBobYZKRv7wAm4j0Jsk46fhEIAwhOc8Ykjh0fCcSseva4uf2wMOBrwaMaQGBmj8BxdTDY0JdalQGAIP88m0eQ8mBRAFogyjHHThqHh88PH4KLdQSWb/C/v8z/290a0r3Y972Kcck2iv3aN3Tq85dUb+oVM9vHPml0fOfDx3RuMPe9gne+1e+6jTuyp2auX9zpoOuPvHt+OvlVql5ezReb3ojK6mTo/ut3t07M6bxVaDTlsn53fO/OqgXbssOr36Uash9zvVC92uXsh2OZ9HWfR4HVHp+vvjhoU5ynrozla7NgPiwyMk6SKQkOXCyOWM5nUxTwIyl4JMdZ7KoBCAx0ghkcLd24gowKfSl7gYnffJZJoPhb+kz6S4R49KqO6clJ1qvbZqg/KEME5cDqhkVAS/OBeVrhGJ3Q4eJrGFKBEe84iB+LcCjxnwsJHxVaQUCIO1if9UFo2ki7JIQSANYObFUUEVgGDCx4lPmBSYCD0FFTtGy0hRQDfxkNuIKfDOiCIBmPh26Xpl4lj65kd2PeVZ4HJbmGOtJeeJO24MBnq3iNdAfIbTJjYTYiIFduCccWIGUgUL0a1g2UTitUapkMCV8uTCDo2l2uOgzI/CXQbj8+H34gh7ClnE+VAqYclASoagzAzvNx/E8H3rQQMEKEYfWooLtvcNh8sH2rr5bMJdr/YM8swFUBUxEx/HmSqXkWdnEdyFPlYP+pjG+lintLuVWtgcT/67iKtc0vFUqrEdovdyW98Ktrk7VmUAYOwQWVgXN6kUuCP4bMdZyjPGehGqRxhwGPfSaxvzIVFGgML3Y5MZnmKsBChtpIBMj3AQ5pQJWy580H67I+m3Q/gpUAr4L8vw2rxlIbrY5t7ekq+N2HrIpaXyIpHaJpht7lyNuMYYykhb8suD3gsDySn3ml/rOy+zRkANVkB08k4ivV6qWaofTohyZaQy5V7XbiwuhJcph3fVqPb/bv/rrMeqzbZlMs1YclehaDcF2wCqReZzW5VXqrXyMqR/Ttu1trfj+usdvgxpSbfseaDsenIkXRKr7syWK2S3UNe2pDthtvKLhdjKYbHrjez3DPTS3DbVxGYWPmO7U5jY8lwitRLc8sr/NKv0/xfB/QTfjiKUpzWDtIM5kdppwfrqs+YJNt3yWaYbUQpafybUyIS4BUKrmiuOrNBv0v/84T0ge43tNgR0NyDKLMp4sEZ0VXQF6ejT5HRQ7799VbbLsI6DEOZ2z+pU8z1+FnpxvbIlT/eABIYwLi2dVA967+8bwFuzvvzSyJwpuXyJzRI3WmB++aWxrBkPKrfeXYe9+dc5W1n9mvyLLB81Xl9l8PP5f1+qsUdmdreUfir6HqpRW7DXfy24+fETMUBJ3wMiAAA=" /></Footer>{/* END_ATS_APPLICATION_CREATE_SUPPORTED_FIELDS */}'
+      tags:
+      - subpackage_applications
+      parameters:
+      - name: is_debug_mode
+        in: query
+        description: Whether to include debug fields (such as log file links) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: run_async
+        in: query
+        description: Whether or not third-party updates should be run asynchronously.
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicationEndpointRequest'
+  /ats/v1/applications/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns an `Application` object with the given `id`.{/* BEGIN_ATS_APPLICATION_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="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" /></Footer>{/* END_ATS_APPLICATION_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_applications
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApplicationsIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+  /ats/v1/applications/{id}/change-stage:
+    post:
+      operationId: change-stage-create
+      summary: Change Stage Create
+      description: Updates the `current_stage` field of an `Application` object{/* BEGIN_ATS_APPLICATION_CREATE_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST" data="H4sIAAAAAAAAA+WZbVPiOhTHvwqTlw4Pq+jdlZk7d3hahJWigst6HSeTpocSSJOapCDs7HffaQsqdxHdMaD33nc0Tf4pv/xPck77HVFiwJdqhkqIGI2yKJAecFRC5TDkjBLDpEBZRELmkADSXnhygLJIR2EolQHvMwPu6RMFA1RChQCUD7lIsAEDr0CMLjBhwFeJki7cj8oNkmEoizgTY/DKlMpImA06ab8cSTv+4zK+rQ3KopBobYZKRv7wAm4j0Jsk46fhEIAwhOc8Ykjh0fCcSseva4uf2wMOBrwaMaQGBmj8BxdTDY0JdalQGAIP88m0eQ8mBRAFogyjHHThqHh88PH4KLdQSWb/C/v8z/290a0r3Y972Kcck2iv3aN3Tq85dUb+oVM9vHPml0fOfDx3RuMPe9gne+1e+6jTuyp2auX9zpoOuPvHt+OvlVql5ezReb3ojK6mTo/ut3t07M6bxVaDTlsn53fO/OqgXbssOr36Uash9zvVC92uXsh2OZ9HWfR4HVHp+vvjhoU5ynrozla7NgPiwyMk6SKQkOXCyOWM5nUxTwIyl4JMdZ7KoBCAx0ghkcLd24gowKfSl7gYnffJZJoPhb+kz6S4R49KqO6clJ1qvbZqg/KEME5cDqhkVAS/OBeVrhGJ3Q4eJrGFKBEe84iB+LcCjxnwsJHxVaQUCIO1if9UFo2ki7JIQSANYObFUUEVgGDCx4lPmBSYCD0FFTtGy0hRQDfxkNuIKfDOiCIBmPh26Xpl4lj65kd2PeVZ4HJbmGOtJeeJO24MBnq3iNdAfIbTJjYTYiIFduCccWIGUgUL0a1g2UTitUapkMCV8uTCDo2l2uOgzI/CXQbj8+H34gh7ClnE+VAqYclASoagzAzvNx/E8H3rQQMEKEYfWooLtvcNh8sH2rr5bMJdr/YM8swFUBUxEx/HmSqXkWdnEdyFPlYP+pjG+lintLuVWtgcT/67iKtc0vFUqrEdovdyW98Ktrk7VmUAYOwQWVgXN6kUuCP4bMdZyjPGehGqRxhwGPfSaxvzIVFGgML3Y5MZnmKsBChtpIBMj3AQ5pQJWy580H67I+m3Q/gpUAr4L8vw2rxlIbrY5t7ekq+N2HrIpaXyIpHaJpht7lyNuMYYykhb8suD3gsDySn3ml/rOy+zRkANVkB08k4ivV6qWaofTohyZaQy5V7XbiwuhJcph3fVqPb/bv/rrMeqzbZlMs1YclehaDcF2wCqReZzW5VXqrXyMqR/Ttu1trfj+usdvgxpSbfseaDsenIkXRKr7syWK2S3UNe2pDthtvKLhdjKYbHrjez3DPTS3DbVxGYWPmO7U5jY8lwitRLc8sr/NKv0/xfB/QTfjiKUpzWDtIM5kdppwfrqs+YJNt3yWaYbUQpafybUyIS4BUKrmiuOrNBv0v/84T0ge43tNgR0NyDKLMp4sEZ0VXQF6ejT5HRQ7799VbbLsI6DEOZ2z+pU8z1+FnpxvbIlT/eABIYwLi2dVA967+8bwFuzvvzSyJwpuXyJzRI3WmB++aWxrBkPKrfeXYe9+dc5W1n9mvyLLB81Xl9l8PP5f1+qsUdmdreUfir6HqpRW7DXfy24+fETMUBJ3wMiAAA=" /></Footer>{/* END_ATS_APPLICATION_CREATE_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_applications
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: is_debug_mode
+        in: query
+        description: Whether to include debug fields (such as log file links) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: run_async
+        in: query
+        description: Whether or not third-party updates should be run asynchronously.
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateApplicationStageRequest'
+  /ats/v1/applications/meta/post:
+    get:
+      operationId: meta-post-retrieve
+      summary: Meta Post Retrieve
+      description: Returns metadata for `Application` POSTs.{/* BEGIN_ATS_APPLICATION_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="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" /></Footer>{/* END_ATS_APPLICATION_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_applications
+      parameters:
+      - name: application_remote_template_id
+        in: query
+        description: The template ID associated with the nested application in the request.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaResponse'
+components:
+  schemas:
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    PaginatedApplicationList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Application'
+      title: PaginatedApplicationList
+    ScreeningQuestionAnswer:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        question:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The screening question associated with the candidate’s answer. To determine the data type of the answer, you can expand on the screening question by adding `screening_question_answers.question` to the `expand` query parameter.
+        answer:
+          type:
+          - string
+          - 'null'
+          description: The candidate’s response to the screening question.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+      description: '# The ScreeningQuestionAnswer Object
+
+        ### Description
+
+        The `ScreeningQuestionAnswer` object is used to represent candidate responses to a screening question, for a specific application.
+
+
+        ### Usage Example
+
+        TODO'
+      title: ScreeningQuestionAnswer
+    ApplicationFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: ApplicationFieldMappings
+    Application:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        candidate:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The candidate applying.
+        job:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The job being applied for.
+        applied_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the application was submitted.
+        rejected_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the application was rejected.
+        offers:
+          type: array
+          items:
+            type: string
+            format: uuid
+        source:
+          type:
+          - string
+          - 'null'
+          description: The application's source.
+        credited_to:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The user credited for this application.
+        screening_question_answers:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScreeningQuestionAnswer'
+        current_stage:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The application's current stage.
+        reject_reason:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The application's reason for rejection.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/ApplicationFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The Application Object
+
+        ### Description
+
+        The Application Object is used to represent a candidate''s journey through a particular Job''s recruiting process. If a Candidate applies for multiple Jobs, there will be a separate Application for each Job if the third-party integration allows it.
+
+
+        ### Usage Example
+
+        Fetch from the `LIST Applications` endpoint and filter by `ID` to show all applications.'
+      title: Application
+    ApplicationRequest:
+      type: object
+      properties:
+        candidate:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The candidate applying.
+        job:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The job being applied for.
+        applied_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the application was submitted.
+        rejected_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the application was rejected.
+        offers:
+          type: array
+          items:
+            type: string
+            format: uuid
+        source:
+          type:
+          - string
+          - 'null'
+          description: The application's source.
+        credited_to:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The user credited for this application.
+        screening_question_answers:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScreeningQuestionAnswerRequest'
+        current_stage:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The application's current stage.
+        reject_reason:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The application's reason for rejection.
+        remote_template_id:
+          type:
+          - string
+          - 'null'
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The Application Object
+
+        ### Description
+
+        The Application Object is used to represent a candidate''s journey through a particular Job''s recruiting process. If a Candidate applies for multiple Jobs, there will be a separate Application for each Job if the third-party integration allows it.
+
+
+        ### Usage Example
+
+        Fetch from the `LIST Applications` endpoint and filter by `ID` to show all applications.'
+      title: ApplicationRequest
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    ApplicationResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/Application'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: ApplicationResponse
+    ApplicationsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - candidate
+      - credited_to
+      - current_stage
+      - job
+      - offers
+      - reject_reason
+      - screening_question_answers
+      - screening_question_answers.question
+      title: ApplicationsIdGetParametersExpandSchemaItems
+    ApplicationEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/ApplicationRequest'
+        remote_user_id:
+          type: string
+      required:
+      - model
+      - remote_user_id
+      title: ApplicationEndpointRequest
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    UpdateApplicationStageRequest:
+      type: object
+      properties:
+        job_interview_stage:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The interview stage to move the application to.
+        remote_user_id:
+          type: string
+      title: UpdateApplicationStageRequest
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    ScreeningQuestionAnswerRequest:
+      type: object
+      properties:
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        question:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The screening question associated with the candidate’s answer. To determine the data type of the answer, you can expand on the screening question by adding `screening_question_answers.question` to the `expand` query parameter.
+        answer:
+          type:
+          - string
+          - 'null'
+          description: The candidate’s response to the screening question.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The ScreeningQuestionAnswer Object
+
+        ### Description
+
+        The `ScreeningQuestionAnswer` object is used to represent candidate responses to a screening question, for a specific application.
+
+
+        ### Usage Example
+
+        TODO'
+      title: ScreeningQuestionAnswerRequest
+    ApplicationsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - candidate
+      - credited_to
+      - current_stage
+      - job
+      - offers
+      - reject_reason
+      - screening_question_answers
+      - screening_question_answers.question
+      title: ApplicationsGetParametersExpandSchemaItems
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

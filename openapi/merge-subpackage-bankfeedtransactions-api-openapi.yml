@@ -1,0 +1,585 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_bankFeedTransactions API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_bankFeedTransactions
+paths:
+  /accounting/v1/bank-feed-transactions:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `BankFeedTransaction` objects.{/* BEGIN_ACCOUNTING_BANKFEEDTRANSACTION_FETCH_SUPPORTED_FIELDS */}{/* END_ACCOUNTING_BANKFEEDTRANSACTION_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_bankFeedTransactions
+      parameters:
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/BankFeedTransactionsGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: is_processed
+        in: query
+        description: If provided, will only return bank feed transactions with this is_processed value
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBankFeedTransactionList'
+    post:
+      operationId: create
+      summary: Create
+      description: Creates a `BankFeedTransaction` object with the given values.{/* BEGIN_ACCOUNTING_BANKFEEDTRANSACTION_CREATE_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST" data="H4sIAAAAAAAAA9WTbU8aQRDHv0ozL8lxV0A0kjQNTz4lHFWx0RiyGXaHY+Fu99zdE8X43ZsDqqBUbGLT9uXN/ec/D7/ZB+DoKNLmHmqAnOtMOaki8CDRgmKoQQPV5IBI9Awqi9xJrcADTGWICa0lsdsyeGCzNNXGkTiQFAt7ZGgINQgSMhEVMyWHkkTwnBRI5SgymPva4Cm5OJxngwexVBMS9UXCdruFvLiMvPi0QSytAw9StNaNjM6i0RndZGTf4Zz3FlNCymFcFOgwWHEpmoXNplg+haCYHIkWOmyRo/kalxVHzqW2FgQjilN/Xt0XdBuQCtA4yWOyQbWyX97brxaXLvPqX1kUfykVxjcDPdgrsIjHDLNCp8fvwt7xNBxHO2Fz5y6cXVTD2WQWjiefCyzCQqfXqXZ7V5Vuq17qbhCw893L/e+NVuMkLPBZuxKOr6Zhj5c6PT4ZzI4rJ4d8enJ0ehfOrsqd1kUl7LWrJ4e61G2e2U7zTHfqvg8erFKF2vXDamB5OCG580w6WlcfJxjRylYWODCVxTQbxJL7tuJjgjOtcGp9rpMgISExCMnZ3I3ZmwwN+en8iOcLk1o97Rxq0A6P6mGz3Vo/g/otyhgHMUHNmYxe3THUrgGT/BbAgwGqCRsSCba8D/CAGxLSMW2YoIHMI4IsNzJdvpgU7ymf1erMcGLu+TkxKcCD1YDA+VpWQ+4+Jeh7kN+UNCS+ocGEHJl5Z5sa2lyo/+htgnGaST5paD2xn7oqluqDqDzbFhdc2MWwvNvYK/27fFJtHYmfCP4Ird/q8xfALsnoj2GUOy3p/C9UDCXa0YLE3yf0sucVJizNbe3GoE9KsAHGqDhtFbCnjrboXje3JUHabUqx2N6Gv9ahcW/PsCZ5c4p15bvmWE95e5KFdjnLex55/7H/+AOLJ1dYHwkAAA==" /></Footer>{/* END_ACCOUNTING_BANKFEEDTRANSACTION_CREATE_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_bankFeedTransactions
+      parameters:
+      - name: is_debug_mode
+        in: query
+        description: Whether to include debug fields (such as log file links) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: run_async
+        in: query
+        description: Whether or not third-party updates should be run asynchronously.
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BankFeedTransactionResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BankFeedTransactionEndpointRequest'
+  /accounting/v1/bank-feed-transactions/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `BankFeedTransaction` object with the given `id`.{/* BEGIN_ACCOUNTING_BANKFEEDTRANSACTION_FETCH_SUPPORTED_FIELDS */}{/* END_ACCOUNTING_BANKFEEDTRANSACTION_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_bankFeedTransactions
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/BankFeedTransactionsIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BankFeedTransaction'
+  /accounting/v1/bank-feed-transactions/meta/post:
+    get:
+      operationId: meta-post-retrieve
+      summary: Meta Post Retrieve
+      description: Returns metadata for `BankFeedTransaction` POSTs.{/* BEGIN_ACCOUNTING_BANKFEEDTRANSACTION_FETCH_SUPPORTED_FIELDS */}{/* END_ACCOUNTING_BANKFEEDTRANSACTION_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_bankFeedTransactions
+      parameters:
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaResponse'
+components:
+  schemas:
+    BankFeedTransactionRequestRequest:
+      type: object
+      properties:
+        bank_feed_account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The bank feed account associated with the transaction.
+        transaction_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date that the transaction occurred.
+        posted_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date the transaction was posted to the bank account.
+        amount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The amount of the transaction.
+        description:
+          type:
+          - string
+          - 'null'
+          description: The description of the transaction.
+        transaction_type:
+          type:
+          - string
+          - 'null'
+          description: The underlying type of the transaction.
+        payee:
+          type:
+          - string
+          - 'null'
+          description: The person or merchant who initiated the transaction, or alternatively, to whom the transaction was paid.
+        credit_or_debit:
+          oneOf:
+          - $ref: '#/components/schemas/CreditOrDebitEnum'
+          - type: 'null'
+          description: If the transaction is of type debit or credit.
+        source_transaction_id:
+          type:
+          - string
+          - 'null'
+          description: The customer’s identifier for the transaction.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      required:
+      - bank_feed_account
+      description: '# The BankFeedTransaction Object
+
+        ### Description
+
+        The `BankFeedTransaction` object is used to represent transactions linked to a bank feed account. This includes details about the transaction such as the date, amount, description, and type.
+
+
+        ### Usage Example
+
+        Fetch from the `GET BankFeedTransaction` endpoint to view details of a transaction associated with a bank feed account.'
+      title: BankFeedTransactionRequestRequest
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    BankFeedTransactionsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - bank_feed_account
+      title: BankFeedTransactionsIdGetParametersExpandSchemaItems
+    BankFeedTransactionEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/BankFeedTransactionRequestRequest'
+      required:
+      - model
+      title: BankFeedTransactionEndpointRequest
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    BankFeedTransactionsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - bank_feed_account
+      title: BankFeedTransactionsGetParametersExpandSchemaItems
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    PaginatedBankFeedTransactionList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BankFeedTransaction'
+      title: PaginatedBankFeedTransactionList
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    CreditOrDebitEnum:
+      type: string
+      enum:
+      - CREDIT
+      - DEBIT
+      title: CreditOrDebitEnum
+    BankFeedTransactionResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/BankFeedTransaction'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: BankFeedTransactionResponse
+    BankFeedTransaction:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        bank_feed_account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The bank feed account associated with the transaction.
+        transaction_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date that the transaction occurred.
+        posted_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date the transaction was posted to the bank account.
+        amount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The amount of the transaction.
+        description:
+          type:
+          - string
+          - 'null'
+          description: The description of the transaction.
+        transaction_type:
+          type:
+          - string
+          - 'null'
+          description: The underlying type of the transaction.
+        payee:
+          type:
+          - string
+          - 'null'
+          description: The person or merchant who initiated the transaction, or alternatively, to whom the transaction was paid.
+        credit_or_debit:
+          oneOf:
+          - $ref: '#/components/schemas/CreditOrDebitEnum'
+          - type: 'null'
+          description: If the transaction is of type debit or credit.
+        source_transaction_id:
+          type:
+          - string
+          - 'null'
+          description: The customer’s identifier for the transaction.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        is_processed:
+          type: boolean
+          description: Whether or not this transaction has been processed by the external system. For example, NetSuite writes this field as True when the SuiteApp has processed the transaction.
+      description: '# The BankFeedTransaction Object
+
+        ### Description
+
+        The `BankFeedTransaction` object is used to represent transactions linked to a bank feed account. This includes details about the transaction such as the date, amount, description, and type.
+
+
+        ### Usage Example
+
+        Fetch from the `GET BankFeedTransaction` endpoint to view details of a transaction associated with a bank feed account.'
+      title: BankFeedTransaction
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

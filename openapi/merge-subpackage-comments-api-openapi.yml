@@ -1,0 +1,602 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_comments API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_comments
+paths:
+  /ticketing/v1/comments:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Comment` objects.{/* BEGIN_TICKETING_COMMENT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+2ab1PiRhzH3wrdhw6QqmdvZKbTQfAQK9EKeqc3TuaXzY9kZZMNuxtQbu69dzYExdaptbdgetwzWTefkE+++58vhILGUMh70iCa0RFqloSkSmIRICcN0hJxjIkmVQIpcyHG5XreZIdUicrSVEiNwQeGPFBHEoekQZwYZYi1LGFDhoHzcI3DEo2hBM1EopyHa2vD/GJSJZwlIwyalIos0S/S5rVrMK/+l4/K4UyZ756CUjqSIgujcxxnqF4Gm2/G0Tw78FoAGpwlSE3OKc+VmWcIkKPGoA0a2qiRmoctbhhpnaqG40TI03p+83qAEwcTB6RmlKNy9nb3d97v79UKSn7337yQ/7q9dTv2hf9+ywsp9yDb6g3onTvoTt3b8J3benfnzi723Nlo5t6Oft7yQtjqDXp7p4Or3dN2c/v0mQpe/5dP+5cH7YNjd4vODnfd26upO6DbvQEd+bPu7nGHTo+P/rhzZ1c7vfbFrjs43DvuiO3T1rnqtc5Fr1mvkypZfqek8fnLckERmmYEPz2t2Y0hxCUj8zcBKaulmc8ZravdOsQwEwlMVZ2K2IkxYOA0I/DUOAOJ9TTPau6JieRBNWmQQ/eo6bYO209ffnMCjIPPkTS0zPBv2SWNz8QXwT2pEomx0OhRiaAx8EA/lpn38fSTl4KOHotYQKpFKyFVkimU5Mb8c5wxicEZSIhRozS3u/lafdaWggTs6AKDqs2F1bgIxU79NsWVeYt0zL3ib6a8VLIJaHx7obNMYqWNk9NUWYqhIXpzotfP9XonIhQrCeWy1bcVeQAKKcSpHYkL2r8U6DYH3ctDK9n8B4sWJDHtZ8X1FiydcdBDIWN/gV1D/1eexLU4o6MLS4ErYCtvsOXrAdvsDuzG0RDXkEQqEg1Ul3ds+SBRRQGqkR29D7gnIV3lmP3/MKxQThhFuxkeLpHX3Kuuym/CxpkpxESbRY38z85Fvu6zKDtH/ugxGqTD9FHmV7pKZWhpOtphOsp8b45c/3SqRJ1Fh+kT8K1Z5eCva7bwxt44BPzeboufMzd6dtARMmSgLHudQ3/0pQ1yhDyt9KnILA9WhqsMdpWSS5/eIzaxNOMypM3oSLuJRklFbMfbgrbszrvcb++ctPwVjO2lT2RXioRyCCzZlSJpcQgKuxuyF3DMpKW9AEN62d13G0bz+BVzzFNpoWmndocgQ3/z3dB1WezPF+GVHiQQ5gdvNhNarPAf4fXbdAOH898zpUVsK6cL2to2qkpk8oQlCJY88pz18jzzGxt8ieydsYnQwCsDCXRkrducQwvmd39GfA7c9nI9R65SXHnGnHNsGBOWt5Mlejl1DeH79tZc+HuluD5wVEMhKT4M2S0uMkvz8Ue6t9iVp4ZebpPWUlkYdcXUks4H3gaeePYjITW1tS+0oG3iZKefCt2WMLS8xaZSoQODfZvfM7xK3CuNDRDiqZCWjoQXtHU14pKuXgYSOReWlOasJ5tqH9Vde9q525De8aNkI0uznxy1njPHEgm8xsTejz4WXWIB9fbHvewT+7DRJ2fXIhKVgyy0ukg00EfmZqx1cpFta1m9FpHwDG5dw1GZknrz9U/E+IOFNDEAAA==" /></Footer>{/* END_TICKETING_COMMENT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_comments
+      parameters:
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/CommentsGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_created_after
+        in: query
+        description: If provided, will only return Comments created in the third party platform after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: ticket_id
+        in: query
+        description: If provided, will only return comments for this ticket.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCommentList'
+    post:
+      operationId: create
+      summary: Create
+      description: Creates a `Comment` object with the given values.{/* BEGIN_TICKETING_COMMENT_CREATE_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST" data="H4sIAAAAAAAAA92aUVPiSBCA/wo3jxSQU9bbkqqrKwQFPImeorvulpVqJm0yMMnEmQkoW/73qySAuIvg6oR1fRQmX8iX7p5Ox2+EgkZPyDtSI5rRIWoWeqREAuEiJzXSEEGAoSYlAhGzIcDFdc5om5SIiqNISI3uAUPuqrbEa1IjVoDSw3IcsmuGrjU/xmKhRk+CZiJU1vzY8nV6MCkRzsIhunVKRRzqtbRsdRmy5d/9qSzOVPLbI1BK+1LEnn+KNzGq9eDkl3FMrh142QUN1gKkLDPKss+Sa3CRo0a3CRqaqJEmFzs9oa91pGqW5SOPKunJKy6OLAwtkJpRjsraqe5uf9zdKU8p6dn/cTz+91ZxcNMX/Y9Fx6PcgbjY7dFbu9cZ2wPvg934cGtPznfsyXBiD4Z/Fh0Pit1ed+e4d1k9bta3jpcscM7++rx7sdfcO7SLdLJftQeXY7tHt7o9OuxPOtXDFh0ftv+7tSeX293medXu7e8ctsTWceNUdRunoluvVEiJLN5TUvv6bfGDadDUffjj8cpOAB4uGMnuBESsHMV9zmhFVSsQwESEMFYVKgIrQJeBVffBUTcxSKxEaaymnpgI56pJjezb7brd2G8+vvn1ETAOfY6kpmWMP8QuqX0lfeHekRKRGAiNDpUIGl0H9MNnzCWlaRKQEokVSnKVfHkTM4nuCUgIUKNcpE1XX92XlrpREIIZOZCgypmeMhee2K4MIszNkq8D7vycsVeqmsQSC00cHUfKUDglRCcjOmepOOdIeCLP4HqBtnWBtlpbgzM6PI/MGJvCNiXLjKAnxBxIVL6LamhGzRz3SE6eGUhFqIHq74KKKSeSbAQazUXYk/zVoXcgRdo/GLB7wkFfCxmkyA3sAXkbXWZxdsxymS2m23G/0FEqRkP1r8W0H/edDPnMnLbrvc7F/pv1ushfHZwtpo+gb0wkh/7vVRWft+m2OLj8zmwOZ8zfOXtXlMI1SSykx0AZ9plB30NVfJDiRMk3qkJ9CEPkzxXcRh4VzqiIDe87CVcl2Dwtb25Df+JMP+hfWx/abIRmTCek91hBO6FGSUVgxtKMtmjKudhtbh81+jns2m++xexIEVIOriG7UoQNDu7Ubp4hmOO29KxCecikoblDQlov7KURmMPz8rPSNrmqQjLFKzQwyTmz20lC30yTvZEZQyrrDOWIUSx0IQQvHZ+ajK8M7jzAK4PIfHL+qmj7N1ZaBKaibEbb2CQizx57WU+ysk/8+a78iIUIhtzzlLW+S3xlim8yOE/YSGjghZ4EOjRWCTPolPnOpvpnwFFdC0lxXhUbXMSGupQHuqOmZZEm9Ddg75XasquxxdiQqDlvUw8WLymEL5kyPCXQF1JTU8++M9p72EZWe+shBGMhDb0JmNFyD7q3M0ztSeRcGNKXsh494H5St81x6/atZa6R2Psk2dDQCCVFbWaOv0lDXzA095pu9gQ2hTq7N934MzvIM7Q2N0RZ41H4orAXe0b7uAT6wHxnfVxqrGks9r4IXzgJ7lf8s8Gm3mJe3V/d/w9HLpeNXCYAAA==" /></Footer>{/* END_TICKETING_COMMENT_CREATE_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_comments
+      parameters:
+      - name: is_debug_mode
+        in: query
+        description: Whether to include debug fields (such as log file links) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: run_async
+        in: query
+        description: Whether or not third-party updates should be run asynchronously.
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommentResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentEndpointRequest'
+  /ticketing/v1/comments/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `Comment` object with the given `id`.{/* BEGIN_TICKETING_COMMENT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+2ab1PiRhzH3wrdhw6QqmdvZKbTQfAQK9EKeqc3TuaXzY9kZZMNuxtQbu69dzYExdaptbdgetwzWTefkE+++58vhILGUMh70iCa0RFqloSkSmIRICcN0hJxjIkmVQIpcyHG5XreZIdUicrSVEiNwQeGPFBHEoekQZwYZYi1LGFDhoHzcI3DEo2hBM1EopyHa2vD/GJSJZwlIwyalIos0S/S5rVrMK/+l4/K4UyZ756CUjqSIgujcxxnqF4Gm2/G0Tw78FoAGpwlSE3OKc+VmWcIkKPGoA0a2qiRmoctbhhpnaqG40TI03p+83qAEwcTB6RmlKNy9nb3d97v79UKSn7337yQ/7q9dTv2hf9+ywsp9yDb6g3onTvoTt3b8J3benfnzi723Nlo5t6Oft7yQtjqDXp7p4Or3dN2c/v0mQpe/5dP+5cH7YNjd4vODnfd26upO6DbvQEd+bPu7nGHTo+P/rhzZ1c7vfbFrjs43DvuiO3T1rnqtc5Fr1mvkypZfqek8fnLckERmmYEPz2t2Y0hxCUj8zcBKaulmc8ZravdOsQwEwlMVZ2K2IkxYOA0I/DUOAOJ9TTPau6JieRBNWmQQ/eo6bYO209ffnMCjIPPkTS0zPBv2SWNz8QXwT2pEomx0OhRiaAx8EA/lpn38fSTl4KOHotYQKpFKyFVkimU5Mb8c5wxicEZSIhRozS3u/lafdaWggTs6AKDqs2F1bgIxU79NsWVeYt0zL3ib6a8VLIJaHx7obNMYqWNk9NUWYqhIXpzotfP9XonIhQrCeWy1bcVeQAKKcSpHYkL2r8U6DYH3ctDK9n8B4sWJDHtZ8X1FiydcdBDIWN/gV1D/1eexLU4o6MLS4ErYCtvsOXrAdvsDuzG0RDXkEQqEg1Ul3ds+SBRRQGqkR29D7gnIV3lmP3/MKxQThhFuxkeLpHX3Kuuym/CxpkpxESbRY38z85Fvu6zKDtH/ugxGqTD9FHmV7pKZWhpOtphOsp8b45c/3SqRJ1Fh+kT8K1Z5eCva7bwxt44BPzeboufMzd6dtARMmSgLHudQ3/0pQ1yhDyt9KnILA9WhqsMdpWSS5/eIzaxNOMypM3oSLuJRklFbMfbgrbszrvcb++ctPwVjO2lT2RXioRyCCzZlSJpcQgKuxuyF3DMpKW9AEN62d13G0bz+BVzzFNpoWmndocgQ3/z3dB1WezPF+GVHiQQ5gdvNhNarPAf4fXbdAOH898zpUVsK6cL2to2qkpk8oQlCJY88pz18jzzGxt8ieydsYnQwCsDCXRkrducQwvmd39GfA7c9nI9R65SXHnGnHNsGBOWt5Mlejl1DeH79tZc+HuluD5wVEMhKT4M2S0uMkvz8Ue6t9iVp4ZebpPWUlkYdcXUks4H3gaeePYjITW1tS+0oG3iZKefCt2WMLS8xaZSoQODfZvfM7xK3CuNDRDiqZCWjoQXtHU14pKuXgYSOReWlOasJ5tqH9Vde9q525De8aNkI0uznxy1njPHEgm8xsTejz4WXWIB9fbHvewT+7DRJ2fXIhKVgyy0ukg00EfmZqx1cpFta1m9FpHwDG5dw1GZknrz9U/E+IOFNDEAAA==" /></Footer>{/* END_TICKETING_COMMENT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_comments
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/CommentsIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+  /ticketing/v1/comments/meta/post:
+    get:
+      operationId: meta-post-retrieve
+      summary: Meta Post Retrieve
+      description: Returns metadata for `Comment` POSTs.{/* BEGIN_TICKETING_COMMENT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+2ab1PiRhzH3wrdhw6QqmdvZKbTQfAQK9EKeqc3TuaXzY9kZZMNuxtQbu69dzYExdaptbdgetwzWTefkE+++58vhILGUMh70iCa0RFqloSkSmIRICcN0hJxjIkmVQIpcyHG5XreZIdUicrSVEiNwQeGPFBHEoekQZwYZYi1LGFDhoHzcI3DEo2hBM1EopyHa2vD/GJSJZwlIwyalIos0S/S5rVrMK/+l4/K4UyZ756CUjqSIgujcxxnqF4Gm2/G0Tw78FoAGpwlSE3OKc+VmWcIkKPGoA0a2qiRmoctbhhpnaqG40TI03p+83qAEwcTB6RmlKNy9nb3d97v79UKSn7337yQ/7q9dTv2hf9+ywsp9yDb6g3onTvoTt3b8J3benfnzi723Nlo5t6Oft7yQtjqDXp7p4Or3dN2c/v0mQpe/5dP+5cH7YNjd4vODnfd26upO6DbvQEd+bPu7nGHTo+P/rhzZ1c7vfbFrjs43DvuiO3T1rnqtc5Fr1mvkypZfqek8fnLckERmmYEPz2t2Y0hxCUj8zcBKaulmc8ZravdOsQwEwlMVZ2K2IkxYOA0I/DUOAOJ9TTPau6JieRBNWmQQ/eo6bYO209ffnMCjIPPkTS0zPBv2SWNz8QXwT2pEomx0OhRiaAx8EA/lpn38fSTl4KOHotYQKpFKyFVkimU5Mb8c5wxicEZSIhRozS3u/lafdaWggTs6AKDqs2F1bgIxU79NsWVeYt0zL3ib6a8VLIJaHx7obNMYqWNk9NUWYqhIXpzotfP9XonIhQrCeWy1bcVeQAKKcSpHYkL2r8U6DYH3ctDK9n8B4sWJDHtZ8X1FiydcdBDIWN/gV1D/1eexLU4o6MLS4ErYCtvsOXrAdvsDuzG0RDXkEQqEg1Ul3ds+SBRRQGqkR29D7gnIV3lmP3/MKxQThhFuxkeLpHX3Kuuym/CxpkpxESbRY38z85Fvu6zKDtH/ugxGqTD9FHmV7pKZWhpOtphOsp8b45c/3SqRJ1Fh+kT8K1Z5eCva7bwxt44BPzeboufMzd6dtARMmSgLHudQ3/0pQ1yhDyt9KnILA9WhqsMdpWSS5/eIzaxNOMypM3oSLuJRklFbMfbgrbszrvcb++ctPwVjO2lT2RXioRyCCzZlSJpcQgKuxuyF3DMpKW9AEN62d13G0bz+BVzzFNpoWmndocgQ3/z3dB1WezPF+GVHiQQ5gdvNhNarPAf4fXbdAOH898zpUVsK6cL2to2qkpk8oQlCJY88pz18jzzGxt8ieydsYnQwCsDCXRkrducQwvmd39GfA7c9nI9R65SXHnGnHNsGBOWt5Mlejl1DeH79tZc+HuluD5wVEMhKT4M2S0uMkvz8Ue6t9iVp4ZebpPWUlkYdcXUks4H3gaeePYjITW1tS+0oG3iZKefCt2WMLS8xaZSoQODfZvfM7xK3CuNDRDiqZCWjoQXtHU14pKuXgYSOReWlOasJ5tqH9Vde9q525De8aNkI0uznxy1njPHEgm8xsTejz4WXWIB9fbHvewT+7DRJ2fXIhKVgyy0ukg00EfmZqx1cpFta1m9FpHwDG5dw1GZknrz9U/E+IOFNDEAAA==" /></Footer>{/* END_TICKETING_COMMENT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_comments
+      parameters:
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaResponse'
+components:
+  schemas:
+    CommentsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - contact
+      - ticket
+      - user
+      title: CommentsGetParametersExpandSchemaItems
+    PaginatedCommentList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Comment'
+      title: PaginatedCommentList
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    CommentsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - contact
+      - ticket
+      - user
+      title: CommentsIdGetParametersExpandSchemaItems
+    CommentFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: CommentFieldMappings
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    CommentEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/CommentRequest'
+      required:
+      - model
+      title: CommentEndpointRequest
+    CommentResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/Comment'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: CommentResponse
+    Comment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        user:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The author of the Comment, if the author is a User. If the third party does not support specifying an author, we will append "[Posted on behalf of {name}]" to the comment.
+        contact:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The author of the Comment, if the author is a Contact.If the third party does not support specifying an author, we will append "[Posted on behalf of {name}]" to the comment.
+        body:
+          type:
+          - string
+          - 'null'
+          description: The comment's text body.
+        html_body:
+          type:
+          - string
+          - 'null'
+          description: The comment's text body formatted as html.
+        ticket:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: 'The ticket associated with the comment. '
+        is_private:
+          type:
+          - boolean
+          - 'null'
+          description: Whether or not the comment is internal.
+        remote_created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's comment was created.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/CommentFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The Comment Object
+
+        ### Description
+
+        The `Comment` object is used to represent a comment on a ticket.
+
+
+        ### Usage Example
+
+        TODO'
+      title: Comment
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    CommentRequest:
+      type: object
+      properties:
+        user:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The author of the Comment, if the author is a User. If the third party does not support specifying an author, we will append "[Posted on behalf of {name}]" to the comment.
+        contact:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The author of the Comment, if the author is a Contact.If the third party does not support specifying an author, we will append "[Posted on behalf of {name}]" to the comment.
+        body:
+          type:
+          - string
+          - 'null'
+          description: The comment's text body.
+        html_body:
+          type:
+          - string
+          - 'null'
+          description: The comment's text body formatted as html.
+        ticket:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: 'The ticket associated with the comment. '
+        is_private:
+          type:
+          - boolean
+          - 'null'
+          description: Whether or not the comment is internal.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The Comment Object
+
+        ### Description
+
+        The `Comment` object is used to represent a comment on a ticket.
+
+
+        ### Usage Example
+
+        TODO'
+      title: CommentRequest
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

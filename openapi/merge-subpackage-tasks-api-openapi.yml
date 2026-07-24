@@ -1,0 +1,886 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_tasks API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_tasks
+paths:
+  /crm/v1/tasks:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Task` objects.{/* BEGIN_CRM_TASK_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+WYbW/bNhDHv4rBl4YsLXGdLgaGwbW92hmkpI7aNSsC4UydJdqUyPAhTlz0uxeSH+KsQdAUcuM1L3Uk/yR/d7wj9ZlQMJgIdUvahKqMOCQTMXLSJiHoGXEISBZAhsvm6PqQOERbKYUyGP/FkMd6oHBC2sTLUCXYsDmbMIw9qjKP5QYTBYaJXHubUY1JOYw4hLN8hnGHUmFz84jOsl8Dlh3/86k9zrQhDpGgtUmVsEk6wiuL+jHJYjUcM8wN8EYMBryt4Q21HP+QrVh3jBwNxj0w0EODtNjgaqrUGKnbnpcil245rRvjtYe5B8owylF7rebx4evjVmOlUs7+Z5TwPw7q06uxGL+uRwnlEdi6H9KbIBzOg2nyKui+ugkW71vBYrYIprPf6lECdT/0W6fhRfO01zk4faBDdH708fjDm96bk6BOF/1mML2YByE98EM6Gy+GzZO3dH4yeHcTLC4O/d77ZhD2WydvxcFpd6T97kj4HdclDtn2I2l/+rxtWAVHh1Lk4n7fYQYJbjFZegEka0g75oy6uulCBguRw1y7VGRehjED74yDmQiVQakZ6SsLCl2ZJ2v0TOQb7qRN+sGgE3T7vfsx0LkGxmHMkbSNsvhN2JL2J7IKIeIQKjJZuiOKwWBpyA2WTbHFtVHMc1TEIQozYUor3P+KJJj0zsTi4rgYMLYIG23HU6SGXBbtV5YpjM9AQYYGVbGcyy/OQ2i7ILXlWC3bleiOqT47Oi501eAKSXcqf2lsQspy1iq5lZo7BrfHp3hgx+dSmGqgDuxYS2HWqXEvoJYKNmfm9gcQb64EVSIf5polqeG31UDfyL34ivQ3gqw2O8wQ5IvH6jOqhBYTU+vd5pAxqmvNo1btHDjqanGv9ZtHrVL9GdEDNbtJKQ+nEIcY0LPIKv7UbBJYo1PkvBpPrNV2gnyPy+AZkxgrdl3xrWwj+0gtDDrh8EP//xPA31cTfzygy5M/4aAq9sWd7s++mDxLRC+3KxTdCcZC95Ec8WvG9FM9YBNQ3ZFfLX9dqBb/vH5SbdyXDB0iZBwhruoBeKf30mpdsfO5ULNa5bG5Vo66I3+Xj8A9hvsv5jHqWe28sivZGu5KOfp9bg7D8J99/PG4TfCp3EQqqg/IhUjFd+XKYDcFa3/eDpdfvgJ9W83yVBkAAA==" /></Footer>{/* END_CRM_TASK_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_tasks
+      parameters:
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/TasksGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_fields
+        in: query
+        description: Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTaskList'
+    post:
+      operationId: create
+      summary: Create
+      description: Creates a `Task` object with the given values.{/* BEGIN_CRM_TASK_CREATE_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST" data="H4sIAAAAAAAAA71T227aQBD9l3lExi4htIqlqiJAA0g4aeJEjSJkjdeDWVh7zV4gIcq/VzaE0gZFVZv0cW5nZs85+wgMDaVSPYAPTGXgQCYTEuBDiHoODmDBA8xoU46WR+CAtkUhlaHkKyeR6L6iCfjgZaRSqtucTzglHlOZx3NDqULDZa693VR9Uo2BA4Lnc0rajEmbm1dwNn113DT+FmpPcG3AgQK1NlMlbTq9pIUl/RpkeY2gjHKDop6gQW9vvK4284dy5d0JCTKUdNFglwyx8oHbVVNjCu173pRE4VZr3YSWHuUeKsOZIO21midHn05a9S1Ktf1LlIrPjdpsEcv4Uy1KmYjQ1kYhuw/CwSqYpcdB5/g+WF+3gvV8HczmH2pRirVROGqdh7fN8267cX6gIbr6+P3k5rR7OgxqbN1rBrPbVRCyxihk83g9aA7P2GrY/3YfrG+PRt3rZhD2WsMz2TjvXOpR51KO2q4LDuzrCP7d435ia46+ja8KWcqwVxtkmNIeKRsZsOD1wsaCM1c3XcxwLXNcaZfJzMso4ej1bawLaSK9sKjInRXpM+lc5jvGwYde0G8HnV73V/XbS+QCY0HgG2XphWHBv4OtecABJrOiEiJK0FCVyA1VpcTSc1JWCDbn5qGMVjkpcEBRJg1FPCl/hUFjS3doG8+IGRiX9YXlipILVJiRIVXt3oPdAmx+hLsfRUyg1i9aligswfjJOSTCBS8oUXxJbyPDhUAzkSrbwb6iRNAOBze9f9PhnWn/A653GIf5vUJBeiIVe2OCf+K6Rf6eDGf/2el/ae/divHT+OkHwxpwAKMGAAA=" /></Footer>{/* END_CRM_TASK_CREATE_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_tasks
+      parameters:
+      - name: is_debug_mode
+        in: query
+        description: Whether to include debug fields (such as log file links) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: run_async
+        in: query
+        description: Whether or not third-party updates should be run asynchronously.
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskEndpointRequest'
+  /crm/v1/tasks/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `Task` object with the given `id`.{/* BEGIN_CRM_TASK_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+WYbW/bNhDHv4rBl4YsLXGdLgaGwbW92hmkpI7aNSsC4UydJdqUyPAhTlz0uxeSH+KsQdAUcuM1L3Uk/yR/d7wj9ZlQMJgIdUvahKqMOCQTMXLSJiHoGXEISBZAhsvm6PqQOERbKYUyGP/FkMd6oHBC2sTLUCXYsDmbMIw9qjKP5QYTBYaJXHubUY1JOYw4hLN8hnGHUmFz84jOsl8Dlh3/86k9zrQhDpGgtUmVsEk6wiuL+jHJYjUcM8wN8EYMBryt4Q21HP+QrVh3jBwNxj0w0EODtNjgaqrUGKnbnpcil245rRvjtYe5B8owylF7rebx4evjVmOlUs7+Z5TwPw7q06uxGL+uRwnlEdi6H9KbIBzOg2nyKui+ugkW71vBYrYIprPf6lECdT/0W6fhRfO01zk4faBDdH708fjDm96bk6BOF/1mML2YByE98EM6Gy+GzZO3dH4yeHcTLC4O/d77ZhD2WydvxcFpd6T97kj4HdclDtn2I2l/+rxtWAVHh1Lk4n7fYQYJbjFZegEka0g75oy6uulCBguRw1y7VGRehjED74yDmQiVQakZ6SsLCl2ZJ2v0TOQb7qRN+sGgE3T7vfsx0LkGxmHMkbSNsvhN2JL2J7IKIeIQKjJZuiOKwWBpyA2WTbHFtVHMc1TEIQozYUor3P+KJJj0zsTi4rgYMLYIG23HU6SGXBbtV5YpjM9AQYYGVbGcyy/OQ2i7ILXlWC3bleiOqT47Oi501eAKSXcqf2lsQspy1iq5lZo7BrfHp3hgx+dSmGqgDuxYS2HWqXEvoJYKNmfm9gcQb64EVSIf5polqeG31UDfyL34ivQ3gqw2O8wQ5IvH6jOqhBYTU+vd5pAxqmvNo1btHDjqanGv9ZtHrVL9GdEDNbtJKQ+nEIcY0LPIKv7UbBJYo1PkvBpPrNV2gnyPy+AZkxgrdl3xrWwj+0gtDDrh8EP//xPA31cTfzygy5M/4aAq9sWd7s++mDxLRC+3KxTdCcZC95Ec8WvG9FM9YBNQ3ZFfLX9dqBb/vH5SbdyXDB0iZBwhruoBeKf30mpdsfO5ULNa5bG5Vo66I3+Xj8A9hvsv5jHqWe28sivZGu5KOfp9bg7D8J99/PG4TfCp3EQqqg/IhUjFd+XKYDcFa3/eDpdfvgJ9W83yVBkAAA==" /></Footer>{/* END_CRM_TASK_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_tasks
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/TasksIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_fields
+        in: query
+        description: Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+  /crm/v1/tasks/meta/patch/{id}:
+    get:
+      operationId: meta-patch-retrieve
+      summary: Meta Patch Retrieve
+      description: Returns metadata for `Task` PATCHs.{/* BEGIN_CRM_TASK_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+WYbW/bNhDHv4rBl4YsLXGdLgaGwbW92hmkpI7aNSsC4UydJdqUyPAhTlz0uxeSH+KsQdAUcuM1L3Uk/yR/d7wj9ZlQMJgIdUvahKqMOCQTMXLSJiHoGXEISBZAhsvm6PqQOERbKYUyGP/FkMd6oHBC2sTLUCXYsDmbMIw9qjKP5QYTBYaJXHubUY1JOYw4hLN8hnGHUmFz84jOsl8Dlh3/86k9zrQhDpGgtUmVsEk6wiuL+jHJYjUcM8wN8EYMBryt4Q21HP+QrVh3jBwNxj0w0EODtNjgaqrUGKnbnpcil245rRvjtYe5B8owylF7rebx4evjVmOlUs7+Z5TwPw7q06uxGL+uRwnlEdi6H9KbIBzOg2nyKui+ugkW71vBYrYIprPf6lECdT/0W6fhRfO01zk4faBDdH708fjDm96bk6BOF/1mML2YByE98EM6Gy+GzZO3dH4yeHcTLC4O/d77ZhD2WydvxcFpd6T97kj4HdclDtn2I2l/+rxtWAVHh1Lk4n7fYQYJbjFZegEka0g75oy6uulCBguRw1y7VGRehjED74yDmQiVQakZ6SsLCl2ZJ2v0TOQb7qRN+sGgE3T7vfsx0LkGxmHMkbSNsvhN2JL2J7IKIeIQKjJZuiOKwWBpyA2WTbHFtVHMc1TEIQozYUor3P+KJJj0zsTi4rgYMLYIG23HU6SGXBbtV5YpjM9AQYYGVbGcyy/OQ2i7ILXlWC3bleiOqT47Oi501eAKSXcqf2lsQspy1iq5lZo7BrfHp3hgx+dSmGqgDuxYS2HWqXEvoJYKNmfm9gcQb64EVSIf5polqeG31UDfyL34ivQ3gqw2O8wQ5IvH6jOqhBYTU+vd5pAxqmvNo1btHDjqanGv9ZtHrVL9GdEDNbtJKQ+nEIcY0LPIKv7UbBJYo1PkvBpPrNV2gnyPy+AZkxgrdl3xrWwj+0gtDDrh8EP//xPA31cTfzygy5M/4aAq9sWd7s++mDxLRC+3KxTdCcZC95Ec8WvG9FM9YBNQ3ZFfLX9dqBb/vH5SbdyXDB0iZBwhruoBeKf30mpdsfO5ULNa5bG5Vo66I3+Xj8A9hvsv5jHqWe28sivZGu5KOfp9bg7D8J99/PG4TfCp3EQqqg/IhUjFd+XKYDcFa3/eDpdfvgJ9W83yVBkAAA==" /></Footer>{/* END_CRM_TASK_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_tasks
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaResponse'
+  /crm/v1/tasks/meta/post:
+    get:
+      operationId: meta-post-retrieve
+      summary: Meta Post Retrieve
+      description: Returns metadata for `Task` POSTs.{/* BEGIN_CRM_TASK_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+WYbW/bNhDHv4rBl4YsLXGdLgaGwbW92hmkpI7aNSsC4UydJdqUyPAhTlz0uxeSH+KsQdAUcuM1L3Uk/yR/d7wj9ZlQMJgIdUvahKqMOCQTMXLSJiHoGXEISBZAhsvm6PqQOERbKYUyGP/FkMd6oHBC2sTLUCXYsDmbMIw9qjKP5QYTBYaJXHubUY1JOYw4hLN8hnGHUmFz84jOsl8Dlh3/86k9zrQhDpGgtUmVsEk6wiuL+jHJYjUcM8wN8EYMBryt4Q21HP+QrVh3jBwNxj0w0EODtNjgaqrUGKnbnpcil245rRvjtYe5B8owylF7rebx4evjVmOlUs7+Z5TwPw7q06uxGL+uRwnlEdi6H9KbIBzOg2nyKui+ugkW71vBYrYIprPf6lECdT/0W6fhRfO01zk4faBDdH708fjDm96bk6BOF/1mML2YByE98EM6Gy+GzZO3dH4yeHcTLC4O/d77ZhD2WydvxcFpd6T97kj4HdclDtn2I2l/+rxtWAVHh1Lk4n7fYQYJbjFZegEka0g75oy6uulCBguRw1y7VGRehjED74yDmQiVQakZ6SsLCl2ZJ2v0TOQb7qRN+sGgE3T7vfsx0LkGxmHMkbSNsvhN2JL2J7IKIeIQKjJZuiOKwWBpyA2WTbHFtVHMc1TEIQozYUor3P+KJJj0zsTi4rgYMLYIG23HU6SGXBbtV5YpjM9AQYYGVbGcyy/OQ2i7ILXlWC3bleiOqT47Oi501eAKSXcqf2lsQspy1iq5lZo7BrfHp3hgx+dSmGqgDuxYS2HWqXEvoJYKNmfm9gcQb64EVSIf5polqeG31UDfyL34ivQ3gqw2O8wQ5IvH6jOqhBYTU+vd5pAxqmvNo1btHDjqanGv9ZtHrVL9GdEDNbtJKQ+nEIcY0LPIKv7UbBJYo1PkvBpPrNV2gnyPy+AZkxgrdl3xrWwj+0gtDDrh8EP//xPA31cTfzygy5M/4aAq9sWd7s++mDxLRC+3KxTdCcZC95Ec8WvG9FM9YBNQ3ZFfLX9dqBb/vH5SbdyXDB0iZBwhruoBeKf30mpdsfO5ULNa5bG5Vo66I3+Xj8A9hvsv5jHqWe28sivZGu5KOfp9bg7D8J99/PG4TfCp3EQqqg/IhUjFd+XKYDcFa3/eDpdfvgJ9W83yVBkAAA==" /></Footer>{/* END_CRM_TASK_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_tasks
+      parameters:
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaResponse'
+  /crm/v1/tasks/remote-field-classes:
+    get:
+      operationId: remote-field-classes-list
+      summary: Remote Field Classes List
+      description: Returns a list of `RemoteFieldClass` objects.{/* BEGIN_CRM_TASK_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+WYbW/bNhDHv4rBl4YsLXGdLgaGwbW92hmkpI7aNSsC4UydJdqUyPAhTlz0uxeSH+KsQdAUcuM1L3Uk/yR/d7wj9ZlQMJgIdUvahKqMOCQTMXLSJiHoGXEISBZAhsvm6PqQOERbKYUyGP/FkMd6oHBC2sTLUCXYsDmbMIw9qjKP5QYTBYaJXHubUY1JOYw4hLN8hnGHUmFz84jOsl8Dlh3/86k9zrQhDpGgtUmVsEk6wiuL+jHJYjUcM8wN8EYMBryt4Q21HP+QrVh3jBwNxj0w0EODtNjgaqrUGKnbnpcil245rRvjtYe5B8owylF7rebx4evjVmOlUs7+Z5TwPw7q06uxGL+uRwnlEdi6H9KbIBzOg2nyKui+ugkW71vBYrYIprPf6lECdT/0W6fhRfO01zk4faBDdH708fjDm96bk6BOF/1mML2YByE98EM6Gy+GzZO3dH4yeHcTLC4O/d77ZhD2WydvxcFpd6T97kj4HdclDtn2I2l/+rxtWAVHh1Lk4n7fYQYJbjFZegEka0g75oy6uulCBguRw1y7VGRehjED74yDmQiVQakZ6SsLCl2ZJ2v0TOQb7qRN+sGgE3T7vfsx0LkGxmHMkbSNsvhN2JL2J7IKIeIQKjJZuiOKwWBpyA2WTbHFtVHMc1TEIQozYUor3P+KJJj0zsTi4rgYMLYIG23HU6SGXBbtV5YpjM9AQYYGVbGcyy/OQ2i7ILXlWC3bleiOqT47Oi501eAKSXcqf2lsQspy1iq5lZo7BrfHp3hgx+dSmGqgDuxYS2HWqXEvoJYKNmfm9gcQb64EVSIf5polqeG31UDfyL34ivQ3gqw2O8wQ5IvH6jOqhBYTU+vd5pAxqmvNo1btHDjqanGv9ZtHrVL9GdEDNbtJKQ+nEIcY0LPIKv7UbBJYo1PkvBpPrNV2gnyPy+AZkxgrdl3xrWwj+0gtDDrh8EP//xPA31cTfzygy5M/4aAq9sWd7s++mDxLRC+3KxTdCcZC95Ec8WvG9FM9YBNQ3ZFfLX9dqBb/vH5SbdyXDB0iZBwhruoBeKf30mpdsfO5ULNa5bG5Vo66I3+Xj8A9hvsv5jHqWe28sivZGu5KOfp9bg7D8J99/PG4TfCp3EQqqg/IhUjFd+XKYDcFa3/eDpdfvgJ9W83yVBkAAA==" /></Footer>{/* END_CRM_TASK_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_tasks
+      parameters:
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_fields
+        in: query
+        description: Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: is_common_model_field
+        in: query
+        description: If provided, will only return remote field classes with this is_common_model_field value
+        required: false
+        schema:
+          type: boolean
+      - name: is_custom
+        in: query
+        description: If provided, will only return remote fields classes with this is_custom value
+        required: false
+        schema:
+          type: boolean
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRemoteFieldClassList'
+components:
+  schemas:
+    Task:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        subject:
+          type:
+          - string
+          - 'null'
+          description: The task's subject.
+        content:
+          type:
+          - string
+          - 'null'
+          description: The task's content.
+        owner:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The task's owner.
+        account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The task's account.
+        opportunity:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The task's opportunity.
+        contact:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The task's contact.
+        completed_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the task is completed.
+        due_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the task is due.
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/TaskStatusEnum'
+          - type: 'null'
+          description: The task's status.
+        task_url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The task's URL in the remote system.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/TaskFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteField'
+      description: '# The Task Object
+
+        ### Description
+
+        The `Task` object is used to represent a task, such as a to-do item.
+
+        ### Usage Example
+
+        TODO'
+      title: Task
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    PaginatedTaskList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Task'
+      title: PaginatedTaskList
+    RemoteFieldRequest:
+      type: object
+      properties:
+        remote_field_class:
+          type: string
+          format: uuid
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteFieldRequest
+    ItemTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemTypeEnum
+    ItemFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemFormatEnum
+    TaskEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/TaskRequest'
+      required:
+      - model
+      title: TaskEndpointRequest
+    TaskFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: TaskFieldMappings
+    TaskResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/Task'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: TaskResponse
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    TaskRequest:
+      type: object
+      properties:
+        subject:
+          type:
+          - string
+          - 'null'
+          description: The task's subject.
+        content:
+          type:
+          - string
+          - 'null'
+          description: The task's content.
+        owner:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The task's owner.
+        account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The task's account.
+        opportunity:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The task's opportunity.
+        contact:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The task's contact.
+        completed_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the task is completed.
+        due_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the task is due.
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/TaskStatusEnum'
+          - type: 'null'
+          description: The task's status.
+        task_url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The task's URL in the remote system.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldRequest'
+      description: '# The Task Object
+
+        ### Description
+
+        The `Task` object is used to represent a task, such as a to-do item.
+
+        ### Usage Example
+
+        TODO'
+      title: TaskRequest
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    PaginatedRemoteFieldClassList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldClass'
+      title: PaginatedRemoteFieldClassList
+    TasksGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - account
+      - contact
+      - opportunity
+      - owner
+      title: TasksGetParametersExpandSchemaItems
+    ItemSchema:
+      type: object
+      properties:
+        item_type:
+          $ref: '#/components/schemas/ItemTypeEnum'
+        item_format:
+          $ref: '#/components/schemas/ItemFormatEnum'
+        item_choices:
+          type: array
+          items:
+            type: string
+      title: ItemSchema
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    RemoteFieldClass:
+      type: object
+      properties:
+        id:
+          type: string
+        display_name:
+          type: string
+        remote_key_name:
+          type: string
+        description:
+          type: string
+        is_custom:
+          type: boolean
+        is_common_model_field:
+          type: boolean
+        is_required:
+          type: boolean
+        field_type:
+          $ref: '#/components/schemas/FieldTypeEnum'
+        field_format:
+          $ref: '#/components/schemas/FieldFormatEnum'
+        field_choices:
+          type: array
+          items:
+            type: string
+        item_schema:
+          $ref: '#/components/schemas/ItemSchema'
+      title: RemoteFieldClass
+    RemoteField:
+      type: object
+      properties:
+        remote_field_class:
+          $ref: '#/components/schemas/RemoteFieldClass'
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteField
+    FieldFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldFormatEnum
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    TaskStatusEnum:
+      type: string
+      enum:
+      - OPEN
+      - CLOSED
+      title: TaskStatusEnum
+    TasksIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - account
+      - contact
+      - opportunity
+      - owner
+      title: TasksIdGetParametersExpandSchemaItems
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    FieldTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldTypeEnum
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

@@ -1,0 +1,1395 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_vendorCredits API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_vendorCredits
+paths:
+  /accounting/v1/vendor-credits:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `VendorCredit` objects.{/* BEGIN_ACCOUNTING_VENDORCREDIT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+1XYW/aOhT9K8gfESGjjFVFepoosJXqETpKq1VTZV2cSzA4dmo7lDLtvz8loSu0YazvpZv21I/4Xh/7Ht9zbvhKGFgMlL4jTQKMqVhaLgNSIaHyUZAmuUTpK93W6HNLKgQi7kGIW9l0cUAqxMRRpLRF/wNH4ZsTjRPSJG6IOkAnlnzC0XcfNrlcWgw0WK6kcb9vdibpblIhgss5+q1sw364LN1Zrzz6aVzBTXL9CIyxU63iYDrEmxjNTyAndxMYorQgHB8suBsojs5g8taSKnwUaNHvgIUOWmRJuesTp9ZGpum6UxRRNT296uPCRemCtpwJNG6jfnRweNRw1ijp6e9pIP6qlWc3YzU+LNOACQpxuT9iS2/Uu/VmwVuv/XbprS4a3mq+8mbzN2UaQLk/6jcGo6v6oNOqDXIS6Pm7z0eXx53jU6/MVt26N7u69Uas1h+x+XjVq59+ZLenJ5+W3urqoN+5qHujbuP0o6oN2kPTbw9Vv1WtkgrZfFXS/PJ1c2HdOB7a85hb3M7uhRDgBivZc0DEnSgeC86qpl6FEFZKwq2pMhW6IfocXA+tSdCouYlBYzVKuzcljCv5nfPk3Naod9ndboLWAriAsUDStDrGJ11Mml+2FNCKInH3N5dYhSgSHH0KYdInpLInzYe04PwkLheKs93xRbpK2b0IN7OyU7JuzQsxFUYg73JDsdYoWW4slT+NY+7nRSXa/MLTaKTVDFluSGOoLCZswJ4wjcBOf5CTfzELS6qfUp3FNLB5Yldry+No8tIek73hcxFqrpJz71/VKiq4THEeeN6gFZdsCjLA+ztxyURs+AKpmlALy8zm0v0yDseoSYVsU5TDyCYBVlkQD0+RX6LVIA2kMrjvw6xIcp2g3cRco38GGkK0qJOev/5WyVPuQAMTWPoQG65kqS1U7Je6w7NihJyB0wycpuC0OzyjDj3fp+yud9Ly2t1O0dr+T6Ld3eq5OXn9/vIOoKSFfKX+yBx8NEzzKGX/2e7w0hbwRL/Fa3XLHP8E4X6KOZsfKzU3pYFMqihGsg+wTjZ96cXk4N3xYe11Cj9PMS87bXeMyn85DnPktFtEf9J0O4cAS73EEFM2C9BHgkjXiOspRhcL7plD+F8qpNCRt6t5f+tn8R4dP27/18/qwsdy0Y5SjHd8Rq2K8YwEaT1NXz3i93pEEZ+5v+5vavScufwL/og+W1jX3/4B29PO3I4UAAA=" /></Footer>{/* END_ACCOUNTING_VENDORCREDIT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_vendorCredits
+      parameters:
+      - name: company_id
+        in: query
+        description: If provided, will only return vendor credits for this company.
+        required: false
+        schema:
+          type: string
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/VendorCreditsGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: transaction_date_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: transaction_date_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedVendorCreditList'
+    post:
+      operationId: create
+      summary: Create
+      description: Creates a `VendorCredit` object with the given values.{/* BEGIN_ACCOUNTING_VENDORCREDIT_CREATE_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST" data="H4sIAAAAAAAAA82Vb2/aMBDGv0rllwiSUcaqIk0TBbZSDbO1tFpXTdZhH8HFsVPboZRp331ygEK3lrVa9+ed4/ie8z2/u+Qr4eAxMfaGNAhwbnLtpU5ImaRGoCINcoZaGNuyKKQnZQKZpJDindNsukvKxOVZZqxH8VaiEu7Q4og0SJyiTbCSazmSKOJ1UCy1x8SCl0a7+Da4MiqiSZkoqScomouAX8stjleWOz88ulhJF66fgXN+bE2ejI/xKkf3COVwN4Upag+qIsBDvKFSsQuZ+/ZCFQIVehRt8NBGjzyUu8w49j5zjTgeo8qiInskcBqjjsF6yRW6uF7b393br1eWKkX2NyxRr6uly6uhGe6VWMIVg7zUG/AZHXSv6WXykrZezuj8tE7nkzm9nLwosQRKvUGv3h+c1/rtZrV/zwF28urT/tlB++CIlvi8U6OX59d0wKu9AZ8M593a0Tt+fXT4cUbn57u99mmNDjr1o3em2m8du17r2PSaUUTKZJMqaVx83dxYNg5Ff5JLj3dPd1NIcMOVBQ7IZCXLh0ryyNUiSGFuNFy7iJs0TlFIiCl6F9SYu8rBYpQV3VsYJo2+9TzkbQ66Z527TdCcglQwVEga3ub4UxeTxsVmo2dopRHFGGRKomDeMCU1BtLcpBnom7DKrUXNwxJnfAw6QWahKHh1WOfpEC0pE4up8chkEPXGg2KQhmzh0QKfhKzLEZVFpLegHRQ1MbEQnRYjSr4EtatcWhQfwEKKHm1RwPpmRfpIo19nWQV/K9/H6mMu+eTAmInb6esQ/TzQ1rKVBTZ2Otp9dbBX/RP47kH1nwFaJX0Yz2oRSfEQqhNIcKerPXDun4dSUGRLRXay4DSdSur24C9xesxISc1V7uQUmRkxD7MNiNvZPZXShqMsC29clMFN+C+wFP24+C5sn6ZPaM3zoAlKy9H55yOzBcAjp+ipJLa7/NmMzU7xcXker4NeIbeagfcmMVtc79DDJm112k/3/Xf7/Q/Zvb7WrfFfvn0HlUiUqDoKAAA=" /></Footer>{/* END_ACCOUNTING_VENDORCREDIT_CREATE_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_vendorCredits
+      parameters:
+      - name: is_debug_mode
+        in: query
+        description: Whether to include debug fields (such as log file links) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: run_async
+        in: query
+        description: Whether or not third-party updates should be run asynchronously.
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VendorCreditResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VendorCreditEndpointRequest'
+  /accounting/v1/vendor-credits/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `VendorCredit` object with the given `id`.{/* BEGIN_ACCOUNTING_VENDORCREDIT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+1XYW/aOhT9K8gfESGjjFVFepoosJXqETpKq1VTZV2cSzA4dmo7lDLtvz8loSu0YazvpZv21I/4Xh/7Ht9zbvhKGFgMlL4jTQKMqVhaLgNSIaHyUZAmuUTpK93W6HNLKgQi7kGIW9l0cUAqxMRRpLRF/wNH4ZsTjRPSJG6IOkAnlnzC0XcfNrlcWgw0WK6kcb9vdibpblIhgss5+q1sw364LN1Zrzz6aVzBTXL9CIyxU63iYDrEmxjNTyAndxMYorQgHB8suBsojs5g8taSKnwUaNHvgIUOWmRJuesTp9ZGpum6UxRRNT296uPCRemCtpwJNG6jfnRweNRw1ijp6e9pIP6qlWc3YzU+LNOACQpxuT9iS2/Uu/VmwVuv/XbprS4a3mq+8mbzN2UaQLk/6jcGo6v6oNOqDXIS6Pm7z0eXx53jU6/MVt26N7u69Uas1h+x+XjVq59+ZLenJ5+W3urqoN+5qHujbuP0o6oN2kPTbw9Vv1WtkgrZfFXS/PJ1c2HdOB7a85hb3M7uhRDgBivZc0DEnSgeC86qpl6FEFZKwq2pMhW6IfocXA+tSdCouYlBYzVKuzcljCv5nfPk3Naod9ndboLWAriAsUDStDrGJ11Mml+2FNCKInH3N5dYhSgSHH0KYdInpLInzYe04PwkLheKs93xRbpK2b0IN7OyU7JuzQsxFUYg73JDsdYoWW4slT+NY+7nRSXa/MLTaKTVDFluSGOoLCZswJ4wjcBOf5CTfzELS6qfUp3FNLB5Yldry+No8tIek73hcxFqrpJz71/VKiq4THEeeN6gFZdsCjLA+ztxyURs+AKpmlALy8zm0v0yDseoSYVsU5TDyCYBVlkQD0+RX6LVIA2kMrjvw6xIcp2g3cRco38GGkK0qJOev/5WyVPuQAMTWPoQG65kqS1U7Je6w7NihJyB0wycpuC0OzyjDj3fp+yud9Ly2t1O0dr+T6Ld3eq5OXn9/vIOoKSFfKX+yBx8NEzzKGX/2e7w0hbwRL/Fa3XLHP8E4X6KOZsfKzU3pYFMqihGsg+wTjZ96cXk4N3xYe11Cj9PMS87bXeMyn85DnPktFtEf9J0O4cAS73EEFM2C9BHgkjXiOspRhcL7plD+F8qpNCRt6t5f+tn8R4dP27/18/qwsdy0Y5SjHd8Rq2K8YwEaT1NXz3i93pEEZ+5v+5vavScufwL/og+W1jX3/4B29PO3I4UAAA=" /></Footer>{/* END_ACCOUNTING_VENDORCREDIT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_vendorCredits
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/VendorCreditsIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VendorCredit'
+    patch:
+      operationId: partial-update
+      summary: Partial Update
+      description: Updates a `VendorCredit` object with the given `id`.{/* BEGIN_ACCOUNTING_VENDORCREDIT_EDIT_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="PATCH" data="H4sIAAAAAAAAA71UbU8iMRD+K5d+JPtygGgkuVx48RQSllNXozGmGbrDUui2S9sFxPjfL12Iwp0X7y6e3zrtzDPT53naR8LAYqr0A2kSYEwV0nKZEo9kKkFBmuQaZaJ0R2PCLfEI5DyCDPey6aJGPGKKPFfaYvKNo0jMmcYxaZIwQ52iX0g+5piEL0UhlxZTDZYracLnYn9cVhOPCC5nmLQ2BW/DbdL97c5PoQkFN278HIyxE62KdHKB8wLNHyC72QRmKC0IPwEL4Q6Krzcwr+25WyQo0GLSBQtdtMjcdbcdJ9bmphmGExR5UHYPElyEKEPQljOBJmzUj2tHxw1/i1J2/0pT8aVamc5HanRUoSkTFIrKIGarKO4to2l6EHUOVtH6qhGtZ+toOvtcoSlUBvGgMYxv68Nuqzp8JYFeHt4cX7e77X5UYeuTejS9XUYxqw5iNhute/X+KVv2z85X0fq2Nuhe1aP4pNE/VdVh58IMOhdq0AoC4pFdVUnz7nF3Y2ucCO1lwS3uZ/cySHGHlY0ckHM/L0aCs8DUA8hgrSQsTcBUFmaYcAgjtMahUTMvQGOQl+4tCeNKPnPu+rbi3vXJvglaC+ACRgJJ0+oCf3Exad7tGj1HzVVCPMJUloN8cKtCa5TMLXHFJiBTpBrK2wku0XlAFtkINfGIxkxZpNwhWGVBUMgctAs1SAPlqDTZlC/Kl0fuXd284BqT76AhQ4vazXX/5L3G7nnB2ayt1Mx8Gko3wfvQ/ALrb4imV+PaYfuo+h8I/wdK3cPYj2gOdvIm52zmZN3+gbyE/nsldvmluTsxQQ4P7segW/PQkmc3xW9ku0Gt3kepG9Rqq9HHasMlE4XhC6RqTC2sPuAF3D/9ADeCVeTBBgAA" /></Footer>{/* END_ACCOUNTING_VENDORCREDIT_EDIT_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_vendorCredits
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: is_debug_mode
+        in: query
+        description: Whether to include debug fields (such as log file links) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: run_async
+        in: query
+        description: Whether or not third-party updates should be run asynchronously.
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VendorCreditResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedVendorCreditEndpointRequest'
+  /accounting/v1/vendor-credits/{id}/application:
+    post:
+      operationId: application-create
+      summary: Application Create
+      description: Creates a new VendorCreditApplyLine to apply a vendor credit to an invoice{/* BEGIN_ACCOUNTING_VENDORCREDIT_CREATE_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST" data="H4sIAAAAAAAAA82Vb2/aMBDGv0rllwiSUcaqIk0TBbZSDbO1tFpXTdZhH8HFsVPboZRp331ygEK3lrVa9+ed4/ie8z2/u+Qr4eAxMfaGNAhwbnLtpU5ImaRGoCINcoZaGNuyKKQnZQKZpJDindNsukvKxOVZZqxH8VaiEu7Q4og0SJyiTbCSazmSKOJ1UCy1x8SCl0a7+Da4MiqiSZkoqScomouAX8stjleWOz88ulhJF66fgXN+bE2ejI/xKkf3COVwN4Upag+qIsBDvKFSsQuZ+/ZCFQIVehRt8NBGjzyUu8w49j5zjTgeo8qiInskcBqjjsF6yRW6uF7b393br1eWKkX2NyxRr6uly6uhGe6VWMIVg7zUG/AZHXSv6WXykrZezuj8tE7nkzm9nLwosQRKvUGv3h+c1/rtZrV/zwF28urT/tlB++CIlvi8U6OX59d0wKu9AZ8M593a0Tt+fXT4cUbn57u99mmNDjr1o3em2m8du17r2PSaUUTKZJMqaVx83dxYNg5Ff5JLj3dPd1NIcMOVBQ7IZCXLh0ryyNUiSGFuNFy7iJs0TlFIiCl6F9SYu8rBYpQV3VsYJo2+9TzkbQ66Z527TdCcglQwVEga3ub4UxeTxsVmo2dopRHFGGRKomDeMCU1BtLcpBnom7DKrUXNwxJnfAw6QWahKHh1WOfpEC0pE4up8chkEPXGg2KQhmzh0QKfhKzLEZVFpLegHRQ1MbEQnRYjSr4EtatcWhQfwEKKHm1RwPpmRfpIo19nWQV/K9/H6mMu+eTAmInb6esQ/TzQ1rKVBTZ2Otp9dbBX/RP47kH1nwFaJX0Yz2oRSfEQqhNIcKerPXDun4dSUGRLRXay4DSdSur24C9xesxISc1V7uQUmRkxD7MNiNvZPZXShqMsC29clMFN+C+wFP24+C5sn6ZPaM3zoAlKy9H55yOzBcAjp+ipJLa7/NmMzU7xcXker4NeIbeagfcmMVtc79DDJm112k/3/Xf7/Q/Zvb7WrfFfvn0HlUiUqDoKAAA=" /></Footer>{/* END_ACCOUNTING_VENDORCREDIT_CREATE_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_vendorCredits
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: is_debug_mode
+        in: query
+        description: Whether to include debug fields (such as log file links) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: run_async
+        in: query
+        description: Whether or not third-party updates should be run asynchronously.
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VendorCreditResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplyVendorCreditRequest'
+  /accounting/v1/vendor-credits/meta/patch/{id}:
+    get:
+      operationId: meta-patch-retrieve
+      summary: Meta Patch Retrieve
+      description: Returns metadata for `VendorCredit` PATCHs.{/* BEGIN_ACCOUNTING_VENDORCREDIT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+1XYW/aOhT9K8gfESGjjFVFepoosJXqETpKq1VTZV2cSzA4dmo7lDLtvz8loSu0YazvpZv21I/4Xh/7Ht9zbvhKGFgMlL4jTQKMqVhaLgNSIaHyUZAmuUTpK93W6HNLKgQi7kGIW9l0cUAqxMRRpLRF/wNH4ZsTjRPSJG6IOkAnlnzC0XcfNrlcWgw0WK6kcb9vdibpblIhgss5+q1sw364LN1Zrzz6aVzBTXL9CIyxU63iYDrEmxjNTyAndxMYorQgHB8suBsojs5g8taSKnwUaNHvgIUOWmRJuesTp9ZGpum6UxRRNT296uPCRemCtpwJNG6jfnRweNRw1ijp6e9pIP6qlWc3YzU+LNOACQpxuT9iS2/Uu/VmwVuv/XbprS4a3mq+8mbzN2UaQLk/6jcGo6v6oNOqDXIS6Pm7z0eXx53jU6/MVt26N7u69Uas1h+x+XjVq59+ZLenJ5+W3urqoN+5qHujbuP0o6oN2kPTbw9Vv1WtkgrZfFXS/PJ1c2HdOB7a85hb3M7uhRDgBivZc0DEnSgeC86qpl6FEFZKwq2pMhW6IfocXA+tSdCouYlBYzVKuzcljCv5nfPk3Naod9ndboLWAriAsUDStDrGJ11Mml+2FNCKInH3N5dYhSgSHH0KYdInpLInzYe04PwkLheKs93xRbpK2b0IN7OyU7JuzQsxFUYg73JDsdYoWW4slT+NY+7nRSXa/MLTaKTVDFluSGOoLCZswJ4wjcBOf5CTfzELS6qfUp3FNLB5Yldry+No8tIek73hcxFqrpJz71/VKiq4THEeeN6gFZdsCjLA+ztxyURs+AKpmlALy8zm0v0yDseoSYVsU5TDyCYBVlkQD0+RX6LVIA2kMrjvw6xIcp2g3cRco38GGkK0qJOev/5WyVPuQAMTWPoQG65kqS1U7Je6w7NihJyB0wycpuC0OzyjDj3fp+yud9Ly2t1O0dr+T6Ld3eq5OXn9/vIOoKSFfKX+yBx8NEzzKGX/2e7w0hbwRL/Fa3XLHP8E4X6KOZsfKzU3pYFMqihGsg+wTjZ96cXk4N3xYe11Cj9PMS87bXeMyn85DnPktFtEf9J0O4cAS73EEFM2C9BHgkjXiOspRhcL7plD+F8qpNCRt6t5f+tn8R4dP27/18/qwsdy0Y5SjHd8Rq2K8YwEaT1NXz3i93pEEZ+5v+5vavScufwL/og+W1jX3/4B29PO3I4UAAA=" /></Footer>{/* END_ACCOUNTING_VENDORCREDIT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_vendorCredits
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaResponse'
+  /accounting/v1/vendor-credits/meta/post:
+    get:
+      operationId: meta-post-retrieve
+      summary: Meta Post Retrieve
+      description: Returns metadata for `VendorCredit` POSTs.{/* BEGIN_ACCOUNTING_VENDORCREDIT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+1XYW/aOhT9K8gfESGjjFVFepoosJXqETpKq1VTZV2cSzA4dmo7lDLtvz8loSu0YazvpZv21I/4Xh/7Ht9zbvhKGFgMlL4jTQKMqVhaLgNSIaHyUZAmuUTpK93W6HNLKgQi7kGIW9l0cUAqxMRRpLRF/wNH4ZsTjRPSJG6IOkAnlnzC0XcfNrlcWgw0WK6kcb9vdibpblIhgss5+q1sw364LN1Zrzz6aVzBTXL9CIyxU63iYDrEmxjNTyAndxMYorQgHB8suBsojs5g8taSKnwUaNHvgIUOWmRJuesTp9ZGpum6UxRRNT296uPCRemCtpwJNG6jfnRweNRw1ijp6e9pIP6qlWc3YzU+LNOACQpxuT9iS2/Uu/VmwVuv/XbprS4a3mq+8mbzN2UaQLk/6jcGo6v6oNOqDXIS6Pm7z0eXx53jU6/MVt26N7u69Uas1h+x+XjVq59+ZLenJ5+W3urqoN+5qHujbuP0o6oN2kPTbw9Vv1WtkgrZfFXS/PJ1c2HdOB7a85hb3M7uhRDgBivZc0DEnSgeC86qpl6FEFZKwq2pMhW6IfocXA+tSdCouYlBYzVKuzcljCv5nfPk3Naod9ndboLWAriAsUDStDrGJ11Mml+2FNCKInH3N5dYhSgSHH0KYdInpLInzYe04PwkLheKs93xRbpK2b0IN7OyU7JuzQsxFUYg73JDsdYoWW4slT+NY+7nRSXa/MLTaKTVDFluSGOoLCZswJ4wjcBOf5CTfzELS6qfUp3FNLB5Yldry+No8tIek73hcxFqrpJz71/VKiq4THEeeN6gFZdsCjLA+ztxyURs+AKpmlALy8zm0v0yDseoSYVsU5TDyCYBVlkQD0+RX6LVIA2kMrjvw6xIcp2g3cRco38GGkK0qJOev/5WyVPuQAMTWPoQG65kqS1U7Je6w7NihJyB0wycpuC0OzyjDj3fp+yud9Ly2t1O0dr+T6Ld3eq5OXn9/vIOoKSFfKX+yBx8NEzzKGX/2e7w0hbwRL/Fa3XLHP8E4X6KOZsfKzU3pYFMqihGsg+wTjZ96cXk4N3xYe11Cj9PMS87bXeMyn85DnPktFtEf9J0O4cAS73EEFM2C9BHgkjXiOspRhcL7plD+F8qpNCRt6t5f+tn8R4dP27/18/qwsdy0Y5SjHd8Rq2K8YwEaT1NXz3i93pEEZ+5v+5vavScufwL/og+W1jX3/4B29PO3I4UAAA=" /></Footer>{/* END_ACCOUNTING_VENDORCREDIT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_vendorCredits
+      parameters:
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaResponse'
+components:
+  schemas:
+    ApplyVendorCreditRequest:
+      type: object
+      properties:
+        invoice:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The invoice to apply the vendor credit to.
+        applied_date:
+          type: string
+          format: date-time
+          description: Date that the vendor credit is applied to the invoice.
+        applied_amount:
+          type: string
+          format: decimal
+          description: The amount of vendor credit applied to the invoice.
+      required:
+      - invoice
+      - applied_date
+      - applied_amount
+      title: ApplyVendorCreditRequest
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    PatchedVendorCreditEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/PatchedVendorCreditRequest'
+      required:
+      - model
+      title: PatchedVendorCreditEndpointRequest
+    PatchedVendorCreditRequest:
+      type: object
+      properties:
+        number:
+          type:
+          - string
+          - 'null'
+          description: The vendor credit's number.
+        transaction_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The vendor credit's transaction date.
+        vendor:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The vendor that owes the gift or refund.
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: The vendor credit's currency. The currency code in ISO 4217 format.
+        exchange_rate:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The vendor credit's exchange rate.
+        inclusive_of_tax:
+          type:
+          - boolean
+          - 'null'
+          description: If the transaction is inclusive or exclusive of tax. `True` if inclusive, `False` if exclusive.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the vendor credit belongs to.
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The VendorCredit Object
+
+        ### Description
+
+        A `VendorCredit` is transaction issued by a vendor to the accounting company, indicating a reduction or cancellation of the amount owed to the vendor. It is most generally used as an adjustment note used to rectify errors, returns, or overpayments related to a purchasing transaction. A `VendorCredit` can be applied to `Accounts Payable` Invoices to decrease the overall amount of the `Invoice`.
+
+
+        ### Usage Example
+
+        Fetch from the `GET VendorCredit` endpoint and view a company''s vendor credits.'
+      title: PatchedVendorCreditRequest
+    VendorCreditsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - accounting_period
+      - company
+      - lines
+      - tracking_categories
+      - vendor
+      title: VendorCreditsGetParametersExpandSchemaItems
+    VendorCreditResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/VendorCredit'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: VendorCreditResponse
+    VendorCredit:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        number:
+          type:
+          - string
+          - 'null'
+          description: The vendor credit's number.
+        transaction_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The vendor credit's transaction date.
+        vendor:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The vendor that owes the gift or refund.
+        total_amount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The vendor credit's total amount.
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: The vendor credit's currency. The currency code in ISO 4217 format.
+        exchange_rate:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The vendor credit's exchange rate.
+        inclusive_of_tax:
+          type:
+          - boolean
+          - 'null'
+          description: If the transaction is inclusive or exclusive of tax. `True` if inclusive, `False` if exclusive.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the vendor credit belongs to.
+        lines:
+          type: array
+          items:
+            $ref: '#/components/schemas/VendorCreditLine'
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+        applied_to_lines:
+          type: array
+          items:
+            $ref: '#/components/schemas/VendorCreditApplyLineForVendorCredit'
+          description: A list of VendorCredit Applied to Lines objects.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        accounting_period:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The accounting period that the VendorCredit was generated in.
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/VendorCreditFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The VendorCredit Object
+
+        ### Description
+
+        A `VendorCredit` is transaction issued by a vendor to the accounting company, indicating a reduction or cancellation of the amount owed to the vendor. It is most generally used as an adjustment note used to rectify errors, returns, or overpayments related to a purchasing transaction. A `VendorCredit` can be applied to `Accounts Payable` Invoices to decrease the overall amount of the `Invoice`.
+
+
+        ### Usage Example
+
+        Fetch from the `GET VendorCredit` endpoint and view a company''s vendor credits.'
+      title: VendorCredit
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    VendorCreditEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/VendorCreditRequest'
+      required:
+      - model
+      title: VendorCreditEndpointRequest
+    VendorCreditLine:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        net_amount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The full value of the credit.
+        tracking_category:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The line's associated tracking category.
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: The vendor credit line item's associated tracking categories.
+        description:
+          type:
+          - string
+          - 'null'
+          description: The line's description.
+        account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The line's account.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the line belongs to.
+        project:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        contact:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        tax_rate:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The tax rate that applies to this line item.
+        exchange_rate:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The vendor credit line item's exchange rate.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+      description: '# The VendorCreditLine Object
+
+        ### Description
+
+        The `VendorCreditLine` object is used to represent a vendor credit''s line items.
+
+
+        ### Usage Example
+
+        Fetch from the `GET VendorCredit` endpoint and view the vendor credit''s line items.'
+      title: VendorCreditLine
+    VendorCreditApplyLineForVendorCredit:
+      type: object
+      properties:
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        invoice:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        applied_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Date that the vendor credit is applied to the invoice.
+        applied_amount:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The amount of the VendorCredit applied to the invoice.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+      description: '# The VendorCreditApplyLine Object
+
+        ### Description
+
+        The `VendorCreditApplyLine` object is used to represent a applied vendor credit.
+
+
+        ### Usage Example
+
+        Fetch from the `GET VendorCredit` endpoint and view the vendor credit''s applied to lines.'
+      title: VendorCreditApplyLineForVendorCredit
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    VendorCreditsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - accounting_period
+      - company
+      - lines
+      - tracking_categories
+      - vendor
+      title: VendorCreditsIdGetParametersExpandSchemaItems
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    VendorCreditApplyLineForVendorCreditRequest:
+      type: object
+      properties:
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        invoice:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        applied_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Date that the vendor credit is applied to the invoice.
+        applied_amount:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The amount of the VendorCredit applied to the invoice.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The VendorCreditApplyLine Object
+
+        ### Description
+
+        The `VendorCreditApplyLine` object is used to represent a applied vendor credit.
+
+
+        ### Usage Example
+
+        Fetch from the `GET VendorCredit` endpoint and view the vendor credit''s applied to lines.'
+      title: VendorCreditApplyLineForVendorCreditRequest
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    TransactionCurrencyEnum:
+      type: string
+      enum:
+      - XUA
+      - AFN
+      - AFA
+      - ALL
+      - ALK
+      - DZD
+      - ADP
+      - AOA
+      - AOK
+      - AON
+      - AOR
+      - ARA
+      - ARS
+      - ARM
+      - ARP
+      - ARL
+      - AMD
+      - AWG
+      - AUD
+      - ATS
+      - AZN
+      - AZM
+      - BSD
+      - BHD
+      - BDT
+      - BBD
+      - BYN
+      - BYB
+      - BYR
+      - BEF
+      - BEC
+      - BEL
+      - BZD
+      - BMD
+      - BTN
+      - BOB
+      - BOL
+      - BOV
+      - BOP
+      - BAM
+      - BAD
+      - BAN
+      - BWP
+      - BRC
+      - BRZ
+      - BRE
+      - BRR
+      - BRN
+      - BRB
+      - BRL
+      - GBP
+      - BND
+      - BGL
+      - BGN
+      - BGO
+      - BGM
+      - BUK
+      - BIF
+      - XPF
+      - KHR
+      - CAD
+      - CVE
+      - KYD
+      - XAF
+      - CLE
+      - CLP
+      - CLF
+      - CNX
+      - CNY
+      - CNH
+      - COP
+      - COU
+      - KMF
+      - CDF
+      - CRC
+      - HRD
+      - HRK
+      - CUC
+      - CUP
+      - CYP
+      - CZK
+      - CSK
+      - DKK
+      - DJF
+      - DOP
+      - NLG
+      - XCD
+      - DDM
+      - ECS
+      - ECV
+      - EGP
+      - GQE
+      - ERN
+      - EEK
+      - ETB
+      - EUR
+      - XBA
+      - XEU
+      - XBB
+      - XBC
+      - XBD
+      - FKP
+      - FJD
+      - FIM
+      - FRF
+      - XFO
+      - XFU
+      - GMD
+      - GEK
+      - GEL
+      - DEM
+      - GHS
+      - GHC
+      - GIP
+      - XAU
+      - GRD
+      - GTQ
+      - GWP
+      - GNF
+      - GNS
+      - GYD
+      - HTG
+      - HNL
+      - HKD
+      - HUF
+      - IMP
+      - ISK
+      - ISJ
+      - INR
+      - IDR
+      - IRR
+      - IQD
+      - IEP
+      - ILS
+      - ILP
+      - ILR
+      - ITL
+      - JMD
+      - JPY
+      - JOD
+      - KZT
+      - KES
+      - KWD
+      - KGS
+      - LAK
+      - LVL
+      - LVR
+      - LBP
+      - LSL
+      - LRD
+      - LYD
+      - LTL
+      - LTT
+      - LUL
+      - LUC
+      - LUF
+      - MOP
+      - MKD
+      - MKN
+      - MGA
+      - MGF
+      - MWK
+      - MYR
+      - MVR
+      - MVP
+      - MLF
+      - MTL
+      - MTP
+      - MRU
+      - MRO
+      - MUR
+      - MXV
+      - MXN
+      - MXP
+      - MDC
+      - MDL
+      - MCF
+      - MNT
+      - MAD
+      - MAF
+      - MZE
+      - MZN
+      - MZM
+      - MMK
+      - NAD
+      - NPR
+      - ANG
+      - TWD
+      - NZD
+      - NIO
+      - NIC
+      - NGN
+      - KPW
+      - NOK
+      - OMR
+      - PKR
+      - XPD
+      - PAB
+      - PGK
+      - PYG
+      - PEI
+      - PEN
+      - PES
+      - PHP
+      - XPT
+      - PLN
+      - PLZ
+      - PTE
+      - GWE
+      - QAR
+      - XRE
+      - RHD
+      - RON
+      - ROL
+      - RUB
+      - RUR
+      - RWF
+      - SVC
+      - WST
+      - SAR
+      - RSD
+      - CSD
+      - SCR
+      - SLL
+      - XAG
+      - SGD
+      - SKK
+      - SIT
+      - SBD
+      - SOS
+      - ZAR
+      - ZAL
+      - KRH
+      - KRW
+      - KRO
+      - SSP
+      - SUR
+      - ESP
+      - ESA
+      - ESB
+      - XDR
+      - LKR
+      - SHP
+      - XSU
+      - SDD
+      - SDG
+      - SDP
+      - SRD
+      - SRG
+      - SZL
+      - SEK
+      - CHF
+      - SYP
+      - STN
+      - STD
+      - TVD
+      - TJR
+      - TJS
+      - TZS
+      - XTS
+      - THB
+      - XXX
+      - TPE
+      - TOP
+      - TTD
+      - TND
+      - TRY
+      - TRL
+      - TMT
+      - TMM
+      - USD
+      - USN
+      - USS
+      - UGX
+      - UGS
+      - UAH
+      - UAK
+      - AED
+      - UYW
+      - UYU
+      - UYP
+      - UYI
+      - UZS
+      - VUV
+      - VES
+      - VEB
+      - VEF
+      - VND
+      - VNN
+      - CHE
+      - CHW
+      - XOF
+      - YDD
+      - YER
+      - YUN
+      - YUD
+      - YUM
+      - YUR
+      - ZWN
+      - ZRN
+      - ZRZ
+      - ZMW
+      - ZMK
+      - ZWD
+      - ZWR
+      - ZWL
+      description: The currency code in ISO 4217 format.
+      title: TransactionCurrencyEnum
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    PaginatedVendorCreditList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/VendorCredit'
+      title: PaginatedVendorCreditList
+    VendorCreditFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: VendorCreditFieldMappings
+    VendorCreditRequest:
+      type: object
+      properties:
+        number:
+          type:
+          - string
+          - 'null'
+          description: The vendor credit's number.
+        transaction_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The vendor credit's transaction date.
+        vendor:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The vendor that owes the gift or refund.
+        total_amount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The vendor credit's total amount.
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: The vendor credit's currency. The currency code in ISO 4217 format.
+        exchange_rate:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The vendor credit's exchange rate.
+        inclusive_of_tax:
+          type:
+          - boolean
+          - 'null'
+          description: If the transaction is inclusive or exclusive of tax. `True` if inclusive, `False` if exclusive.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the vendor credit belongs to.
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+        applied_to_lines:
+          type: array
+          items:
+            $ref: '#/components/schemas/VendorCreditApplyLineForVendorCreditRequest'
+          description: A list of VendorCredit Applied to Lines objects.
+        accounting_period:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The accounting period that the VendorCredit was generated in.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The VendorCredit Object
+
+        ### Description
+
+        A `VendorCredit` is transaction issued by a vendor to the accounting company, indicating a reduction or cancellation of the amount owed to the vendor. It is most generally used as an adjustment note used to rectify errors, returns, or overpayments related to a purchasing transaction. A `VendorCredit` can be applied to `Accounts Payable` Invoices to decrease the overall amount of the `Invoice`.
+
+
+        ### Usage Example
+
+        Fetch from the `GET VendorCredit` endpoint and view a company''s vendor credits.'
+      title: VendorCreditRequest
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

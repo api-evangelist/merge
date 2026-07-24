@@ -1,0 +1,348 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_messages API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_messages
+paths:
+  /messages:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Message` objects.{/* BEGIN_CHAT_MESSAGE_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA31TbU/bMBD+K5M/VnlZKR1qpGkqlEErJWUQ0BBC0cW+pm4dO/VLC0H898ltx7oN8cWS75577rHvuRdCwWKl9DNJCJ2DJQGpFUNBEpKiMVAhCQg0PIMa95BifUQCYlzTKG2RfecomLnUOCMJiWvUFYZO8hlHFnt4zKXFSoPlSpr4rSycbetIQASXS2RDSpWT9iOiHTCEHfKfq4kFN15+A8bYuVauml/jyqH5kNPrEVijtCBCBhbig/pQ7wjei3nlDAVaZCOwMEKL1D9x32tubWOSOJ6jaKJt34jhOkYZg7acCjRxvzc4Ohn0wz3Ltvu3ohJfu53FqlTlSaeoqCjAddKcPmX5eJMtquPs7Pgpa2/7Wbtss8Xyc6eooJPmaX+a3/emo2F3+g6guPnyc3B3OjqdZB3anveyxf0my2k3zemybMe9yQXdTC5/PGXt/VE6uu1l+Xl/cqG607Nrk55dq3QYRSQgh5MkycPLYWBvkJRTrYya2U85Qu0/6QAzrr2f/nzObh7Q8LBxpeA0Mr0IamiVhI2JqKrjGhmH+I202JIWNysHGqNGVr+HwJV8mwBJSDbMx3fnf5thuAYuoBRIEqsd/udgkjyQUrFnEhCq5Bq12WouOCMB0VgriwXVCBZZsd2Tfeww7xp2kFfKFvVuiXYo48oFUlsILv1aOclXzqdQWm9J7WNa+NOg9iWPnnnluEZ2BRpqtKi90MfXx9dfUhLBZrsDAAA=" /></Footer>{/* END_CHAT_MESSAGE_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_messages
+      parameters:
+      - name: conversation_id
+        in: query
+        description: Filter messages by conversation ID.
+        required: false
+        schema:
+          type: string
+          format: uuid
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: order_by
+        in: query
+        description: 'Overrides the default ordering for this endpoint. Possible values include: remote_created_at, -remote_created_at.'
+        required: false
+        schema:
+          $ref: '#/components/schemas/MessagesGetParametersOrderBy'
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: root_message
+        in: query
+        description: If provided as 'true', will only return root messages (messages without a parent message).
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedMessageList'
+  /messages/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `Message` object with the given `id`.{/* BEGIN_CHAT_MESSAGE_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA31TbU/bMBD+K5M/VnlZKR1qpGkqlEErJWUQ0BBC0cW+pm4dO/VLC0H898ltx7oN8cWS75577rHvuRdCwWKl9DNJCJ2DJQGpFUNBEpKiMVAhCQg0PIMa95BifUQCYlzTKG2RfecomLnUOCMJiWvUFYZO8hlHFnt4zKXFSoPlSpr4rSycbetIQASXS2RDSpWT9iOiHTCEHfKfq4kFN15+A8bYuVauml/jyqH5kNPrEVijtCBCBhbig/pQ7wjei3nlDAVaZCOwMEKL1D9x32tubWOSOJ6jaKJt34jhOkYZg7acCjRxvzc4Ohn0wz3Ltvu3ohJfu53FqlTlSaeoqCjAddKcPmX5eJMtquPs7Pgpa2/7Wbtss8Xyc6eooJPmaX+a3/emo2F3+g6guPnyc3B3OjqdZB3anveyxf0my2k3zemybMe9yQXdTC5/PGXt/VE6uu1l+Xl/cqG607Nrk55dq3QYRSQgh5MkycPLYWBvkJRTrYya2U85Qu0/6QAzrr2f/nzObh7Q8LBxpeA0Mr0IamiVhI2JqKrjGhmH+I202JIWNysHGqNGVr+HwJV8mwBJSDbMx3fnf5thuAYuoBRIEqsd/udgkjyQUrFnEhCq5Bq12WouOCMB0VgriwXVCBZZsd2Tfeww7xp2kFfKFvVuiXYo48oFUlsILv1aOclXzqdQWm9J7WNa+NOg9iWPnnnluEZ2BRpqtKi90MfXx9dfUhLBZrsDAAA=" /></Footer>{/* END_CHAT_MESSAGE_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_messages
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+  /messages/{message_id}/replies:
+    get:
+      operationId: replies-list
+      summary: Replies List
+      description: Returns a list of `Message` objects.{/* BEGIN_CHAT_MESSAGE_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA31TbU/bMBD+K5M/VnlZKR1qpGkqlEErJWUQ0BBC0cW+pm4dO/VLC0H898ltx7oN8cWS75577rHvuRdCwWKl9DNJCJ2DJQGpFUNBEpKiMVAhCQg0PIMa95BifUQCYlzTKG2RfecomLnUOCMJiWvUFYZO8hlHFnt4zKXFSoPlSpr4rSycbetIQASXS2RDSpWT9iOiHTCEHfKfq4kFN15+A8bYuVauml/jyqH5kNPrEVijtCBCBhbig/pQ7wjei3nlDAVaZCOwMEKL1D9x32tubWOSOJ6jaKJt34jhOkYZg7acCjRxvzc4Ohn0wz3Ltvu3ohJfu53FqlTlSaeoqCjAddKcPmX5eJMtquPs7Pgpa2/7Wbtss8Xyc6eooJPmaX+a3/emo2F3+g6guPnyc3B3OjqdZB3anveyxf0my2k3zemybMe9yQXdTC5/PGXt/VE6uu1l+Xl/cqG607Nrk55dq3QYRSQgh5MkycPLYWBvkJRTrYya2U85Qu0/6QAzrr2f/nzObh7Q8LBxpeA0Mr0IamiVhI2JqKrjGhmH+I202JIWNysHGqNGVr+HwJV8mwBJSDbMx3fnf5thuAYuoBRIEqsd/udgkjyQUrFnEhCq5Bq12WouOCMB0VgriwXVCBZZsd2Tfeww7xp2kFfKFvVuiXYo48oFUlsILv1aOclXzqdQWm9J7WNa+NOg9iWPnnnluEZ2BRpqtKi90MfXx9dfUhLBZrsDAAA=" /></Footer>{/* END_CHAT_MESSAGE_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_messages
+      parameters:
+      - name: message_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: order_by
+        in: query
+        description: 'Overrides the default ordering for this endpoint. Possible values include: remote_created_at, -remote_created_at.'
+        required: false
+        schema:
+          $ref: '#/components/schemas/MessagesMessageIdRepliesGetParametersOrderBy'
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedMessageList'
+components:
+  schemas:
+    Message:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        user_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The user that sent the message.
+        conversation_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The conversation this message belongs to.
+        body:
+          type:
+          - string
+          - 'null'
+          description: The body of the message.
+        subject_line:
+          type:
+          - string
+          - 'null'
+          description: The subject line of the message.
+        root_message_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The root message this message belongs to.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The url of the message.
+        remote_created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's conversation was created.
+        remote_updated_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's conversation was updated.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+      description: '# The Message Object
+
+        ### Description
+
+        The `Message` object is used to represent a message within the Chat account.
+
+        ### Usage Example
+
+        Fetch from the `GET /api/chat/v1/messages` endpoint and view their message.'
+      title: Message
+    PaginatedMessageList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+      title: PaginatedMessageList
+    MessagesMessageIdRepliesGetParametersOrderBy:
+      type: string
+      enum:
+      - -remote_created_at
+      - remote_created_at
+      title: MessagesMessageIdRepliesGetParametersOrderBy
+    MessagesGetParametersOrderBy:
+      type: string
+      enum:
+      - -remote_created_at
+      - remote_created_at
+      title: MessagesGetParametersOrderBy
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

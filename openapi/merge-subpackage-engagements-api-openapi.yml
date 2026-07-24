@@ -1,0 +1,1040 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_engagements API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_engagements
+paths:
+  /crm/v1/engagements:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Engagement` objects.{/* BEGIN_CRM_ENGAGEMENT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+1Y/W/aOBj+V5B/RECuZXQr0unEgBv0lLQHWe+6qYpenJfE4MSu7UDLtP/9lPBReuvQNhnYtP2WWK8f28/7+P3wB0LBYCTUA2kSqhJSIYkIkZMm6aYRRJhgakiFgGQeJLg0CmanpEJ0JqVQBsM/GfJQ9xSOSZM4CaoIq1nKxgxDh6rEYanBSIFhItXOZlZ1XEwjFcJZOsWwRanIUrMDZ2lXhaXh/361w5nOdypBaxMrkUXxAO8y1Lsg893w4ozAqyEYcLamV9Vy/nNj+b5D5Ggw7ICBDhqk+QFXS8XGSN10nBi5rBXL1kKcOZg6oAyjHLXTqJ+fvjxvVFcoxep/BBH//aQ8uRuJ0ctyEFEeQFZ2fXrv+f25N4leeO0X997ibcNbTBfeZPpbOYig7Ppu49K/qV92WieXzxgEw7N/z69fd15feGW66Na9yc3c8+mJ69PpaNGvX7yh84ve3/fe4ubU7byte363cfFGnFy2B9ptD4TbqtVIhWz7kTTff9geWImjRSly8dS2n0CEW5wsvQCSVWU24ozWdL0GCSxECnNdoyJxEgwZOFcczFioBArMQN9loLAm02hNPRPphvdcr16v5bW7nacaaM2AcRhxJE2jMvxEtqT5nqwkRCqEitQsBY9pGBiWYPG5vgiBeZD5iJinqEiFKEyEwSB33dO/QIKJH4dYmN8XA8qsMXU2miA15Da3ucuYwvAKFCRoUOV7uv1YeZ5fw2bYhkQCi1I7PD/FXPM8kYfi2Q6538ZnG6TOONoV7Ar0gFK1QOHXEseFtk1bDnkw3YVMrZCPrkEhZbGYTS4LzD2TeVzaetloKIWxw1svG2kpzOGCH9CihPicHi3mnk2ZZTsX9VPNotjwBzsu2MD9yvQ5fX8hSLsxYYog98ntlqx3CvjgRZPLqBJajE2p85BCwqgu1c8apSFw1HYpXuPXzxoF+uGk/O3xZGskU/yYxa2XGR0j53Z8skbbm9a/5z7hikkMFZtZLtE2sDsypNfy+9dd63rer4b3liSLMDDmoCx74hF370Xe96jv5fGFonuhNcfdETb2pPAfrwIcZhGo9sC16wOdo+avjD9A8jzaBfAREo4Q2mocH/F+ynyZH38u1LRkXc1r5KA9cPfZXtp/UbNA67Vhke2njVmB+atJzDl8h2mIeloaWqua1yyvkINXc3Pq+/8cPwjb1vRXKvmdiIX94LAQsfiiTOcdueQ4SpN4+/E/t23Yh54cAAA=" /></Footer>{/* END_CRM_ENGAGEMENT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_engagements
+      parameters:
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/EngagementsGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_fields
+        in: query
+        description: Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: started_after
+        in: query
+        description: If provided, will only return engagements started after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: started_before
+        in: query
+        description: If provided, will only return engagements started before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedEngagementList'
+    post:
+      operationId: create
+      summary: Create
+      description: Creates an `Engagement` object with the given values.{/* BEGIN_CRM_ENGAGEMENT_CREATE_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST" data="H4sIAAAAAAAAA72WUW/aMBSF/0rlRxSSAWVdkaaJAisgETpIu3UVihznEgxOHGwH2lT971MSoLSDMqa0b4l177Hz3ZOTPCKCFXhcPKAaIsJHGvK5CwzVUCvwsAc+BAppCIfUxD5kRfaijDQkozDkQoH7nQJzZVvAGNWQ4YPwoBgFdEzBNYjwDRoo8ARWlAfS2HQVx2kb0hCjwQzcOiE8CtQbOlldEWeFr26lwahMThpiKdVE8MibDGAegXxLMjkNS58Rs6KLFTa22osi69+1lpzbBQYK3CZWuAkKSPKAq60mSoWyZhgTYKGebqu7sDAgMLBQlDCQRrVyXj47rxZXKunu32yPfS0VpnOHO2cF2yPMxlGhZ5F70+oszal3ajZO7834umrGs9iczj4VbA8Xelav2rduK/1mvdTfUWAPP/86v7loXnTNAolbFXN6uzQtUupZZObEnUr3kiy77R/3Znxb7jWvK6bVqnYveanfGMheY8B7dV1HGtqeI6rdPW4vrMzR4GEI4mVtx8cebDHJpoBDWgwjh1Giy4qOfRzzAC+lTrhv+OBSbFwxrMZc+JmmPg29NXPKgw3wxKhmu242Ws2Xw68vMGXYYYBqSkTwl19R7Q7BxuK2eggBaYgvg/T8AnyuwKZuanRnCkShUbI8j6gA9woL7IMCkciMnrRdLNqRMwy5ygdGO3JkyJUt5xEW8C4wVi8S0hDhgcIk9XhymSWAS8VqEw1B4NqK+gmwf0SosFDrlkM8d2iutLLI0LfvbMKwlGjPDK5oCK6gC8jXkhvZNwZh1q3OTSunMRykvAnTY4x7GOtr8gvMItgHe4gZyDEXJGfaz7p6GHwI7mfX55MQ/+Poo9DfKOrlnbuLVHOdOPvJ55U4a+DvGS178P2GwAU5OxkCY/lCXCnbX5aqbFk/Pwzjy7Q+kuOx9PiEnzQGvXzJxXzCk3/Ng/7L583/6I/c6Gn09AcqK/mMfQsAAA==" /></Footer>{/* END_CRM_ENGAGEMENT_CREATE_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_engagements
+      parameters:
+      - name: is_debug_mode
+        in: query
+        description: Whether to include debug fields (such as log file links) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: run_async
+        in: query
+        description: Whether or not third-party updates should be run asynchronously.
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EngagementResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EngagementEndpointRequest'
+  /crm/v1/engagements/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns an `Engagement` object with the given `id`.{/* BEGIN_CRM_ENGAGEMENT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+1Y/W/aOBj+V5B/RECuZXQr0unEgBv0lLQHWe+6qYpenJfE4MSu7UDLtP/9lPBReuvQNhnYtP2WWK8f28/7+P3wB0LBYCTUA2kSqhJSIYkIkZMm6aYRRJhgakiFgGQeJLg0CmanpEJ0JqVQBsM/GfJQ9xSOSZM4CaoIq1nKxgxDh6rEYanBSIFhItXOZlZ1XEwjFcJZOsWwRanIUrMDZ2lXhaXh/361w5nOdypBaxMrkUXxAO8y1Lsg893w4ozAqyEYcLamV9Vy/nNj+b5D5Ggw7ICBDhqk+QFXS8XGSN10nBi5rBXL1kKcOZg6oAyjHLXTqJ+fvjxvVFcoxep/BBH//aQ8uRuJ0ctyEFEeQFZ2fXrv+f25N4leeO0X997ibcNbTBfeZPpbOYig7Ppu49K/qV92WieXzxgEw7N/z69fd15feGW66Na9yc3c8+mJ69PpaNGvX7yh84ve3/fe4ubU7byte363cfFGnFy2B9ptD4TbqtVIhWz7kTTff9geWImjRSly8dS2n0CEW5wsvQCSVWU24ozWdL0GCSxECnNdoyJxEgwZOFcczFioBArMQN9loLAm02hNPRPphvdcr16v5bW7nacaaM2AcRhxJE2jMvxEtqT5nqwkRCqEitQsBY9pGBiWYPG5vgiBeZD5iJinqEiFKEyEwSB33dO/QIKJH4dYmN8XA8qsMXU2miA15Da3ucuYwvAKFCRoUOV7uv1YeZ5fw2bYhkQCi1I7PD/FXPM8kYfi2Q6538ZnG6TOONoV7Ar0gFK1QOHXEseFtk1bDnkw3YVMrZCPrkEhZbGYTS4LzD2TeVzaetloKIWxw1svG2kpzOGCH9CihPicHi3mnk2ZZTsX9VPNotjwBzsu2MD9yvQ5fX8hSLsxYYog98ntlqx3CvjgRZPLqBJajE2p85BCwqgu1c8apSFw1HYpXuPXzxoF+uGk/O3xZGskU/yYxa2XGR0j53Z8skbbm9a/5z7hikkMFZtZLtE2sDsypNfy+9dd63rer4b3liSLMDDmoCx74hF370Xe96jv5fGFonuhNcfdETb2pPAfrwIcZhGo9sC16wOdo+avjD9A8jzaBfAREo4Q2mocH/F+ynyZH38u1LRkXc1r5KA9cPfZXtp/UbNA67Vhke2njVmB+atJzDl8h2mIeloaWqua1yyvkINXc3Pq+/8cPwjb1vRXKvmdiIX94LAQsfiiTOcdueQ4SpN4+/E/t23Yh54cAAA=" /></Footer>{/* END_CRM_ENGAGEMENT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_engagements
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/EngagementsIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_fields
+        in: query
+        description: Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Engagement'
+    patch:
+      operationId: partial-update
+      summary: Partial Update
+      description: Updates an `Engagement` object with the given `id`.{/* BEGIN_CRM_ENGAGEMENT_EDIT_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="PATCH" data="H4sIAAAAAAAAA62Tb0/bMBDGv8u9rPJnpXSISNNU2o62UlwGAQ0hFF2ca+rWiVPbaSGI7z6l7Vi3AXvDS5/vnjv/7vETcLSUKf0IAXCdgwO5SklCAMMiw4xyKiw4gKVgmNMuKV4fgQOmKkulLaXfBMnUjDTNIAA/J52RWxViJij1uc59UVjKNFqhCuO/VLmzbRk4IEWxpLTHuaoK+47OLs/FXeJfR+NLYZpJSzTGzrWqsvklrSoy70k208jtG1G6KVr0D8pdvat/LdbMnZIkS+kALQ7IEm8euG81t7Y0ge/PSZbetq2X0tqnwkdtBZdk/G7n9OjktOvuVbbdv8aZ/NJuLVaJSk5accZljFUrjPgDi8YbtsiOWf/4gdXXXVYva7ZYfmrFGbbCKOxOo9vOdNBrT19JiK8+/zi9ORucTViL18MOW9xuWMTbYcSXST3uTM75ZjL6/sDq26NwcN1h0bA7OVftaf/ShP1LFfY8Dxw43CMEd0+Hgb05RlVyVapmDQd34xwzOoCyWwOWwi2rRArumY6HOdaqwI3xuMr9nFKB/qhKTKlsbFYVavIWZfYLulDFC/HGqWzUY/3h4M/t99YoJCaSILC6on8MC8Ed7M0DDnBV2J3VU6H3yg7Qyx+I7WNJ4IDaFKTBAU25shSLdPsTkgVxC/dNeFUJTekFaszJkm7a3D87r8G6QklmpjRvdD+A14VEO1M6/63rlcVbzFgvGt8MP4bY25T+T+b++SeiM1iUgwQAAA==" /></Footer>{/* END_CRM_ENGAGEMENT_EDIT_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_engagements
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: is_debug_mode
+        in: query
+        description: Whether to include debug fields (such as log file links) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: run_async
+        in: query
+        description: Whether or not third-party updates should be run asynchronously.
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EngagementResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedEngagementEndpointRequest'
+  /crm/v1/engagements/meta/patch/{id}:
+    get:
+      operationId: meta-patch-retrieve
+      summary: Meta Patch Retrieve
+      description: Returns metadata for `Engagement` PATCHs.{/* BEGIN_CRM_ENGAGEMENT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+1Y/W/aOBj+V5B/RECuZXQr0unEgBv0lLQHWe+6qYpenJfE4MSu7UDLtP/9lPBReuvQNhnYtP2WWK8f28/7+P3wB0LBYCTUA2kSqhJSIYkIkZMm6aYRRJhgakiFgGQeJLg0CmanpEJ0JqVQBsM/GfJQ9xSOSZM4CaoIq1nKxgxDh6rEYanBSIFhItXOZlZ1XEwjFcJZOsWwRanIUrMDZ2lXhaXh/361w5nOdypBaxMrkUXxAO8y1Lsg893w4ozAqyEYcLamV9Vy/nNj+b5D5Ggw7ICBDhqk+QFXS8XGSN10nBi5rBXL1kKcOZg6oAyjHLXTqJ+fvjxvVFcoxep/BBH//aQ8uRuJ0ctyEFEeQFZ2fXrv+f25N4leeO0X997ibcNbTBfeZPpbOYig7Ppu49K/qV92WieXzxgEw7N/z69fd15feGW66Na9yc3c8+mJ69PpaNGvX7yh84ve3/fe4ubU7byte363cfFGnFy2B9ptD4TbqtVIhWz7kTTff9geWImjRSly8dS2n0CEW5wsvQCSVWU24ozWdL0GCSxECnNdoyJxEgwZOFcczFioBArMQN9loLAm02hNPRPphvdcr16v5bW7nacaaM2AcRhxJE2jMvxEtqT5nqwkRCqEitQsBY9pGBiWYPG5vgiBeZD5iJinqEiFKEyEwSB33dO/QIKJH4dYmN8XA8qsMXU2miA15Da3ucuYwvAKFCRoUOV7uv1YeZ5fw2bYhkQCi1I7PD/FXPM8kYfi2Q6538ZnG6TOONoV7Ar0gFK1QOHXEseFtk1bDnkw3YVMrZCPrkEhZbGYTS4LzD2TeVzaetloKIWxw1svG2kpzOGCH9CihPicHi3mnk2ZZTsX9VPNotjwBzsu2MD9yvQ5fX8hSLsxYYog98ntlqx3CvjgRZPLqBJajE2p85BCwqgu1c8apSFw1HYpXuPXzxoF+uGk/O3xZGskU/yYxa2XGR0j53Z8skbbm9a/5z7hikkMFZtZLtE2sDsypNfy+9dd63rer4b3liSLMDDmoCx74hF370Xe96jv5fGFonuhNcfdETb2pPAfrwIcZhGo9sC16wOdo+avjD9A8jzaBfAREo4Q2mocH/F+ynyZH38u1LRkXc1r5KA9cPfZXtp/UbNA67Vhke2njVmB+atJzDl8h2mIeloaWqua1yyvkINXc3Pq+/8cPwjb1vRXKvmdiIX94LAQsfiiTOcdueQ4SpN4+/E/t23Yh54cAAA=" /></Footer>{/* END_CRM_ENGAGEMENT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_engagements
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaResponse'
+  /crm/v1/engagements/meta/post:
+    get:
+      operationId: meta-post-retrieve
+      summary: Meta Post Retrieve
+      description: Returns metadata for `Engagement` POSTs.{/* BEGIN_CRM_ENGAGEMENT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+1Y/W/aOBj+V5B/RECuZXQr0unEgBv0lLQHWe+6qYpenJfE4MSu7UDLtP/9lPBReuvQNhnYtP2WWK8f28/7+P3wB0LBYCTUA2kSqhJSIYkIkZMm6aYRRJhgakiFgGQeJLg0CmanpEJ0JqVQBsM/GfJQ9xSOSZM4CaoIq1nKxgxDh6rEYanBSIFhItXOZlZ1XEwjFcJZOsWwRanIUrMDZ2lXhaXh/361w5nOdypBaxMrkUXxAO8y1Lsg893w4ozAqyEYcLamV9Vy/nNj+b5D5Ggw7ICBDhqk+QFXS8XGSN10nBi5rBXL1kKcOZg6oAyjHLXTqJ+fvjxvVFcoxep/BBH//aQ8uRuJ0ctyEFEeQFZ2fXrv+f25N4leeO0X997ibcNbTBfeZPpbOYig7Ppu49K/qV92WieXzxgEw7N/z69fd15feGW66Na9yc3c8+mJ69PpaNGvX7yh84ve3/fe4ubU7byte363cfFGnFy2B9ptD4TbqtVIhWz7kTTff9geWImjRSly8dS2n0CEW5wsvQCSVWU24ozWdL0GCSxECnNdoyJxEgwZOFcczFioBArMQN9loLAm02hNPRPphvdcr16v5bW7nacaaM2AcRhxJE2jMvxEtqT5nqwkRCqEitQsBY9pGBiWYPG5vgiBeZD5iJinqEiFKEyEwSB33dO/QIKJH4dYmN8XA8qsMXU2miA15Da3ucuYwvAKFCRoUOV7uv1YeZ5fw2bYhkQCi1I7PD/FXPM8kYfi2Q6538ZnG6TOONoV7Ar0gFK1QOHXEseFtk1bDnkw3YVMrZCPrkEhZbGYTS4LzD2TeVzaetloKIWxw1svG2kpzOGCH9CihPicHi3mnk2ZZTsX9VPNotjwBzsu2MD9yvQ5fX8hSLsxYYog98ntlqx3CvjgRZPLqBJajE2p85BCwqgu1c8apSFw1HYpXuPXzxoF+uGk/O3xZGskU/yYxa2XGR0j53Z8skbbm9a/5z7hikkMFZtZLtE2sDsypNfy+9dd63rer4b3liSLMDDmoCx74hF370Xe96jv5fGFonuhNcfdETb2pPAfrwIcZhGo9sC16wOdo+avjD9A8jzaBfAREo4Q2mocH/F+ynyZH38u1LRkXc1r5KA9cPfZXtp/UbNA67Vhke2njVmB+atJzDl8h2mIeloaWqua1yyvkINXc3Pq+/8cPwjb1vRXKvmdiIX94LAQsfiiTOcdueQ4SpN4+/E/t23Yh54cAAA=" /></Footer>{/* END_CRM_ENGAGEMENT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_engagements
+      parameters:
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaResponse'
+  /crm/v1/engagements/remote-field-classes:
+    get:
+      operationId: remote-field-classes-list
+      summary: Remote Field Classes List
+      description: Returns a list of `RemoteFieldClass` objects.{/* BEGIN_CRM_ENGAGEMENT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+1Y/W/aOBj+V5B/RECuZXQr0unEgBv0lLQHWe+6qYpenJfE4MSu7UDLtP/9lPBReuvQNhnYtP2WWK8f28/7+P3wB0LBYCTUA2kSqhJSIYkIkZMm6aYRRJhgakiFgGQeJLg0CmanpEJ0JqVQBsM/GfJQ9xSOSZM4CaoIq1nKxgxDh6rEYanBSIFhItXOZlZ1XEwjFcJZOsWwRanIUrMDZ2lXhaXh/361w5nOdypBaxMrkUXxAO8y1Lsg893w4ozAqyEYcLamV9Vy/nNj+b5D5Ggw7ICBDhqk+QFXS8XGSN10nBi5rBXL1kKcOZg6oAyjHLXTqJ+fvjxvVFcoxep/BBH//aQ8uRuJ0ctyEFEeQFZ2fXrv+f25N4leeO0X997ibcNbTBfeZPpbOYig7Ppu49K/qV92WieXzxgEw7N/z69fd15feGW66Na9yc3c8+mJ69PpaNGvX7yh84ve3/fe4ubU7byte363cfFGnFy2B9ptD4TbqtVIhWz7kTTff9geWImjRSly8dS2n0CEW5wsvQCSVWU24ozWdL0GCSxECnNdoyJxEgwZOFcczFioBArMQN9loLAm02hNPRPphvdcr16v5bW7nacaaM2AcRhxJE2jMvxEtqT5nqwkRCqEitQsBY9pGBiWYPG5vgiBeZD5iJinqEiFKEyEwSB33dO/QIKJH4dYmN8XA8qsMXU2miA15Da3ucuYwvAKFCRoUOV7uv1YeZ5fw2bYhkQCi1I7PD/FXPM8kYfi2Q6538ZnG6TOONoV7Ar0gFK1QOHXEseFtk1bDnkw3YVMrZCPrkEhZbGYTS4LzD2TeVzaetloKIWxw1svG2kpzOGCH9CihPicHi3mnk2ZZTsX9VPNotjwBzsu2MD9yvQ5fX8hSLsxYYog98ntlqx3CvjgRZPLqBJajE2p85BCwqgu1c8apSFw1HYpXuPXzxoF+uGk/O3xZGskU/yYxa2XGR0j53Z8skbbm9a/5z7hikkMFZtZLtE2sDsypNfy+9dd63rer4b3liSLMDDmoCx74hF370Xe96jv5fGFonuhNcfdETb2pPAfrwIcZhGo9sC16wOdo+avjD9A8jzaBfAREo4Q2mocH/F+ynyZH38u1LRkXc1r5KA9cPfZXtp/UbNA67Vhke2njVmB+atJzDl8h2mIeloaWqua1yyvkINXc3Pq+/8cPwjb1vRXKvmdiIX94LAQsfiiTOcdueQ4SpN4+/E/t23Yh54cAAA=" /></Footer>{/* END_CRM_ENGAGEMENT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_engagements
+      parameters:
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_fields
+        in: query
+        description: Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: is_common_model_field
+        in: query
+        description: If provided, will only return remote field classes with this is_common_model_field value
+        required: false
+        schema:
+          type: boolean
+      - name: is_custom
+        in: query
+        description: If provided, will only return remote fields classes with this is_custom value
+        required: false
+        schema:
+          type: boolean
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRemoteFieldClassList'
+components:
+  schemas:
+    EngagementsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - account
+      - contacts
+      - engagement_type
+      - owner
+      title: EngagementsIdGetParametersExpandSchemaItems
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    PaginatedEngagementList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Engagement'
+      title: PaginatedEngagementList
+    RemoteFieldRequest:
+      type: object
+      properties:
+        remote_field_class:
+          type: string
+          format: uuid
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteFieldRequest
+    PatchedEngagementEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/PatchedEngagementRequest'
+      required:
+      - model
+      title: PatchedEngagementEndpointRequest
+    ItemTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemTypeEnum
+    ItemFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemFormatEnum
+    EngagementFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: EngagementFieldMappings
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    EngagementEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/EngagementRequest'
+      required:
+      - model
+      title: EngagementEndpointRequest
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    EngagementRequest:
+      type: object
+      properties:
+        owner:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The engagement's owner.
+        content:
+          type:
+          - string
+          - 'null'
+          description: The engagement's content.
+        subject:
+          type:
+          - string
+          - 'null'
+          description: The engagement's subject.
+        direction:
+          oneOf:
+          - $ref: '#/components/schemas/DirectionEnum'
+          - type: 'null'
+          description: The engagement's direction.
+        engagement_type:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The engagement type of the engagement.
+        start_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The time at which the engagement started.
+        end_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The time at which the engagement ended.
+        account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The account of the engagement.
+        contacts:
+          type: array
+          items:
+            type: string
+            format: uuid
+        engagement_url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The engagement's URL in the remote system.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldRequest'
+      description: '# The Engagement Object
+
+        ### Description
+
+        The `Engagement` object is used to represent an interaction noted in a CRM system.
+
+        ### Usage Example
+
+        TODO'
+      title: EngagementRequest
+    PaginatedRemoteFieldClassList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldClass'
+      title: PaginatedRemoteFieldClassList
+    ItemSchema:
+      type: object
+      properties:
+        item_type:
+          $ref: '#/components/schemas/ItemTypeEnum'
+        item_format:
+          $ref: '#/components/schemas/ItemFormatEnum'
+        item_choices:
+          type: array
+          items:
+            type: string
+      title: ItemSchema
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    RemoteField:
+      type: object
+      properties:
+        remote_field_class:
+          $ref: '#/components/schemas/RemoteFieldClass'
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteField
+    RemoteFieldClass:
+      type: object
+      properties:
+        id:
+          type: string
+        display_name:
+          type: string
+        remote_key_name:
+          type: string
+        description:
+          type: string
+        is_custom:
+          type: boolean
+        is_common_model_field:
+          type: boolean
+        is_required:
+          type: boolean
+        field_type:
+          $ref: '#/components/schemas/FieldTypeEnum'
+        field_format:
+          $ref: '#/components/schemas/FieldFormatEnum'
+        field_choices:
+          type: array
+          items:
+            type: string
+        item_schema:
+          $ref: '#/components/schemas/ItemSchema'
+      title: RemoteFieldClass
+    DirectionEnum:
+      type: string
+      enum:
+      - INBOUND
+      - OUTBOUND
+      title: DirectionEnum
+    Engagement:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        owner:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The engagement's owner.
+        content:
+          type:
+          - string
+          - 'null'
+          description: The engagement's content.
+        subject:
+          type:
+          - string
+          - 'null'
+          description: The engagement's subject.
+        direction:
+          oneOf:
+          - $ref: '#/components/schemas/DirectionEnum'
+          - type: 'null'
+          description: The engagement's direction.
+        engagement_type:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The engagement type of the engagement.
+        start_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The time at which the engagement started.
+        end_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The time at which the engagement ended.
+        account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The account of the engagement.
+        contacts:
+          type: array
+          items:
+            type: string
+            format: uuid
+        engagement_url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The engagement's URL in the remote system.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/EngagementFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteField'
+      description: '# The Engagement Object
+
+        ### Description
+
+        The `Engagement` object is used to represent an interaction noted in a CRM system.
+
+        ### Usage Example
+
+        TODO'
+      title: Engagement
+    PatchedEngagementRequest:
+      type: object
+      properties:
+        owner:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The engagement's owner.
+        content:
+          type:
+          - string
+          - 'null'
+          description: The engagement's content.
+        subject:
+          type:
+          - string
+          - 'null'
+          description: The engagement's subject.
+        direction:
+          oneOf:
+          - $ref: '#/components/schemas/DirectionEnum'
+          - type: 'null'
+          description: The engagement's direction.
+        engagement_type:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The engagement type of the engagement.
+        start_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The time at which the engagement started.
+        end_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The time at which the engagement ended.
+        account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The account of the engagement.
+        contacts:
+          type: array
+          items:
+            type: string
+            format: uuid
+        engagement_url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The engagement's URL in the remote system.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldRequest'
+      description: '# The Engagement Object
+
+        ### Description
+
+        The `Engagement` object is used to represent an interaction noted in a CRM system.
+
+        ### Usage Example
+
+        TODO'
+      title: PatchedEngagementRequest
+    FieldFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldFormatEnum
+    EngagementsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - account
+      - contacts
+      - engagement_type
+      - owner
+      title: EngagementsGetParametersExpandSchemaItems
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    FieldTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldTypeEnum
+    EngagementResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/Engagement'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: EngagementResponse
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

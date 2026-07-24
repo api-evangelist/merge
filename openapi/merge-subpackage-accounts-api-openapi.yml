@@ -1,0 +1,2542 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_accounts API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_accounts
+paths:
+  /accounting/v1/accounts:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Account` objects.{/* BEGIN_ACCOUNTING_ACCOUNT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+1ZXW/iOBT9K8iPFZBpGVoVabXiq9N2l9Bp6ezMjkaWcS7B4Nip7dDCaP77ykmA0IFuoSmdlfYtMc698T3H556Y74gSA75UU1RDhFIZCcOEj4ookB5wVEP1ZBAVEQmZSwJYmYgnR6iIdBSGUhnwzhhwT58rGKAacgJQPpQiwQYMPGf5kMOEAV8Rw6TQzuLh0iB+GhURZ2IMXpr538Ml00vpyKNb7XCm7euHRGszVDLyh9dwF4F+RmT7bhwCEIbwkkcMcTJRSioJs27MrsIDDga8FjGkBQaoXW6acWhMqGuOMwQeluPsZQ8mDgiHKMMoB+1UK6dHJ6fVUholzv479vlvhweju77snxxgn3JMooNOjz64vYt7d+S/d5vvH9zZbdWdjWfuaPzuAPvkoNPrVLu9L5Vuq37YXTMB3xx/Pv3UaDUu3QM6a1fc0Zd7t0cPOz067s8uKpcf6P3l+ccHd/blqNO6rbi9dvXygzzsNq91p3ktO/VyGRVRFlVU+/o9O5ASp8mBqEJDyrEtUOb3i4D4kClMgggJWSmM+pzRsq6USUBmUpB7XaYycALwGHHigDgOiG/uIqIA/yl9WR6FlsNx7ZgUi/KjGmq753W32W6tMqI+IYyTPgdUMyqCnyiNal/nrMciCvqgUBHRSCkQdLq4NLhPOBEUUBEJu+IiUhBIA9iit3qHQ2KGyyHmoSIy0xDQNzt2FzEF3hVRJAADyub/9qO4rqRnCqDuQ7xDcyjoFSdmIFUwUADEhsU6Kev42kxbH47KodhHZTnRmg0YjdcS59NUsTC9g4cQhIaEQxPJKGDOBGBmILCDIxkpQXg8qJdYhCTGKM22LTg66s8f1TuApIc50n4Z7w1Y/xibJ7dBBqpfDpUOo0pqOTCF1lSQgFFdqBxXC41I2zfUhSYIowjPB7JFMjxPhivHVTxPhtNkuCm5VPj0oX12fHyyn922bHhGEaFJnMKiZPfTWsRlEBIRA67AY0ZIA9n5TxFidSdvtX0jRYdEg1QeqEy6V5fYNTw5Y8Kup0CEV+iGMO96uUrwGsakaTFe5tyTIC8Q36La25ZZCpj2mfJyLuM87J4qtST/WnJvUr2QTK3P3Fr/DDGRfiyEu/HcBXMTMQP51N8Fo2201EA8UX233rv41M5PyHC8+A269mp6t6brLRRsfq/AruHxsL30QYCVfw6eDwpnXmwxO52SzHj05i91Qkv2zVV2EWIxEOvuavjtqEo46MWjTxK3iCYgPKlwUu9s0i053VWEciicRZpJUWhyGXmF9vVVPhRPguMkOI6D4/b1FS6lruyNzPKzmLCbyuQFy8eI0XFsYAst0GMjw3xFfxkfQ2MkbqP7vVqpuQJt55VXrdHr2OUc20UGw+5ShF4M4TJsKf30vB0cHTdODv/THSTZMLZxrG7LLQixoak8s3v83x7WcfiG+JD54IvbQz17DJoDoW0O3GjW55/qf0w+Tyo3o1cRpA2CkyXVRl3Z6ABe0OV30ZUYkwthCKUmRwTSiHMUJhPm6hPyq4jKC+znzmYzHye5oE1ytWIZ8/SJORvDv8gE0s94ltcZz9x92Nj4fOA9HL0zb+QBX3oGs8vx9SpU2+Ih1dgj05yBSIK+EQYbtsz+avoZlMynoDZSasfexEjvaLg2H0xua61y1spNH9kvOtvcj3D+LYcyz7/wbLyf/8rY86kmfd65zrNZsxstXkUZvv34B3iCZrjlHwAA" /></Footer>{/* END_ACCOUNTING_ACCOUNT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_accounts
+      parameters:
+      - name: account_number
+        in: query
+        description: If provided, will only return accounts with this account number.
+        required: false
+        schema:
+          type: string
+      - name: account_type
+        in: query
+        description: If provided, will only return accounts with the passed in enum.
+        required: false
+        schema:
+          type: string
+      - name: classification
+        in: query
+        description: If provided, will only return accounts with this classification.
+        required: false
+        schema:
+          $ref: '#/components/schemas/AccountsGetParametersClassification'
+      - name: company_id
+        in: query
+        description: If provided, will only return accounts for this company.
+        required: false
+        schema:
+          type: string
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountsGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: name
+        in: query
+        description: If provided, will only return Accounts with this name.
+        required: false
+        schema:
+          type: string
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_fields
+        in: query
+        description: Deprecated. Use show_enum_origins.
+        required: false
+        schema:
+          $ref: '#/components/schemas/AccountsGetParametersRemoteFields'
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: show_enum_origins
+        in: query
+        description: A comma separated list of enum field names for which you'd like the original values to be returned, instead of Merge's normalized enum values. [Learn more](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+        required: false
+        schema:
+          $ref: '#/components/schemas/AccountsGetParametersShowEnumOrigins'
+      - name: status
+        in: query
+        description: If provided, will only return accounts with this status.
+        required: false
+        schema:
+          $ref: '#/components/schemas/AccountsGetParametersStatus'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAccountList'
+    post:
+      operationId: create
+      summary: Create
+      description: Creates an `Account` object with the given values.{/* BEGIN_ACCOUNTING_ACCOUNT_CREATE_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST" data="H4sIAAAAAAAAA62TbU/iQBSF/4qZj6QvC4hGks2Gt1XIUlatRmNMczu9lIHpTJ2ZimL875uWiqhd3U34Brdnzp17njtPhILBWKpH0iZAqcyEYSImFklkhJy0SWddJBaBlHmQ4BthcN8gFtFZmkplMPrJkEf6ROGUtImboIrRzgSbMozc10MuEwZjBYZJod3NYXtanCYW4UwsMCo7f223lttl5d1f7XKm8+unoLWZKZnFszO8y1D/g3N+N44JCgPcjsCAu+Viq7VNVS2fIkKOBqM+GOijQZqPW3acGZPqtuvOkKdO0d2J8N5F4YIyjHLUbqt51Dg8atmlS9H9RxDz7/Xa/C6U4WEtiCkPIKuNffrg+cOlN4/3vd7+g7e6aHmrxcqbL77VghhqY3/cmvjXzUm/U59UCILzg6ujy26/O/JqdDVoevPrpefT+tini3A1bI6O6XJ0cvrgra4b4/5F0/MHrdGxrE96Z3rcO5PjjuMQi2xTJe2bp+1CuTg9jqD2ulIu8oC2vg8TiHErmDURSJmdZiFn1NFNBxJYSQFL7VCZuAlGDNzCMCgMg/O7DBQGv2QsnXma73CRHZNiEz9pk4F30vF6g/7bjejcA+MQciRtozL8sNKkffOy9YHIkhAVsQjNlEJBHzc/TRACB0GRWETkE1tEYSINBiwiFjGPKZLbvHaXMYXRb1CQoEFVbb8VT5DmUu1oqUxAZbRpcPtsVeV8mjG6KFLZmwjOBO4m7VdbW6/Dvpg2DrqHdScVf8vb6/jDy8Eu0uagNZsyWozwVfwRaqpYWkpLGCkUqtL6HR1twGT5WuosfJHoL6l9uFVlK2eLfzWxK1RyN5CuUMkSzydYdvgMXgrFeJ9zqqRSCeE/30r5GG6f/wCGPUrd0QYAAA==" /></Footer>{/* END_ACCOUNTING_ACCOUNT_CREATE_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_accounts
+      parameters:
+      - name: is_debug_mode
+        in: query
+        description: Whether to include debug fields (such as log file links) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: run_async
+        in: query
+        description: Whether or not third-party updates should be run asynchronously.
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountEndpointRequest'
+  /accounting/v1/accounts/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns an `Account` object with the given `id`.{/* BEGIN_ACCOUNTING_ACCOUNT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+1ZXW/iOBT9K8iPFZBpGVoVabXiq9N2l9Bp6ezMjkaWcS7B4Nip7dDCaP77ykmA0IFuoSmdlfYtMc698T3H556Y74gSA75UU1RDhFIZCcOEj4ookB5wVEP1ZBAVEQmZSwJYmYgnR6iIdBSGUhnwzhhwT58rGKAacgJQPpQiwQYMPGf5kMOEAV8Rw6TQzuLh0iB+GhURZ2IMXpr538Ml00vpyKNb7XCm7euHRGszVDLyh9dwF4F+RmT7bhwCEIbwkkcMcTJRSioJs27MrsIDDga8FjGkBQaoXW6acWhMqGuOMwQeluPsZQ8mDgiHKMMoB+1UK6dHJ6fVUholzv479vlvhweju77snxxgn3JMooNOjz64vYt7d+S/d5vvH9zZbdWdjWfuaPzuAPvkoNPrVLu9L5Vuq37YXTMB3xx/Pv3UaDUu3QM6a1fc0Zd7t0cPOz067s8uKpcf6P3l+ccHd/blqNO6rbi9dvXygzzsNq91p3ktO/VyGRVRFlVU+/o9O5ASp8mBqEJDyrEtUOb3i4D4kClMgggJWSmM+pzRsq6USUBmUpB7XaYycALwGHHigDgOiG/uIqIA/yl9WR6FlsNx7ZgUi/KjGmq753W32W6tMqI+IYyTPgdUMyqCnyiNal/nrMciCvqgUBHRSCkQdLq4NLhPOBEUUBEJu+IiUhBIA9iit3qHQ2KGyyHmoSIy0xDQNzt2FzEF3hVRJAADyub/9qO4rqRnCqDuQ7xDcyjoFSdmIFUwUADEhsU6Kev42kxbH47KodhHZTnRmg0YjdcS59NUsTC9g4cQhIaEQxPJKGDOBGBmILCDIxkpQXg8qJdYhCTGKM22LTg66s8f1TuApIc50n4Z7w1Y/xibJ7dBBqpfDpUOo0pqOTCF1lSQgFFdqBxXC41I2zfUhSYIowjPB7JFMjxPhivHVTxPhtNkuCm5VPj0oX12fHyyn922bHhGEaFJnMKiZPfTWsRlEBIRA67AY0ZIA9n5TxFidSdvtX0jRYdEg1QeqEy6V5fYNTw5Y8Kup0CEV+iGMO96uUrwGsakaTFe5tyTIC8Q36La25ZZCpj2mfJyLuM87J4qtST/WnJvUr2QTK3P3Fr/DDGRfiyEu/HcBXMTMQP51N8Fo2201EA8UX233rv41M5PyHC8+A269mp6t6brLRRsfq/AruHxsL30QYCVfw6eDwpnXmwxO52SzHj05i91Qkv2zVV2EWIxEOvuavjtqEo46MWjTxK3iCYgPKlwUu9s0i053VWEciicRZpJUWhyGXmF9vVVPhRPguMkOI6D4/b1FS6lruyNzPKzmLCbyuQFy8eI0XFsYAst0GMjw3xFfxkfQ2MkbqP7vVqpuQJt55VXrdHr2OUc20UGw+5ShF4M4TJsKf30vB0cHTdODv/THSTZMLZxrG7LLQixoak8s3v83x7WcfiG+JD54IvbQz17DJoDoW0O3GjW55/qf0w+Tyo3o1cRpA2CkyXVRl3Z6ABe0OV30ZUYkwthCKUmRwTSiHMUJhPm6hPyq4jKC+znzmYzHye5oE1ytWIZ8/SJORvDv8gE0s94ltcZz9x92Nj4fOA9HL0zb+QBX3oGs8vx9SpU2+Ih1dgj05yBSIK+EQYbtsz+avoZlMynoDZSasfexEjvaLg2H0xua61y1spNH9kvOtvcj3D+LYcyz7/wbLyf/8rY86kmfd65zrNZsxstXkUZvv34B3iCZrjlHwAA" /></Footer>{/* END_ACCOUNTING_ACCOUNT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_accounts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountsIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: remote_fields
+        in: query
+        description: Deprecated. Use show_enum_origins.
+        required: false
+        schema:
+          $ref: '#/components/schemas/AccountsIdGetParametersRemoteFields'
+      - name: show_enum_origins
+        in: query
+        description: A comma separated list of enum field names for which you'd like the original values to be returned, instead of Merge's normalized enum values. [Learn more](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+        required: false
+        schema:
+          $ref: '#/components/schemas/AccountsIdGetParametersShowEnumOrigins'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+  /accounting/v1/accounts/meta/post:
+    get:
+      operationId: meta-post-retrieve
+      summary: Meta Post Retrieve
+      description: Returns metadata for `Account` POSTs.{/* BEGIN_ACCOUNTING_ACCOUNT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+1ZXW/iOBT9K8iPFZBpGVoVabXiq9N2l9Bp6ezMjkaWcS7B4Nip7dDCaP77ykmA0IFuoSmdlfYtMc698T3H556Y74gSA75UU1RDhFIZCcOEj4ookB5wVEP1ZBAVEQmZSwJYmYgnR6iIdBSGUhnwzhhwT58rGKAacgJQPpQiwQYMPGf5kMOEAV8Rw6TQzuLh0iB+GhURZ2IMXpr538Ml00vpyKNb7XCm7euHRGszVDLyh9dwF4F+RmT7bhwCEIbwkkcMcTJRSioJs27MrsIDDga8FjGkBQaoXW6acWhMqGuOMwQeluPsZQ8mDgiHKMMoB+1UK6dHJ6fVUholzv479vlvhweju77snxxgn3JMooNOjz64vYt7d+S/d5vvH9zZbdWdjWfuaPzuAPvkoNPrVLu9L5Vuq37YXTMB3xx/Pv3UaDUu3QM6a1fc0Zd7t0cPOz067s8uKpcf6P3l+ccHd/blqNO6rbi9dvXygzzsNq91p3ktO/VyGRVRFlVU+/o9O5ASp8mBqEJDyrEtUOb3i4D4kClMgggJWSmM+pzRsq6USUBmUpB7XaYycALwGHHigDgOiG/uIqIA/yl9WR6FlsNx7ZgUi/KjGmq753W32W6tMqI+IYyTPgdUMyqCnyiNal/nrMciCvqgUBHRSCkQdLq4NLhPOBEUUBEJu+IiUhBIA9iit3qHQ2KGyyHmoSIy0xDQNzt2FzEF3hVRJAADyub/9qO4rqRnCqDuQ7xDcyjoFSdmIFUwUADEhsU6Kev42kxbH47KodhHZTnRmg0YjdcS59NUsTC9g4cQhIaEQxPJKGDOBGBmILCDIxkpQXg8qJdYhCTGKM22LTg66s8f1TuApIc50n4Z7w1Y/xibJ7dBBqpfDpUOo0pqOTCF1lSQgFFdqBxXC41I2zfUhSYIowjPB7JFMjxPhivHVTxPhtNkuCm5VPj0oX12fHyyn922bHhGEaFJnMKiZPfTWsRlEBIRA67AY0ZIA9n5TxFidSdvtX0jRYdEg1QeqEy6V5fYNTw5Y8Kup0CEV+iGMO96uUrwGsakaTFe5tyTIC8Q36La25ZZCpj2mfJyLuM87J4qtST/WnJvUr2QTK3P3Fr/DDGRfiyEu/HcBXMTMQP51N8Fo2201EA8UX233rv41M5PyHC8+A269mp6t6brLRRsfq/AruHxsL30QYCVfw6eDwpnXmwxO52SzHj05i91Qkv2zVV2EWIxEOvuavjtqEo46MWjTxK3iCYgPKlwUu9s0i053VWEciicRZpJUWhyGXmF9vVVPhRPguMkOI6D4/b1FS6lruyNzPKzmLCbyuQFy8eI0XFsYAst0GMjw3xFfxkfQ2MkbqP7vVqpuQJt55VXrdHr2OUc20UGw+5ShF4M4TJsKf30vB0cHTdODv/THSTZMLZxrG7LLQixoak8s3v83x7WcfiG+JD54IvbQz17DJoDoW0O3GjW55/qf0w+Tyo3o1cRpA2CkyXVRl3Z6ABe0OV30ZUYkwthCKUmRwTSiHMUJhPm6hPyq4jKC+znzmYzHye5oE1ytWIZ8/SJORvDv8gE0s94ltcZz9x92Nj4fOA9HL0zb+QBX3oGs8vx9SpU2+Ih1dgj05yBSIK+EQYbtsz+avoZlMynoDZSasfexEjvaLg2H0xua61y1spNH9kvOtvcj3D+LYcyz7/wbLyf/8rY86kmfd65zrNZsxstXkUZvv34B3iCZrjlHwAA" /></Footer>{/* END_ACCOUNTING_ACCOUNT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_accounts
+      parameters:
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaResponse'
+  /crm/v1/accounts:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Account` objects.{/* BEGIN_CRM_ACCOUNT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+2ZbVMiORDHv4qVlxQwpyzuStXVFQveqleMHs5651rWVJNphkgmiUkGhK397lcZQHHPp9WZFbx754Tkn9i/7k4n+UooWIylnpAGoTohZZLICDlpkCalMhWWlAko5kOCsx7haIuUiUmVktpi9DtDHpk9jX3SIF6COsZKKlifYeRRnXhMWIw1WCaF8a5HVfrZMFImnIkhRvO5HtCZ9avArON3n8bjzLiVKjDGDrRM40EXL1M0D0m61XBMUFjglQgseEvDK3o2/q42t+4IOVqM2mChjRap+wfnUw2sVabheQPkqppNW41w5KHwQFtGORqvXtvZer9Tr8xVstl/C2P+62bp4rIne+9LYUx5CGmpE9ArP9gf+xfxO7/17sqffq770+HUvxj+UgpjKHWCTv0wOK0dtpubh3d0CI+3/945+dj+eOCX6HS35l+cjv2AbnYCOuxN92sHn+j4YO/PK396utVpf675wW794JPcPGx1TafVlZ1mtUrKZJkjaZx9XW6YO0eTUuTydt/9BGJcssmMAihWUWmPM1o1tSokMJUCxqZKZeIlGDHwjjjYvtQJZJqhuUxBY1WJeGF6JsW13UmD7Pp7Tb+1277tA80RMA49jqRhdYr/clvSOCMQRRqNQQeVSmGBzvkaqpnK5MsERQxx5iruNyai1Fg9ce4LxoZALRsxOwnB+aBw1igTkSY91KHsh5goLieYzSCz+VPBLJt9jwVqt+iBFBjOxrh2jYm0GFKNYDGaCc/bnK/c/goV2MFNE4tu/k5VdCNgwQyd+Bh7hlkk567bZco0RkegIUHrJm+cnX8r383XshG2IFHAYpEP59uaC84XKn/OS2xv05zzuo9MISSeS6DfZ4LZSU62n6sVGV1LVl/EhbR3RsIP2fSZ9muBMinHfFPUXLRo8z2UkB7IQvdYu1DvfmGeaXFp8mbkJAtJK8/YPh5Bsw5bQUsqlflPnowyzRWDtM779V7aO1bS5kNpL+0ZJe3jO7TfDPZPdlegDuMI0R3h9np12fWZ56nc7UTh8/HvC8PigeU5VQvXcq9QjD+6293Dep2j9w8ElW+CHSKoV4D3HZN7bP80O7/Qph1GtTSybzfaEwEJo2ajtl3fOAaeLS1HWy/0a9v1TL1Qu88uQcJUc3dZ87I8umpJs6jw8lNrBsh5PtgXaq93Q7HEcBVKl2dSOWIKI81GOZf/17JF1C1Pib6fXresUZ3i4HA2W3YezBdyP+la494w/MGaZJXCMNuy+hx0znF4o7sqx7z/0v3tzPpS00KoOt0HYu3/Y+GKpNvjNAbd6nby9QHjVN3r4Mq+1Lz5ijZASNyek9dGeqNXOM01rlidlcZSDzdyD6mFctjqdop8GHvasX0d2ZxYFud9Sz3KNF+ltizsEXqVGX5BEaEZbhzndlZfkJwrhx/GdisI/lrBLesN3mp+kQOZf6qcyoF8UvFR6CH/DT1VsNxq0PNv/wC61wOtYyYAAA==" /></Footer>{/* END_CRM_ACCOUNT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_accounts
+      parameters:
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountsGetParametersExpandSchemaItems_2'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_fields
+        in: query
+        description: Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: name
+        in: query
+        description: If provided, will only return accounts with this name.
+        required: false
+        schema:
+          type: string
+      - name: owner_id
+        in: query
+        description: If provided, will only return accounts with this owner.
+        required: false
+        schema:
+          type: string
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAccountList'
+    post:
+      operationId: create
+      summary: Create
+      description: Creates an `Account` object with the given values.{/* BEGIN_CRM_ACCOUNT_CREATE_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST" data="H4sIAAAAAAAAA+2Xb0/bMBDGv8rkl1WaDLqOUWmaSttRkBoYhG0MoehiX1O3Tmz8p4VO++5T2gBlg2qCMPZi7xLn/Jz9e8655DuhYDGV+oq0CNUZ8UgmGQrSIm1Kpcst8QgoHkKGy4h4ukk8YpxSUltkHzkKZvoah6RFggx1inWX8yFHFlCdBTy3mGqwXOYmuJlVHy6mEY8Ink+QlbnW6Czj6rAM/OXWBIKbYqUKjLEjLV06OsILh2adZLEagRnmFkSdgYVgZXpdL+ffN1asm6FAi6wLFrpokRYbLFONrFWmFQQjFMpfpPUZTgPMA9CWU4EmaDa2N7e2m/VSZZH9Q5yK9xu18UUik61anFIRg6sNInoZRnuzcJy+CTtvLsP5STOcT+bhePK6FqdQG0SD5kF02jjotjcO7gmIj99+3f68093ZD2t03muE49NZGNGNQUQnyXyvsb9LZ/v9T5fh/HRz0D1phFGvub8rNw46R2bQOZKDtu8Tj6z6SFpn31cHyuLogDJO4N3gvQxSXIGytAEUryuXCE590/Ahg7nMYWZ8KrMgQ8YhOBRgh1Jnpaiv8vSaOpf5DXLSIr2w3w47ve5d+9tT4AISgaRltcPfKpa0zghDQzVXCx2PCDA2Bmr5lNurGIpyyouNeUTOctTEIxozaTGmGsEiW4aUY5zdXjvFbp/PMDHcIjkvHl84rpEdgoYMLepiEec/vHtZCmmqJllI+mNVPUdgTKMxuDwXq0xLgGokc4xzlyXFpv8uSKnUwrwqSS40XwbldS2+INK+S46VtNUw7bvEKGljc+FAryvPsB3tfe5VSZTnzBmrr9ae/SXhWA5jzJSQV7gQeoQLNx3vqa7cFfRX72IqwKzkKEOmIBySB9w85AqZ5tOK3zY3ss9s6WOde7pTD/pT5q/WpmMQaIZS04p9utVd02L/n71n9fYb5gzN5NUxClGtu6Vy/G5mN6Poy7N8Rf3RC/bf6V7f5Ei+6hwNqgU9lyNZ/ByVbaz6o1R563oe5Oc/fgLJWWhSUg4AAA==" /></Footer>{/* END_CRM_ACCOUNT_CREATE_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_accounts
+      parameters:
+      - name: is_debug_mode
+        in: query
+        description: Whether to include debug fields (such as log file links) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: run_async
+        in: query
+        description: Whether or not third-party updates should be run asynchronously.
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CRMAccountResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CRMAccountEndpointRequest'
+  /crm/v1/accounts/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns an `Account` object with the given `id`.{/* BEGIN_CRM_ACCOUNT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+2ZbVMiORDHv4qVlxQwpyzuStXVFQveqleMHs5651rWVJNphkgmiUkGhK397lcZQHHPp9WZFbx754Tkn9i/7k4n+UooWIylnpAGoTohZZLICDlpkCalMhWWlAko5kOCsx7haIuUiUmVktpi9DtDHpk9jX3SIF6COsZKKlifYeRRnXhMWIw1WCaF8a5HVfrZMFImnIkhRvO5HtCZ9avArON3n8bjzLiVKjDGDrRM40EXL1M0D0m61XBMUFjglQgseEvDK3o2/q42t+4IOVqM2mChjRap+wfnUw2sVabheQPkqppNW41w5KHwQFtGORqvXtvZer9Tr8xVstl/C2P+62bp4rIne+9LYUx5CGmpE9ArP9gf+xfxO7/17sqffq770+HUvxj+UgpjKHWCTv0wOK0dtpubh3d0CI+3/945+dj+eOCX6HS35l+cjv2AbnYCOuxN92sHn+j4YO/PK396utVpf675wW794JPcPGx1TafVlZ1mtUrKZJkjaZx9XW6YO0eTUuTydt/9BGJcssmMAihWUWmPM1o1tSokMJUCxqZKZeIlGDHwjjjYvtQJZJqhuUxBY1WJeGF6JsW13UmD7Pp7Tb+1277tA80RMA49jqRhdYr/clvSOCMQRRqNQQeVSmGBzvkaqpnK5MsERQxx5iruNyai1Fg9ce4LxoZALRsxOwnB+aBw1igTkSY91KHsh5goLieYzSCz+VPBLJt9jwVqt+iBFBjOxrh2jYm0GFKNYDGaCc/bnK/c/goV2MFNE4tu/k5VdCNgwQyd+Bh7hlkk567bZco0RkegIUHrJm+cnX8r383XshG2IFHAYpEP59uaC84XKn/OS2xv05zzuo9MISSeS6DfZ4LZSU62n6sVGV1LVl/EhbR3RsIP2fSZ9muBMinHfFPUXLRo8z2UkB7IQvdYu1DvfmGeaXFp8mbkJAtJK8/YPh5Bsw5bQUsqlflPnowyzRWDtM779V7aO1bS5kNpL+0ZJe3jO7TfDPZPdlegDuMI0R3h9np12fWZ56nc7UTh8/HvC8PigeU5VQvXcq9QjD+6293Dep2j9w8ElW+CHSKoV4D3HZN7bP80O7/Qph1GtTSybzfaEwEJo2ajtl3fOAaeLS1HWy/0a9v1TL1Qu88uQcJUc3dZ87I8umpJs6jw8lNrBsh5PtgXaq93Q7HEcBVKl2dSOWIKI81GOZf/17JF1C1Pib6fXresUZ3i4HA2W3YezBdyP+la494w/MGaZJXCMNuy+hx0znF4o7sqx7z/0v3tzPpS00KoOt0HYu3/Y+GKpNvjNAbd6nby9QHjVN3r4Mq+1Lz5ijZASNyek9dGeqNXOM01rlidlcZSDzdyD6mFctjqdop8GHvasX0d2ZxYFud9Sz3KNF+ltizsEXqVGX5BEaEZbhzndlZfkJwrhx/GdisI/lrBLesN3mp+kQOZf6qcyoF8UvFR6CH/DT1VsNxq0PNv/wC61wOtYyYAAA==" /></Footer>{/* END_CRM_ACCOUNT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_accounts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountsIdGetParametersExpandSchemaItems_2'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_fields
+        in: query
+        description: Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account_2'
+    patch:
+      operationId: partial-update
+      summary: Partial Update
+      description: Updates an `Account` object with the given `id`.{/* BEGIN_CRM_ACCOUNT_EDIT_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="PATCH" data="H4sIAAAAAAAAA82XbU/bMBDHv8rkl1WaDEq3UWmaSttRkBoYZA+AUHSxr6lbJzZ+aKFo331Km0HZoNogIN4lzvl/9u9/FyfXhILFVOor0iJUZ8QjmWQoSIu0KZUut8QjoHgIGS4j4ukm8YhxSkltkX3mKJjpaxySFgky1CnWXc6HHFlAdRbw3GKqwXKZm+BmVn24mEY8Ing+QVbmWqOzjKvDMvCPWxMIboqVKjDGjrR06egILxyadZLFagRmmFsQdQYWgpXpdb2cf99YsW6GAi2yLljookVabLBMNbJWmVYQjFAof5HWZzgNMA9AW04FmqDZ2N58v92slyqL7J/iVHzcqI0vEpm8r8UpFTG42iCil2G0NwvH6VbY2boM51+b4XwyD8eTt7U4hdogGjQPopPGQbe9cXBPQHz87sf2t53uzn5Yo/NeIxyfzMKIbgwiOknme439XTrb73+5DOcnm4Pu10YY9Zr7u3LjoHNkBp0jOWj7PvHIqo+kdXa9OlAWRweUcQLvBu9lkOIKlKUNoHhduURw6puGDxnMZQ4z41OZBRkyDsGhADuUOitFfZWnv6lzmd8gJy3SC/vtsNPr3rW/PQUuIBFIWlY7/KtiSeuMMDRUc7XQ8YgAY2Oglk+5vYqhKKe82JhH5CxHTTyiMZMWY6oRLLJlSDnG2e21U+z2+QwTwy2S8+LxheMa2SFoyNCiLhZx/tO7l6WQpmqShaQ/Vs/NsYT2krCkUguDqqS10HwWXMCYRmNw+Rq5B93velMjmWOcuywptv+iSPsuOVbSVsO07xKjpI3NhQO9rgTDdrT3rVclUZ4zZ6y+WtvfS8KxHMaYKSGvcCH0CBduTrWnunJX0F+9i6kAs5KjDJmCcEgecPOQK2SaTyt+o9zIPoOlj3XrP9xZceSFfDgGgWYoNa3YiFvdNefkq2yu19FMD9h1ijlDM3lzjEJUa1ipHH+Y2c0o+v4sXzf/5NvrOXFO5Ui+6RwNqgU9lyNZ/LSUR0/13fGSHfEE5Oc/fwErwnrU6g0AAA==" /></Footer>{/* END_CRM_ACCOUNT_EDIT_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_accounts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: is_debug_mode
+        in: query
+        description: Whether to include debug fields (such as log file links) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: run_async
+        in: query
+        description: Whether or not third-party updates should be run asynchronously.
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CRMAccountResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCRMAccountEndpointRequest'
+  /crm/v1/accounts/meta/patch/{id}:
+    get:
+      operationId: meta-patch-retrieve
+      summary: Meta Patch Retrieve
+      description: Returns metadata for `CRMAccount` PATCHs.{/* BEGIN_CRM_ACCOUNT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+2ZbVMiORDHv4qVlxQwpyzuStXVFQveqleMHs5651rWVJNphkgmiUkGhK397lcZQHHPp9WZFbx754Tkn9i/7k4n+UooWIylnpAGoTohZZLICDlpkCalMhWWlAko5kOCsx7haIuUiUmVktpi9DtDHpk9jX3SIF6COsZKKlifYeRRnXhMWIw1WCaF8a5HVfrZMFImnIkhRvO5HtCZ9avArON3n8bjzLiVKjDGDrRM40EXL1M0D0m61XBMUFjglQgseEvDK3o2/q42t+4IOVqM2mChjRap+wfnUw2sVabheQPkqppNW41w5KHwQFtGORqvXtvZer9Tr8xVstl/C2P+62bp4rIne+9LYUx5CGmpE9ArP9gf+xfxO7/17sqffq770+HUvxj+UgpjKHWCTv0wOK0dtpubh3d0CI+3/945+dj+eOCX6HS35l+cjv2AbnYCOuxN92sHn+j4YO/PK396utVpf675wW794JPcPGx1TafVlZ1mtUrKZJkjaZx9XW6YO0eTUuTydt/9BGJcssmMAihWUWmPM1o1tSokMJUCxqZKZeIlGDHwjjjYvtQJZJqhuUxBY1WJeGF6JsW13UmD7Pp7Tb+1277tA80RMA49jqRhdYr/clvSOCMQRRqNQQeVSmGBzvkaqpnK5MsERQxx5iruNyai1Fg9ce4LxoZALRsxOwnB+aBw1igTkSY91KHsh5goLieYzSCz+VPBLJt9jwVqt+iBFBjOxrh2jYm0GFKNYDGaCc/bnK/c/goV2MFNE4tu/k5VdCNgwQyd+Bh7hlkk567bZco0RkegIUHrJm+cnX8r383XshG2IFHAYpEP59uaC84XKn/OS2xv05zzuo9MISSeS6DfZ4LZSU62n6sVGV1LVl/EhbR3RsIP2fSZ9muBMinHfFPUXLRo8z2UkB7IQvdYu1DvfmGeaXFp8mbkJAtJK8/YPh5Bsw5bQUsqlflPnowyzRWDtM779V7aO1bS5kNpL+0ZJe3jO7TfDPZPdlegDuMI0R3h9np12fWZ56nc7UTh8/HvC8PigeU5VQvXcq9QjD+6293Dep2j9w8ElW+CHSKoV4D3HZN7bP80O7/Qph1GtTSybzfaEwEJo2ajtl3fOAaeLS1HWy/0a9v1TL1Qu88uQcJUc3dZ87I8umpJs6jw8lNrBsh5PtgXaq93Q7HEcBVKl2dSOWIKI81GOZf/17JF1C1Pib6fXresUZ3i4HA2W3YezBdyP+la494w/MGaZJXCMNuy+hx0znF4o7sqx7z/0v3tzPpS00KoOt0HYu3/Y+GKpNvjNAbd6nby9QHjVN3r4Mq+1Lz5ijZASNyek9dGeqNXOM01rlidlcZSDzdyD6mFctjqdop8GHvasX0d2ZxYFud9Sz3KNF+ltizsEXqVGX5BEaEZbhzndlZfkJwrhx/GdisI/lrBLesN3mp+kQOZf6qcyoF8UvFR6CH/DT1VsNxq0PNv/wC61wOtYyYAAA==" /></Footer>{/* END_CRM_ACCOUNT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_accounts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaResponse'
+  /crm/v1/accounts/meta/post:
+    get:
+      operationId: meta-post-retrieve
+      summary: Meta Post Retrieve
+      description: Returns metadata for `CRMAccount` POSTs.{/* BEGIN_CRM_ACCOUNT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+2ZbVMiORDHv4qVlxQwpyzuStXVFQveqleMHs5651rWVJNphkgmiUkGhK397lcZQHHPp9WZFbx754Tkn9i/7k4n+UooWIylnpAGoTohZZLICDlpkCalMhWWlAko5kOCsx7haIuUiUmVktpi9DtDHpk9jX3SIF6COsZKKlifYeRRnXhMWIw1WCaF8a5HVfrZMFImnIkhRvO5HtCZ9avArON3n8bjzLiVKjDGDrRM40EXL1M0D0m61XBMUFjglQgseEvDK3o2/q42t+4IOVqM2mChjRap+wfnUw2sVabheQPkqppNW41w5KHwQFtGORqvXtvZer9Tr8xVstl/C2P+62bp4rIne+9LYUx5CGmpE9ArP9gf+xfxO7/17sqffq770+HUvxj+UgpjKHWCTv0wOK0dtpubh3d0CI+3/945+dj+eOCX6HS35l+cjv2AbnYCOuxN92sHn+j4YO/PK396utVpf675wW794JPcPGx1TafVlZ1mtUrKZJkjaZx9XW6YO0eTUuTydt/9BGJcssmMAihWUWmPM1o1tSokMJUCxqZKZeIlGDHwjjjYvtQJZJqhuUxBY1WJeGF6JsW13UmD7Pp7Tb+1277tA80RMA49jqRhdYr/clvSOCMQRRqNQQeVSmGBzvkaqpnK5MsERQxx5iruNyai1Fg9ce4LxoZALRsxOwnB+aBw1igTkSY91KHsh5goLieYzSCz+VPBLJt9jwVqt+iBFBjOxrh2jYm0GFKNYDGaCc/bnK/c/goV2MFNE4tu/k5VdCNgwQyd+Bh7hlkk567bZco0RkegIUHrJm+cnX8r383XshG2IFHAYpEP59uaC84XKn/OS2xv05zzuo9MISSeS6DfZ4LZSU62n6sVGV1LVl/EhbR3RsIP2fSZ9muBMinHfFPUXLRo8z2UkB7IQvdYu1DvfmGeaXFp8mbkJAtJK8/YPh5Bsw5bQUsqlflPnowyzRWDtM779V7aO1bS5kNpL+0ZJe3jO7TfDPZPdlegDuMI0R3h9np12fWZ56nc7UTh8/HvC8PigeU5VQvXcq9QjD+6293Dep2j9w8ElW+CHSKoV4D3HZN7bP80O7/Qph1GtTSybzfaEwEJo2ajtl3fOAaeLS1HWy/0a9v1TL1Qu88uQcJUc3dZ87I8umpJs6jw8lNrBsh5PtgXaq93Q7HEcBVKl2dSOWIKI81GOZf/17JF1C1Pib6fXresUZ3i4HA2W3YezBdyP+la494w/MGaZJXCMNuy+hx0znF4o7sqx7z/0v3tzPpS00KoOt0HYu3/Y+GKpNvjNAbd6nby9QHjVN3r4Mq+1Lz5ijZASNyek9dGeqNXOM01rlidlcZSDzdyD6mFctjqdop8GHvasX0d2ZxYFud9Sz3KNF+ltizsEXqVGX5BEaEZbhzndlZfkJwrhx/GdisI/lrBLesN3mp+kQOZf6qcyoF8UvFR6CH/DT1VsNxq0PNv/wC61wOtYyYAAA==" /></Footer>{/* END_CRM_ACCOUNT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_accounts
+      parameters:
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaResponse'
+  /crm/v1/accounts/remote-field-classes:
+    get:
+      operationId: remote-field-classes-list
+      summary: Remote Field Classes List
+      description: Returns a list of `RemoteFieldClass` objects.{/* BEGIN_CRM_ACCOUNT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+2ZbVMiORDHv4qVlxQwpyzuStXVFQveqleMHs5651rWVJNphkgmiUkGhK397lcZQHHPp9WZFbx754Tkn9i/7k4n+UooWIylnpAGoTohZZLICDlpkCalMhWWlAko5kOCsx7haIuUiUmVktpi9DtDHpk9jX3SIF6COsZKKlifYeRRnXhMWIw1WCaF8a5HVfrZMFImnIkhRvO5HtCZ9avArON3n8bjzLiVKjDGDrRM40EXL1M0D0m61XBMUFjglQgseEvDK3o2/q42t+4IOVqM2mChjRap+wfnUw2sVabheQPkqppNW41w5KHwQFtGORqvXtvZer9Tr8xVstl/C2P+62bp4rIne+9LYUx5CGmpE9ArP9gf+xfxO7/17sqffq770+HUvxj+UgpjKHWCTv0wOK0dtpubh3d0CI+3/945+dj+eOCX6HS35l+cjv2AbnYCOuxN92sHn+j4YO/PK396utVpf675wW794JPcPGx1TafVlZ1mtUrKZJkjaZx9XW6YO0eTUuTydt/9BGJcssmMAihWUWmPM1o1tSokMJUCxqZKZeIlGDHwjjjYvtQJZJqhuUxBY1WJeGF6JsW13UmD7Pp7Tb+1277tA80RMA49jqRhdYr/clvSOCMQRRqNQQeVSmGBzvkaqpnK5MsERQxx5iruNyai1Fg9ce4LxoZALRsxOwnB+aBw1igTkSY91KHsh5goLieYzSCz+VPBLJt9jwVqt+iBFBjOxrh2jYm0GFKNYDGaCc/bnK/c/goV2MFNE4tu/k5VdCNgwQyd+Bh7hlkk567bZco0RkegIUHrJm+cnX8r383XshG2IFHAYpEP59uaC84XKn/OS2xv05zzuo9MISSeS6DfZ4LZSU62n6sVGV1LVl/EhbR3RsIP2fSZ9muBMinHfFPUXLRo8z2UkB7IQvdYu1DvfmGeaXFp8mbkJAtJK8/YPh5Bsw5bQUsqlflPnowyzRWDtM779V7aO1bS5kNpL+0ZJe3jO7TfDPZPdlegDuMI0R3h9np12fWZ56nc7UTh8/HvC8PigeU5VQvXcq9QjD+6293Dep2j9w8ElW+CHSKoV4D3HZN7bP80O7/Qph1GtTSybzfaEwEJo2ajtl3fOAaeLS1HWy/0a9v1TL1Qu88uQcJUc3dZ87I8umpJs6jw8lNrBsh5PtgXaq93Q7HEcBVKl2dSOWIKI81GOZf/17JF1C1Pib6fXresUZ3i4HA2W3YezBdyP+la494w/MGaZJXCMNuy+hx0znF4o7sqx7z/0v3tzPpS00KoOt0HYu3/Y+GKpNvjNAbd6nby9QHjVN3r4Mq+1Lz5ijZASNyek9dGeqNXOM01rlidlcZSDzdyD6mFctjqdop8GHvasX0d2ZxYFud9Sz3KNF+ltizsEXqVGX5BEaEZbhzndlZfkJwrhx/GdisI/lrBLesN3mp+kQOZf6qcyoF8UvFR6CH/DT1VsNxq0PNv/wC61wOtYyYAAA==" /></Footer>{/* END_CRM_ACCOUNT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_accounts
+      parameters:
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_fields
+        in: query
+        description: Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: is_common_model_field
+        in: query
+        description: If provided, will only return remote field classes with this is_common_model_field value
+        required: false
+        schema:
+          type: boolean
+      - name: is_custom
+        in: query
+        description: If provided, will only return remote fields classes with this is_custom value
+        required: false
+        schema:
+          type: boolean
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRemoteFieldClassList'
+  /ticketing/v1/accounts:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Account` objects.{/* BEGIN_TICKETING_ACCOUNT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA92WbW/aMBCA/0rljwiStZRVIE0TBfrCmtAV2vVFlXU4RzA4drCd0lH1v08JlMJWqdqUdhXfEuv8XPz4zvEDYWAxVPonqRHL2RgtlyEpkkgFKEiN1BlTibSkSCDmPkS4GkfvdkiRmCSOlbYYHHAUgTnSOCA14kaoQywlkg84Bu5yjsulxVCD5Uoadzm3NMgmkyIRXI4xWOR9lTaPLsE8/LdX4wpu0m+PwRg71CoJh2c4SdC8Dk6/TGCE0oIoBWDBXYGU9Jzy0li6hgAFWgyaYKGJFlm62EXCobWxqbnuEEXsZMmdAO9clC5oy5lA41bK1Z29aqW0oGTZv9JQfNkujCZ91d8r0JAJCknB67F7v3c89Ufhrt/Yvfdn5xV/Np75o/GnAg2h4PW8Sqd3Ve4069udFwJo9/Nl9WK/ud/2C2zWKvujq6nfY9tej437s+Ny+5BN20ff7/3Z1Y7XPC/7vValfai2O40z4zXOlFd3HFIkq3tKajcPqwOLojnQaIYBmvF6+HEEIa5omW8HxLwUJ33BmWPKDkQwUxKmxmEqciMMOLhLHO1OEtBIT1SonFGMafFm4riSS/ekRlr+Ud1vtJrr1VC/Ay6gL5DUrE7wj2ImtRvClLTA5vuqIuAyfZLpqopEY6Qs0nSH1t9oDHb4PMQDUlz0jSG36fAk4RqDU9AQoUWdZrp9LL5sTmUNmIO1UwF2oHSUIanJzDmx/LDO/tLUEYp4q8tUkrOulGtS7OYpO5YWNVNRPsKeaKtNSS+qzZ2TRn+DpLW5hq0u6jvOcMsDCWH2o8jHYQqnCzh9hjuj+E31vbm0b4mxKkKdj6Un2rse/+946J9wiZCTK5Gx3vLs+i//xS4INAOlGS57sSFUEuQj7ZlOzaIZWUr/yMfYv6ucr9BX05zkLXlr/bmJ6n5oPsZ8rGWoNxf2jm6uUeZ343+6jC2gtDrxkkt+sJFFda2GaquZm7prNVQ0xW1SN94+/gJtiLQsvRAAAA==" /></Footer>{/* END_TICKETING_ACCOUNT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_accounts
+      parameters:
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAccountList'
+  /ticketing/v1/accounts/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns an `Account` object with the given `id`.{/* BEGIN_TICKETING_ACCOUNT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA92WbW/aMBCA/0rljwiStZRVIE0TBfrCmtAV2vVFlXU4RzA4drCd0lH1v08JlMJWqdqUdhXfEuv8XPz4zvEDYWAxVPonqRHL2RgtlyEpkkgFKEiN1BlTibSkSCDmPkS4GkfvdkiRmCSOlbYYHHAUgTnSOCA14kaoQywlkg84Bu5yjsulxVCD5Uoadzm3NMgmkyIRXI4xWOR9lTaPLsE8/LdX4wpu0m+PwRg71CoJh2c4SdC8Dk6/TGCE0oIoBWDBXYGU9Jzy0li6hgAFWgyaYKGJFlm62EXCobWxqbnuEEXsZMmdAO9clC5oy5lA41bK1Z29aqW0oGTZv9JQfNkujCZ91d8r0JAJCknB67F7v3c89Ufhrt/Yvfdn5xV/Np75o/GnAg2h4PW8Sqd3Ve4069udFwJo9/Nl9WK/ud/2C2zWKvujq6nfY9tej437s+Ny+5BN20ff7/3Z1Y7XPC/7vValfai2O40z4zXOlFd3HFIkq3tKajcPqwOLojnQaIYBmvF6+HEEIa5omW8HxLwUJ33BmWPKDkQwUxKmxmEqciMMOLhLHO1OEtBIT1SonFGMafFm4riSS/ekRlr+Ud1vtJrr1VC/Ay6gL5DUrE7wj2ImtRvClLTA5vuqIuAyfZLpqopEY6Qs0nSH1t9oDHb4PMQDUlz0jSG36fAk4RqDU9AQoUWdZrp9LL5sTmUNmIO1UwF2oHSUIanJzDmx/LDO/tLUEYp4q8tUkrOulGtS7OYpO5YWNVNRPsKeaKtNSS+qzZ2TRn+DpLW5hq0u6jvOcMsDCWH2o8jHYQqnCzh9hjuj+E31vbm0b4mxKkKdj6Un2rse/+946J9wiZCTK5Gx3vLs+i//xS4INAOlGS57sSFUEuQj7ZlOzaIZWUr/yMfYv6ucr9BX05zkLXlr/bmJ6n5oPsZ8rGWoNxf2jm6uUeZ343+6jC2gtDrxkkt+sJFFda2GaquZm7prNVQ0xW1SN94+/gJtiLQsvRAAAA==" /></Footer>{/* END_TICKETING_ACCOUNT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_accounts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account_3'
+components:
+  schemas:
+    Address:
+      type: object
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        street_1:
+          type:
+          - string
+          - 'null'
+          description: Line 1 of the address's street.
+        street_2:
+          type:
+          - string
+          - 'null'
+          description: Line 2 of the address's street.
+        city:
+          type:
+          - string
+          - 'null'
+          description: The address's city.
+        state:
+          type:
+          - string
+          - 'null'
+          description: The address's state.
+        postal_code:
+          type:
+          - string
+          - 'null'
+          description: The address's postal code.
+        country:
+          oneOf:
+          - $ref: '#/components/schemas/CountryEnum'
+          - type: 'null'
+          description: The address's country. The country code in ISO 3166-1 alpha-2 format.
+        address_type:
+          oneOf:
+          - $ref: '#/components/schemas/AddressTypeEnum'
+          - type: 'null'
+          description: The address type.
+      description: '# The Address Object
+
+        ### Description
+
+        The `Address` object is used to represent an entity''s address.
+
+        ### Usage Example
+
+        TODO'
+      title: Address
+    AddressRequest:
+      type: object
+      properties:
+        street_1:
+          type:
+          - string
+          - 'null'
+          description: Line 1 of the address's street.
+        street_2:
+          type:
+          - string
+          - 'null'
+          description: Line 2 of the address's street.
+        city:
+          type:
+          - string
+          - 'null'
+          description: The address's city.
+        state:
+          type:
+          - string
+          - 'null'
+          description: The address's state.
+        postal_code:
+          type:
+          - string
+          - 'null'
+          description: The address's postal code.
+        country:
+          oneOf:
+          - $ref: '#/components/schemas/CountryEnum'
+          - type: 'null'
+          description: The address's country. The country code in ISO 3166-1 alpha-2 format.
+        address_type:
+          oneOf:
+          - $ref: '#/components/schemas/AddressTypeEnum'
+          - type: 'null'
+          description: The address type.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The Address Object
+
+        ### Description
+
+        The `Address` object is used to represent an entity''s address.
+
+        ### Usage Example
+
+        TODO'
+      title: AddressRequest
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    Account_2:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        owner:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The account's owner.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The account's name.
+        description:
+          type:
+          - string
+          - 'null'
+          description: The account's description.
+        industry:
+          type:
+          - string
+          - 'null'
+          description: The account's industry.
+        website:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The account's website.
+        number_of_employees:
+          type:
+          - integer
+          - 'null'
+          description: The account's number of employees.
+        addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/Address'
+        phone_numbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneNumber'
+        last_activity_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The last date (either most recent or furthest in the future) of when an activity occurs in an account.
+        remote_updated_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the CRM system account data was last modified by a user with a login.
+        remote_created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's account was created.
+        account_url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The account's URL in the remote system.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/AccountFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteField'
+      description: '# The Account Object
+
+        ### Description
+
+        The `Account` object is used to represent a company in a CRM system.
+
+        ### Usage Example
+
+        TODO'
+      title: Account
+    RemoteFieldRequest:
+      type: object
+      properties:
+        remote_field_class:
+          type: string
+          format: uuid
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteFieldRequest
+    AccountsGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - classification
+      - classification,status
+      - status
+      title: AccountsGetParametersShowEnumOrigins
+    AccountStatusEnum:
+      type: string
+      enum:
+      - ACTIVE
+      - PENDING
+      - INACTIVE
+      title: AccountStatusEnum
+    ItemTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemTypeEnum
+    AccountsIdGetParametersExpandSchemaItems_2:
+      type: string
+      enum:
+      - owner
+      title: AccountsIdGetParametersExpandSchemaItems
+    ItemFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemFormatEnum
+    AccountsIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - classification
+      - classification,status
+      - status
+      title: AccountsIdGetParametersShowEnumOrigins
+    AccountsGetParametersClassification:
+      type: string
+      enum:
+      - ''
+      - ASSET
+      - EQUITY
+      - EXPENSE
+      - LIABILITY
+      - REVENUE
+      title: AccountsGetParametersClassification
+    AccountFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: AccountFieldMappings
+    AccountRequest_2:
+      type: object
+      properties:
+        owner:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The account's owner.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The account's name.
+        description:
+          type:
+          - string
+          - 'null'
+          description: The account's description.
+        industry:
+          type:
+          - string
+          - 'null'
+          description: The account's industry.
+        website:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The account's website.
+        number_of_employees:
+          type:
+          - integer
+          - 'null'
+          description: The account's number of employees.
+        addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddressRequest'
+        last_activity_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The last date (either most recent or furthest in the future) of when an activity occurs in an account.
+        account_url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The account's URL in the remote system.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldRequest'
+      description: '# The Account Object
+
+        ### Description
+
+        The `Account` object is used to represent a company in a CRM system.
+
+        ### Usage Example
+
+        TODO'
+      title: AccountRequest
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    Account_3:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The account's name.
+        domains:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: The account's domain names.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/AccountFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The Account Object
+
+        ### Description
+
+        The `Account` object is used to represent the account that a ticket is associated with.
+
+
+        The account is a company that may be a customer. This does not represent the company that is receiving the ticket.
+
+
+        ### Usage Example
+
+        TODO'
+      title: Account
+    CountryEnum:
+      type: string
+      enum:
+      - AF
+      - AX
+      - AL
+      - DZ
+      - AS
+      - AD
+      - AO
+      - AI
+      - AQ
+      - AG
+      - AR
+      - AM
+      - AW
+      - AU
+      - AT
+      - AZ
+      - BS
+      - BH
+      - BD
+      - BB
+      - BY
+      - BE
+      - BZ
+      - BJ
+      - BM
+      - BT
+      - BO
+      - BQ
+      - BA
+      - BW
+      - BV
+      - BR
+      - IO
+      - BN
+      - BG
+      - BF
+      - BI
+      - CV
+      - KH
+      - CM
+      - CA
+      - KY
+      - CF
+      - TD
+      - CL
+      - CN
+      - CX
+      - CC
+      - CO
+      - KM
+      - CG
+      - CD
+      - CK
+      - CR
+      - CI
+      - HR
+      - CU
+      - CW
+      - CY
+      - CZ
+      - DK
+      - DJ
+      - DM
+      - DO
+      - EC
+      - EG
+      - SV
+      - GQ
+      - ER
+      - EE
+      - SZ
+      - ET
+      - FK
+      - FO
+      - FJ
+      - FI
+      - FR
+      - GF
+      - PF
+      - TF
+      - GA
+      - GM
+      - GE
+      - DE
+      - GH
+      - GI
+      - GR
+      - GL
+      - GD
+      - GP
+      - GU
+      - GT
+      - GG
+      - GN
+      - GW
+      - GY
+      - HT
+      - HM
+      - VA
+      - HN
+      - HK
+      - HU
+      - IS
+      - IN
+      - ID
+      - IR
+      - IQ
+      - IE
+      - IM
+      - IL
+      - IT
+      - JM
+      - JP
+      - JE
+      - JO
+      - KZ
+      - KE
+      - KI
+      - KW
+      - KG
+      - LA
+      - LV
+      - LB
+      - LS
+      - LR
+      - LY
+      - LI
+      - LT
+      - LU
+      - MO
+      - MG
+      - MW
+      - MY
+      - MV
+      - ML
+      - MT
+      - MH
+      - MQ
+      - MR
+      - MU
+      - YT
+      - MX
+      - FM
+      - MD
+      - MC
+      - MN
+      - ME
+      - MS
+      - MA
+      - MZ
+      - MM
+      - NA
+      - NR
+      - NP
+      - NL
+      - NC
+      - NZ
+      - NI
+      - NE
+      - NG
+      - NU
+      - NF
+      - KP
+      - MK
+      - MP
+      - 'NO'
+      - OM
+      - PK
+      - PW
+      - PS
+      - PA
+      - PG
+      - PY
+      - PE
+      - PH
+      - PN
+      - PL
+      - PT
+      - PR
+      - QA
+      - RE
+      - RO
+      - RU
+      - RW
+      - BL
+      - SH
+      - KN
+      - LC
+      - MF
+      - PM
+      - VC
+      - WS
+      - SM
+      - ST
+      - SA
+      - SN
+      - RS
+      - SC
+      - SL
+      - SG
+      - SX
+      - SK
+      - SI
+      - SB
+      - SO
+      - ZA
+      - GS
+      - KR
+      - SS
+      - ES
+      - LK
+      - SD
+      - SR
+      - SJ
+      - SE
+      - CH
+      - SY
+      - TW
+      - TJ
+      - TZ
+      - TH
+      - TL
+      - TG
+      - TK
+      - TO
+      - TT
+      - TN
+      - TR
+      - TM
+      - TC
+      - TV
+      - UG
+      - UA
+      - AE
+      - GB
+      - UM
+      - US
+      - UY
+      - UZ
+      - VU
+      - VE
+      - VN
+      - VG
+      - VI
+      - WF
+      - EH
+      - YE
+      - ZM
+      - ZW
+      description: The country code in ISO 3166-1 alpha-2 format.
+      title: CountryEnum
+    AccountResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/Account'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: AccountResponse
+    AccountsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - company
+      title: AccountsIdGetParametersExpandSchemaItems
+    AccountRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          description: The account's name.
+        description:
+          type:
+          - string
+          - 'null'
+          description: The account's description.
+        classification:
+          oneOf:
+          - $ref: '#/components/schemas/ClassificationEnum'
+          - type: 'null'
+          description: The account's broadest grouping.
+        type:
+          type:
+          - string
+          - 'null'
+          description: The account's type is a narrower and more specific grouping within the account's classification.
+        account_type:
+          oneOf:
+          - $ref: '#/components/schemas/AccountAccountTypeEnum'
+          - type: 'null'
+          description: Normalized account type- which is a narrower and more specific grouping within the account's classification.
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/AccountStatusEnum'
+          - type: 'null'
+          description: The account's status.
+        current_balance:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The account's current balance.
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: The account's currency. The currency code in ISO 4217 format.
+        account_number:
+          type:
+          - string
+          - 'null'
+          description: The account's number.
+        parent_account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: ID of the parent account.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the account belongs to.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The Account Object
+
+        ### Description
+
+        An `Account` represents a category in a company’s ledger in which a financial transaction is recorded against. The aggregation of each `Account` object is often referred to as the **Chart of Accounts**.
+
+
+        An `Account` can be classified into one of the following categories, determined through the `classification` field:
+
+        * __Asset:__ Accounts Receivable and Bank Accounts
+
+        * __Liability:__ Accounts Payable and Credit Card Accounts
+
+        * __Equity:__ Treasury Accounts and Retained Earnings
+
+        * __Revenue:__ Income and Other Income
+
+        * __Expense:__ Cost of Goods Sold and Office Expenses
+
+
+        ### Usage Example
+
+        Fetch from the `LIST Accounts` endpoint and view a company''s accounts.'
+      title: AccountRequest
+    AddressTypeEnum:
+      type: string
+      enum:
+      - BILLING
+      - SHIPPING
+      title: AddressTypeEnum
+    PaginatedAccountList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Account'
+      title: PaginatedAccountList
+    AccountsGetParametersRemoteFields:
+      type: string
+      enum:
+      - classification
+      - classification,status
+      - status
+      title: AccountsGetParametersRemoteFields
+    PhoneNumber:
+      type: object
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        phone_number:
+          type:
+          - string
+          - 'null'
+          description: The phone number.
+        phone_number_type:
+          type:
+          - string
+          - 'null'
+          description: The phone number's type.
+      description: '# The PhoneNumber Object
+
+        ### Description
+
+        The `PhoneNumber` object is used to represent an entity''s phone number.
+
+        ### Usage Example
+
+        Fetch from the `GET Contact` endpoint and view their phone numbers.'
+      title: PhoneNumber
+    AccountsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - company
+      title: AccountsGetParametersExpandSchemaItems
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    PatchedAccountRequest:
+      type: object
+      properties:
+        owner:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The account's owner.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The account's name.
+        description:
+          type:
+          - string
+          - 'null'
+          description: The account's description.
+        industry:
+          type:
+          - string
+          - 'null'
+          description: The account's industry.
+        website:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The account's website.
+        number_of_employees:
+          type:
+          - integer
+          - 'null'
+          description: The account's number of employees.
+        addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddressRequest'
+        last_activity_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The last date (either most recent or furthest in the future) of when an activity occurs in an account.
+        account_url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The account's URL in the remote system.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldRequest'
+      description: '# The Account Object
+
+        ### Description
+
+        The `Account` object is used to represent a company in a CRM system.
+
+        ### Usage Example
+
+        TODO'
+      title: PatchedAccountRequest
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    PaginatedRemoteFieldClassList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldClass'
+      title: PaginatedRemoteFieldClassList
+    AccountsGetParametersStatus:
+      type: string
+      enum:
+      - ''
+      - ACTIVE
+      - INACTIVE
+      - PENDING
+      title: AccountsGetParametersStatus
+    ItemSchema:
+      type: object
+      properties:
+        item_type:
+          $ref: '#/components/schemas/ItemTypeEnum'
+        item_format:
+          $ref: '#/components/schemas/ItemFormatEnum'
+        item_choices:
+          type: array
+          items:
+            type: string
+      title: ItemSchema
+    AccountEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/AccountRequest'
+      required:
+      - model
+      title: AccountEndpointRequest
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    AccountsIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - classification
+      - classification,status
+      - status
+      title: AccountsIdGetParametersRemoteFields
+    RemoteField:
+      type: object
+      properties:
+        remote_field_class:
+          $ref: '#/components/schemas/RemoteFieldClass'
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteField
+    CRMAccountResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/Account_2'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: CRMAccountResponse
+    ClassificationEnum:
+      type: string
+      enum:
+      - ASSET
+      - EQUITY
+      - EXPENSE
+      - LIABILITY
+      - REVENUE
+      title: ClassificationEnum
+    RemoteFieldClass:
+      type: object
+      properties:
+        id:
+          type: string
+        display_name:
+          type: string
+        remote_key_name:
+          type: string
+        description:
+          type: string
+        is_custom:
+          type: boolean
+        is_common_model_field:
+          type: boolean
+        is_required:
+          type: boolean
+        field_type:
+          $ref: '#/components/schemas/FieldTypeEnum'
+        field_format:
+          $ref: '#/components/schemas/FieldFormatEnum'
+        field_choices:
+          type: array
+          items:
+            type: string
+        item_schema:
+          $ref: '#/components/schemas/ItemSchema'
+      title: RemoteFieldClass
+    AccountAccountTypeEnum:
+      type: string
+      enum:
+      - BANK
+      - CREDIT_CARD
+      - ACCOUNTS_PAYABLE
+      - ACCOUNTS_RECEIVABLE
+      - FIXED_ASSET
+      - OTHER_ASSET
+      - OTHER_CURRENT_ASSET
+      - OTHER_EXPENSE
+      - OTHER_INCOME
+      - COST_OF_GOODS_SOLD
+      - OTHER_CURRENT_LIABILITY
+      - LONG_TERM_LIABILITY
+      - NON_POSTING
+      title: AccountAccountTypeEnum
+    FieldFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldFormatEnum
+    CRMAccountEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/AccountRequest_2'
+      required:
+      - model
+      title: CRMAccountEndpointRequest
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    TransactionCurrencyEnum:
+      type: string
+      enum:
+      - XUA
+      - AFN
+      - AFA
+      - ALL
+      - ALK
+      - DZD
+      - ADP
+      - AOA
+      - AOK
+      - AON
+      - AOR
+      - ARA
+      - ARS
+      - ARM
+      - ARP
+      - ARL
+      - AMD
+      - AWG
+      - AUD
+      - ATS
+      - AZN
+      - AZM
+      - BSD
+      - BHD
+      - BDT
+      - BBD
+      - BYN
+      - BYB
+      - BYR
+      - BEF
+      - BEC
+      - BEL
+      - BZD
+      - BMD
+      - BTN
+      - BOB
+      - BOL
+      - BOV
+      - BOP
+      - BAM
+      - BAD
+      - BAN
+      - BWP
+      - BRC
+      - BRZ
+      - BRE
+      - BRR
+      - BRN
+      - BRB
+      - BRL
+      - GBP
+      - BND
+      - BGL
+      - BGN
+      - BGO
+      - BGM
+      - BUK
+      - BIF
+      - XPF
+      - KHR
+      - CAD
+      - CVE
+      - KYD
+      - XAF
+      - CLE
+      - CLP
+      - CLF
+      - CNX
+      - CNY
+      - CNH
+      - COP
+      - COU
+      - KMF
+      - CDF
+      - CRC
+      - HRD
+      - HRK
+      - CUC
+      - CUP
+      - CYP
+      - CZK
+      - CSK
+      - DKK
+      - DJF
+      - DOP
+      - NLG
+      - XCD
+      - DDM
+      - ECS
+      - ECV
+      - EGP
+      - GQE
+      - ERN
+      - EEK
+      - ETB
+      - EUR
+      - XBA
+      - XEU
+      - XBB
+      - XBC
+      - XBD
+      - FKP
+      - FJD
+      - FIM
+      - FRF
+      - XFO
+      - XFU
+      - GMD
+      - GEK
+      - GEL
+      - DEM
+      - GHS
+      - GHC
+      - GIP
+      - XAU
+      - GRD
+      - GTQ
+      - GWP
+      - GNF
+      - GNS
+      - GYD
+      - HTG
+      - HNL
+      - HKD
+      - HUF
+      - IMP
+      - ISK
+      - ISJ
+      - INR
+      - IDR
+      - IRR
+      - IQD
+      - IEP
+      - ILS
+      - ILP
+      - ILR
+      - ITL
+      - JMD
+      - JPY
+      - JOD
+      - KZT
+      - KES
+      - KWD
+      - KGS
+      - LAK
+      - LVL
+      - LVR
+      - LBP
+      - LSL
+      - LRD
+      - LYD
+      - LTL
+      - LTT
+      - LUL
+      - LUC
+      - LUF
+      - MOP
+      - MKD
+      - MKN
+      - MGA
+      - MGF
+      - MWK
+      - MYR
+      - MVR
+      - MVP
+      - MLF
+      - MTL
+      - MTP
+      - MRU
+      - MRO
+      - MUR
+      - MXV
+      - MXN
+      - MXP
+      - MDC
+      - MDL
+      - MCF
+      - MNT
+      - MAD
+      - MAF
+      - MZE
+      - MZN
+      - MZM
+      - MMK
+      - NAD
+      - NPR
+      - ANG
+      - TWD
+      - NZD
+      - NIO
+      - NIC
+      - NGN
+      - KPW
+      - NOK
+      - OMR
+      - PKR
+      - XPD
+      - PAB
+      - PGK
+      - PYG
+      - PEI
+      - PEN
+      - PES
+      - PHP
+      - XPT
+      - PLN
+      - PLZ
+      - PTE
+      - GWE
+      - QAR
+      - XRE
+      - RHD
+      - RON
+      - ROL
+      - RUB
+      - RUR
+      - RWF
+      - SVC
+      - WST
+      - SAR
+      - RSD
+      - CSD
+      - SCR
+      - SLL
+      - XAG
+      - SGD
+      - SKK
+      - SIT
+      - SBD
+      - SOS
+      - ZAR
+      - ZAL
+      - KRH
+      - KRW
+      - KRO
+      - SSP
+      - SUR
+      - ESP
+      - ESA
+      - ESB
+      - XDR
+      - LKR
+      - SHP
+      - XSU
+      - SDD
+      - SDG
+      - SDP
+      - SRD
+      - SRG
+      - SZL
+      - SEK
+      - CHF
+      - SYP
+      - STN
+      - STD
+      - TVD
+      - TJR
+      - TJS
+      - TZS
+      - XTS
+      - THB
+      - XXX
+      - TPE
+      - TOP
+      - TTD
+      - TND
+      - TRY
+      - TRL
+      - TMT
+      - TMM
+      - USD
+      - USN
+      - USS
+      - UGX
+      - UGS
+      - UAH
+      - UAK
+      - AED
+      - UYW
+      - UYU
+      - UYP
+      - UYI
+      - UZS
+      - VUV
+      - VES
+      - VEB
+      - VEF
+      - VND
+      - VNN
+      - CHE
+      - CHW
+      - XOF
+      - YDD
+      - YER
+      - YUN
+      - YUD
+      - YUM
+      - YUR
+      - ZWN
+      - ZRN
+      - ZRZ
+      - ZMW
+      - ZMK
+      - ZWD
+      - ZWR
+      - ZWL
+      description: The currency code in ISO 4217 format.
+      title: TransactionCurrencyEnum
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    AccountsGetParametersExpandSchemaItems_2:
+      type: string
+      enum:
+      - owner
+      title: AccountsGetParametersExpandSchemaItems
+    PatchedCRMAccountEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/PatchedAccountRequest'
+      required:
+      - model
+      title: PatchedCRMAccountEndpointRequest
+    FieldTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldTypeEnum
+    Account:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The account's name.
+        description:
+          type:
+          - string
+          - 'null'
+          description: The account's description.
+        classification:
+          oneOf:
+          - $ref: '#/components/schemas/ClassificationEnum'
+          - type: 'null'
+          description: The account's broadest grouping.
+        type:
+          type:
+          - string
+          - 'null'
+          description: The account's type is a narrower and more specific grouping within the account's classification.
+        account_type:
+          oneOf:
+          - $ref: '#/components/schemas/AccountAccountTypeEnum'
+          - type: 'null'
+          description: Normalized account type- which is a narrower and more specific grouping within the account's classification.
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/AccountStatusEnum'
+          - type: 'null'
+          description: The account's status.
+        current_balance:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The account's current balance.
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: The account's currency. The currency code in ISO 4217 format.
+        account_number:
+          type:
+          - string
+          - 'null'
+          description: The account's number.
+        parent_account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: ID of the parent account.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the account belongs to.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/AccountFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The Account Object
+
+        ### Description
+
+        An `Account` represents a category in a company’s ledger in which a financial transaction is recorded against. The aggregation of each `Account` object is often referred to as the **Chart of Accounts**.
+
+
+        An `Account` can be classified into one of the following categories, determined through the `classification` field:
+
+        * __Asset:__ Accounts Receivable and Bank Accounts
+
+        * __Liability:__ Accounts Payable and Credit Card Accounts
+
+        * __Equity:__ Treasury Accounts and Retained Earnings
+
+        * __Revenue:__ Income and Other Income
+
+        * __Expense:__ Cost of Goods Sold and Office Expenses
+
+
+        ### Usage Example
+
+        Fetch from the `LIST Accounts` endpoint and view a company''s accounts.'
+      title: Account
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

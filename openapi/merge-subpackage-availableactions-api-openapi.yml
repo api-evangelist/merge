@@ -1,0 +1,169 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_availableActions API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_availableActions
+paths:
+  /available-actions:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a list of models and actions available for an account.
+      tags:
+      - subpackage_availableActions
+      parameters:
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AvailableActions'
+components:
+  schemas:
+    AccountIntegration:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Company name.
+        abbreviated_name:
+          type:
+          - string
+          - 'null'
+          description: 'Optional. This shortened name appears in places with limited space, usually in conjunction with the platform''s logo (e.g., Merge Link menu).<br><br>Example: <i>Workforce Now (in lieu of ADP Workforce Now), SuccessFactors (in lieu of SAP SuccessFactors)</i>'
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/CategoriesEnum'
+          description: Category or categories this integration belongs to. Multiple categories should be comma separated, i.e. [ats, hris].
+        image:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: Company logo in rectangular shape.
+        square_image:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: Company logo in square shape.
+        color:
+          type: string
+          description: The color of this integration used for buttons and text throughout the app and landing pages. <b>Choose a darker, saturated color.</b>
+        slug:
+          type: string
+        api_endpoints_to_documentation_urls:
+          type: object
+          additionalProperties:
+            description: Any type
+          description: 'Mapping of API endpoints to documentation urls for support. Example: {''GET'': [[''/common-model-scopes'', ''https://docs.merge.dev/accounting/common-model-scopes/#common_model_scopes_retrieve''],[''/common-model-actions'', ''https://docs.merge.dev/accounting/common-model-actions/#common_model_actions_retrieve'']], ''POST'': []}'
+        webhook_setup_guide_url:
+          type:
+          - string
+          - 'null'
+          description: Setup guide URL for third party webhook creation. Exposed in Merge Docs.
+        category_beta_status:
+          $ref: '#/components/schemas/AccountIntegrationCategoryBetaStatus'
+          description: Category or categories this integration is in beta status for.
+      required:
+      - name
+      title: AccountIntegration
+    ModelOperation:
+      type: object
+      properties:
+        model_name:
+          type: string
+        available_operations:
+          type: array
+          items:
+            type: string
+        required_post_parameters:
+          type: array
+          items:
+            type: string
+        supported_fields:
+          type: array
+          items:
+            type: string
+      required:
+      - model_name
+      - available_operations
+      - required_post_parameters
+      - supported_fields
+      description: '# The ModelOperation Object
+
+        ### Description
+
+        The `ModelOperation` object is used to represent the operations that are currently supported for a given model.
+
+
+        ### Usage Example
+
+        View what operations are supported for the `Candidate` endpoint.'
+      title: ModelOperation
+    AvailableActions:
+      type: object
+      properties:
+        integration:
+          $ref: '#/components/schemas/AccountIntegration'
+        passthrough_available:
+          type: boolean
+        available_model_operations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ModelOperation'
+      required:
+      - integration
+      - passthrough_available
+      description: '# The AvailableActions Object
+
+        ### Description
+
+        The `Activity` object is used to see all available model/operation combinations for an integration.
+
+
+        ### Usage Example
+
+        Fetch all the actions available for the `Zenefits` integration.'
+      title: AvailableActions
+    AccountIntegrationCategoryBetaStatus:
+      type: object
+      properties: {}
+      description: Category or categories this integration is in beta status for.
+      title: AccountIntegrationCategoryBetaStatus
+    CategoriesEnum:
+      type: string
+      enum:
+      - hris
+      - ats
+      - accounting
+      - ticketing
+      - crm
+      - mktg
+      - filestorage
+      - knowledgebase
+      title: CategoriesEnum
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

@@ -1,0 +1,405 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_offers API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_offers
+paths:
+  /ats/v1/offers:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Offer` objects.{/* BEGIN_ATS_OFFER_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA9WXbW/aOhTHv0rllwjIKOOuRZqueCqFltCVtKyaqujgHILBiYPthIdp331KoB3Z7UUbSln30vbx387v/H3sfCUUNLpCrkiVgFYkTzzhICdV0h+PUZI8gYCZ4OFm3I5OSZ6oMAiE1OhcMOSOupQ4JlVieChdLIQ+GzN0DNDKYL5GV4JmwlfG86zCOJlG8oQzf4ZOjVIR+nqPziauAJvAn5rxsNIkTwJQSk+kCN3JLc5DVPsk491w9NDXwAsOaDB2phfkZv5LffG+HeSo0WmChiZqpPEHbpeaaB2oqmFMkAfFZNmig5GBvgFSM8pRGZXy+emH80phq5Ks/q/t8o+l3HQ+EqMPOdul3IYw17Po0rQ6C3Pqvjcb75fm+q5irmdrczp7l7NdyPWsXqVvPZT7zVqp/0KAPfjn8/l9vVnvmjm6bpXN6cPCtGipZ9HZaN0pd9t00b38tDTXD6e95l3ZtFqVbluU+o1b1Wvcil6tWCR5sptHUv3ydbdja46amoxW6dCOBy7uINkkAQJWCMIRZ7SoykXwYC18WKgiFZ7hocPASKTswTwEifa1cIVdDj8NIVoUA999os+E/4yeVIlZszr3rbQJahEwDiOOpKpliP/xLal+IRAEnNFkuyRPKBcKHRtiN0n0hEabSgT9U1+csHTLDkBPfnQxJz4lGqSOR3HT0KEij3HIPGQSnRuQ4KFGGe/j8Vv+Zagrb8SzohprPWGNRrP2eKz2EG2ZlzWz0Wr+PtMsyB0Aq41eNqRuOOixkF4bPXsZ3dOrUuVVOL2m99DXm2kZuLAtEf2JCBVmw/eH3u4hL06Dv+lwZwmYNTq9Qbbe7cSStkrwHsG82fI8AGFXjCKWpCADiFuxlDuPxvD/eWXgtGuMkkddBpASqdQtLR7cs1V9uOcgv0atTDwn5FswYV8C5XhiAUeRDeRE6her5FHg7nFnlhVxULs5GYSUolIXQLWQKhueac2Ue+v0s3Av3v1pwG/kShp4IPUtUhmyJDAb+mnRFP7pWXQ9bg3/irvqIKIWgqeB8STZWZSGZ71j14c3atm7q/bJjRQnW4OxxEgZgL67am8fUvZpfe4s++zIfwOvDfw3OQ+FnCXfkgndJ7VUMehHnJv8/AhmPoDoAbgcWGX7vB9uRP/Mb+kvvgH2H+HHb98BfQiFc3wUAAA=" /></Footer>{/* END_ATS_OFFER_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_offers
+      parameters:
+      - name: application_id
+        in: query
+        description: If provided, will only return offers for this application.
+        required: false
+        schema:
+          type: string
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: creator_id
+        in: query
+        description: If provided, will only return offers created by this user.
+        required: false
+        schema:
+          type: string
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/OffersGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_fields
+        in: query
+        description: Deprecated. Use show_enum_origins.
+        required: false
+        schema:
+          $ref: '#/components/schemas/OffersGetParametersRemoteFields'
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: show_enum_origins
+        in: query
+        description: A comma separated list of enum field names for which you'd like the original values to be returned, instead of Merge's normalized enum values. [Learn more](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+        required: false
+        schema:
+          $ref: '#/components/schemas/OffersGetParametersShowEnumOrigins'
+      - name: status
+        in: query
+        description: 'If provided, will only return offers with this status. Options: (''DRAFT'', ''APPROVAL-SENT'', ''APPROVED'', ''SENT'', ''SENT-MANUALLY'', ''OPENED'', ''DENIED'', ''SIGNED'', ''DEPRECATED'')
+
+
+          '
+        required: false
+        schema:
+          $ref: '#/components/schemas/OffersGetParametersStatus'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedOfferList'
+  /ats/v1/offers/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns an `Offer` object with the given `id`.{/* BEGIN_ATS_OFFER_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA9WXbW/aOhTHv0rllwjIKOOuRZqueCqFltCVtKyaqujgHILBiYPthIdp331KoB3Z7UUbSln30vbx387v/H3sfCUUNLpCrkiVgFYkTzzhICdV0h+PUZI8gYCZ4OFm3I5OSZ6oMAiE1OhcMOSOupQ4JlVieChdLIQ+GzN0DNDKYL5GV4JmwlfG86zCOJlG8oQzf4ZOjVIR+nqPziauAJvAn5rxsNIkTwJQSk+kCN3JLc5DVPsk491w9NDXwAsOaDB2phfkZv5LffG+HeSo0WmChiZqpPEHbpeaaB2oqmFMkAfFZNmig5GBvgFSM8pRGZXy+emH80phq5Ks/q/t8o+l3HQ+EqMPOdul3IYw17Po0rQ6C3Pqvjcb75fm+q5irmdrczp7l7NdyPWsXqVvPZT7zVqp/0KAPfjn8/l9vVnvmjm6bpXN6cPCtGipZ9HZaN0pd9t00b38tDTXD6e95l3ZtFqVbluU+o1b1Wvcil6tWCR5sptHUv3ydbdja46amoxW6dCOBy7uINkkAQJWCMIRZ7SoykXwYC18WKgiFZ7hocPASKTswTwEifa1cIVdDj8NIVoUA999os+E/4yeVIlZszr3rbQJahEwDiOOpKpliP/xLal+IRAEnNFkuyRPKBcKHRtiN0n0hEabSgT9U1+csHTLDkBPfnQxJz4lGqSOR3HT0KEij3HIPGQSnRuQ4KFGGe/j8Vv+Zagrb8SzohprPWGNRrP2eKz2EG2ZlzWz0Wr+PtMsyB0Aq41eNqRuOOixkF4bPXsZ3dOrUuVVOL2m99DXm2kZuLAtEf2JCBVmw/eH3u4hL06Dv+lwZwmYNTq9Qbbe7cSStkrwHsG82fI8AGFXjCKWpCADiFuxlDuPxvD/eWXgtGuMkkddBpASqdQtLR7cs1V9uOcgv0atTDwn5FswYV8C5XhiAUeRDeRE6her5FHg7nFnlhVxULs5GYSUolIXQLWQKhueac2Ue+v0s3Av3v1pwG/kShp4IPUtUhmyJDAb+mnRFP7pWXQ9bg3/irvqIKIWgqeB8STZWZSGZ71j14c3atm7q/bJjRQnW4OxxEgZgL67am8fUvZpfe4s++zIfwOvDfw3OQ+FnCXfkgndJ7VUMehHnJv8/AhmPoDoAbgcWGX7vB9uRP/Mb+kvvgH2H+HHb98BfQiFc3wUAAA=" /></Footer>{/* END_ATS_OFFER_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_offers
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/OffersIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: remote_fields
+        in: query
+        description: Deprecated. Use show_enum_origins.
+        required: false
+        schema:
+          $ref: '#/components/schemas/OffersIdGetParametersRemoteFields'
+      - name: show_enum_origins
+        in: query
+        description: A comma separated list of enum field names for which you'd like the original values to be returned, instead of Merge's normalized enum values. [Learn more](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+        required: false
+        schema:
+          $ref: '#/components/schemas/OffersIdGetParametersShowEnumOrigins'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Offer'
+components:
+  schemas:
+    OffersGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - application
+      - creator
+      title: OffersGetParametersExpandSchemaItems
+    Offer:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        application:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The application who is receiving the offer.
+        creator:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The user who created the offer.
+        remote_created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's offer was created.
+        closed_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the offer was closed.
+        sent_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the offer was sent.
+        start_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The employment start date on the offer.
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/OfferStatusEnum'
+          - type: 'null'
+          description: The offer's status.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/OfferFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The Offer Object
+
+        ### Description
+
+        The `Offer` object is used to represent an offer for a candidate''s application specific to a job.
+
+        ### Usage Example
+
+        Fetch from the `LIST Offers` endpoint and filter by `ID` to show all offers.'
+      title: Offer
+    OffersIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - status
+      title: OffersIdGetParametersRemoteFields
+    OffersGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - status
+      title: OffersGetParametersShowEnumOrigins
+    OffersIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - status
+      title: OffersIdGetParametersShowEnumOrigins
+    OffersGetParametersRemoteFields:
+      type: string
+      enum:
+      - status
+      title: OffersGetParametersRemoteFields
+    OffersGetParametersStatus:
+      type: string
+      enum:
+      - APPROVAL-SENT
+      - APPROVED
+      - DENIED
+      - DEPRECATED
+      - DRAFT
+      - OPENED
+      - SENT
+      - SENT-MANUALLY
+      - SIGNED
+      title: OffersGetParametersStatus
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    OfferStatusEnum:
+      type: string
+      enum:
+      - DRAFT
+      - APPROVAL-SENT
+      - APPROVED
+      - SENT
+      - SENT-MANUALLY
+      - OPENED
+      - DENIED
+      - SIGNED
+      - DEPRECATED
+      title: OfferStatusEnum
+    OffersIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - application
+      - creator
+      title: OffersIdGetParametersExpandSchemaItems
+    OfferFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: OfferFieldMappings
+    PaginatedOfferList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Offer'
+      title: PaginatedOfferList
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

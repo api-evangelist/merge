@@ -1,0 +1,324 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_benefits API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_benefits
+paths:
+  /hris/v1/benefits:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Benefit` objects.{/* BEGIN_HRIS_BENEFIT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA91X8W/aOBj9V5B/RIEcZdyuSNMETQvtRsgxeltvqqwP5yMYHDs4TmmY9r+fQtIq3LpJuwaq3W+J833Pznsvz84XwsBgoHRKumSheUwsEiofBemSPkqcc0MsAhF3IcSihN6dEIvESRQpbdC/4Cj8eKhxTrrEDlEH2Egkn3P07azc5tJgoMFwJWP7sa0x3/URiwguV+j3GFOJND8CygsbkFf+6zZ7HGeLjSCOzUKrJFhMcJ1g/EPMbD0CQ5QGRMMHA3apv6FzgKfGspX7KNCg74ABBw2y7BWLuRbGRHHXthcoouZu3qaPdzZKG7ThTGBsd9qnJ69PO40CZTf7WxqIN636cj1Ts9d1GjBBIamPpuzenV5u3GXwyj17de9urzvudrV1l6vf6jSA+mg66oynN+2x02uNnyigH37/dPpX3+lfuXW2PW+7y5uNO2Wt0ZStZtvL9tWAba6Gf96725uTkXPddqfnnauBao3PJvHobKJGvWaTWKSsJOl+/lIeKAzSc7zaR6VXc6UZ1ly12W+7DCHAEj25IhDxRpTMBGfNuN2EELZKwiZuMhXaIfoc7J7j0UdY6qoN/bBOQGMzksGDEFzJRxVIl5y7w557du7sW6J3B1zATCDpGp3gNz4m3c9klhufRgIkNWmExCJMhRHIlDIljeazZDeJRTCMhEoRS5ffKdG0gM2GpE99MFlXpNUd91FTmfFnEY2hMpg9hf07GoFZZN+dAW3y7tusYJ1wjb4HGkI0qLMXuP1qPSmNMKih5kGqlRAV6bLDLMSg71WgjqcICEaZ8svc73N7QC77EM6UGk6qYfEBbY/HZVQ9j89w8YtYtq8RzAIrYjkHK5NML25O/w6W4f+I7GKI+88i3oF0F7XVMO8JMHOlwwfUg2REOQ+OnNbPJHuQxEZVy/QOksa503kG9mvulM+w/0+KMJzUPNBGoq5GieGkgDt4qP9HEV48Y8ZpbFBXtYfmaIXlD2L2EnnHs6UHKVvgfUXpkIO9zHHtQJF8JLN6kArFuEkrUyKH2zuNvB+ErQtfHk2Tw5NfItwiieTrJFMCpcl+wfXPinD9blDzdEVb5fW7wSHTouJv4MXTOuN+guCnVbNPA4ThH2vvMIfCXyZ1br/+A3kRw0yMEwAA" /></Footer>{/* END_HRIS_BENEFIT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_benefits
+      parameters:
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: employee_id
+        in: query
+        description: If provided, will return the benefits associated with the employee.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/BenefitsGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBenefitList'
+  /hris/v1/benefits/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `Benefit` object with the given `id`.{/* BEGIN_HRIS_BENEFIT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA91X8W/aOBj9V5B/RIEcZdyuSNMETQvtRsgxeltvqqwP5yMYHDs4TmmY9r+fQtIq3LpJuwaq3W+J833Pznsvz84XwsBgoHRKumSheUwsEiofBemSPkqcc0MsAhF3IcSihN6dEIvESRQpbdC/4Cj8eKhxTrrEDlEH2Egkn3P07azc5tJgoMFwJWP7sa0x3/URiwguV+j3GFOJND8CygsbkFf+6zZ7HGeLjSCOzUKrJFhMcJ1g/EPMbD0CQ5QGRMMHA3apv6FzgKfGspX7KNCg74ABBw2y7BWLuRbGRHHXthcoouZu3qaPdzZKG7ThTGBsd9qnJ69PO40CZTf7WxqIN636cj1Ts9d1GjBBIamPpuzenV5u3GXwyj17de9urzvudrV1l6vf6jSA+mg66oynN+2x02uNnyigH37/dPpX3+lfuXW2PW+7y5uNO2Wt0ZStZtvL9tWAba6Gf96725uTkXPddqfnnauBao3PJvHobKJGvWaTWKSsJOl+/lIeKAzSc7zaR6VXc6UZ1ly12W+7DCHAEj25IhDxRpTMBGfNuN2EELZKwiZuMhXaIfoc7J7j0UdY6qoN/bBOQGMzksGDEFzJRxVIl5y7w557du7sW6J3B1zATCDpGp3gNz4m3c9klhufRgIkNWmExCJMhRHIlDIljeazZDeJRTCMhEoRS5ffKdG0gM2GpE99MFlXpNUd91FTmfFnEY2hMpg9hf07GoFZZN+dAW3y7tusYJ1wjb4HGkI0qLMXuP1qPSmNMKih5kGqlRAV6bLDLMSg71WgjqcICEaZ8svc73N7QC77EM6UGk6qYfEBbY/HZVQ9j89w8YtYtq8RzAIrYjkHK5NML25O/w6W4f+I7GKI+88i3oF0F7XVMO8JMHOlwwfUg2REOQ+OnNbPJHuQxEZVy/QOksa503kG9mvulM+w/0+KMJzUPNBGoq5GieGkgDt4qP9HEV48Y8ZpbFBXtYfmaIXlD2L2EnnHs6UHKVvgfUXpkIO9zHHtQJF8JLN6kArFuEkrUyKH2zuNvB+ErQtfHk2Tw5NfItwiieTrJFMCpcl+wfXPinD9blDzdEVb5fW7wSHTouJv4MXTOuN+guCnVbNPA4ThH2vvMIfCXyZ1br/+A3kRw0yMEwAA" /></Footer>{/* END_HRIS_BENEFIT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_benefits
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/BenefitsIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Benefit'
+components:
+  schemas:
+    PaginatedBenefitList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Benefit'
+      title: PaginatedBenefitList
+    BenefitFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: BenefitFieldMappings
+    BenefitsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - employee
+      title: BenefitsGetParametersExpandSchemaItems
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    BenefitsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - employee
+      title: BenefitsIdGetParametersExpandSchemaItems
+    Benefit:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        employee:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The employee on the plan.
+        provider_name:
+          type:
+          - string
+          - 'null'
+          description: The name of the benefit provider.
+        benefit_plan_type:
+          type:
+          - string
+          - 'null'
+          description: The type of benefit plan
+        employee_contribution:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The employee's contribution.
+        company_contribution:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The company's contribution.
+        start_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The day and time the benefit started.
+        end_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The day and time the benefit ended.
+        employer_benefit:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The employer benefit plan the employee is enrolled in.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/BenefitFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The Benefit Object
+
+        ### Description
+
+        The `Benefit` object is used to represent a benefit that an employee has enrolled in.
+
+
+        ### Usage Example
+
+        Fetch from the `LIST Benefits` endpoint and filter by `ID` to show all benefits.'
+      title: Benefit
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

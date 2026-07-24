@@ -1,0 +1,1490 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_expenseReports API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_expenseReports
+paths:
+  /accounting/v1/expense-reports:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `ExpenseReport` objects.{/* BEGIN_ACCOUNTING_EXPENSEREPORT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+VT224aMRD9FeRHtLAlhEZBqioCpAEJkwKpGkWRNXgni8FrL74AIcq/VwaaQJuqVZX0pW+e8cyZyznzQDg4TLW5J3UCnGuvnFApiUimE5SkTtqrHJXFAebaOBIRyAWFDA/C2eKIRMT6PMRgci5QJvbC4B2pkzhDk2LJK3EnMImfk2KhHKYGnNDKxk/JpbtNNomIFGqGSWOb8Hu4bXhp5/nBtLEUNrSfg7VuYrRPJwOce7R/gBx6k5ihciBLCTiI91BKZgvzki9MkaBEh0kLHLTQIQ/j7ipOnMttPY4nKPPypno5wUWMKgbjBJdo41r19OjktFbaoWyqf2Sp/FApTudjPT4pspRLBr7YG/EVHXWWdJoe0+bxiq6vanQ9W9Pp7F2RpVDsjXq1/ui62m81Kv0XAtjw/dfTL2etsy4t8nW7SqfXSzrild6Iz8brTrX7iS+7F59XdH191GtdVemoXet+0pV+c2B7zYHuNcplEpF9Vkn95mHfsRMORTf0wuFhdCeDFPe2sqUDclHK/VgKXrbVMmSw1gqWtsx1FmeYCIgpOhvQmJ17MFjON/LdLExo9bTzIGV60aDNdutQBo0FCAljiaTujMefdEzqN/tSz9EInZCIcJ3loO7DyxuDiodngpYbkW8KRgSzXOp7DINKodB+PyvmvQgQBjPtkAVSDy2Wg5s8u3bBoavwjc+WSFC5IFgTDtCB86GI0w4kgyz0HEwDfBZ63926QEtuA8TcC4PJJRjI0KEJo94+Ri9R1jfAJRbOvRVaFZpS+6TQHly+DoNbcLYFZxtw1h5cshIbvh2l/wFpQ0ix0FEOOHevw1RAZDvEHTlssRDUnsDbkKT/5sb+CUO/5uL28Rtl+iubVgcAAA==" /></Footer>{/* END_ACCOUNTING_EXPENSEREPORT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_expenseReports
+      parameters:
+      - name: company_id
+        in: query
+        description: If provided, will only return expense reports for this company.
+        required: false
+        schema:
+          type: string
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExpenseReportsGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_fields
+        in: query
+        description: Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedExpenseReportList'
+    post:
+      operationId: create
+      summary: Create
+      description: Creates an `ExpenseReport` object with the given values.{/* BEGIN_ACCOUNTING_EXPENSEREPORT_CREATE_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST" data="H4sIAAAAAAAAA7VT227aQBD9lWofkbFLCI2CVFUEaAISSwukahQha1hPzMJ619kLEKL8e7XGTSGlSlWlT3vRzJkzc848EgYWU6UfSJMAY8pJy2VKApKpBAVpku4mR2lwhLnSlgQEck4hw4PweHVCAmJc7mMw+cxRJOZK4x1pkihDnWLVSX7HMYl+JUVcWkw1WK6kiZ6Tq3dFNgmI4HKJSWuX8DrcLrxa/rx4mkhw4+nnYIyda+XS+QjvHZq/QPbcBGYoLYhqAhaiPZSq3sEc+/NdJCjQYtIBCx20yHy7ZcW5tblpRtEcRR4W1cMEVxHKCLTlTKCJGvXzk7PzRrVEKap/ilPxsVZZ3M/U7KwSp0zE4CqDCdvQSW9NF+kpbZ9u6Pa6QbfLLV0s31fiFCqDyaAxnNzUh51WbXgkIB5/+H7+7aJz0acVtu3W6eJmTSesNpiw5Wzbq/cv2bp/9XVDtzcng851nU66jf6lqg3bIzNoj9SgFYYkIPuqkubt4/5HaRyKduy4xcPoXgYp7k1lJwfkvJq7meAsNPUQMtgqCWsTMpVFGSYcIorWeLTY3DvQGOaFfYuBcSWfZ+6tTK9atN3tHNqgtQIuYCaQNK12+JuPSfN23+o5aq4SEhCmshzkg785rVEyf03QMM3zomBAMMuFekDfqOASzc+1ip3jHkJjpizG5d0XjRMo5lK+eILSej9qv18WrPMYVlkQMWSekn9qYEtPrVxljoZMPcS94xqTL6AhQ4u66GSP6xF2xRmWtHaLePCKmQDjA18NmT4Fx6QfQ4rvetICY/Zt5PeIcYkYjwsLxKsVp+YM/osV2D/J/hZK/1HTl/XeRMBDntOn6dMPQz9ZCCwGAAA=" /></Footer>{/* END_ACCOUNTING_EXPENSEREPORT_CREATE_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_expenseReports
+      parameters:
+      - name: is_debug_mode
+        in: query
+        description: Whether to include debug fields (such as log file links) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: run_async
+        in: query
+        description: Whether or not third-party updates should be run asynchronously.
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExpenseReportResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExpenseReportEndpointRequest'
+  /accounting/v1/expense-reports/{expense_report_id}/lines:
+    get:
+      operationId: lines-list
+      summary: Lines List
+      description: Returns a list of `ExpenseReportLine` objects that point to a `ExpenseReport` with the given id.{/* BEGIN_ACCOUNTING_EXPENSEREPORT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+VT224aMRD9FeRHtLAlhEZBqioCpAEJkwKpGkWRNXgni8FrL74AIcq/VwaaQJuqVZX0pW+e8cyZyznzQDg4TLW5J3UCnGuvnFApiUimE5SkTtqrHJXFAebaOBIRyAWFDA/C2eKIRMT6PMRgci5QJvbC4B2pkzhDk2LJK3EnMImfk2KhHKYGnNDKxk/JpbtNNomIFGqGSWOb8Hu4bXhp5/nBtLEUNrSfg7VuYrRPJwOce7R/gBx6k5ihciBLCTiI91BKZgvzki9MkaBEh0kLHLTQIQ/j7ipOnMttPY4nKPPypno5wUWMKgbjBJdo41r19OjktFbaoWyqf2Sp/FApTudjPT4pspRLBr7YG/EVHXWWdJoe0+bxiq6vanQ9W9Pp7F2RpVDsjXq1/ui62m81Kv0XAtjw/dfTL2etsy4t8nW7SqfXSzrild6Iz8brTrX7iS+7F59XdH191GtdVemoXet+0pV+c2B7zYHuNcplEpF9Vkn95mHfsRMORTf0wuFhdCeDFPe2sqUDclHK/VgKXrbVMmSw1gqWtsx1FmeYCIgpOhvQmJ17MFjON/LdLExo9bTzIGV60aDNdutQBo0FCAljiaTujMefdEzqN/tSz9EInZCIcJ3loO7DyxuDiodngpYbkW8KRgSzXOp7DINKodB+PyvmvQgQBjPtkAVSDy2Wg5s8u3bBoavwjc+WSFC5IFgTDtCB86GI0w4kgyz0HEwDfBZ63926QEtuA8TcC4PJJRjI0KEJo94+Ri9R1jfAJRbOvRVaFZpS+6TQHly+DoNbcLYFZxtw1h5cshIbvh2l/wFpQ0ix0FEOOHevw1RAZDvEHTlssRDUnsDbkKT/5sb+CUO/5uL28Rtl+iubVgcAAA==" /></Footer>{/* END_ACCOUNTING_EXPENSEREPORT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_expenseReports
+      parameters:
+      - name: expense_report_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExpenseReportsExpenseReportIdLinesGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_fields
+        in: query
+        description: Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedExpenseReportLineList'
+  /accounting/v1/expense-reports/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns an `ExpenseReport` object with the given `id`.{/* BEGIN_ACCOUNTING_EXPENSEREPORT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+VT224aMRD9FeRHtLAlhEZBqioCpAEJkwKpGkWRNXgni8FrL74AIcq/VwaaQJuqVZX0pW+e8cyZyznzQDg4TLW5J3UCnGuvnFApiUimE5SkTtqrHJXFAebaOBIRyAWFDA/C2eKIRMT6PMRgci5QJvbC4B2pkzhDk2LJK3EnMImfk2KhHKYGnNDKxk/JpbtNNomIFGqGSWOb8Hu4bXhp5/nBtLEUNrSfg7VuYrRPJwOce7R/gBx6k5ihciBLCTiI91BKZgvzki9MkaBEh0kLHLTQIQ/j7ipOnMttPY4nKPPypno5wUWMKgbjBJdo41r19OjktFbaoWyqf2Sp/FApTudjPT4pspRLBr7YG/EVHXWWdJoe0+bxiq6vanQ9W9Pp7F2RpVDsjXq1/ui62m81Kv0XAtjw/dfTL2etsy4t8nW7SqfXSzrild6Iz8brTrX7iS+7F59XdH191GtdVemoXet+0pV+c2B7zYHuNcplEpF9Vkn95mHfsRMORTf0wuFhdCeDFPe2sqUDclHK/VgKXrbVMmSw1gqWtsx1FmeYCIgpOhvQmJ17MFjON/LdLExo9bTzIGV60aDNdutQBo0FCAljiaTujMefdEzqN/tSz9EInZCIcJ3loO7DyxuDiodngpYbkW8KRgSzXOp7DINKodB+PyvmvQgQBjPtkAVSDy2Wg5s8u3bBoavwjc+WSFC5IFgTDtCB86GI0w4kgyz0HEwDfBZ63926QEtuA8TcC4PJJRjI0KEJo94+Ri9R1jfAJRbOvRVaFZpS+6TQHly+DoNbcLYFZxtw1h5cshIbvh2l/wFpQ0ix0FEOOHevw1RAZDvEHTlssRDUnsDbkKT/5sb+CUO/5uL28Rtl+iubVgcAAA==" /></Footer>{/* END_ACCOUNTING_EXPENSEREPORT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_expenseReports
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExpenseReportsIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_fields
+        in: query
+        description: Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExpenseReport'
+  /accounting/v1/expense-reports/lines/remote-field-classes:
+    get:
+      operationId: lines-remote-field-classes-list
+      summary: Lines Remote Field Classes List
+      description: Returns a list of `RemoteFieldClass` objects.{/* BEGIN_ACCOUNTING_EXPENSEREPORT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+VT224aMRD9FeRHtLAlhEZBqioCpAEJkwKpGkWRNXgni8FrL74AIcq/VwaaQJuqVZX0pW+e8cyZyznzQDg4TLW5J3UCnGuvnFApiUimE5SkTtqrHJXFAebaOBIRyAWFDA/C2eKIRMT6PMRgci5QJvbC4B2pkzhDk2LJK3EnMImfk2KhHKYGnNDKxk/JpbtNNomIFGqGSWOb8Hu4bXhp5/nBtLEUNrSfg7VuYrRPJwOce7R/gBx6k5ihciBLCTiI91BKZgvzki9MkaBEh0kLHLTQIQ/j7ipOnMttPY4nKPPypno5wUWMKgbjBJdo41r19OjktFbaoWyqf2Sp/FApTudjPT4pspRLBr7YG/EVHXWWdJoe0+bxiq6vanQ9W9Pp7F2RpVDsjXq1/ui62m81Kv0XAtjw/dfTL2etsy4t8nW7SqfXSzrild6Iz8brTrX7iS+7F59XdH191GtdVemoXet+0pV+c2B7zYHuNcplEpF9Vkn95mHfsRMORTf0wuFhdCeDFPe2sqUDclHK/VgKXrbVMmSw1gqWtsx1FmeYCIgpOhvQmJ17MFjON/LdLExo9bTzIGV60aDNdutQBo0FCAljiaTujMefdEzqN/tSz9EInZCIcJ3loO7DyxuDiodngpYbkW8KRgSzXOp7DINKodB+PyvmvQgQBjPtkAVSDy2Wg5s8u3bBoavwjc+WSFC5IFgTDtCB86GI0w4kgyz0HEwDfBZ63926QEtuA8TcC4PJJRjI0KEJo94+Ri9R1jfAJRbOvRVaFZpS+6TQHly+DoNbcLYFZxtw1h5cshIbvh2l/wFpQ0ix0FEOOHevw1RAZDvEHTlssRDUnsDbkKT/5sb+CUO/5uL28Rtl+iubVgcAAA==" /></Footer>{/* END_ACCOUNTING_EXPENSEREPORT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_expenseReports
+      parameters:
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: is_common_model_field
+        in: query
+        description: If provided, will only return remote field classes with this is_common_model_field value
+        required: false
+        schema:
+          type: boolean
+      - name: is_custom
+        in: query
+        description: If provided, will only return remote fields classes with this is_custom value
+        required: false
+        schema:
+          type: boolean
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRemoteFieldClassList'
+  /accounting/v1/expense-reports/meta/post:
+    get:
+      operationId: meta-post-retrieve
+      summary: Meta Post Retrieve
+      description: Returns metadata for `ExpenseReport` POSTs.{/* BEGIN_ACCOUNTING_EXPENSEREPORT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+VT224aMRD9FeRHtLAlhEZBqioCpAEJkwKpGkWRNXgni8FrL74AIcq/VwaaQJuqVZX0pW+e8cyZyznzQDg4TLW5J3UCnGuvnFApiUimE5SkTtqrHJXFAebaOBIRyAWFDA/C2eKIRMT6PMRgci5QJvbC4B2pkzhDk2LJK3EnMImfk2KhHKYGnNDKxk/JpbtNNomIFGqGSWOb8Hu4bXhp5/nBtLEUNrSfg7VuYrRPJwOce7R/gBx6k5ihciBLCTiI91BKZgvzki9MkaBEh0kLHLTQIQ/j7ipOnMttPY4nKPPypno5wUWMKgbjBJdo41r19OjktFbaoWyqf2Sp/FApTudjPT4pspRLBr7YG/EVHXWWdJoe0+bxiq6vanQ9W9Pp7F2RpVDsjXq1/ui62m81Kv0XAtjw/dfTL2etsy4t8nW7SqfXSzrild6Iz8brTrX7iS+7F59XdH191GtdVemoXet+0pV+c2B7zYHuNcplEpF9Vkn95mHfsRMORTf0wuFhdCeDFPe2sqUDclHK/VgKXrbVMmSw1gqWtsx1FmeYCIgpOhvQmJ17MFjON/LdLExo9bTzIGV60aDNdutQBo0FCAljiaTujMefdEzqN/tSz9EInZCIcJ3loO7DyxuDiodngpYbkW8KRgSzXOp7DINKodB+PyvmvQgQBjPtkAVSDy2Wg5s8u3bBoavwjc+WSFC5IFgTDtCB86GI0w4kgyz0HEwDfBZ63926QEtuA8TcC4PJJRjI0KEJo94+Ri9R1jfAJRbOvRVaFZpS+6TQHly+DoNbcLYFZxtw1h5cshIbvh2l/wFpQ0ix0FEOOHevw1RAZDvEHTlssRDUnsDbkKT/5sb+CUO/5uL28Rtl+iubVgcAAA==" /></Footer>{/* END_ACCOUNTING_EXPENSEREPORT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_expenseReports
+      parameters:
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaResponse'
+  /accounting/v1/expense-reports/remote-field-classes:
+    get:
+      operationId: remote-field-classes-list
+      summary: Remote Field Classes List
+      description: Returns a list of `RemoteFieldClass` objects.{/* BEGIN_ACCOUNTING_EXPENSEREPORT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+VT224aMRD9FeRHtLAlhEZBqioCpAEJkwKpGkWRNXgni8FrL74AIcq/VwaaQJuqVZX0pW+e8cyZyznzQDg4TLW5J3UCnGuvnFApiUimE5SkTtqrHJXFAebaOBIRyAWFDA/C2eKIRMT6PMRgci5QJvbC4B2pkzhDk2LJK3EnMImfk2KhHKYGnNDKxk/JpbtNNomIFGqGSWOb8Hu4bXhp5/nBtLEUNrSfg7VuYrRPJwOce7R/gBx6k5ihciBLCTiI91BKZgvzki9MkaBEh0kLHLTQIQ/j7ipOnMttPY4nKPPypno5wUWMKgbjBJdo41r19OjktFbaoWyqf2Sp/FApTudjPT4pspRLBr7YG/EVHXWWdJoe0+bxiq6vanQ9W9Pp7F2RpVDsjXq1/ui62m81Kv0XAtjw/dfTL2etsy4t8nW7SqfXSzrild6Iz8brTrX7iS+7F59XdH191GtdVemoXet+0pV+c2B7zYHuNcplEpF9Vkn95mHfsRMORTf0wuFhdCeDFPe2sqUDclHK/VgKXrbVMmSw1gqWtsx1FmeYCIgpOhvQmJ17MFjON/LdLExo9bTzIGV60aDNdutQBo0FCAljiaTujMefdEzqN/tSz9EInZCIcJ3loO7DyxuDiodngpYbkW8KRgSzXOp7DINKodB+PyvmvQgQBjPtkAVSDy2Wg5s8u3bBoavwjc+WSFC5IFgTDtCB86GI0w4kgyz0HEwDfBZ63926QEtuA8TcC4PJJRjI0KEJo94+Ri9R1jfAJRbOvRVaFZpS+6TQHly+DoNbcLYFZxtw1h5cshIbvh2l/wFpQ0ix0FEOOHevw1RAZDvEHTlssRDUnsDbkKT/5sb+CUO/5uL28Rtl+iubVgcAAA==" /></Footer>{/* END_ACCOUNTING_EXPENSEREPORT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_expenseReports
+      parameters:
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: is_common_model_field
+        in: query
+        description: If provided, will only return remote field classes with this is_common_model_field value
+        required: false
+        schema:
+          type: boolean
+      - name: is_custom
+        in: query
+        description: If provided, will only return remote fields classes with this is_custom value
+        required: false
+        schema:
+          type: boolean
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRemoteFieldClassList'
+components:
+  schemas:
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    RemoteFieldRequest:
+      type: object
+      properties:
+        remote_field_class:
+          type: string
+          format: uuid
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteFieldRequest
+    ItemTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemTypeEnum
+    ItemFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemFormatEnum
+    ExpenseReportLine:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        description:
+          type:
+          - string
+          - 'null'
+          description: Description of the individual expense.
+        expense_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date the individual expense was incurred.
+        amount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The amount of the expense for the line item.
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: Currency of the expense line (if different from the report currency). The currency code in ISO 4217 format.
+        exchange_rate:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: Exchange rate used if the line item is in a foreign currency.
+        is_billable:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the expense line is billable to a client or project.
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: The related tracking categories associated with the expense report (Department, Location, Class, Expense Category)
+        employee:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: Identifier for the employee who submitted or is associated with the expense report
+        project:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The subsidiary that the expense report is created in
+        contact:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        quantity:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: Quantity for the expense line (e.g., miles driven, items purchased).
+        unit_price:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: Price per unit for the expense line (if applicable).
+        non_reimbursable:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the expense line is non-reimbursable (e.g., paid via company card).
+        tax_amount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: Tax amount applicable for the line item.
+        inclusive_of_tax:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the amount is inclusive of tax.
+        tax_rate:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteField'
+      required:
+      - tracking_categories
+      description: '# The ExpenseReportLine Object
+
+        ### Description
+
+        The `ExpenseReportLine` object represents an individual line item within an expense report, containing details about
+
+        a specific expense such as amount, description, and associated metadata.
+
+
+        ### Usage Example
+
+        Fetch from the `GET ExpenseReport` endpoint and expand the lines field to view all line items in the expense report.'
+      title: ExpenseReportLine
+    PaginatedExpenseReportLineList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExpenseReportLine'
+      title: PaginatedExpenseReportLineList
+    PaginatedExpenseReportList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExpenseReport'
+      title: PaginatedExpenseReportList
+    ExpenseReportsExpenseReportIdLinesGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - account
+      - company
+      - contact
+      - employee
+      - project
+      - tax_rate
+      title: ExpenseReportsExpenseReportIdLinesGetParametersExpandSchemaItems
+    ExpenseReport:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        report_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date of the expense report.
+        report_identifier:
+          type:
+          - string
+          - 'null'
+          description: Human-readable expense report identifier.
+        employee:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: Identifier for the employee who submitted or is associated with the expense report
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/ExpenseReportStatusEnum'
+          - type: 'null'
+          description: Overall status of the expense report. One of DRAFT, SUBMITTED, APPROVED, REJECTED
+        total_amount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: Total amount of the expense report
+        lines:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExpenseReportLine'
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: Currency code for the expense report. The currency code in ISO 4217 format.
+        description:
+          type:
+          - string
+          - 'null'
+          description: A brief description or purpose for the expense report
+        accounting_period:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The accounting period the report was posted in
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The subsidiary that the expense report is created in
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: The related tracking categories associated with the expense report
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/ExpenseReportFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteField'
+      required:
+      - tracking_categories
+      description: '# The ExpenseReport Object
+
+        ### Description
+
+        The `ExpenseReport` object represents a collection of expenses submitted for review and reimbursement.
+
+        It includes details about the submitter, status, amounts, and associated metadata.
+
+
+        ### Usage Example
+
+        Fetch from the `GET ExpenseReport` endpoint to view details of expense reports and their line items.'
+      title: ExpenseReport
+    ExpenseReportsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - accounting_period
+      - company
+      - employee
+      - lines
+      title: ExpenseReportsIdGetParametersExpandSchemaItems
+    ExpenseReportRequest:
+      type: object
+      properties:
+        report_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date of the expense report.
+        report_identifier:
+          type:
+          - string
+          - 'null'
+          description: Human-readable expense report identifier.
+        employee:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: Identifier for the employee who submitted or is associated with the expense report
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/ExpenseReportStatusEnum'
+          - type: 'null'
+          description: Overall status of the expense report. One of DRAFT, SUBMITTED, APPROVED, REJECTED
+        total_amount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: Total amount of the expense report
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: Currency code for the expense report. The currency code in ISO 4217 format.
+        description:
+          type:
+          - string
+          - 'null'
+          description: A brief description or purpose for the expense report
+        accounting_period:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The accounting period the report was posted in
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The subsidiary that the expense report is created in
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: The related tracking categories associated with the expense report
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldRequest'
+      required:
+      - tracking_categories
+      description: '# The ExpenseReport Object
+
+        ### Description
+
+        The `ExpenseReport` object represents a collection of expenses submitted for review and reimbursement.
+
+        It includes details about the submitter, status, amounts, and associated metadata.
+
+
+        ### Usage Example
+
+        Fetch from the `GET ExpenseReport` endpoint to view details of expense reports and their line items.'
+      title: ExpenseReportRequest
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    ExpenseReportFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: ExpenseReportFieldMappings
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    PaginatedRemoteFieldClassList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldClass'
+      title: PaginatedRemoteFieldClassList
+    ItemSchema:
+      type: object
+      properties:
+        item_type:
+          $ref: '#/components/schemas/ItemTypeEnum'
+        item_format:
+          $ref: '#/components/schemas/ItemFormatEnum'
+        item_choices:
+          type: array
+          items:
+            type: string
+      title: ItemSchema
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    RemoteFieldClass:
+      type: object
+      properties:
+        id:
+          type: string
+        display_name:
+          type: string
+        remote_key_name:
+          type: string
+        description:
+          type: string
+        is_custom:
+          type: boolean
+        is_common_model_field:
+          type: boolean
+        is_required:
+          type: boolean
+        field_type:
+          $ref: '#/components/schemas/FieldTypeEnum'
+        field_format:
+          $ref: '#/components/schemas/FieldFormatEnum'
+        field_choices:
+          type: array
+          items:
+            type: string
+        item_schema:
+          $ref: '#/components/schemas/ItemSchema'
+      title: RemoteFieldClass
+    RemoteField:
+      type: object
+      properties:
+        remote_field_class:
+          $ref: '#/components/schemas/RemoteFieldClass'
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteField
+    ExpenseReportsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - accounting_period
+      - company
+      - employee
+      - lines
+      title: ExpenseReportsGetParametersExpandSchemaItems
+    ExpenseReportEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/ExpenseReportRequest'
+      required:
+      - model
+      title: ExpenseReportEndpointRequest
+    ExpenseReportStatusEnum:
+      type: string
+      enum:
+      - DRAFT
+      - SUBMITTED
+      - APPROVED
+      - REJECTED
+      title: ExpenseReportStatusEnum
+    ExpenseReportResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/ExpenseReport'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: ExpenseReportResponse
+    FieldFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldFormatEnum
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    TransactionCurrencyEnum:
+      type: string
+      enum:
+      - XUA
+      - AFN
+      - AFA
+      - ALL
+      - ALK
+      - DZD
+      - ADP
+      - AOA
+      - AOK
+      - AON
+      - AOR
+      - ARA
+      - ARS
+      - ARM
+      - ARP
+      - ARL
+      - AMD
+      - AWG
+      - AUD
+      - ATS
+      - AZN
+      - AZM
+      - BSD
+      - BHD
+      - BDT
+      - BBD
+      - BYN
+      - BYB
+      - BYR
+      - BEF
+      - BEC
+      - BEL
+      - BZD
+      - BMD
+      - BTN
+      - BOB
+      - BOL
+      - BOV
+      - BOP
+      - BAM
+      - BAD
+      - BAN
+      - BWP
+      - BRC
+      - BRZ
+      - BRE
+      - BRR
+      - BRN
+      - BRB
+      - BRL
+      - GBP
+      - BND
+      - BGL
+      - BGN
+      - BGO
+      - BGM
+      - BUK
+      - BIF
+      - XPF
+      - KHR
+      - CAD
+      - CVE
+      - KYD
+      - XAF
+      - CLE
+      - CLP
+      - CLF
+      - CNX
+      - CNY
+      - CNH
+      - COP
+      - COU
+      - KMF
+      - CDF
+      - CRC
+      - HRD
+      - HRK
+      - CUC
+      - CUP
+      - CYP
+      - CZK
+      - CSK
+      - DKK
+      - DJF
+      - DOP
+      - NLG
+      - XCD
+      - DDM
+      - ECS
+      - ECV
+      - EGP
+      - GQE
+      - ERN
+      - EEK
+      - ETB
+      - EUR
+      - XBA
+      - XEU
+      - XBB
+      - XBC
+      - XBD
+      - FKP
+      - FJD
+      - FIM
+      - FRF
+      - XFO
+      - XFU
+      - GMD
+      - GEK
+      - GEL
+      - DEM
+      - GHS
+      - GHC
+      - GIP
+      - XAU
+      - GRD
+      - GTQ
+      - GWP
+      - GNF
+      - GNS
+      - GYD
+      - HTG
+      - HNL
+      - HKD
+      - HUF
+      - IMP
+      - ISK
+      - ISJ
+      - INR
+      - IDR
+      - IRR
+      - IQD
+      - IEP
+      - ILS
+      - ILP
+      - ILR
+      - ITL
+      - JMD
+      - JPY
+      - JOD
+      - KZT
+      - KES
+      - KWD
+      - KGS
+      - LAK
+      - LVL
+      - LVR
+      - LBP
+      - LSL
+      - LRD
+      - LYD
+      - LTL
+      - LTT
+      - LUL
+      - LUC
+      - LUF
+      - MOP
+      - MKD
+      - MKN
+      - MGA
+      - MGF
+      - MWK
+      - MYR
+      - MVR
+      - MVP
+      - MLF
+      - MTL
+      - MTP
+      - MRU
+      - MRO
+      - MUR
+      - MXV
+      - MXN
+      - MXP
+      - MDC
+      - MDL
+      - MCF
+      - MNT
+      - MAD
+      - MAF
+      - MZE
+      - MZN
+      - MZM
+      - MMK
+      - NAD
+      - NPR
+      - ANG
+      - TWD
+      - NZD
+      - NIO
+      - NIC
+      - NGN
+      - KPW
+      - NOK
+      - OMR
+      - PKR
+      - XPD
+      - PAB
+      - PGK
+      - PYG
+      - PEI
+      - PEN
+      - PES
+      - PHP
+      - XPT
+      - PLN
+      - PLZ
+      - PTE
+      - GWE
+      - QAR
+      - XRE
+      - RHD
+      - RON
+      - ROL
+      - RUB
+      - RUR
+      - RWF
+      - SVC
+      - WST
+      - SAR
+      - RSD
+      - CSD
+      - SCR
+      - SLL
+      - XAG
+      - SGD
+      - SKK
+      - SIT
+      - SBD
+      - SOS
+      - ZAR
+      - ZAL
+      - KRH
+      - KRW
+      - KRO
+      - SSP
+      - SUR
+      - ESP
+      - ESA
+      - ESB
+      - XDR
+      - LKR
+      - SHP
+      - XSU
+      - SDD
+      - SDG
+      - SDP
+      - SRD
+      - SRG
+      - SZL
+      - SEK
+      - CHF
+      - SYP
+      - STN
+      - STD
+      - TVD
+      - TJR
+      - TJS
+      - TZS
+      - XTS
+      - THB
+      - XXX
+      - TPE
+      - TOP
+      - TTD
+      - TND
+      - TRY
+      - TRL
+      - TMT
+      - TMM
+      - USD
+      - USN
+      - USS
+      - UGX
+      - UGS
+      - UAH
+      - UAK
+      - AED
+      - UYW
+      - UYU
+      - UYP
+      - UYI
+      - UZS
+      - VUV
+      - VES
+      - VEB
+      - VEF
+      - VND
+      - VNN
+      - CHE
+      - CHW
+      - XOF
+      - YDD
+      - YER
+      - YUN
+      - YUD
+      - YUM
+      - YUR
+      - ZWN
+      - ZRN
+      - ZRZ
+      - ZMW
+      - ZMK
+      - ZWD
+      - ZWR
+      - ZWL
+      description: The currency code in ISO 4217 format.
+      title: TransactionCurrencyEnum
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    FieldTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldTypeEnum
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

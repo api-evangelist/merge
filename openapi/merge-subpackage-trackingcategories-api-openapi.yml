@@ -1,0 +1,365 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_trackingCategories API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_trackingCategories
+paths:
+  /accounting/v1/tracking-categories:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `TrackingCategory` objects.{/* BEGIN_ACCOUNTING_TRACKINGCATEGORY_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+VYbW/iOBD+K8gfEZBtWaiKdDrx1m17R+i2dK/dVWUZZwgGxw62Qwur/e8nh/DWRm3ppezq9mPs8TPOMzPPTPIdUWLAl2qGaohQKiNhmPBRAQXSA45qqKcIHTPhN5d2BURC5pIAtk7g6SEqIB2FoVQGvBMG3NOnCgaohpwAlA/FSLABA89ZH3KYMOArYpgU2lkdLg7i06iAOBNj8OqLAy/DLcyLycqjR+1wpg0qoJBobYZKRv7wEiYR6Fcg27txCEAYwoseMcTZQCmqBUzamn0LDzgY8FrEkBYYoPZ1E49DY0Jdc5wh8LAUey95MHVAOEQZRjlop1I+Pjw6rhQTlNj7n9jnfxzkR5O+7B/lsU85JlG+06MPbu/s3h35H93mxwd3fl1x5+O5Oxp/yGOf5Du9TqXbuy13W/WDbooBvqreHH9ptBrnbp7O22V3dHvv9uhBp0fH/flZ+fwTvT8//fzgzm8PO63rsttrV84/yYNu81J3mpeyUy+VUAFtRhXVvn3fXEgS50SBHjakHFt+NrbPAuLDBi+LgJCQFcOozxkt6XKJBGQuBbnXJSoDJwCPEWeNh68mEVGA/5a+LI1Cm8oxc0yKFfmohtruad1ttlvb+VCfEsZJnwOqGRXBk4RGtW+rgsFmFgIqIGHfyKIoEAavyqmAFATSALbx2n7CITHD9RLzbOUYYiJLho76SxAGGt1Zs0nEFHgXRJEADCh7jbsfhTReO4wqqeXA5FozQQJGda5creQakWYCtM41QRhFeDakr5zhpTNcrlbw0hlOnOGm5FLh44f2SbV6VArF+8eEyiAkwgYhIGKGqQKPGSws25wJwMxAoNN2ZX8E1Cx3fBBgX8AoIjSJr5lynompZBSe2dlGHclICcJj+5VpSGZWXR6ZhpGiQ6IBS+WBSvHwyGD79Oa1VzsZpWvWWXrCBBEUckR4uW4IS/XIJE8vODEDqYKUfE3cYrz2uZcETaKwA+c7UuyCuYqYgWwYdMFoi4Z1LK7PUOTWe2df2llWMDyEIDRgBfbMqmq2l+NMMRDgQcQHjPO4lrYK7K0asPSzBbZcTJcLDp4P6olq6J8gK8miFeLZY23Zl+LEO1MQnlRLnp/Cbu9nrVaEg15cWGfXa7uKUA65k0gzKXJNLiMv1768yKbiFuB4AY5jcNy+vMDFZL7Zcxt9dRHuWjPpuZyem8/nyFvGrR0j/jlidBxPmbkW6LGRYbYNao2PoTES19H9XsKcKh+/1Fi7QXxX2Btmw/satrhobPh6cFhtHB3socH9xk3pd+o82eT/FfFh4yMubjX1zb81GRSD9YEbzfryA/qv6c20fDX6f4zDMYFnwhAaBzcruhLEJWXTKXP1EfkVxuNXyEuqiOxLLtKF4SUJeFOVv28lF1Ak2CSyViCM/XGodk3Of6Qae2SW7SyRgP68AeKZ74/tct+9mm9AyWzYskhJ798fU+9YllkX3MtltYex+6scylyGP4u/yqF8+q94n6L9H7jbTW/ufvwL6PxZOOIZAAA=" /></Footer>{/* END_ACCOUNTING_TRACKINGCATEGORY_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_trackingCategories
+      parameters:
+      - name: category_type
+        in: query
+        description: If provided, will only return tracking categories with this type.
+        required: false
+        schema:
+          $ref: '#/components/schemas/TrackingCategoriesGetParametersCategoryType'
+      - name: company_id
+        in: query
+        description: If provided, will only return tracking categories for this company.
+        required: false
+        schema:
+          type: string
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/TrackingCategoriesGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: name
+        in: query
+        description: If provided, will only return tracking categories with this name.
+        required: false
+        schema:
+          type: string
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_fields
+        in: query
+        description: Deprecated. Use show_enum_origins.
+        required: false
+        schema:
+          $ref: '#/components/schemas/TrackingCategoriesGetParametersRemoteFields'
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: show_enum_origins
+        in: query
+        description: A comma separated list of enum field names for which you'd like the original values to be returned, instead of Merge's normalized enum values. [Learn more](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+        required: false
+        schema:
+          $ref: '#/components/schemas/TrackingCategoriesGetParametersShowEnumOrigins'
+      - name: status
+        in: query
+        description: If provided, will only return tracking categories with this status.
+        required: false
+        schema:
+          $ref: '#/components/schemas/TrackingCategoriesGetParametersStatus'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTrackingCategoryList'
+  /accounting/v1/tracking-categories/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `TrackingCategory` object with the given `id`.{/* BEGIN_ACCOUNTING_TRACKINGCATEGORY_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+VYbW/iOBD+K8gfEZBtWaiKdDrx1m17R+i2dK/dVWUZZwgGxw62Qwur/e8nh/DWRm3ppezq9mPs8TPOMzPPTPIdUWLAl2qGaohQKiNhmPBRAQXSA45qqKcIHTPhN5d2BURC5pIAtk7g6SEqIB2FoVQGvBMG3NOnCgaohpwAlA/FSLABA89ZH3KYMOArYpgU2lkdLg7i06iAOBNj8OqLAy/DLcyLycqjR+1wpg0qoJBobYZKRv7wEiYR6Fcg27txCEAYwoseMcTZQCmqBUzamn0LDzgY8FrEkBYYoPZ1E49DY0Jdc5wh8LAUey95MHVAOEQZRjlop1I+Pjw6rhQTlNj7n9jnfxzkR5O+7B/lsU85JlG+06MPbu/s3h35H93mxwd3fl1x5+O5Oxp/yGOf5Du9TqXbuy13W/WDbooBvqreHH9ptBrnbp7O22V3dHvv9uhBp0fH/flZ+fwTvT8//fzgzm8PO63rsttrV84/yYNu81J3mpeyUy+VUAFtRhXVvn3fXEgS50SBHjakHFt+NrbPAuLDBi+LgJCQFcOozxkt6XKJBGQuBbnXJSoDJwCPEWeNh68mEVGA/5a+LI1Cm8oxc0yKFfmohtruad1ttlvb+VCfEsZJnwOqGRXBk4RGtW+rgsFmFgIqIGHfyKIoEAavyqmAFATSALbx2n7CITHD9RLzbOUYYiJLho76SxAGGt1Zs0nEFHgXRJEADCh7jbsfhTReO4wqqeXA5FozQQJGda5creQakWYCtM41QRhFeDakr5zhpTNcrlbw0hlOnOGm5FLh44f2SbV6VArF+8eEyiAkwgYhIGKGqQKPGSws25wJwMxAoNN2ZX8E1Cx3fBBgX8AoIjSJr5lynompZBSe2dlGHclICcJj+5VpSGZWXR6ZhpGiQ6IBS+WBSvHwyGD79Oa1VzsZpWvWWXrCBBEUckR4uW4IS/XIJE8vODEDqYKUfE3cYrz2uZcETaKwA+c7UuyCuYqYgWwYdMFoi4Z1LK7PUOTWe2df2llWMDyEIDRgBfbMqmq2l+NMMRDgQcQHjPO4lrYK7K0asPSzBbZcTJcLDp4P6olq6J8gK8miFeLZY23Zl+LEO1MQnlRLnp/Cbu9nrVaEg15cWGfXa7uKUA65k0gzKXJNLiMv1768yKbiFuB4AY5jcNy+vMDFZL7Zcxt9dRHuWjPpuZyem8/nyFvGrR0j/jlidBxPmbkW6LGRYbYNao2PoTES19H9XsKcKh+/1Fi7QXxX2Btmw/satrhobPh6cFhtHB3socH9xk3pd+o82eT/FfFh4yMubjX1zb81GRSD9YEbzfryA/qv6c20fDX6f4zDMYFnwhAaBzcruhLEJWXTKXP1EfkVxuNXyEuqiOxLLtKF4SUJeFOVv28lF1Ak2CSyViCM/XGodk3Of6Qae2SW7SyRgP68AeKZ74/tct+9mm9AyWzYskhJ798fU+9YllkX3MtltYex+6scylyGP4u/yqF8+q94n6L9H7jbTW/ufvwL6PxZOOIZAAA=" /></Footer>{/* END_ACCOUNTING_TRACKINGCATEGORY_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_trackingCategories
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/TrackingCategoriesIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: remote_fields
+        in: query
+        description: Deprecated. Use show_enum_origins.
+        required: false
+        schema:
+          $ref: '#/components/schemas/TrackingCategoriesIdGetParametersRemoteFields'
+      - name: show_enum_origins
+        in: query
+        description: A comma separated list of enum field names for which you'd like the original values to be returned, instead of Merge's normalized enum values. [Learn more](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+        required: false
+        schema:
+          $ref: '#/components/schemas/TrackingCategoriesIdGetParametersShowEnumOrigins'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrackingCategory'
+components:
+  schemas:
+    PaginatedTrackingCategoryList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TrackingCategory'
+      title: PaginatedTrackingCategoryList
+    TrackingCategoriesGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - status
+      title: TrackingCategoriesGetParametersShowEnumOrigins
+    Status7d1Enum:
+      type: string
+      enum:
+      - ACTIVE
+      - ARCHIVED
+      title: Status7d1Enum
+    TrackingCategoryFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: TrackingCategoryFieldMappings
+    TrackingCategoriesIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - status
+      title: TrackingCategoriesIdGetParametersShowEnumOrigins
+    TrackingCategoriesGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - company
+      title: TrackingCategoriesGetParametersExpandSchemaItems
+    TrackingCategoriesIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - status
+      title: TrackingCategoriesIdGetParametersRemoteFields
+    TrackingCategoriesGetParametersCategoryType:
+      type: string
+      enum:
+      - ''
+      - CLASS
+      - DEPARTMENT
+      title: TrackingCategoriesGetParametersCategoryType
+    CategoryTypeEnum:
+      type: string
+      enum:
+      - CLASS
+      - DEPARTMENT
+      title: CategoryTypeEnum
+    TrackingCategoriesIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - company
+      title: TrackingCategoriesIdGetParametersExpandSchemaItems
+    TrackingCategoriesGetParametersStatus:
+      type: string
+      enum:
+      - ''
+      - ACTIVE
+      - ARCHIVED
+      title: TrackingCategoriesGetParametersStatus
+    TrackingCategoriesGetParametersRemoteFields:
+      type: string
+      enum:
+      - status
+      title: TrackingCategoriesGetParametersRemoteFields
+    TrackingCategory:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The tracking category's name.
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/Status7d1Enum'
+          - type: 'null'
+          description: The tracking category's status.
+        category_type:
+          oneOf:
+          - $ref: '#/components/schemas/CategoryTypeEnum'
+          - type: 'null'
+          description: The tracking category’s type.
+        parent_category:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the GeneralLedgerTransaction belongs to.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/TrackingCategoryFieldMappings'
+          - type: 'null'
+      description: '# The TrackingCategory Object
+
+        ### Description
+
+        A `TrackingCategory` object represents a categorization method used to classify transactions within an accounting platform. They are often used to group records for reporting and analysis purposes. The most common types of `TrackingCategories` are Classes and Departments.
+
+
+        ### Usage Example
+
+        Fetch from the `GET TrackingCategory` endpoint and view a company''s tracking category.'
+      title: TrackingCategory
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

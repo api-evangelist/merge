@@ -1,0 +1,79 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_asyncTasks API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_asyncTasks
+paths:
+  /accounting/v1/async-tasks/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns an `AsyncPostTask` object with the given `id`.
+      tags:
+      - subpackage_asyncTasks
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncPostTask'
+components:
+  schemas:
+    AsyncPostTaskResult:
+      type: object
+      properties:
+        status_code:
+          type: integer
+        response:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: AsyncPostTaskResult
+    AsyncPostTask:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/AsyncPostTaskStatusEnum'
+        result:
+          $ref: '#/components/schemas/AsyncPostTaskResult'
+      required:
+      - status
+      - result
+      title: AsyncPostTask
+    AsyncPostTaskStatusEnum:
+      type: string
+      enum:
+      - QUEUED
+      - IN_PROGRESS
+      - COMPLETED
+      - FAILURE
+      title: AsyncPostTaskStatusEnum
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

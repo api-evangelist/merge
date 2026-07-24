@@ -1,0 +1,338 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_dependents API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_dependents
+paths:
+  /hris/v1/dependents:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Dependent` objects.{/* BEGIN_HRIS_DEPENDENT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA81UbW/aMBD+K5U/opCMUrY10jRRYNB2BEZhW1VV1hEficGxg+2UQtX/PoWXjm5dpbZI4+Od7x7fPffc3ZEQLEZKz4lPYs0NcUiiGArikzqmKBlKSxwCKQ8gwXUQvTkkDjFZmiptkX3hKJhpaRwRn3gJ6giLmeQjjszLwz0uLUYaLFfSeA9pxdEyjzhEcDlBVg1DlUn7HNAqsAiryD/M/NnkxaZgjI21yqK4h9MMzbOYeT0CE5QWRJGBBW8rv6hXAE/58soZCrTI6mChjhbDvMX1X7G1qfE9L0aRust/XYY3HkoPtOWhQONVyseHH44rxTXK8vfPNBKfSoXxdKiGHwo0CgWFrNDuh7dB/3QWjKOjoHZ0GywGlWAxWQTjybsCjaDQ7rcrnf5luVOvljpPBNCL9z+Pv5/UT86CQrholIPx5Szoh6V2P5wMF6fls2Y4O2t9uw0Wl4ft+qAc9BuVs6YqdWo90671VLvqusQh25Mk/tXdtmMtkBNIhkq1eo+jTxOIcIuV1SAg5cU0GwoeuqbsQgILJWFm3FAlXoKMg7dBoxfTDDTSrypS7jiNNtxzJR+IJz5pBK1qUGvUH6ugegNcwFAg8a3O8C/pEv+KMLBI1YgOubYxcQgmqVBzROKQEdfGUpm355Ao3wlNHBKrBKlQ4bK9vFlDjc3W+yLgd0bCGRO4sdJYSaQyS4ZLFI1ixWbM06WZKIs0F8Jji6awLGvt4ixfQCPJde6aZlwj64KGBC3qvJ/re+ep4dRhPlI6xN0MpyvAjpRONqhuKvdgMP8cxEu5fgW/rd5BF7SVq0LeznCrt4bbG/3vTL8vZHZw3jzoIbD5bogdnDepWVEaIbQ+Trv/VbxvkemrKf2h9ITBfLe3YA26H6cg3vMbfX3/C1P2ps6BCQAA" /></Footer>{/* END_HRIS_DEPENDENT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_dependents
+      parameters:
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: employee_id
+        in: query
+        description: If provided, will only return dependents for this employee.
+        required: false
+        schema:
+          type: string
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_sensitive_fields
+        in: query
+        description: Whether to include sensitive fields (such as social security numbers) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedDependentList'
+  /hris/v1/dependents/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `Dependent` object with the given `id`.{/* BEGIN_HRIS_DEPENDENT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA81UbW/aMBD+K5U/opCMUrY10jRRYNB2BEZhW1VV1hEficGxg+2UQtX/PoWXjm5dpbZI4+Od7x7fPffc3ZEQLEZKz4lPYs0NcUiiGArikzqmKBlKSxwCKQ8gwXUQvTkkDjFZmiptkX3hKJhpaRwRn3gJ6giLmeQjjszLwz0uLUYaLFfSeA9pxdEyjzhEcDlBVg1DlUn7HNAqsAiryD/M/NnkxaZgjI21yqK4h9MMzbOYeT0CE5QWRJGBBW8rv6hXAE/58soZCrTI6mChjhbDvMX1X7G1qfE9L0aRust/XYY3HkoPtOWhQONVyseHH44rxTXK8vfPNBKfSoXxdKiGHwo0CgWFrNDuh7dB/3QWjKOjoHZ0GywGlWAxWQTjybsCjaDQ7rcrnf5luVOvljpPBNCL9z+Pv5/UT86CQrholIPx5Szoh6V2P5wMF6fls2Y4O2t9uw0Wl4ft+qAc9BuVs6YqdWo90671VLvqusQh25Mk/tXdtmMtkBNIhkq1eo+jTxOIcIuV1SAg5cU0GwoeuqbsQgILJWFm3FAlXoKMg7dBoxfTDDTSrypS7jiNNtxzJR+IJz5pBK1qUGvUH6ugegNcwFAg8a3O8C/pEv+KMLBI1YgOubYxcQgmqVBzROKQEdfGUpm355Ao3wlNHBKrBKlQ4bK9vFlDjc3W+yLgd0bCGRO4sdJYSaQyS4ZLFI1ixWbM06WZKIs0F8Jji6awLGvt4ixfQCPJde6aZlwj64KGBC3qvJ/re+ep4dRhPlI6xN0MpyvAjpRONqhuKvdgMP8cxEu5fgW/rd5BF7SVq0LeznCrt4bbG/3vTL8vZHZw3jzoIbD5bogdnDepWVEaIbQ+Trv/VbxvkemrKf2h9ITBfLe3YA26H6cg3vMbfX3/C1P2ps6BCQAA" /></Footer>{/* END_HRIS_DEPENDENT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_dependents
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_sensitive_fields
+        in: query
+        description: Whether to include sensitive fields (such as social security numbers) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dependent'
+components:
+  schemas:
+    DependentFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: DependentFieldMappings
+    GenderEnum:
+      type: string
+      enum:
+      - MALE
+      - FEMALE
+      - NON-BINARY
+      - OTHER
+      - PREFER_NOT_TO_DISCLOSE
+      title: GenderEnum
+    RelationshipEnum:
+      type: string
+      enum:
+      - CHILD
+      - SPOUSE
+      - DOMESTIC_PARTNER
+      title: RelationshipEnum
+    PaginatedDependentList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Dependent'
+      title: PaginatedDependentList
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    Dependent:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        first_name:
+          type:
+          - string
+          - 'null'
+          description: The dependents's first name.
+        middle_name:
+          type:
+          - string
+          - 'null'
+          description: The dependents's middle name.
+        last_name:
+          type:
+          - string
+          - 'null'
+          description: The dependents's last name.
+        relationship:
+          oneOf:
+          - $ref: '#/components/schemas/RelationshipEnum'
+          - type: 'null'
+          description: The dependent's relationship to the employee.
+        employee:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The employee this person is a dependent of.
+        date_of_birth:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The dependent's date of birth.
+        gender:
+          oneOf:
+          - $ref: '#/components/schemas/GenderEnum'
+          - type: 'null'
+          description: The dependent's gender.
+        phone_number:
+          type:
+          - string
+          - 'null'
+          description: The dependent's phone number.
+        home_location:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The dependents's home address.
+        is_student:
+          type:
+          - boolean
+          - 'null'
+          description: Whether or not the dependent is a student
+        ssn:
+          type:
+          - string
+          - 'null'
+          description: The dependents's social security number.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/DependentFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The Dependent Object
+
+        ### Description
+
+        The `Dependent` object is used to represent a dependent (e.g. child, spouse, domestic partner, etc) of an `Employee`
+
+
+        ### Usage Example
+
+        Fetch from the `LIST Dependents` endpoint and filter by `ID` to show all dependents.'
+      title: Dependent
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

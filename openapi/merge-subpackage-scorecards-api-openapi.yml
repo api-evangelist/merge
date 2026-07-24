@@ -1,0 +1,381 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_scorecards API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_scorecards
+paths:
+  /ats/v1/scorecards:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Scorecard` objects.{/* BEGIN_ATS_SCORECARD_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA9WWbU/iQBDHv4rZl6S0InJqk8uFJxUixYP6QIxphu1QFrbdsrsFxfjdLy3owZ3nadIYfdnpf/4z+5vJZh8IBY2BkPfEJqAVMUgofOTEJn0qJFKQPjEIxMyBEFcab75HDKKSOBZSo3/MkPvqVOKI2MQKUQZYTCI2YuhboJXFIo2BBM1EpKznrOIoSyMG4Syaol+lVCSRfsVnpSvCSvjHZ/pbaWKQGJTSYymSYNzDWYLqNcu0G44hRhp40QcN1kZ6Ua7yX4qlffvIUaPfAA0N1EjTA65LjbWOlW1ZY+SxmZU1fZxbGFkgNaMclVUpH+0dHFWKa5es+g8v4N9LhclsKIYHBS+g3IOk0HHpneO2Fs4k2Hfq+3fO8qLiLKdLZzLdLXgBFDpup9J1B+Vuo1rqviDw+t+ujy5rjVrbKdBls+xMBgvHpaWOS6fDZavcPqGL9unPO2c52Os0LsqO26y0T0SpW++pTr0nOlXTJAbZnCOxbx42A+vlqEnE5f22thVCgBtMVlOAmBXjZMgZNVXZhBCWIoKFMqkIrRB9BtbKy+vPEpDonYlAmJM4eOLORPQMndik6ZxWnXqzsb0A1TkwDkOOxNYywb92ltg3BOKYM5p1uu5bzhkuUBKDiDlK4NyTSEUYYuQ/ySSGQqOXzmz7y4tBj8ltGpslTKJ/DhJC1CjTYrePxkvUTiRiNBaJwnzI/fZ7Iz2n6rYum7mxezdHKhE0+h7o/7N9DrH0XlLJMGR6nftO7Gc4z7rLgXhmtQnbE4Pg8L529ZEr+0Ww96vnO/2EUlTqGKgWUuUzg23PrWHU6LUIjnc/9TDeAv69pEOQuodUJiwT5oN523SL8+RwfjZqXplx9Lnu6X8tet6r7SLnGOmdJzw53ed6ZZseb2XrqQz6l+Gc815fCTn1IadnxjkHPRIyXJt+JNMPeG/cPv4CFE6vXuELAAA=" /></Footer>{/* END_ATS_SCORECARD_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_scorecards
+      parameters:
+      - name: application_id
+        in: query
+        description: If provided, will only return scorecards for this application.
+        required: false
+        schema:
+          type: string
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScorecardsGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: interview_id
+        in: query
+        description: If provided, will only return scorecards for this interview.
+        required: false
+        schema:
+          type: string
+      - name: interviewer_id
+        in: query
+        description: If provided, will only return scorecards for this interviewer.
+        required: false
+        schema:
+          type: string
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_fields
+        in: query
+        description: Deprecated. Use show_enum_origins.
+        required: false
+        schema:
+          $ref: '#/components/schemas/ScorecardsGetParametersRemoteFields'
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: show_enum_origins
+        in: query
+        description: A comma separated list of enum field names for which you'd like the original values to be returned, instead of Merge's normalized enum values. [Learn more](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+        required: false
+        schema:
+          $ref: '#/components/schemas/ScorecardsGetParametersShowEnumOrigins'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedScorecardList'
+  /ats/v1/scorecards/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `Scorecard` object with the given `id`.{/* BEGIN_ATS_SCORECARD_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA9WWbU/iQBDHv4rZl6S0InJqk8uFJxUixYP6QIxphu1QFrbdsrsFxfjdLy3owZ3nadIYfdnpf/4z+5vJZh8IBY2BkPfEJqAVMUgofOTEJn0qJFKQPjEIxMyBEFcab75HDKKSOBZSo3/MkPvqVOKI2MQKUQZYTCI2YuhboJXFIo2BBM1EpKznrOIoSyMG4Syaol+lVCSRfsVnpSvCSvjHZ/pbaWKQGJTSYymSYNzDWYLqNcu0G44hRhp40QcN1kZ6Ua7yX4qlffvIUaPfAA0N1EjTA65LjbWOlW1ZY+SxmZU1fZxbGFkgNaMclVUpH+0dHFWKa5es+g8v4N9LhclsKIYHBS+g3IOk0HHpneO2Fs4k2Hfq+3fO8qLiLKdLZzLdLXgBFDpup9J1B+Vuo1rqviDw+t+ujy5rjVrbKdBls+xMBgvHpaWOS6fDZavcPqGL9unPO2c52Os0LsqO26y0T0SpW++pTr0nOlXTJAbZnCOxbx42A+vlqEnE5f22thVCgBtMVlOAmBXjZMgZNVXZhBCWIoKFMqkIrRB9BtbKy+vPEpDonYlAmJM4eOLORPQMndik6ZxWnXqzsb0A1TkwDkOOxNYywb92ltg3BOKYM5p1uu5bzhkuUBKDiDlK4NyTSEUYYuQ/ySSGQqOXzmz7y4tBj8ltGpslTKJ/DhJC1CjTYrePxkvUTiRiNBaJwnzI/fZ7Iz2n6rYum7mxezdHKhE0+h7o/7N9DrH0XlLJMGR6nftO7Gc4z7rLgXhmtQnbE4Pg8L529ZEr+0Ww96vnO/2EUlTqGKgWUuUzg23PrWHU6LUIjnc/9TDeAv69pEOQuodUJiwT5oN523SL8+RwfjZqXplx9Lnu6X8tet6r7SLnGOmdJzw53ed6ZZseb2XrqQz6l+Gc815fCTn1IadnxjkHPRIyXJt+JNMPeG/cPv4CFE6vXuELAAA=" /></Footer>{/* END_ATS_SCORECARD_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_scorecards
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScorecardsIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: remote_fields
+        in: query
+        description: Deprecated. Use show_enum_origins.
+        required: false
+        schema:
+          $ref: '#/components/schemas/ScorecardsIdGetParametersRemoteFields'
+      - name: show_enum_origins
+        in: query
+        description: A comma separated list of enum field names for which you'd like the original values to be returned, instead of Merge's normalized enum values. [Learn more](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+        required: false
+        schema:
+          $ref: '#/components/schemas/ScorecardsIdGetParametersShowEnumOrigins'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Scorecard'
+components:
+  schemas:
+    PaginatedScorecardList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Scorecard'
+      title: PaginatedScorecardList
+    ScorecardsGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - overall_recommendation
+      title: ScorecardsGetParametersShowEnumOrigins
+    Scorecard:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        application:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The application being scored.
+        interview:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The interview being scored.
+        interviewer:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The interviewer doing the scoring.
+        remote_created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's scorecard was created.
+        submitted_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the scorecard was submitted.
+        overall_recommendation:
+          oneOf:
+          - $ref: '#/components/schemas/OverallRecommendationEnum'
+          - type: 'null'
+          description: The inteviewer's recommendation.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/ScorecardFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The Scorecard Object
+
+        ### Description
+
+        The `Scorecard` object is used to represent an interviewer''s candidate recommendation based on a particular interview.
+
+        ### Usage Example
+
+        Fetch from the `LIST Scorecards` endpoint and filter by `application` to show all scorecard for an applicant.'
+      title: Scorecard
+    ScorecardsIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - overall_recommendation
+      title: ScorecardsIdGetParametersRemoteFields
+    ScorecardsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - application
+      - interview
+      - interviewer
+      title: ScorecardsGetParametersExpandSchemaItems
+    OverallRecommendationEnum:
+      type: string
+      enum:
+      - DEFINITELY_NO
+      - 'NO'
+      - 'YES'
+      - STRONG_YES
+      - NO_DECISION
+      title: OverallRecommendationEnum
+    ScorecardsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - application
+      - interview
+      - interviewer
+      title: ScorecardsIdGetParametersExpandSchemaItems
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    ScorecardsIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - overall_recommendation
+      title: ScorecardsIdGetParametersShowEnumOrigins
+    ScorecardFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: ScorecardFieldMappings
+    ScorecardsGetParametersRemoteFields:
+      type: string
+      enum:
+      - overall_recommendation
+      title: ScorecardsGetParametersRemoteFields
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

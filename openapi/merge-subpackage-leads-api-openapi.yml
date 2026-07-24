@@ -1,0 +1,1428 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_leads API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_leads
+paths:
+  /crm/v1/leads:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Lead` objects.{/* BEGIN_CRM_LEAD_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+1abVPqOBT+K04+OkBXuXhXZnZ2uMBedZfqItdd947TOaSHEkmbmqSg3Ln/facFpCioYCuF4RPkpU9Pkue8Nj8IBY2OkA+kTKh0SY64wkZOyuQvBJvkCPjMBBdHw1b/kOSICnxfSI32Hwy5rU4kdkiZGC5KB/OBxzoMbYNK12CeRkeCZsJTxuNT+U70GMkRzrwe2hVKReDpF3BG8/IwmvikqQzOlCY54oNSuitF4HSbeBegegkylIaji54GnrdBgxF7PC9Hz8/rC+W2kaNGuwYaaqiRhgscv6qrta/KhtFF7hei1xZs7BvoGSA1oxyVUSoeH34+LuXHKNHbf7cc/tvB/u1dW7Q/71sO5RYE+40WvTdbpwPz1vlkVj/dm8NvJXPYG5q3vV/2LQf2G61G6bx1XTyvVQ7O50ywLo/+Pb76UvtyZu7TYb1o3l4PzBY9aLRorz08LZ59pYOzk7/vzeH1YaP2rWi26qWzr+LgvNpUjWpTNCqFAsmR+DmS8vcf8Y4xOSqUIhezc09dcDC2J6NTAJ/l/aDNGS2oYgFcGAoPBqpAhWu4aDMwLjjojpAuRJiWugtAYsH3nMnWM+E97jspk7p5UjGr9dosByp9YBzaHElZywCf0ZaUv5Nqs1GxbYlKFSZsIrl4L2X64UlPOEs+6fSF0sAtKmycHZDoCo0Ws2e7lQb9ZKbSElFbB3N7Q62rNht1FxifCuJpoBOBZ4YwbFgwao3GL7rCQzNw2yifLDU+MosZH/HD/5YXNUiOiIEX/Y7XRyWCRtsCPe0LaT3bsnzQ3WlXtCnj/4FvTwE00xzJTTh4FzCJ9gVIcFGjDA/t5mduPgE162MVXB+Y4yVDxFnMCRFv/VSImNDhvvEIl93dTod5I11IYl/HaCmr9mo7uuTOVLlQmKzdiyDTotnL9m68CZZ+8DEVSzi2CvMHJgZirZZy8XhsV2YmPVvaotHY+hK2xy+MxqSOT3km9ILBkczLKoXw/UiuJLUiwlyPWswjf/xksqUSaZN/u7l7ErQvfaGTIe9J0Fa+0K+HDmaldXpVzxp1OUKUqL2FzZtgqWPreS+JF0Atz+2xyBiCUeH64IWHQIXXx/CorbFwM31jsUiOzCw7wugwqbTlhWTOEQ6x/wi2pUQgKcYi+LhIKq2IPuRGoFYN7U89xZyu5glFn49wa80s04u00vQPH2/6l1eJaV/IwOU1Ijs57Z8IfrJBVA/B3yDavz/G2vhKy6sqsiSnGoxKoURH79UePHAZVXvFo9LeJfDIeyTItQl+8agUoW8j75YJkDJTC9yFRPMdQNQKJN+s6MgMtOoi58ko7wQtO+X2TfQBmUyjl+TVBfPRlqyfcHHzEXbjkuG1BNxLM2m9sffqlvY9lvXxg3K6ljakLmcjcZPQiAlcmoHR8keYvTQoih47HGTCpmiKu6sqrxydblCm9M468qIZzF6N0GJkCxMndIj7gi1JzblmIMX6ME+8fYXkZ1WzTFWWP8jDXwYOyGqzkaxaqhA1vD23hQWQTUu6FmnxvE/2E1+4zqL3u7UwO2FcC8ENZUwqfp7ibVOxYuVLAR+ZcO6uv7zK9IGQvb3EXckE2ao2GynfR8xkJSXrX2uyZ3WvNHOSvorVjzAzeXszjUOdeuON9b3/oWej6u1dJvahYMKFMbL160Aftlr/7ILbzc4zty1xTFiNRFck79SHoivelB7uSje7i4Lrr+/wdD+TJ1/qufn5P/wX2SvnOAAA" /></Footer>{/* END_CRM_LEAD_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_leads
+      parameters:
+      - name: converted_account_id
+        in: query
+        description: If provided, will only return leads with this account.
+        required: false
+        schema:
+          type: string
+      - name: converted_contact_id
+        in: query
+        description: If provided, will only return leads with this contact.
+        required: false
+        schema:
+          type: string
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: email_addresses
+        in: query
+        description: If provided, will only return contacts matching the email addresses; multiple email_addresses can be separated by commas.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/LeadsGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_fields
+        in: query
+        description: Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: owner_id
+        in: query
+        description: If provided, will only return leads with this owner.
+        required: false
+        schema:
+          type: string
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: phone_numbers
+        in: query
+        description: If provided, will only return contacts matching the phone numbers; multiple phone numbers can be separated by commas.
+        required: false
+        schema:
+          type: string
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedLeadList'
+    post:
+      operationId: create
+      summary: Create
+      description: Creates a `Lead` object with the given values.{/* BEGIN_CRM_LEAD_CREATE_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST" data="H4sIAAAAAAAAA+2VbW/aMBDHv8rklygko5RNjTRNFLoWNEJH02pdVUWHfQSDY6e2A22qfvcpQCGsrNO6qq/2zr7734PPvzj3hILFWOk74hOqE+KQRDEUxCdfERhxCKQ8gASX7mi2RxxisjRV2iL7wlEwc6JxRHziJahjrGaSjzgyj+rE49JirMFyJY23jqqOFmHEIYLLKbImpSqT9pk8S10VlsJftsYT3FjikBSMsWOtsng8wJsMzXMpi24EJigtiCoDC14pvKqX8btsRd8MBVpkbbDQRou0OOCq1Nja1PieN0aRuouyLsOZh9IDbTkVaLxG/WDv40GjusqyqP45isWnWmVyM1TDj5UopiKCrNIL6W0QdubBJN4PWvu3QX7eCPJpHkym7ytRDJVe2Gv0w8t6v92s9XcIorMP3w8uDtuH3aBC86N6MLmcByGt9UI6HeadeveYzrsn326D/HKv1z6vB+FRo3usav3WwPRaA9Vrui5xSPkeiX91Xzas4DjlKTLNZ7gt7yQQY2ksy4uAlFfTbCg4dU3dhQRyJWFuXKoSL0HGwTsVYEdKJ+u07iSNHyfPlVyPnfgkaIadi6NtAJoz4AKGAolvdYZPmCX+FQHGNBqDxY1SlaQg74hDMAEuorJvxLWxkSzO6RABpTUCi4zKNC12ai5RF12MlcRIZskQdRGuMVEWI6oRLLII7MbG2WadpWzjt9wKJNeF8ybjGtkpaEjQFhn9q/KAo7TwGFfpGCTPl7ZF3h2iFLV5dK/KLr9Ft7yLqABjnkhmIDLc9Pbg7MLgDASakVpO5BU52OR1U/k2IFAlZ1gIo9VDs2WjSlqg27biAt+YoPVT+o9EbY5dbu+FjPyGjR9qrN61Br3XJSNXY1X8mcxNBvo/HdGL6DAWbFYI/4DJX8Fx/XD98BOne1OYYAgAAA==" /></Footer>{/* END_CRM_LEAD_CREATE_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_leads
+      parameters:
+      - name: is_debug_mode
+        in: query
+        description: Whether to include debug fields (such as log file links) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: run_async
+        in: query
+        description: Whether or not third-party updates should be run asynchronously.
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeadResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeadEndpointRequest'
+  /crm/v1/leads/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `Lead` object with the given `id`.{/* BEGIN_CRM_LEAD_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+1abVPqOBT+K04+OkBXuXhXZnZ2uMBedZfqItdd947TOaSHEkmbmqSg3Ln/facFpCioYCuF4RPkpU9Pkue8Nj8IBY2OkA+kTKh0SY64wkZOyuQvBJvkCPjMBBdHw1b/kOSICnxfSI32Hwy5rU4kdkiZGC5KB/OBxzoMbYNK12CeRkeCZsJTxuNT+U70GMkRzrwe2hVKReDpF3BG8/IwmvikqQzOlCY54oNSuitF4HSbeBegegkylIaji54GnrdBgxF7PC9Hz8/rC+W2kaNGuwYaaqiRhgscv6qrta/KhtFF7hei1xZs7BvoGSA1oxyVUSoeH34+LuXHKNHbf7cc/tvB/u1dW7Q/71sO5RYE+40WvTdbpwPz1vlkVj/dm8NvJXPYG5q3vV/2LQf2G61G6bx1XTyvVQ7O50ywLo/+Pb76UvtyZu7TYb1o3l4PzBY9aLRorz08LZ59pYOzk7/vzeH1YaP2rWi26qWzr+LgvNpUjWpTNCqFAsmR+DmS8vcf8Y4xOSqUIhezc09dcDC2J6NTAJ/l/aDNGS2oYgFcGAoPBqpAhWu4aDMwLjjojpAuRJiWugtAYsH3nMnWM+E97jspk7p5UjGr9dosByp9YBzaHElZywCf0ZaUv5Nqs1GxbYlKFSZsIrl4L2X64UlPOEs+6fSF0sAtKmycHZDoCo0Ws2e7lQb9ZKbSElFbB3N7Q62rNht1FxifCuJpoBOBZ4YwbFgwao3GL7rCQzNw2yifLDU+MosZH/HD/5YXNUiOiIEX/Y7XRyWCRtsCPe0LaT3bsnzQ3WlXtCnj/4FvTwE00xzJTTh4FzCJ9gVIcFGjDA/t5mduPgE162MVXB+Y4yVDxFnMCRFv/VSImNDhvvEIl93dTod5I11IYl/HaCmr9mo7uuTOVLlQmKzdiyDTotnL9m68CZZ+8DEVSzi2CvMHJgZirZZy8XhsV2YmPVvaotHY+hK2xy+MxqSOT3km9ILBkczLKoXw/UiuJLUiwlyPWswjf/xksqUSaZN/u7l7ErQvfaGTIe9J0Fa+0K+HDmaldXpVzxp1OUKUqL2FzZtgqWPreS+JF0Atz+2xyBiCUeH64IWHQIXXx/CorbFwM31jsUiOzCw7wugwqbTlhWTOEQ6x/wi2pUQgKcYi+LhIKq2IPuRGoFYN7U89xZyu5glFn49wa80s04u00vQPH2/6l1eJaV/IwOU1Ijs57Z8IfrJBVA/B3yDavz/G2vhKy6sqsiSnGoxKoURH79UePHAZVXvFo9LeJfDIeyTItQl+8agUoW8j75YJkDJTC9yFRPMdQNQKJN+s6MgMtOoi58ko7wQtO+X2TfQBmUyjl+TVBfPRlqyfcHHzEXbjkuG1BNxLM2m9sffqlvY9lvXxg3K6ljakLmcjcZPQiAlcmoHR8keYvTQoih47HGTCpmiKu6sqrxydblCm9M468qIZzF6N0GJkCxMndIj7gi1JzblmIMX6ME+8fYXkZ1WzTFWWP8jDXwYOyGqzkaxaqhA1vD23hQWQTUu6FmnxvE/2E1+4zqL3u7UwO2FcC8ENZUwqfp7ibVOxYuVLAR+ZcO6uv7zK9IGQvb3EXckE2ao2GynfR8xkJSXrX2uyZ3WvNHOSvorVjzAzeXszjUOdeuON9b3/oWej6u1dJvahYMKFMbL160Aftlr/7ILbzc4zty1xTFiNRFck79SHoivelB7uSje7i4Lrr+/wdD+TJ1/qufn5P/wX2SvnOAAA" /></Footer>{/* END_CRM_LEAD_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_leads
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/LeadsIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_fields
+        in: query
+        description: Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lead'
+  /crm/v1/leads/meta/post:
+    get:
+      operationId: meta-post-retrieve
+      summary: Meta Post Retrieve
+      description: Returns metadata for `Lead` POSTs.{/* BEGIN_CRM_LEAD_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+1abVPqOBT+K04+OkBXuXhXZnZ2uMBedZfqItdd947TOaSHEkmbmqSg3Ln/facFpCioYCuF4RPkpU9Pkue8Nj8IBY2OkA+kTKh0SY64wkZOyuQvBJvkCPjMBBdHw1b/kOSICnxfSI32Hwy5rU4kdkiZGC5KB/OBxzoMbYNK12CeRkeCZsJTxuNT+U70GMkRzrwe2hVKReDpF3BG8/IwmvikqQzOlCY54oNSuitF4HSbeBegegkylIaji54GnrdBgxF7PC9Hz8/rC+W2kaNGuwYaaqiRhgscv6qrta/KhtFF7hei1xZs7BvoGSA1oxyVUSoeH34+LuXHKNHbf7cc/tvB/u1dW7Q/71sO5RYE+40WvTdbpwPz1vlkVj/dm8NvJXPYG5q3vV/2LQf2G61G6bx1XTyvVQ7O50ywLo/+Pb76UvtyZu7TYb1o3l4PzBY9aLRorz08LZ59pYOzk7/vzeH1YaP2rWi26qWzr+LgvNpUjWpTNCqFAsmR+DmS8vcf8Y4xOSqUIhezc09dcDC2J6NTAJ/l/aDNGS2oYgFcGAoPBqpAhWu4aDMwLjjojpAuRJiWugtAYsH3nMnWM+E97jspk7p5UjGr9dosByp9YBzaHElZywCf0ZaUv5Nqs1GxbYlKFSZsIrl4L2X64UlPOEs+6fSF0sAtKmycHZDoCo0Ws2e7lQb9ZKbSElFbB3N7Q62rNht1FxifCuJpoBOBZ4YwbFgwao3GL7rCQzNw2yifLDU+MosZH/HD/5YXNUiOiIEX/Y7XRyWCRtsCPe0LaT3bsnzQ3WlXtCnj/4FvTwE00xzJTTh4FzCJ9gVIcFGjDA/t5mduPgE162MVXB+Y4yVDxFnMCRFv/VSImNDhvvEIl93dTod5I11IYl/HaCmr9mo7uuTOVLlQmKzdiyDTotnL9m68CZZ+8DEVSzi2CvMHJgZirZZy8XhsV2YmPVvaotHY+hK2xy+MxqSOT3km9ILBkczLKoXw/UiuJLUiwlyPWswjf/xksqUSaZN/u7l7ErQvfaGTIe9J0Fa+0K+HDmaldXpVzxp1OUKUqL2FzZtgqWPreS+JF0Atz+2xyBiCUeH64IWHQIXXx/CorbFwM31jsUiOzCw7wugwqbTlhWTOEQ6x/wi2pUQgKcYi+LhIKq2IPuRGoFYN7U89xZyu5glFn49wa80s04u00vQPH2/6l1eJaV/IwOU1Ijs57Z8IfrJBVA/B3yDavz/G2vhKy6sqsiSnGoxKoURH79UePHAZVXvFo9LeJfDIeyTItQl+8agUoW8j75YJkDJTC9yFRPMdQNQKJN+s6MgMtOoi58ko7wQtO+X2TfQBmUyjl+TVBfPRlqyfcHHzEXbjkuG1BNxLM2m9sffqlvY9lvXxg3K6ljakLmcjcZPQiAlcmoHR8keYvTQoih47HGTCpmiKu6sqrxydblCm9M468qIZzF6N0GJkCxMndIj7gi1JzblmIMX6ME+8fYXkZ1WzTFWWP8jDXwYOyGqzkaxaqhA1vD23hQWQTUu6FmnxvE/2E1+4zqL3u7UwO2FcC8ENZUwqfp7ibVOxYuVLAR+ZcO6uv7zK9IGQvb3EXckE2ao2GynfR8xkJSXrX2uyZ3WvNHOSvorVjzAzeXszjUOdeuON9b3/oWej6u1dJvahYMKFMbL160Aftlr/7ILbzc4zty1xTFiNRFck79SHoivelB7uSje7i4Lrr+/wdD+TJ1/qufn5P/wX2SvnOAAA" /></Footer>{/* END_CRM_LEAD_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_leads
+      parameters:
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaResponse'
+  /crm/v1/leads/remote-field-classes:
+    get:
+      operationId: remote-field-classes-list
+      summary: Remote Field Classes List
+      description: Returns a list of `RemoteFieldClass` objects.{/* BEGIN_CRM_LEAD_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+1abVPqOBT+K04+OkBXuXhXZnZ2uMBedZfqItdd947TOaSHEkmbmqSg3Ln/facFpCioYCuF4RPkpU9Pkue8Nj8IBY2OkA+kTKh0SY64wkZOyuQvBJvkCPjMBBdHw1b/kOSICnxfSI32Hwy5rU4kdkiZGC5KB/OBxzoMbYNK12CeRkeCZsJTxuNT+U70GMkRzrwe2hVKReDpF3BG8/IwmvikqQzOlCY54oNSuitF4HSbeBegegkylIaji54GnrdBgxF7PC9Hz8/rC+W2kaNGuwYaaqiRhgscv6qrta/KhtFF7hei1xZs7BvoGSA1oxyVUSoeH34+LuXHKNHbf7cc/tvB/u1dW7Q/71sO5RYE+40WvTdbpwPz1vlkVj/dm8NvJXPYG5q3vV/2LQf2G61G6bx1XTyvVQ7O50ywLo/+Pb76UvtyZu7TYb1o3l4PzBY9aLRorz08LZ59pYOzk7/vzeH1YaP2rWi26qWzr+LgvNpUjWpTNCqFAsmR+DmS8vcf8Y4xOSqUIhezc09dcDC2J6NTAJ/l/aDNGS2oYgFcGAoPBqpAhWu4aDMwLjjojpAuRJiWugtAYsH3nMnWM+E97jspk7p5UjGr9dosByp9YBzaHElZywCf0ZaUv5Nqs1GxbYlKFSZsIrl4L2X64UlPOEs+6fSF0sAtKmycHZDoCo0Ws2e7lQb9ZKbSElFbB3N7Q62rNht1FxifCuJpoBOBZ4YwbFgwao3GL7rCQzNw2yifLDU+MosZH/HD/5YXNUiOiIEX/Y7XRyWCRtsCPe0LaT3bsnzQ3WlXtCnj/4FvTwE00xzJTTh4FzCJ9gVIcFGjDA/t5mduPgE162MVXB+Y4yVDxFnMCRFv/VSImNDhvvEIl93dTod5I11IYl/HaCmr9mo7uuTOVLlQmKzdiyDTotnL9m68CZZ+8DEVSzi2CvMHJgZirZZy8XhsV2YmPVvaotHY+hK2xy+MxqSOT3km9ILBkczLKoXw/UiuJLUiwlyPWswjf/xksqUSaZN/u7l7ErQvfaGTIe9J0Fa+0K+HDmaldXpVzxp1OUKUqL2FzZtgqWPreS+JF0Atz+2xyBiCUeH64IWHQIXXx/CorbFwM31jsUiOzCw7wugwqbTlhWTOEQ6x/wi2pUQgKcYi+LhIKq2IPuRGoFYN7U89xZyu5glFn49wa80s04u00vQPH2/6l1eJaV/IwOU1Ijs57Z8IfrJBVA/B3yDavz/G2vhKy6sqsiSnGoxKoURH79UePHAZVXvFo9LeJfDIeyTItQl+8agUoW8j75YJkDJTC9yFRPMdQNQKJN+s6MgMtOoi58ko7wQtO+X2TfQBmUyjl+TVBfPRlqyfcHHzEXbjkuG1BNxLM2m9sffqlvY9lvXxg3K6ljakLmcjcZPQiAlcmoHR8keYvTQoih47HGTCpmiKu6sqrxydblCm9M468qIZzF6N0GJkCxMndIj7gi1JzblmIMX6ME+8fYXkZ1WzTFWWP8jDXwYOyGqzkaxaqhA1vD23hQWQTUu6FmnxvE/2E1+4zqL3u7UwO2FcC8ENZUwqfp7ibVOxYuVLAR+ZcO6uv7zK9IGQvb3EXckE2ao2GynfR8xkJSXrX2uyZ3WvNHOSvorVjzAzeXszjUOdeuON9b3/oWej6u1dJvahYMKFMbL160Aftlr/7ILbzc4zty1xTFiNRFck79SHoivelB7uSje7i4Lrr+/wdD+TJ1/qufn5P/wX2SvnOAAA" /></Footer>{/* END_CRM_LEAD_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_leads
+      parameters:
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_fields
+        in: query
+        description: Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: is_common_model_field
+        in: query
+        description: If provided, will only return remote field classes with this is_common_model_field value
+        required: false
+        schema:
+          type: boolean
+      - name: is_custom
+        in: query
+        description: If provided, will only return remote fields classes with this is_custom value
+        required: false
+        schema:
+          type: boolean
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRemoteFieldClassList'
+components:
+  schemas:
+    Address:
+      type: object
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        street_1:
+          type:
+          - string
+          - 'null'
+          description: Line 1 of the address's street.
+        street_2:
+          type:
+          - string
+          - 'null'
+          description: Line 2 of the address's street.
+        city:
+          type:
+          - string
+          - 'null'
+          description: The address's city.
+        state:
+          type:
+          - string
+          - 'null'
+          description: The address's state.
+        postal_code:
+          type:
+          - string
+          - 'null'
+          description: The address's postal code.
+        country:
+          oneOf:
+          - $ref: '#/components/schemas/CountryEnum'
+          - type: 'null'
+          description: The address's country. The country code in ISO 3166-1 alpha-2 format.
+        address_type:
+          oneOf:
+          - $ref: '#/components/schemas/AddressTypeEnum'
+          - type: 'null'
+          description: The address type.
+      description: '# The Address Object
+
+        ### Description
+
+        The `Address` object is used to represent an entity''s address.
+
+        ### Usage Example
+
+        TODO'
+      title: Address
+    LeadsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - converted_account
+      - converted_contact
+      - owner
+      title: LeadsIdGetParametersExpandSchemaItems
+    AddressRequest:
+      type: object
+      properties:
+        street_1:
+          type:
+          - string
+          - 'null'
+          description: Line 1 of the address's street.
+        street_2:
+          type:
+          - string
+          - 'null'
+          description: Line 2 of the address's street.
+        city:
+          type:
+          - string
+          - 'null'
+          description: The address's city.
+        state:
+          type:
+          - string
+          - 'null'
+          description: The address's state.
+        postal_code:
+          type:
+          - string
+          - 'null'
+          description: The address's postal code.
+        country:
+          oneOf:
+          - $ref: '#/components/schemas/CountryEnum'
+          - type: 'null'
+          description: The address's country. The country code in ISO 3166-1 alpha-2 format.
+        address_type:
+          oneOf:
+          - $ref: '#/components/schemas/AddressTypeEnum'
+          - type: 'null'
+          description: The address type.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The Address Object
+
+        ### Description
+
+        The `Address` object is used to represent an entity''s address.
+
+        ### Usage Example
+
+        TODO'
+      title: AddressRequest
+    LeadEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/LeadRequest'
+      required:
+      - model
+      title: LeadEndpointRequest
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    RemoteFieldRequest:
+      type: object
+      properties:
+        remote_field_class:
+          type: string
+          format: uuid
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteFieldRequest
+    LeadsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - converted_account
+      - converted_contact
+      - owner
+      title: LeadsGetParametersExpandSchemaItems
+    ItemTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemTypeEnum
+    ItemFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemFormatEnum
+    EmailAddress:
+      type: object
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        email_address:
+          type:
+          - string
+          - 'null'
+          description: The email address.
+        email_address_type:
+          type:
+          - string
+          - 'null'
+          description: The email address's type.
+      description: '# The EmailAddress Object
+
+        ### Description
+
+        The `EmailAddress` object is used to represent an entity''s email address.
+
+        ### Usage Example
+
+        Fetch from the `GET Contact` endpoint and view their email addresses.'
+      title: EmailAddress
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    CountryEnum:
+      type: string
+      enum:
+      - AF
+      - AX
+      - AL
+      - DZ
+      - AS
+      - AD
+      - AO
+      - AI
+      - AQ
+      - AG
+      - AR
+      - AM
+      - AW
+      - AU
+      - AT
+      - AZ
+      - BS
+      - BH
+      - BD
+      - BB
+      - BY
+      - BE
+      - BZ
+      - BJ
+      - BM
+      - BT
+      - BO
+      - BQ
+      - BA
+      - BW
+      - BV
+      - BR
+      - IO
+      - BN
+      - BG
+      - BF
+      - BI
+      - CV
+      - KH
+      - CM
+      - CA
+      - KY
+      - CF
+      - TD
+      - CL
+      - CN
+      - CX
+      - CC
+      - CO
+      - KM
+      - CG
+      - CD
+      - CK
+      - CR
+      - CI
+      - HR
+      - CU
+      - CW
+      - CY
+      - CZ
+      - DK
+      - DJ
+      - DM
+      - DO
+      - EC
+      - EG
+      - SV
+      - GQ
+      - ER
+      - EE
+      - SZ
+      - ET
+      - FK
+      - FO
+      - FJ
+      - FI
+      - FR
+      - GF
+      - PF
+      - TF
+      - GA
+      - GM
+      - GE
+      - DE
+      - GH
+      - GI
+      - GR
+      - GL
+      - GD
+      - GP
+      - GU
+      - GT
+      - GG
+      - GN
+      - GW
+      - GY
+      - HT
+      - HM
+      - VA
+      - HN
+      - HK
+      - HU
+      - IS
+      - IN
+      - ID
+      - IR
+      - IQ
+      - IE
+      - IM
+      - IL
+      - IT
+      - JM
+      - JP
+      - JE
+      - JO
+      - KZ
+      - KE
+      - KI
+      - KW
+      - KG
+      - LA
+      - LV
+      - LB
+      - LS
+      - LR
+      - LY
+      - LI
+      - LT
+      - LU
+      - MO
+      - MG
+      - MW
+      - MY
+      - MV
+      - ML
+      - MT
+      - MH
+      - MQ
+      - MR
+      - MU
+      - YT
+      - MX
+      - FM
+      - MD
+      - MC
+      - MN
+      - ME
+      - MS
+      - MA
+      - MZ
+      - MM
+      - NA
+      - NR
+      - NP
+      - NL
+      - NC
+      - NZ
+      - NI
+      - NE
+      - NG
+      - NU
+      - NF
+      - KP
+      - MK
+      - MP
+      - 'NO'
+      - OM
+      - PK
+      - PW
+      - PS
+      - PA
+      - PG
+      - PY
+      - PE
+      - PH
+      - PN
+      - PL
+      - PT
+      - PR
+      - QA
+      - RE
+      - RO
+      - RU
+      - RW
+      - BL
+      - SH
+      - KN
+      - LC
+      - MF
+      - PM
+      - VC
+      - WS
+      - SM
+      - ST
+      - SA
+      - SN
+      - RS
+      - SC
+      - SL
+      - SG
+      - SX
+      - SK
+      - SI
+      - SB
+      - SO
+      - ZA
+      - GS
+      - KR
+      - SS
+      - ES
+      - LK
+      - SD
+      - SR
+      - SJ
+      - SE
+      - CH
+      - SY
+      - TW
+      - TJ
+      - TZ
+      - TH
+      - TL
+      - TG
+      - TK
+      - TO
+      - TT
+      - TN
+      - TR
+      - TM
+      - TC
+      - TV
+      - UG
+      - UA
+      - AE
+      - GB
+      - UM
+      - US
+      - UY
+      - UZ
+      - VU
+      - VE
+      - VN
+      - VG
+      - VI
+      - WF
+      - EH
+      - YE
+      - ZM
+      - ZW
+      description: The country code in ISO 3166-1 alpha-2 format.
+      title: CountryEnum
+    AddressTypeEnum:
+      type: string
+      enum:
+      - BILLING
+      - SHIPPING
+      title: AddressTypeEnum
+    PhoneNumberRequest:
+      type: object
+      properties:
+        phone_number:
+          type:
+          - string
+          - 'null'
+          description: The phone number.
+        phone_number_type:
+          type:
+          - string
+          - 'null'
+          description: The phone number's type.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The PhoneNumber Object
+
+        ### Description
+
+        The `PhoneNumber` object is used to represent an entity''s phone number.
+
+        ### Usage Example
+
+        Fetch from the `GET Contact` endpoint and view their phone numbers.'
+      title: PhoneNumberRequest
+    PhoneNumber:
+      type: object
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        phone_number:
+          type:
+          - string
+          - 'null'
+          description: The phone number.
+        phone_number_type:
+          type:
+          - string
+          - 'null'
+          description: The phone number's type.
+      description: '# The PhoneNumber Object
+
+        ### Description
+
+        The `PhoneNumber` object is used to represent an entity''s phone number.
+
+        ### Usage Example
+
+        Fetch from the `GET Contact` endpoint and view their phone numbers.'
+      title: PhoneNumber
+    PaginatedLeadList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Lead'
+      title: PaginatedLeadList
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    LeadFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: LeadFieldMappings
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    PaginatedRemoteFieldClassList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldClass'
+      title: PaginatedRemoteFieldClassList
+    ItemSchema:
+      type: object
+      properties:
+        item_type:
+          $ref: '#/components/schemas/ItemTypeEnum'
+        item_format:
+          $ref: '#/components/schemas/ItemFormatEnum'
+        item_choices:
+          type: array
+          items:
+            type: string
+      title: ItemSchema
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    LeadRequest:
+      type: object
+      properties:
+        owner:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The lead's owner.
+        lead_source:
+          type:
+          - string
+          - 'null'
+          description: The lead's source.
+        title:
+          type:
+          - string
+          - 'null'
+          description: The lead's title.
+        company:
+          type:
+          - string
+          - 'null'
+          description: The lead's company.
+        first_name:
+          type:
+          - string
+          - 'null'
+          description: The lead's first name.
+        last_name:
+          type:
+          - string
+          - 'null'
+          description: The lead's last name.
+        addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddressRequest'
+        email_addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailAddressRequest'
+        phone_numbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneNumberRequest'
+        converted_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the lead was converted.
+        converted_contact:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The contact of the converted lead.
+        converted_account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The account of the converted lead.
+        lead_url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The lead's URL in the remote system.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldRequest'
+      description: '# The Lead Object
+
+        ### Description
+
+        The `Lead` object is used to represent an individual who is a potential customer.
+
+        ### Usage Example
+
+        TODO'
+      title: LeadRequest
+    RemoteFieldClass:
+      type: object
+      properties:
+        id:
+          type: string
+        display_name:
+          type: string
+        remote_key_name:
+          type: string
+        description:
+          type: string
+        is_custom:
+          type: boolean
+        is_common_model_field:
+          type: boolean
+        is_required:
+          type: boolean
+        field_type:
+          $ref: '#/components/schemas/FieldTypeEnum'
+        field_format:
+          $ref: '#/components/schemas/FieldFormatEnum'
+        field_choices:
+          type: array
+          items:
+            type: string
+        item_schema:
+          $ref: '#/components/schemas/ItemSchema'
+      title: RemoteFieldClass
+    RemoteField:
+      type: object
+      properties:
+        remote_field_class:
+          $ref: '#/components/schemas/RemoteFieldClass'
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteField
+    LeadResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/Lead'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: LeadResponse
+    FieldFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldFormatEnum
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    LeadStatusEnum:
+      type: string
+      enum:
+      - OPEN
+      - CLOSED
+      - UNQUALIFIED
+      - QUALIFIED
+      title: LeadStatusEnum
+    Lead:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        owner:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The lead's owner.
+        lead_source:
+          type:
+          - string
+          - 'null'
+          description: The lead's source.
+        title:
+          type:
+          - string
+          - 'null'
+          description: The lead's title.
+        company:
+          type:
+          - string
+          - 'null'
+          description: The lead's company.
+        first_name:
+          type:
+          - string
+          - 'null'
+          description: The lead's first name.
+        last_name:
+          type:
+          - string
+          - 'null'
+          description: The lead's last name.
+        addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/Address'
+        email_addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailAddress'
+        phone_numbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneNumber'
+        remote_updated_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's lead was updated.
+        remote_created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's lead was created.
+        converted_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the lead was converted.
+        converted_contact:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The contact of the converted lead.
+        converted_account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The account of the converted lead.
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/LeadStatusEnum'
+          - type: 'null'
+          description: The lead's status.
+        lead_url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The lead's URL in the remote system.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/LeadFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteField'
+      description: '# The Lead Object
+
+        ### Description
+
+        The `Lead` object is used to represent an individual who is a potential customer.
+
+        ### Usage Example
+
+        TODO'
+      title: Lead
+    FieldTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldTypeEnum
+    EmailAddressRequest:
+      type: object
+      properties:
+        email_address:
+          type:
+          - string
+          - 'null'
+          description: The email address.
+        email_address_type:
+          type:
+          - string
+          - 'null'
+          description: The email address's type.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The EmailAddress Object
+
+        ### Description
+
+        The `EmailAddress` object is used to represent an entity''s email address.
+
+        ### Usage Example
+
+        Fetch from the `GET Contact` endpoint and view their email addresses.'
+      title: EmailAddressRequest
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

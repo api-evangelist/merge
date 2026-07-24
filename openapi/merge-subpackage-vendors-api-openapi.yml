@@ -1,0 +1,173 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_vendors API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_vendors
+paths:
+  /vendors:
+    get:
+      operationId: list
+      summary: List vendors
+      description: List execution vendors and the models they currently serve.
+      tags:
+      - subpackage_vendors
+      parameters:
+      - name: cursor
+        in: query
+        description: Pagination cursor
+        required: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: Page size
+        required: false
+        schema:
+          type: integer
+          default: 50
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicVendorsListResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /vendors/{vendor_id}:
+    get:
+      operationId: retrieve
+      summary: Fetch a single vendor by ID
+      description: Fetch a single execution vendor by ID.
+      tags:
+      - subpackage_vendors
+      parameters:
+      - name: vendor_id
+        in: path
+        description: Vendor slug (e.g. `openai`, `anthropic`, `bedrock`, `azure`). Call `GET /v1/vendors` to list available slugs.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicVendor'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    PublicVendorAvailabilityStatus:
+      type: string
+      enum:
+      - active
+      - degraded
+      - unavailable
+      title: PublicVendorAvailabilityStatus
+    ValidationErrorLocItems:
+      oneOf:
+      - type: string
+      - type: integer
+      title: ValidationErrorLocItems
+    ValidationError:
+      type: object
+      properties:
+        loc:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationErrorLocItems'
+        msg:
+          type: string
+        type:
+          type: string
+        input:
+          description: Any type
+        ctx:
+          $ref: '#/components/schemas/ValidationErrorCtx'
+      required:
+      - loc
+      - msg
+      - type
+      description: Single field-level validation error. `loc` is the JSON path to the offending field, `msg` is a human-readable explanation, and `type` is a stable machine-readable error code.
+      title: ValidationError
+    ValidationErrorCtx:
+      type: object
+      properties: {}
+      title: ValidationErrorCtx
+    PublicVendor:
+      type: object
+      properties:
+        vendor:
+          type: string
+        name:
+          type: string
+        models:
+          type: array
+          items:
+            type: string
+        supports_zdr:
+          type: boolean
+        supports_byok:
+          type: boolean
+        availability_status:
+          $ref: '#/components/schemas/PublicVendorAvailabilityStatus'
+      required:
+      - vendor
+      - name
+      - models
+      - supports_zdr
+      - supports_byok
+      - availability_status
+      description: An execution host that Merge Gateway can route to (e.g. `openai`, `bedrock`, `azure`). Lists the model IDs the vendor can serve plus its ZDR and BYOK support.
+      title: PublicVendor
+    PublicVendorsListResponse:
+      type: object
+      properties:
+        object:
+          type: string
+          enum:
+          - list
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicVendor'
+        has_more:
+          type: boolean
+          default: false
+        next_cursor:
+          type:
+          - string
+          - 'null'
+      required:
+      - data
+      description: Paginated response wrapper for `GET /v1/vendors`. Use the `next_cursor` field to page through results when `has_more` is true.
+      title: PublicVendorsListResponse
+    HTTPValidationError:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+      description: Standard FastAPI validation error wrapper. Returned with HTTP 422 when the request body or query parameters fail Pydantic validation.
+      title: HTTPValidationError
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

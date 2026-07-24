@@ -1,0 +1,762 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_folders API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_folders
+paths:
+  /filestorage/v1/folders:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Folder` objects.{/* BEGIN_FILESTORAGE_FOLDER_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+2Tb2/aMBDGv8rklygko5RVjTRNUPoHNELXptW6qrJMfCQGxw62AzRVv/uUBAp0vOgqhjZprxKffY9997vnCQXEQCjVI3LRkHHQRioSArJQLClw5KIzySkoZCGSMI/EsHkQTw+QhXSaJFIZoGcMONUXCobIRU4MKoRqKtiQAXXWshwmDISKGCaFdl6yq8MiHVmIMzEG2gwCmQrzBr3yfJWUCa+W2uFMG2ShhGhtIiXTMLqCSQr6LdL56zjEIAzhVUoMcdZkqqrU2RbL66DAwQBtE0PaYCDIC15cGRmTaNdxIuCJXVxvU5g6IByiDAs4aKdRPz44Om5UFyrF7V9wyD/XKqPJQA6OKjgMOCZppecHc8/vzLxReOidHM697KbhZePMG40/VnBIKj2/1+j7d/V+u1nrbzmArz99P75ttVtdrxJkp3VvdDfz/KDW84PxIOvUu+fBrHvxbe5ldwe99k3d808b3XNZ659c6d7Jlew1bRtZaJ0rcu+f1gOL4WnJ+ebBTpwP3KohJQqSsGqSDjgLbF23SUwyKchM24GMnRgoI84lJ2YoVdySc6wnKVGAR56a/TgSdiLCZfOZFC+dRy7ymn7n9nRzFppTwjgZcECuUSn8Ms7IvUdBxDjFw8ILJVgdKJYUqlZpiOW3nJsEVMy0LhphoTIRp4ojC4m8EfkLFAiz0MzXGxmJYjFRj4ttvLmpIJYGcKCAGKCYmFUsn5HNFU6IiVYhRlf/aUJXApplgB7yvUnKFNBLokgMJq/XvX94trbBbCuZDHYNdCG6hBp/FbeReNwD1BeMf4TWfsmcSxly+NBWbAq7wVMq4kIRXxds9m40uihni+Hy31eRJat/2Ja/Sb0vYIfEl4bsCygav3DkPqi/5vzXg3qfS68jouBSMmF2S6zQTXLd/8zM+5k9PP8EY4zDXCELAAA=" /></Footer>{/* END_FILESTORAGE_FOLDER_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_folders
+      parameters:
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: drive_id
+        in: query
+        description: If provided, will only return folders in this drive.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/FoldersGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: name
+        in: query
+        description: If provided, will only return folders with this name. This performs an exact match.
+        required: false
+        schema:
+          type: string
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: parent_folder_id
+        in: query
+        description: If provided, will only return folders in this parent folder. If null, will return folders in root directory.
+        required: false
+        schema:
+          type: string
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedFolderList'
+    post:
+      operationId: create
+      summary: Create
+      description: Creates a `Folder` object with the given values.{/* BEGIN_FILESTORAGE_FOLDER_CREATE_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST" data="H4sIAAAAAAAAA+2UX2/aMBTFv8rkR5Q/o5RVjTRN0LQdaISuTat1VRUZ+xIMjh1sB2iqfvcpIRToeKg6KvVhb4l977n2+Z3kERFsIJbqAXloyDhoIxWOAVkokRQ48tCZ5BQUshBOWYAT2C6MZgfIQjpLU6kM0DMGnOrvCobIQ24CKgY7E2zIgLobXS4TBmKFDZNCu8/d9rBsRxbiTEyAtgiRmTCv0FvW23jZ8OJVu5xpgyyUYq3NSMksHl3CNAP9GunidBwSEAZzm2KD3Q0ZWy11dq0V96DAwQD1scE+GCDFhauRI2NS7bnuCHjqlOMdCjMXhIuVYYSDdpuN44Oj46ZdqZTTv0Ux/1qvjacDOTiqRTHhEc5qvZAsgrAzD8bxYXByuAjy62aQT/JgPPlci2Jc64W9Zj+8bfT9Vr2/oyC6+vLr+Kbtt7tBjeSnjWB8Ow9CUu+FZDLIO43uOZl3v/9cBPntQc+/bgThabN7Luv9k0vdO7mUvZbjIAttckXe3ePmQhWetlxsF3aSInBrQ5YocMrsNBtwRhzdcHCCcynwXDtEJm4ClGH3gmMzlCppy0WkpxlWEI0DNf99JJxUxCvzmRTPziMPBa2wc3O6nYXWDDOOBxyQZ1QGf8UZeXeIgiaKpaWKtfkBDFefx8ZaCiphWpcmWGhZEWWKIwuJwoRiugJhoufm7Q4FiTQQEQXYAI2wWa8xun7OUrre1ywHdF/sTTOmgF5ghRMwoMrjl2Pvn6xdQHwl08G+oVSiKzDJD3EzEg/vAGYnilc4vvbzTaadSxlz+OQrNoP9OLdUjErF6Kq07d1zTKvjf7g8v4lJX8AeeayS3BdQ2lRF+T2YfFQK//JXuRphBReSCbNfHKVuWuj+B6JeAlklqQJz//QHHoXkwOAJAAA=" /></Footer>{/* END_FILESTORAGE_FOLDER_CREATE_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_folders
+      parameters:
+      - name: is_debug_mode
+        in: query
+        description: Whether to include debug fields (such as log file links) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: run_async
+        in: query
+        description: Whether or not third-party updates should be run asynchronously.
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileStorageFolderResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FileStorageFolderEndpointRequest'
+  /filestorage/v1/folders/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `Folder` object with the given `id`.{/* BEGIN_FILESTORAGE_FOLDER_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+2Tb2/aMBDGv8rklygko5RVjTRNUPoHNELXptW6qrJMfCQGxw62AzRVv/uUBAp0vOgqhjZprxKffY9997vnCQXEQCjVI3LRkHHQRioSArJQLClw5KIzySkoZCGSMI/EsHkQTw+QhXSaJFIZoGcMONUXCobIRU4MKoRqKtiQAXXWshwmDISKGCaFdl6yq8MiHVmIMzEG2gwCmQrzBr3yfJWUCa+W2uFMG2ShhGhtIiXTMLqCSQr6LdL56zjEIAzhVUoMcdZkqqrU2RbL66DAwQBtE0PaYCDIC15cGRmTaNdxIuCJXVxvU5g6IByiDAs4aKdRPz44Om5UFyrF7V9wyD/XKqPJQA6OKjgMOCZppecHc8/vzLxReOidHM697KbhZePMG40/VnBIKj2/1+j7d/V+u1nrbzmArz99P75ttVtdrxJkp3VvdDfz/KDW84PxIOvUu+fBrHvxbe5ldwe99k3d808b3XNZ659c6d7Jlew1bRtZaJ0rcu+f1gOL4WnJ+ebBTpwP3KohJQqSsGqSDjgLbF23SUwyKchM24GMnRgoI84lJ2YoVdySc6wnKVGAR56a/TgSdiLCZfOZFC+dRy7ymn7n9nRzFppTwjgZcECuUSn8Ms7IvUdBxDjFw8ILJVgdKJYUqlZpiOW3nJsEVMy0LhphoTIRp4ojC4m8EfkLFAiz0MzXGxmJYjFRj4ttvLmpIJYGcKCAGKCYmFUsn5HNFU6IiVYhRlf/aUJXApplgB7yvUnKFNBLokgMJq/XvX94trbBbCuZDHYNdCG6hBp/FbeReNwD1BeMf4TWfsmcSxly+NBWbAq7wVMq4kIRXxds9m40uihni+Hy31eRJat/2Ja/Sb0vYIfEl4bsCygav3DkPqi/5vzXg3qfS68jouBSMmF2S6zQTXLd/8zM+5k9PP8EY4zDXCELAAA=" /></Footer>{/* END_FILESTORAGE_FOLDER_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_folders
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/FoldersIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Folder'
+  /filestorage/v1/folders/meta/post:
+    get:
+      operationId: meta-post-retrieve
+      summary: Meta Post Retrieve
+      description: Returns metadata for `FileStorageFolder` POSTs.{/* BEGIN_FILESTORAGE_FOLDER_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+2Tb2/aMBDGv8rklygko5RVjTRNUPoHNELXptW6qrJMfCQGxw62AzRVv/uUBAp0vOgqhjZprxKffY9997vnCQXEQCjVI3LRkHHQRioSArJQLClw5KIzySkoZCGSMI/EsHkQTw+QhXSaJFIZoGcMONUXCobIRU4MKoRqKtiQAXXWshwmDISKGCaFdl6yq8MiHVmIMzEG2gwCmQrzBr3yfJWUCa+W2uFMG2ShhGhtIiXTMLqCSQr6LdL56zjEIAzhVUoMcdZkqqrU2RbL66DAwQBtE0PaYCDIC15cGRmTaNdxIuCJXVxvU5g6IByiDAs4aKdRPz44Om5UFyrF7V9wyD/XKqPJQA6OKjgMOCZppecHc8/vzLxReOidHM697KbhZePMG40/VnBIKj2/1+j7d/V+u1nrbzmArz99P75ttVtdrxJkp3VvdDfz/KDW84PxIOvUu+fBrHvxbe5ldwe99k3d808b3XNZ659c6d7Jlew1bRtZaJ0rcu+f1gOL4WnJ+ebBTpwP3KohJQqSsGqSDjgLbF23SUwyKchM24GMnRgoI84lJ2YoVdySc6wnKVGAR56a/TgSdiLCZfOZFC+dRy7ymn7n9nRzFppTwjgZcECuUSn8Ms7IvUdBxDjFw8ILJVgdKJYUqlZpiOW3nJsEVMy0LhphoTIRp4ojC4m8EfkLFAiz0MzXGxmJYjFRj4ttvLmpIJYGcKCAGKCYmFUsn5HNFU6IiVYhRlf/aUJXApplgB7yvUnKFNBLokgMJq/XvX94trbBbCuZDHYNdCG6hBp/FbeReNwD1BeMf4TWfsmcSxly+NBWbAq7wVMq4kIRXxds9m40uihni+Hy31eRJat/2Ja/Sb0vYIfEl4bsCygav3DkPqi/5vzXg3qfS68jouBSMmF2S6zQTXLd/8zM+5k9PP8EY4zDXCELAAA=" /></Footer>{/* END_FILESTORAGE_FOLDER_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_folders
+      parameters:
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaResponse'
+components:
+  schemas:
+    Folder:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The folder's name.
+        folder_url:
+          type:
+          - string
+          - 'null'
+          description: The URL to access the folder.
+        size:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: The folder's size, in bytes.
+        description:
+          type:
+          - string
+          - 'null'
+          description: The folder's description.
+        parent_folder:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The folder that the folder belongs to.
+        drive:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The drive that the folder belongs to.
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Permission'
+        remote_created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's folder was created.
+        remote_updated_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's folder was updated.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/FolderFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The Folder Object
+
+        ### Description
+
+        The `Folder` object is used to represent a collection of files and/or folders in the workspace. Could be within a drive, if it exists.
+
+        ### Usage Example
+
+        Fetch from the `GET /api/filestorage/v1/folders` endpoint and view their folders.'
+      title: Folder
+    FoldersGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - drive
+      - parent_folder
+      - permissions
+      title: FoldersGetParametersExpandSchemaItems
+    PermissionFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: PermissionFieldMappings
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    PermissionRequest:
+      type: object
+      properties:
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        user:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The user that is granted this permission. This will only be populated if the type is `USER`.
+        group:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The group that is granted this permission. This will only be populated if the type is `GROUP`.
+        type:
+          oneOf:
+          - $ref: '#/components/schemas/TypeEnum'
+          - type: 'null'
+          description: Denotes what type of people have access to the file.
+        roles:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RolesEnum'
+          description: 'The permissions that the user or group has for the File or Folder. It is possible for a user or group to have multiple roles, such as viewing & uploading. Possible values include: `READ`, `WRITE`, `OWNER`. In cases where there is no clear mapping, the original value passed through will be returned.'
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The Permission Object
+
+        ### Description
+
+        The Permission object is used to represent a user''s or group''s access to a File or Folder. Permissions are unexpanded by default.
+
+
+        ### Usage Example
+
+        Fetch from the `GET Files` or `GET Folders` endpoint. Permissions are unexpanded by default. Use the query param `expand=permissions` to see more details.'
+      title: PermissionRequest
+    FileStorageFolderEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/FolderRequest'
+      required:
+      - model
+      title: FileStorageFolderEndpointRequest
+    PaginatedFolderList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Folder'
+      title: PaginatedFolderList
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    RolesEnum:
+      type: string
+      enum:
+      - READ
+      - WRITE
+      - OWNER
+      title: RolesEnum
+    FolderFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: FolderFieldMappings
+    FileStorageFolderResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/Folder'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: FileStorageFolderResponse
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    FolderRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          description: The folder's name.
+        folder_url:
+          type:
+          - string
+          - 'null'
+          description: The URL to access the folder.
+        size:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: The folder's size, in bytes.
+        description:
+          type:
+          - string
+          - 'null'
+          description: The folder's description.
+        parent_folder:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The folder that the folder belongs to.
+        drive:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The drive that the folder belongs to.
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/PermissionRequest'
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The Folder Object
+
+        ### Description
+
+        The `Folder` object is used to represent a collection of files and/or folders in the workspace. Could be within a drive, if it exists.
+
+        ### Usage Example
+
+        Fetch from the `GET /api/filestorage/v1/folders` endpoint and view their folders.'
+      title: FolderRequest
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    TypeEnum:
+      type: string
+      enum:
+      - USER
+      - GROUP
+      - COMPANY
+      - ANYONE
+      title: TypeEnum
+    Permission:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        user:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The user that is granted this permission. This will only be populated if the type is `USER`.
+        group:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The group that is granted this permission. This will only be populated if the type is `GROUP`.
+        type:
+          oneOf:
+          - $ref: '#/components/schemas/TypeEnum'
+          - type: 'null'
+          description: Denotes what type of people have access to the file.
+        roles:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RolesEnum'
+          description: 'The permissions that the user or group has for the File or Folder. It is possible for a user or group to have multiple roles, such as viewing & uploading. Possible values include: `READ`, `WRITE`, `OWNER`. In cases where there is no clear mapping, the original value passed through will be returned.'
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/PermissionFieldMappings'
+          - type: 'null'
+      description: '# The Permission Object
+
+        ### Description
+
+        The Permission object is used to represent a user''s or group''s access to a File or Folder. Permissions are unexpanded by default.
+
+
+        ### Usage Example
+
+        Fetch from the `GET Files` or `GET Folders` endpoint. Permissions are unexpanded by default. Use the query param `expand=permissions` to see more details.'
+      title: Permission
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    FoldersIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - drive
+      - parent_folder
+      - permissions
+      title: FoldersIdGetParametersExpandSchemaItems
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

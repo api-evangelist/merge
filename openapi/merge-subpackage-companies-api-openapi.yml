@@ -1,0 +1,263 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_companies API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_companies
+paths:
+  /hris/v1/companies:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Company` objects.{/* BEGIN_HRIS_COMPANY_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+WbbXPaOBCA/wrjjxleSmiuDTM3NwRCgAbHB+Su6U3HI+TFCGTJkeUQ0+l/v/ELJLn2OkNvwcT3KcE2j+zHu9JKNl8MSjS4UkVG05grFhhlw5MOcKNptKXnExEZZYP4zCQeZIfYD6dG2QhC35dKg9NlwJ2gp2BmNI2aB8qFSijYjIFTiw+vMaHBVUQzKYLa9muVWfI9o2xwJpbgtCiVodA/AqUHVkh65D8+xrsDbZQNnwSBnisZuvMR3IcQ/JAZnw8HD4QmvOIQTWrPvl9RKeB72+Izd4CDBqdDNOmABhpfYtbWXGs/aNZqc+B+NWm36sBDDUSNKM0oh6B21jg/fXd+VskoSeu/2S7/tX6yuJ/K6bsT26XcJuHJcEIfzUl/ZS7ct2b77aO5vj0z18u1uVi+ObFdcjKcDM9uJneNm06rfvOdA+zxLx/P/7joXAzME7q+bJiLu5U5ofXhhC6n635jcEVXg97vj+b67nTYuW2Yk8uzwZWs37RHwbA9ksNWtWqUjed30mj+9eX5hixA3gVzNkvkPNvX94gLz6Sk94H4rOKHU85oNWhUiUfWUpBVUKXSq3ngMFKzONEzqbwMaltK+qB0ZJ/2n+BPWxvj+5AoeNrw9um/+tl7O0h2V33hbu4dk2J744ymcWn2Wmb7svMyiloPhHEy5WA0tQrhm9A3mn8ZDgt8TiJbxBbKBng+lxFAEt7gEr7ZocCTGuz4Vr/8ZPtEz582Mcf4HH+4D5kCxyKKeKBBxW19/lr+nvhWxyr9KdVyJhWFkilXOLeg1bHsLdY25coe52Lx571wDYqULBIpyTmSlISZmbCvpStz0oESORcKiJ4DjpoM9tyN3b07/+QuvOrCz8sRsrE2rIkQUOqNcKRlvMrhOqgDdUrtOVGcIYVWBuuNjiTx9uBK96SPJyumneY06u3PU4eoFRNT+Ygjaos7YPahDGwdAI5bZsXE4sTJZdJKXNmXeqAkjqonaCWG5hsze5DWlaFKCAiuUtYRVd2767gCAYrR0rg7sXCkuCnRDmbaz9TY3qDx+KZ/exBFTAT7MRUGWuJ2Rwly44jFsCMytIfc6xHGIUIrKjcaU6zdGxWnl+qxqZwiW4qRezGEMtj3RiWLKC1A4Vx2b5ThXtTSB56g7ZJXu/oKPUKSRMaQlcJei6r/EGZ9EfigmI5KlgKPYUXbJsnYBl+4SUm8Hsk5w+q7t7iDx1xuo19/LPkDOMgBFyTQYtcNg9Dz21yGSO5iHI1xhUvSQRjolVRLpGFhi/sfDAwfQCyQy/sEmW+M7e7hOqSU4HhIUMVZE4//8AhHTcp6PWkVCnYfxtJA6PjZstpZnjdVSL1SgspzhfxAPdLNbMYoA6FxtG1xhRv1bpYJEsPRUm8eeh5Czx6VCLiWLhNIWjJaLpGz65VHgQaFNU1JaYe87m+L7P1FiUWiNvE1wYoTi0Q05R3Rmvh+vNE5ID2ey2AHH9Bym83FFyw93FI7ZRYxQalEXqLyE2aBu7Qu0+jBNWPFK5ssEnFJmUaa0mxxL96Mur7y6l1HHGec7SoMpM8B7elVRrNblEKwmdAcdW1lcSIcEiFnVwp93fW2pSRnBGuqtqHluT6wP1cjeJA81KU0AXCMZczX9uruiPk+Z8nJImaUyqi2Gr1/bEzNglbh45ZVGodJ59klVEus9aWXzBej2QX9KN3um+Neq/t5oRCkTSDGYsosagSytE2kCn2Ly6kbO5C1iWImII2UE8UE6EKLKsVvxmTZhCnNrhd7meH2w1XJwnor9vbDVb4z5gNKGwFxImxttguk9/7eKra++Hdk6BOkDFqchYdPwJFXaGLinl9t/Pdr/Pz1b3n6z1ZkPAAA" /></Footer>{/* END_HRIS_COMPANY_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_companies
+      parameters:
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCompanyList'
+  /hris/v1/companies/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `Company` object with the given `id`.{/* BEGIN_HRIS_COMPANY_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+WbbXPaOBCA/wrjjxleSmiuDTM3NwRCgAbHB+Su6U3HI+TFCGTJkeUQ0+l/v/ELJLn2OkNvwcT3KcE2j+zHu9JKNl8MSjS4UkVG05grFhhlw5MOcKNptKXnExEZZYP4zCQeZIfYD6dG2QhC35dKg9NlwJ2gp2BmNI2aB8qFSijYjIFTiw+vMaHBVUQzKYLa9muVWfI9o2xwJpbgtCiVodA/AqUHVkh65D8+xrsDbZQNnwSBnisZuvMR3IcQ/JAZnw8HD4QmvOIQTWrPvl9RKeB72+Izd4CDBqdDNOmABhpfYtbWXGs/aNZqc+B+NWm36sBDDUSNKM0oh6B21jg/fXd+VskoSeu/2S7/tX6yuJ/K6bsT26XcJuHJcEIfzUl/ZS7ct2b77aO5vj0z18u1uVi+ObFdcjKcDM9uJneNm06rfvOdA+zxLx/P/7joXAzME7q+bJiLu5U5ofXhhC6n635jcEVXg97vj+b67nTYuW2Yk8uzwZWs37RHwbA9ksNWtWqUjed30mj+9eX5hixA3gVzNkvkPNvX94gLz6Sk94H4rOKHU85oNWhUiUfWUpBVUKXSq3ngMFKzONEzqbwMaltK+qB0ZJ/2n+BPWxvj+5AoeNrw9um/+tl7O0h2V33hbu4dk2J744ymcWn2Wmb7svMyiloPhHEy5WA0tQrhm9A3mn8ZDgt8TiJbxBbKBng+lxFAEt7gEr7ZocCTGuz4Vr/8ZPtEz582Mcf4HH+4D5kCxyKKeKBBxW19/lr+nvhWxyr9KdVyJhWFkilXOLeg1bHsLdY25coe52Lx571wDYqULBIpyTmSlISZmbCvpStz0oESORcKiJ4DjpoM9tyN3b07/+QuvOrCz8sRsrE2rIkQUOqNcKRlvMrhOqgDdUrtOVGcIYVWBuuNjiTx9uBK96SPJyumneY06u3PU4eoFRNT+Ygjaos7YPahDGwdAI5bZsXE4sTJZdJKXNmXeqAkjqonaCWG5hsze5DWlaFKCAiuUtYRVd2767gCAYrR0rg7sXCkuCnRDmbaz9TY3qDx+KZ/exBFTAT7MRUGWuJ2Rwly44jFsCMytIfc6xHGIUIrKjcaU6zdGxWnl+qxqZwiW4qRezGEMtj3RiWLKC1A4Vx2b5ThXtTSB56g7ZJXu/oKPUKSRMaQlcJei6r/EGZ9EfigmI5KlgKPYUXbJsnYBl+4SUm8Hsk5w+q7t7iDx1xuo19/LPkDOMgBFyTQYtcNg9Dz21yGSO5iHI1xhUvSQRjolVRLpGFhi/sfDAwfQCyQy/sEmW+M7e7hOqSU4HhIUMVZE4//8AhHTcp6PWkVCnYfxtJA6PjZstpZnjdVSL1SgspzhfxAPdLNbMYoA6FxtG1xhRv1bpYJEsPRUm8eeh5Czx6VCLiWLhNIWjJaLpGz65VHgQaFNU1JaYe87m+L7P1FiUWiNvE1wYoTi0Q05R3Rmvh+vNE5ID2ey2AHH9Bym83FFyw93FI7ZRYxQalEXqLyE2aBu7Qu0+jBNWPFK5ssEnFJmUaa0mxxL96Mur7y6l1HHGec7SoMpM8B7elVRrNblEKwmdAcdW1lcSIcEiFnVwp93fW2pSRnBGuqtqHluT6wP1cjeJA81KU0AXCMZczX9uruiPk+Z8nJImaUyqi2Gr1/bEzNglbh45ZVGodJ59klVEus9aWXzBej2QX9KN3um+Neq/t5oRCkTSDGYsosagSytE2kCn2Ly6kbO5C1iWImII2UE8UE6EKLKsVvxmTZhCnNrhd7meH2w1XJwnor9vbDVb4z5gNKGwFxImxttguk9/7eKra++Hdk6BOkDFqchYdPwJFXaGLinl9t/Pdr/Pz1b3n6z1ZkPAAA" /></Footer>{/* END_HRIS_COMPANY_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_companies
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Company'
+components:
+  schemas:
+    CompanyFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: CompanyFieldMappings
+    PaginatedCompanyList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Company'
+      title: PaginatedCompanyList
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    Company:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        legal_name:
+          type:
+          - string
+          - 'null'
+          description: The company's legal name.
+        display_name:
+          type:
+          - string
+          - 'null'
+          description: The company's display name.
+        eins:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: The company's Employer Identification Numbers.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/CompanyFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The Company Object
+
+        ### Description
+
+        The `Company` object is used to represent a company within the HRIS / Payroll system.
+
+
+        ### Usage Example
+
+        Fetch from the `LIST Companies` endpoint and filter by `ID` to show all companies.'
+      title: Company
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

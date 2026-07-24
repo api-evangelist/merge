@@ -1,0 +1,2190 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_invoices API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_invoices
+paths:
+  /accounting/v1/invoices:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Invoice` objects.{/* BEGIN_ACCOUNTING_INVOICE_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="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" /></Footer>{/* END_ACCOUNTING_INVOICE_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_invoices
+      parameters:
+      - name: company_id
+        in: query
+        description: If provided, will only return invoices for this company.
+        required: false
+        schema:
+          type: string
+      - name: contact_id
+        in: query
+        description: If provided, will only return invoices for this contact.
+        required: false
+        schema:
+          type: string
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/InvoicesGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_fields
+        in: query
+        description: Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: issue_date_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: issue_date_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: number
+        in: query
+        description: If provided, will only return Invoices with this number.
+        required: false
+        schema:
+          type: string
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_fields
+        in: query
+        description: Deprecated. Use show_enum_origins.
+        required: false
+        schema:
+          $ref: '#/components/schemas/InvoicesGetParametersRemoteFields'
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: show_enum_origins
+        in: query
+        description: A comma separated list of enum field names for which you'd like the original values to be returned, instead of Merge's normalized enum values. [Learn more](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+        required: false
+        schema:
+          $ref: '#/components/schemas/InvoicesGetParametersShowEnumOrigins'
+      - name: status
+        in: query
+        description: 'If provided, will only return Invoices with this status.
+
+
+          '
+        required: false
+        schema:
+          $ref: '#/components/schemas/InvoicesGetParametersStatus'
+      - name: type
+        in: query
+        description: 'If provided, will only return Invoices with this type.
+
+
+          '
+        required: false
+        schema:
+          $ref: '#/components/schemas/InvoicesGetParametersType'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedInvoiceList'
+    post:
+      operationId: create
+      summary: Create
+      description: "Creates an `Invoice` object with the given values.\n            Including a `PurchaseOrder` id in the `purchase_orders` property will generate an Accounts Payable Invoice from the specified Purchase Order(s).\n            {/* BEGIN_ACCOUNTING_INVOICE_CREATE_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType=\"POST\" data=\"H4sIAAAAAAAAA9WXbW/aOhTHvwrySwTJbRlURZomCnSluqRbS6f1TpV1cA7BJbFTP1Bg2ne/cggl7dDa20Lv9irx0//YPj8fH38nDAxGUs1JkwBj0grDRUQqJJEhxqRJemIqOUNSIZDyABJ80JFO90mFaJumUhkMjznGoT5ROCJN4ieoIqxawUccQ389yOfCYKTAcCm0fz+4OspGkwqJuZhg2FoOeFpu2b2a1zwqaj/m2pAKSUFrM1bSRuNzvLWon6Hs5hZjgsJAXA3BgF9QqaqlzKY6t4oQYzQYdsBABw0yt9zc4tiYVDd9f4xx6mXWvRCnPgoflOEsRu3Xa4f7B4f1aq6SWf9Ao/j9XvnmdiiHB2UasZiCLfcHbBYMenfBTfQuaL+bBYvLerCYLIKbyV9lGkG5P+jXzwZXtbNOa+9sQwd60fh6+OWoc3QalNmiWwturu6CAdvrD9hkuOjVTj+yu9OTz7NgcbXf71zWgkG3fvpR7p21z3W/fS77Lc8jFVL0Kml++16syMFpxwiqdCTlxG1Qob2XQISFjVl6BFJeTe0w5szTNQ8SWEgBd9pjMvETDDn4mSDNBOnFrQWF9G8ZSe8mdQxne8eluN9+0iTd4KQVtLudh0S0psBjGMZImkZZ/Alp0vxGhhCDyE4Cs0qhYHNnwiINwbharvW6EHOBlBtM3EKFTYaoSIUoTKRBykN3aAwY61q1HVIjDcSkQrIvhcQBeF80MCtUzVMk107q1nKF4SdQkKBBlc2xsKU0dS2P9jmv9FAYbua0OJ/1jL28enkeH5Qoi0E7zSe7XP+obCLgWKEebxGAtd5b+l8mKQjnfiaFAWZewESCiSyikQIPqRSrvkXP5P82dW0hBVOkZyMxIdfspQitF/c2RPQ5U1LLkSl15gISznSp1qiXjqzmArUutVEYlR2OLeByb4yujNFao05XxmhujLZlLBU9nHWPG40DLxXbp2kbDK3hsYqNQSOVKnRu3DE/CtjEXf557sBRP4Oq1SK3TNXK8Ga4AjQXli+38fX0BGi0U6M6CzW/4CJoDXpfum8TY3DGxiAipCrnRbDYaj5FKkfOcc8JQ1m2R63NeCnEpLnLfahBlbyOsifvuF0Q97I4Vuj9aKavZPGz5WySXVWlM+GsbAfKtWx1iSW9HO03jg72doznbwLlnxDo3jrqXUCEpZ6bRzaRLUDmFGmuuEq0plMe6AP4XaPgSzOv7QW9x8Q9k5v8z3tBVr6z2PUVldwOSU4pD1R/fIDa+K573T34nxL1jZHmV278R47lNp/fTu/nx9cu0uX/KzESr3u6b+chtvvk+frHvy9uWlUKFAAA\" /></Footer>{/* END_ACCOUNTING_INVOICE_CREATE_SUPPORTED_FIELDS */}"
+      tags:
+      - subpackage_invoices
+      parameters:
+      - name: is_debug_mode
+        in: query
+        description: Whether to include debug fields (such as log file links) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: run_async
+        in: query
+        description: Whether or not third-party updates should be run asynchronously.
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvoiceEndpointRequest'
+  /accounting/v1/invoices/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns an `Invoice` object with the given `id`.{/* BEGIN_ACCOUNTING_INVOICE_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="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" /></Footer>{/* END_ACCOUNTING_INVOICE_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_invoices
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/InvoicesIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_fields
+        in: query
+        description: Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: remote_fields
+        in: query
+        description: Deprecated. Use show_enum_origins.
+        required: false
+        schema:
+          $ref: '#/components/schemas/InvoicesIdGetParametersRemoteFields'
+      - name: show_enum_origins
+        in: query
+        description: A comma separated list of enum field names for which you'd like the original values to be returned, instead of Merge's normalized enum values. [Learn more](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+        required: false
+        schema:
+          $ref: '#/components/schemas/InvoicesIdGetParametersShowEnumOrigins'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+    patch:
+      operationId: partial-update
+      summary: Partial Update
+      description: Updates an `Invoice` object with the given `id`.{/* BEGIN_ACCOUNTING_INVOICE_EDIT_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="PATCH" data="H4sIAAAAAAAAA9VWbW/aMBD+K5M/IkhGGauKNE20sJVqmK2l06qpsg7nGgyOnfqFUqb+98mBlrB1W7dSqfuWO5+f893z+JxvhIPDVJtr0iLAufbKCZWSKsl0gpK0SE/NtOBIqgRyQSHDjUA22yFVYn2ea+MweSdQJvbQ4AVpkThDk2LNK3EhMInXm2KhHKYGnNDKxnebaxfFblIlUqgpJu3lhj/DLcNrK88Ppo2lsI5USQ7WurHRPh0f46VH+wDkcDaJGSoHspaAg7iEUjNLmPt8oYoEJTpMOuCggw55KHeVcexcbltxPEaZR0X2KMFZjCoG4wSXaONmY29nd69ZW6EU2d+yVL6pVyaXIz3arbCUSwa+0h/yOR32rugkfUUPXs3p4rRJF9MFnUxfVlgKlf6w3xwMzxqDTrs+uCeAnbz+svd5v7N/RCt80W3QydkVHfJ6f8ino0WvcfSeXx0dfprTxdlOv3PaoMNu8+i9rg8Ojm3/4Fj321FEqqTMKml9/VZ2rITzzqAd72s9Df0pLfcySLHUlyUhkIta7kdS8Mg2IshgoRVc2YjrLM4wERCv8djJpQeD7INOdTTJg4KLzgmt7ppPWqRLD9v0oNvZ1EN7BkLCSCJpOePxJ0GT1lcyAgmquAdcZzmo6+JLOeBBXNwbg4oHZ+KRJeBCpLB2bUihkAmHWag9w0yTKlE+G6EpDiMSptVtrMFMO2QiWX/7PKwlDEI668D5gOO0A8kgC4K9MxNh+a3jOkdyHkAuvTCYfAQDGTo0RU3rI0WrLMsruGExLsGGXH8MOb+p3kc6RXfixbIhj6ecorMBjdmC8ChXv+Katoe9z92/Z7o03XI0QgcS/oV9nPMxqBSZ+Vs1PJh+60es4PwhUjDAp6Go1cQXaJ+JQD55wafFLX4xUCHldpSyhq0ttcJOL3Ze7+/Wn0AzZX1sWRXFQ8y8L9RQGhjX4VliDk326IHhYF5yPVudnECKL3qhvUV/tyCRgMhWiLcvyGwmqN2FJxbJ0w+R+5+U8BuxabEc3PgxEnoGyviCRm9HEQFpNS7+rzGhtv94bI6F39F8fnN+8x1j+8/XSwwAAA==" /></Footer>{/* END_ACCOUNTING_INVOICE_EDIT_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_invoices
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: is_debug_mode
+        in: query
+        description: Whether to include debug fields (such as log file links) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: run_async
+        in: query
+        description: Whether or not third-party updates should be run asynchronously.
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedInvoiceEndpointRequest'
+  /accounting/v1/invoices/line-items/remote-field-classes:
+    get:
+      operationId: line-items-remote-field-classes-list
+      summary: Line Items Remote Field Classes List
+      description: Returns a list of `RemoteFieldClass` objects.{/* BEGIN_ACCOUNTING_INVOICE_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="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" /></Footer>{/* END_ACCOUNTING_INVOICE_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_invoices
+      parameters:
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: is_common_model_field
+        in: query
+        description: If provided, will only return remote field classes with this is_common_model_field value
+        required: false
+        schema:
+          type: boolean
+      - name: is_custom
+        in: query
+        description: If provided, will only return remote fields classes with this is_custom value
+        required: false
+        schema:
+          type: boolean
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRemoteFieldClassList'
+  /accounting/v1/invoices/meta/patch/{id}:
+    get:
+      operationId: meta-patch-retrieve
+      summary: Meta Patch Retrieve
+      description: Returns metadata for `Invoice` PATCHs.{/* BEGIN_ACCOUNTING_INVOICE_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="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" /></Footer>{/* END_ACCOUNTING_INVOICE_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_invoices
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaResponse'
+  /accounting/v1/invoices/meta/post:
+    get:
+      operationId: meta-post-retrieve
+      summary: Meta Post Retrieve
+      description: Returns metadata for `Invoice` POSTs.{/* BEGIN_ACCOUNTING_INVOICE_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="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" /></Footer>{/* END_ACCOUNTING_INVOICE_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_invoices
+      parameters:
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaResponse'
+  /accounting/v1/invoices/remote-field-classes:
+    get:
+      operationId: remote-field-classes-list
+      summary: Remote Field Classes List
+      description: Returns a list of `RemoteFieldClass` objects.{/* BEGIN_ACCOUNTING_INVOICE_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="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" /></Footer>{/* END_ACCOUNTING_INVOICE_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_invoices
+      parameters:
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: is_common_model_field
+        in: query
+        description: If provided, will only return remote field classes with this is_common_model_field value
+        required: false
+        schema:
+          type: boolean
+      - name: is_custom
+        in: query
+        description: If provided, will only return remote fields classes with this is_custom value
+        required: false
+        schema:
+          type: boolean
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRemoteFieldClassList'
+  /accounting/v1/invoices/bulk:
+    post:
+      operationId: async-bulk-create
+      summary: Async Bulk Create
+      description: Creates multiple `Invoice` objects with the given values.{/* BEGIN_ACCOUNTING_INVOICE_BULK_CREATE_SUPPORTED_FIELDS */}{/* END_ACCOUNTING_INVOICE_BULK_CREATE_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_invoices
+      parameters:
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '202':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncBulkCreateResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvoiceBulkRequest'
+  /accounting/v1/invoices/bulk/{batch_id}:
+    get:
+      operationId: batch-objects-list
+      summary: Batch Objects List
+      description: Returns the status and results of an `Invoice` bulk create batch.{/* BEGIN_ACCOUNTING_INVOICE_BULK_FETCH_SUPPORTED_FIELDS */}{/* END_ACCOUNTING_INVOICE_BULK_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_invoices
+      parameters:
+      - name: batch_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchObjectsResponse'
+components:
+  schemas:
+    InvoiceStatusEnum:
+      type: string
+      enum:
+      - PAID
+      - DRAFT
+      - SUBMITTED
+      - PARTIALLY_PAID
+      - OPEN
+      - VOID
+      title: InvoiceStatusEnum
+    InvoiceLineItemFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: InvoiceLineItemFieldMappings
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    InvoicesIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - type
+      title: InvoicesIdGetParametersShowEnumOrigins
+    RemoteFieldRequest:
+      type: object
+      properties:
+        remote_field_class:
+          type: string
+          format: uuid
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteFieldRequest
+    PatchedInvoiceEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/InvoiceRequest'
+      required:
+      - model
+      title: PatchedInvoiceEndpointRequest
+    BatchObjectsResponse:
+      type: object
+      properties:
+        batch_id:
+          type: string
+          format: uuid
+          description: The ID of the batch.
+        status:
+          $ref: '#/components/schemas/BatchObjectsResponseStatusEnum'
+          description: 'Possible overall statuses:
+
+
+            * `ENQUEUED` - The request has been received and a task has been enqueued for processing
+
+            * `IN_PROGRESS` - The enqueued task is being processed
+
+            * `PARTIAL_SUCCESS` - The task has been processed, but not all objects were written successfully
+
+            * `SUCCESS` - The task has been processed, and all objects were written successfully
+
+            * `FAILED` - The task has been processed, but ran into an error while processing
+
+            * `RATE_LIMITED` - The request was received but ran into rate limits while processing. The rate limited objects are being retried.'
+        total_count:
+          type: integer
+          description: The total number of objects in the batch.
+        objects:
+          type: array
+          items:
+            $ref: '#/components/schemas/BatchObject'
+      required:
+      - batch_id
+      - status
+      - total_count
+      - objects
+      description: Response serializer for GET bulk/{batch_id} - returns batch status and objects
+      title: BatchObjectsResponse
+    ItemTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemTypeEnum
+    ItemFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemFormatEnum
+    Invoice:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        type:
+          oneOf:
+          - $ref: '#/components/schemas/InvoiceTypeEnum'
+          - type: 'null'
+          description: Whether the invoice is an accounts receivable or accounts payable. If `type` is `ACCOUNTS_PAYABLE`, the invoice is a bill. If `type` is `ACCOUNTS_RECEIVABLE`, it is an invoice.
+        contact:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The invoice's contact.
+        number:
+          type:
+          - string
+          - 'null'
+          description: The invoice's number.
+        issue_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The invoice's issue date.
+        due_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The invoice's due date.
+        paid_on_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The invoice's paid date.
+        memo:
+          type:
+          - string
+          - 'null'
+          description: The invoice's private note.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the invoice belongs to.
+        employee:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The employee this overall transaction relates to.
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: The invoice's currency. The currency code in ISO 4217 format.
+        exchange_rate:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The invoice's exchange rate.
+        payment_term:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The payment term that applies to this transaction.
+        total_discount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The total discounts applied to the total cost.
+        sub_total:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The total amount being paid before taxes.
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/InvoiceStatusEnum'
+          - type: 'null'
+          description: The status of the invoice.
+        total_tax_amount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The total amount being paid in taxes.
+        total_amount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The invoice's total amount.
+        balance:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The invoice's remaining balance.
+        remote_updated_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's invoice entry was updated.
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+        accounting_period:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The accounting period that the Invoice was generated in.
+        purchase_orders:
+          type: array
+          items:
+            type: string
+            format: uuid
+        sales_orders:
+          type: array
+          items:
+            type: string
+            format: uuid
+        payments:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Array of `Payment` object IDs.
+        applied_payments:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: A list of the Payment Applied to Lines common models related to a given Invoice, Credit Note, or Journal Entry.
+        line_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/InvoiceLineItem'
+        applied_credit_notes:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreditNoteApplyLineForInvoice'
+          description: '`CreditNoteApplyLines` applied to the Invoice.'
+        applied_vendor_credits:
+          type: array
+          items:
+            $ref: '#/components/schemas/VendorCreditApplyLineForInvoice'
+          description: '`VendorCreditApplyLines` applied to the Invoice.'
+        inclusive_of_tax:
+          type:
+          - boolean
+          - 'null'
+          description: If the transaction is inclusive or exclusive of tax. `True` if inclusive, `False` if exclusive.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/InvoiceFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteField'
+      description: '# The Invoice Object
+
+        ### Description
+
+        The `Invoice` object represents an itemized record of goods and/or services sold to a customer or bought from a vendor.
+
+
+
+        Represents a Bill when the `Invoice` type is `ACCOUNTS_PAYABLE`. References an Invoice when the `Invoice` type is `ACCOUNTS_RECEIVABLE`.
+
+
+        ### Usage Example
+
+        Fetch from the `LIST Invoices` endpoint and view a company''s invoices.'
+      title: Invoice
+    InvoiceEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/InvoiceRequest'
+      required:
+      - model
+      title: InvoiceEndpointRequest
+    InvoicesGetParametersStatus:
+      type: string
+      enum:
+      - DRAFT
+      - OPEN
+      - PAID
+      - PARTIALLY_PAID
+      - SUBMITTED
+      - VOID
+      title: InvoicesGetParametersStatus
+    InvoicesIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - type
+      title: InvoicesIdGetParametersRemoteFields
+    InvoiceFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: InvoiceFieldMappings
+    InvoiceBatchItemRequest:
+      type: object
+      properties:
+        item_id:
+          type: string
+          description: The third-party item ID for this model in the bulk create request
+        payload:
+          $ref: '#/components/schemas/InvoiceRequest'
+      required:
+      - item_id
+      - payload
+      title: InvoiceBatchItemRequest
+    InvoicesGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - type
+      title: InvoicesGetParametersShowEnumOrigins
+    VendorCreditApplyLineForInvoice:
+      type: object
+      properties:
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        vendor_credit:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        applied_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Date that the vendor credit is applied to the invoice.
+        applied_amount:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The amount of the VendorCredit applied to the invoice.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+      description: '# The VendorCreditApplyLine Object
+
+        ### Description
+
+        The `VendorCreditApplyLine` object is used to represent a applied vendor credit.
+
+
+        ### Usage Example
+
+        Fetch from the `GET VendorCredit` endpoint and view the vendor credit''s applied to lines.'
+      title: VendorCreditApplyLineForInvoice
+    BatchObjectItemResponse:
+      type: object
+      properties:
+        merge_common_model_id:
+          type: string
+          format: uuid
+        error_message:
+          type: string
+      description: Response for individual items within a batch
+      title: BatchObjectItemResponse
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    AsyncBulkCreateResponse:
+      type: object
+      properties:
+        batch_id:
+          type: string
+          format: uuid
+          description: The ID of the batch.
+      required:
+      - batch_id
+      description: Response serializer for POST bulk create - returns only batch_id
+      title: AsyncBulkCreateResponse
+    InvoicesGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - accounting_period
+      - applied_credit_notes
+      - applied_payments
+      - applied_vendor_credits
+      - company
+      - contact
+      - employee
+      - line_items
+      - payment_term
+      - payments
+      - purchase_orders
+      - sales_orders
+      - tracking_categories
+      title: InvoicesGetParametersExpandSchemaItems
+    InvoiceLineItemRequest:
+      type: object
+      properties:
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        description:
+          type:
+          - string
+          - 'null'
+          description: The line item's description.
+        unit_price:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The line item's unit price.
+        quantity:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The line item's quantity.
+        total_amount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The line item's total amount.
+        employee:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The employee this overall transaction relates to.
+        project:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        contact:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The invoice's contact.
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: The line item's currency. The currency code in ISO 4217 format.
+        exchange_rate:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The line item's exchange rate.
+        item:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        tax_rate:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The tax rate that applies to this line item.
+        tracking_category:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: The invoice line item's associated tracking categories.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the invoice belongs to.
+        is_billable:
+          type:
+          - boolean
+          - 'null'
+          description: Indicates if the line item can be charged to the client/customer.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldRequest'
+      description: '# The InvoiceLineItem Object
+
+        ### Description
+
+        The `InvoiceLineItem` object represents an itemized record of goods and/or services sold to a customer.
+
+
+        ### Usage Example
+
+        Fetch from the `GET Invoice` endpoint and view the invoice''s line items.'
+      title: InvoiceLineItemRequest
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    BatchObject:
+      type: object
+      properties:
+        item_id:
+          type: string
+        status:
+          $ref: '#/components/schemas/BatchObjectStatusEnum'
+          description: 'Possible per-object statuses:
+
+
+            * `PENDING` - This object has not been processed yet
+
+            * `SUCCESS` - This object was successfully POSTed
+
+            * `FAILURE` - This object was not successfully POSTed'
+        response:
+          $ref: '#/components/schemas/BatchObjectItemResponse'
+      required:
+      - item_id
+      - status
+      description: Individual batch object with status
+      title: BatchObject
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    PaginatedRemoteFieldClassList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldClass'
+      title: PaginatedRemoteFieldClassList
+    InvoicesGetParametersType:
+      type: string
+      enum:
+      - ACCOUNTS_PAYABLE
+      - ACCOUNTS_RECEIVABLE
+      title: InvoicesGetParametersType
+    BatchObjectStatusEnum:
+      type: string
+      enum:
+      - PENDING
+      - SUCCESS
+      - FAILURE
+      title: BatchObjectStatusEnum
+    PaginatedInvoiceList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Invoice'
+      title: PaginatedInvoiceList
+    ItemSchema:
+      type: object
+      properties:
+        item_type:
+          $ref: '#/components/schemas/ItemTypeEnum'
+        item_format:
+          $ref: '#/components/schemas/ItemFormatEnum'
+        item_choices:
+          type: array
+          items:
+            type: string
+      title: ItemSchema
+    InvoiceLineItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        description:
+          type:
+          - string
+          - 'null'
+          description: The line item's description.
+        unit_price:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The line item's unit price.
+        quantity:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The line item's quantity.
+        total_amount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The line item's total amount.
+        employee:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The employee this overall transaction relates to.
+        project:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        contact:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The invoice's contact.
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: The line item's currency. The currency code in ISO 4217 format.
+        exchange_rate:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The line item's exchange rate.
+        item:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        tax_rate:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The tax rate that applies to this line item.
+        tracking_category:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: The invoice line item's associated tracking categories.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the invoice belongs to.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        is_billable:
+          type:
+          - boolean
+          - 'null'
+          description: Indicates if the line item can be charged to the client/customer.
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/InvoiceLineItemFieldMappings'
+          - type: 'null'
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteField'
+      description: '# The InvoiceLineItem Object
+
+        ### Description
+
+        The `InvoiceLineItem` object represents an itemized record of goods and/or services sold to a customer.
+
+
+        ### Usage Example
+
+        Fetch from the `GET Invoice` endpoint and view the invoice''s line items.'
+      title: InvoiceLineItem
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    RemoteField:
+      type: object
+      properties:
+        remote_field_class:
+          $ref: '#/components/schemas/RemoteFieldClass'
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteField
+    RemoteFieldClass:
+      type: object
+      properties:
+        id:
+          type: string
+        display_name:
+          type: string
+        remote_key_name:
+          type: string
+        description:
+          type: string
+        is_custom:
+          type: boolean
+        is_common_model_field:
+          type: boolean
+        is_required:
+          type: boolean
+        field_type:
+          $ref: '#/components/schemas/FieldTypeEnum'
+        field_format:
+          $ref: '#/components/schemas/FieldFormatEnum'
+        field_choices:
+          type: array
+          items:
+            type: string
+        item_schema:
+          $ref: '#/components/schemas/ItemSchema'
+      title: RemoteFieldClass
+    CreditNoteApplyLineForInvoice:
+      type: object
+      properties:
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        credit_note:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        applied_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Date that the credit note is applied to the invoice.
+        applied_amount:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The amount of the Credit Note applied to the invoice.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+      description: '# The CreditNoteApplyLine Object
+
+        ### Description
+
+        The `CreditNoteApplyLine` is attached to the CreditNote model.
+
+
+        ### Usage Example
+
+        Fetch from the `GET CreditNote` endpoint and view the invoice''s applied to lines.'
+      title: CreditNoteApplyLineForInvoice
+    BatchObjectsResponseStatusEnum:
+      type: string
+      enum:
+      - ENQUEUED
+      - IN_PROGRESS
+      - PARTIAL_SUCCESS
+      - SUCCESS
+      - FAILED
+      - RATE_LIMITED
+      title: BatchObjectsResponseStatusEnum
+    FieldFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldFormatEnum
+    InvoiceTypeEnum:
+      type: string
+      enum:
+      - ACCOUNTS_RECEIVABLE
+      - ACCOUNTS_PAYABLE
+      title: InvoiceTypeEnum
+    InvoiceBulkRequest:
+      type: object
+      properties:
+        batch_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/InvoiceBatchItemRequest'
+      required:
+      - batch_items
+      title: InvoiceBulkRequest
+    InvoiceResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/Invoice'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: InvoiceResponse
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    TransactionCurrencyEnum:
+      type: string
+      enum:
+      - XUA
+      - AFN
+      - AFA
+      - ALL
+      - ALK
+      - DZD
+      - ADP
+      - AOA
+      - AOK
+      - AON
+      - AOR
+      - ARA
+      - ARS
+      - ARM
+      - ARP
+      - ARL
+      - AMD
+      - AWG
+      - AUD
+      - ATS
+      - AZN
+      - AZM
+      - BSD
+      - BHD
+      - BDT
+      - BBD
+      - BYN
+      - BYB
+      - BYR
+      - BEF
+      - BEC
+      - BEL
+      - BZD
+      - BMD
+      - BTN
+      - BOB
+      - BOL
+      - BOV
+      - BOP
+      - BAM
+      - BAD
+      - BAN
+      - BWP
+      - BRC
+      - BRZ
+      - BRE
+      - BRR
+      - BRN
+      - BRB
+      - BRL
+      - GBP
+      - BND
+      - BGL
+      - BGN
+      - BGO
+      - BGM
+      - BUK
+      - BIF
+      - XPF
+      - KHR
+      - CAD
+      - CVE
+      - KYD
+      - XAF
+      - CLE
+      - CLP
+      - CLF
+      - CNX
+      - CNY
+      - CNH
+      - COP
+      - COU
+      - KMF
+      - CDF
+      - CRC
+      - HRD
+      - HRK
+      - CUC
+      - CUP
+      - CYP
+      - CZK
+      - CSK
+      - DKK
+      - DJF
+      - DOP
+      - NLG
+      - XCD
+      - DDM
+      - ECS
+      - ECV
+      - EGP
+      - GQE
+      - ERN
+      - EEK
+      - ETB
+      - EUR
+      - XBA
+      - XEU
+      - XBB
+      - XBC
+      - XBD
+      - FKP
+      - FJD
+      - FIM
+      - FRF
+      - XFO
+      - XFU
+      - GMD
+      - GEK
+      - GEL
+      - DEM
+      - GHS
+      - GHC
+      - GIP
+      - XAU
+      - GRD
+      - GTQ
+      - GWP
+      - GNF
+      - GNS
+      - GYD
+      - HTG
+      - HNL
+      - HKD
+      - HUF
+      - IMP
+      - ISK
+      - ISJ
+      - INR
+      - IDR
+      - IRR
+      - IQD
+      - IEP
+      - ILS
+      - ILP
+      - ILR
+      - ITL
+      - JMD
+      - JPY
+      - JOD
+      - KZT
+      - KES
+      - KWD
+      - KGS
+      - LAK
+      - LVL
+      - LVR
+      - LBP
+      - LSL
+      - LRD
+      - LYD
+      - LTL
+      - LTT
+      - LUL
+      - LUC
+      - LUF
+      - MOP
+      - MKD
+      - MKN
+      - MGA
+      - MGF
+      - MWK
+      - MYR
+      - MVR
+      - MVP
+      - MLF
+      - MTL
+      - MTP
+      - MRU
+      - MRO
+      - MUR
+      - MXV
+      - MXN
+      - MXP
+      - MDC
+      - MDL
+      - MCF
+      - MNT
+      - MAD
+      - MAF
+      - MZE
+      - MZN
+      - MZM
+      - MMK
+      - NAD
+      - NPR
+      - ANG
+      - TWD
+      - NZD
+      - NIO
+      - NIC
+      - NGN
+      - KPW
+      - NOK
+      - OMR
+      - PKR
+      - XPD
+      - PAB
+      - PGK
+      - PYG
+      - PEI
+      - PEN
+      - PES
+      - PHP
+      - XPT
+      - PLN
+      - PLZ
+      - PTE
+      - GWE
+      - QAR
+      - XRE
+      - RHD
+      - RON
+      - ROL
+      - RUB
+      - RUR
+      - RWF
+      - SVC
+      - WST
+      - SAR
+      - RSD
+      - CSD
+      - SCR
+      - SLL
+      - XAG
+      - SGD
+      - SKK
+      - SIT
+      - SBD
+      - SOS
+      - ZAR
+      - ZAL
+      - KRH
+      - KRW
+      - KRO
+      - SSP
+      - SUR
+      - ESP
+      - ESA
+      - ESB
+      - XDR
+      - LKR
+      - SHP
+      - XSU
+      - SDD
+      - SDG
+      - SDP
+      - SRD
+      - SRG
+      - SZL
+      - SEK
+      - CHF
+      - SYP
+      - STN
+      - STD
+      - TVD
+      - TJR
+      - TJS
+      - TZS
+      - XTS
+      - THB
+      - XXX
+      - TPE
+      - TOP
+      - TTD
+      - TND
+      - TRY
+      - TRL
+      - TMT
+      - TMM
+      - USD
+      - USN
+      - USS
+      - UGX
+      - UGS
+      - UAH
+      - UAK
+      - AED
+      - UYW
+      - UYU
+      - UYP
+      - UYI
+      - UZS
+      - VUV
+      - VES
+      - VEB
+      - VEF
+      - VND
+      - VNN
+      - CHE
+      - CHW
+      - XOF
+      - YDD
+      - YER
+      - YUN
+      - YUD
+      - YUM
+      - YUR
+      - ZWN
+      - ZRN
+      - ZRZ
+      - ZMW
+      - ZMK
+      - ZWD
+      - ZWR
+      - ZWL
+      description: The currency code in ISO 4217 format.
+      title: TransactionCurrencyEnum
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    InvoiceRequest:
+      type: object
+      properties:
+        type:
+          oneOf:
+          - $ref: '#/components/schemas/InvoiceTypeEnum'
+          - type: 'null'
+          description: Whether the invoice is an accounts receivable or accounts payable. If `type` is `ACCOUNTS_PAYABLE`, the invoice is a bill. If `type` is `ACCOUNTS_RECEIVABLE`, it is an invoice.
+        contact:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The invoice's contact.
+        number:
+          type:
+          - string
+          - 'null'
+          description: The invoice's number.
+        issue_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The invoice's issue date.
+        due_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The invoice's due date.
+        paid_on_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The invoice's paid date.
+        employee:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The employee this overall transaction relates to.
+        memo:
+          type:
+          - string
+          - 'null'
+          description: The invoice's private note.
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/InvoiceStatusEnum'
+          - type: 'null'
+          description: The status of the invoice.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the invoice belongs to.
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: The invoice's currency. The currency code in ISO 4217 format.
+        exchange_rate:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The invoice's exchange rate.
+        total_discount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The total discounts applied to the total cost.
+        sub_total:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The total amount being paid before taxes.
+        payment_term:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The payment term that applies to this transaction.
+        total_tax_amount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The total amount being paid in taxes.
+        inclusive_of_tax:
+          type:
+          - boolean
+          - 'null'
+          description: If the transaction is inclusive or exclusive of tax. `True` if inclusive, `False` if exclusive.
+        total_amount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The invoice's total amount.
+        balance:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The invoice's remaining balance.
+        payments:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Array of `Payment` object IDs.
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+        accounting_period:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The accounting period that the Invoice was generated in.
+        line_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/InvoiceLineItemRequest'
+        purchase_orders:
+          type: array
+          items:
+            type: string
+            format: uuid
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldRequest'
+      description: '# The Invoice Object
+
+        ### Description
+
+        The `Invoice` object represents an itemized record of goods and/or services sold to a customer or bought from a vendor.
+
+
+
+        Represents a Bill when the `Invoice` type is `ACCOUNTS_PAYABLE`. References an Invoice when the `Invoice` type is `ACCOUNTS_RECEIVABLE`.
+
+
+        ### Usage Example
+
+        Fetch from the `LIST Invoices` endpoint and view a company''s invoices.'
+      title: InvoiceRequest
+    FieldTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldTypeEnum
+    InvoicesIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - accounting_period
+      - applied_credit_notes
+      - applied_payments
+      - applied_vendor_credits
+      - company
+      - contact
+      - employee
+      - line_items
+      - payment_term
+      - payments
+      - purchase_orders
+      - sales_orders
+      - tracking_categories
+      title: InvoicesIdGetParametersExpandSchemaItems
+    InvoicesGetParametersRemoteFields:
+      type: string
+      enum:
+      - type
+      title: InvoicesGetParametersRemoteFields
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

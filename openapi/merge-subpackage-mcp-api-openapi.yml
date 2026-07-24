@@ -1,0 +1,110 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_mcp API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_mcp
+paths:
+  /api/v1/tool-packs/{tool_pack_id}/registered-users/{registered_user_id}/mcp/:
+    post:
+      operationId: endpoint-post
+      summary: MCP endpoint - list tools & call tool
+      description: Endpoint to list tools and call a tool. Use the `tools/list` method to retrieve available tools, and the `tools/call` method to execute a specific tool. Implements the JSON-RPC 2.0 MCP specification.
+      tags:
+      - subpackage_mcp
+      parameters:
+      - name: registered_user_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: tool_pack_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: authenticated_only
+        in: query
+        description: When true, only return tools for connectors the registered user has already authenticated, and hide per-connector `authenticate_*` tools.
+        required: false
+        schema:
+          type: boolean
+          default: false
+      - name: format
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/ApiV1ToolPacksToolPackIdRegisteredUsersRegisteredUserIdMcpPostParametersFormat'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: JSON-RPC 2.0 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/mcp_endpointPost_Response_200'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                jsonrpc:
+                  type: string
+                id:
+                  type: integer
+                method:
+                  $ref: '#/components/schemas/ApiV1ToolPacksToolPackIdRegisteredUsersRegisteredUserIdMcpPostRequestBodyContentApplicationJsonSchemaMethod'
+                params:
+                  $ref: '#/components/schemas/ApiV1ToolPacksToolPackIdRegisteredUsersRegisteredUserIdMcpPostRequestBodyContentApplicationJsonSchemaParams'
+              required:
+              - jsonrpc
+              - method
+components:
+  schemas:
+    ApiV1ToolPacksToolPackIdRegisteredUsersRegisteredUserIdMcpPostParametersFormat:
+      type: string
+      enum:
+      - event-stream
+      - json
+      title: ApiV1ToolPacksToolPackIdRegisteredUsersRegisteredUserIdMcpPostParametersFormat
+    mcp_endpointPost_Response_200:
+      type: object
+      properties:
+        jsonrpc:
+          type: string
+        id:
+          type: integer
+        result:
+          $ref: '#/components/schemas/ApiV1ToolPacksToolPackIdRegisteredUsersRegisteredUserIdMcpPostResponsesContentApplicationJsonSchemaResult'
+      title: mcp_endpointPost_Response_200
+    ApiV1ToolPacksToolPackIdRegisteredUsersRegisteredUserIdMcpPostRequestBodyContentApplicationJsonSchemaParams:
+      type: object
+      properties: {}
+      title: ApiV1ToolPacksToolPackIdRegisteredUsersRegisteredUserIdMcpPostRequestBodyContentApplicationJsonSchemaParams
+    ApiV1ToolPacksToolPackIdRegisteredUsersRegisteredUserIdMcpPostResponsesContentApplicationJsonSchemaResult:
+      type: object
+      properties: {}
+      title: ApiV1ToolPacksToolPackIdRegisteredUsersRegisteredUserIdMcpPostResponsesContentApplicationJsonSchemaResult
+    ApiV1ToolPacksToolPackIdRegisteredUsersRegisteredUserIdMcpPostRequestBodyContentApplicationJsonSchemaMethod:
+      type: string
+      enum:
+      - initialize
+      - tools/list
+      - tools/call
+      title: ApiV1ToolPacksToolPackIdRegisteredUsersRegisteredUserIdMcpPostRequestBodyContentApplicationJsonSchemaMethod
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

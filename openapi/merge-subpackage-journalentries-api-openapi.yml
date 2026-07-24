@@ -1,0 +1,1487 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_journalEntries API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_journalEntries
+paths:
+  /accounting/v1/journal-entries:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `JournalEntry` objects.{/* BEGIN_ACCOUNTING_JOURNALENTRY_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+1Za1MiORT9K1Q+WkCvMmhJ1dYWLx3doXUUZ3WnrFRMX5pAd9LmgcDU/PetNI02ig+wEXZ2v0Ee9ya55+Se3P6BKNHgCzlCFUQoFYZrxn2UR6HwIEAVdCyM5CRoci1HKI9IxFwSwsxoPNhBeaRMFAmpwTtgEHjqs4QOqiAnBOlDwXDWYeA5D5McxjX4kmgmuHLuJxc68WyURwHjffCqkwmvm5sMLyQtj/4qJ2BKozyKiFK6K4Xxu2dwa0C9wbJdWwAhcE2Cgkc0cVJWCnJiZl6b3YUHAWjwGkSTBmigdruJx67Wkao4TheCqBh7L3owcIA7RGpGA1BOubS/s7dfLiRWYu9/YD/4fXurd3sjbva2sE8DTMxWq02Hbvvozu35n9z6p6E7vii74/7Y7fV/28I+2Wq1W+WT9lXppFHdPpkzAJ/vXu5/qzVqx+4WHTdLbu/qzm3T7Vab9m/GR6XjQ3p3/Pnr0B1f7bQaFyW33SwfH4rtk/qZatXPRKtaLKI8SkcVVb7/SDckwDmQAFUfuI1HqvcoJD6kjmUSDxKxQmRuAkaLqlQkIRkLTu5UkYrQCcFjxDkNiO4IGXYkALFmsbo1RALun+lR43CnGMV4jo+QCX4fBVRBTfdz1a03G7PAqA4IC8hNAKiipYEnyEaV71NWfGEciglUUH6m1QNFJYtiT7M9vclvDAml0n0cNCbhHHMSQqEBWwA834Mjorvzu5k3oRRYUIYQCpRHszbn2EnPTX6byCMaPEzsArUkXJH4NO08QNd23K1hErxTIkkIGqQ9r+uf+WeQoLo1IfoqGyg82MPnEwx8Eb4o9qJ1AGD1YZ6GM+miEh5Cs0BsFwxai1EplOjoXGPEScioypV2y7maUXY5Kle3GyZBNhG9d4anznBpt4ynznDiDNdFICTeHzYPdnf31sR4KsKI8NG/4B5It2tJaN8m8UQIsBhSp2RkE54dcaQhLJIoCpjF1nRNjwcwPhCMwpyeaPIf5dHDAU23zk14A/LpzRQJFQsLpYk2ahOuKhf0uWEasoG1C1pZa0mqegGwbrV99K25GrhyTeiTViMlcPp2FEMYBWIEsAC4Y2mJjXmCxWdRH0nRA7p6LpAhlhYcK6EIleAxjbmIHbydQI+P8nmCpSR5BJIJu7/pspJRaoaHqWjDkHYJ92F6AIzTwCg2ACw6WJPhG1j7zjwUk3TOQb+XuieS0AByB0YxwXP1QBgv1zw7zYbJE+N4YhzHxnHz7BQXEgWyrly0MI0fhX8zEtXCHJsOiHGyXJZ63DO7kRd6p5t5Zki8oXkMfYGEy+bJpSj4cr7MI8PZrbH7AK7tI1kuSsSvhtF+LM9zDVB9LaJsX4AP9jHUevzC3K1NCc5LrcspwcWT5QdJxGVg++4MsQppl4LlCbcrzQaVD2YLSUHiorOzW9vb3iC19x+Rddnot1dyywfIuzlSbvncsZFcPCc+pEoJsVarpsvSGRDT+sC1enVaI/pzcDkonffWlCvWXw3MQra/P+hH9n6K74KsQpxYnIZ5MGCu2iNrun3nlYZW+wJfVtFnfI1/8CN7RZf0q8+DeJvvL3Bt1m38l5B9j4yyVemJ0Y2S5r/Ic/kNon3zELqCis8lSJENaK2lRL7//x3xV7zOP54G7wX336Irchl+NLX2nn4z3aRPaFmWUzasXskW+my2KZXCLATH9c9/AAyuAId8JAAA" /></Footer>{/* END_ACCOUNTING_JOURNALENTRY_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_journalEntries
+      parameters:
+      - name: company_id
+        in: query
+        description: If provided, will only return journal entries for this company.
+        required: false
+        schema:
+          type: string
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/JournalEntriesGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_fields
+        in: query
+        description: Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: transaction_date_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: transaction_date_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedJournalEntryList'
+    post:
+      operationId: create
+      summary: Create
+      description: Creates a `JournalEntry` object with the given values.{/* BEGIN_ACCOUNTING_JOURNALENTRY_CREATE_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST" data="H4sIAAAAAAAAA81Xa28aORT9K8gfEcw0oRAFaVXxakMkJm1CokZVZF08l8HgsSd+AKHKf1/NIwHaZDdhYdVP2Bf7XNvnHF/PT8LAYqT0A2kSYEw5abmMSIXEKkRBmuRcOS1B9KTVD6RCIOEBxLg1ms6PSYUYlyRKWww/cxShOdM4Jk3ix6gjrDrJxxxDfz3J59JipMFyJY3/PLk6zmaTChFczjBs5RP+HS4fXi0iv3SNL7ixpEISMMZOtHLR5BLvHZo3IKdrExijtCCqIVjwN1CqOod5KZbuIkSBFsMuWOiiRZZut8g4sTYxTd+foEi8LLsX4txH6YO2nAk0fr12enxyWq8WKFn2TzQSfx2Vp/cjNTop04gJCq48GLJlMOwvgmn0Meh8XAar63qwmq2C6exDmUZQHgwH9Yvhbe2i2zq6eGEAvWp8P71pd9vnQZmterVgersIhuxoMGSz0apfO//CFudn35bB6vZ40L2uBcNe/fyLOrroXJpB51INWp5HKmSTVdL88XMzUAhnwJlWRo1tqfsgIebMlGqNeqntDJdoTKmD0moQ22D9GCLcOLScLUh4NXEjwZlnah7EsFISFsZjKvZjDDn4z8noUzJaa9TpUzJaJKMdJZSmp8ve50bjxEsyC2SnzpV8Jo40SS84awWdXndbS605cAEjgaRptcPfzECaPwhTcQIy9dA0txSVLh6hzqWOqVhijFUKrExmK2PBujSuMVYWKdMIFkMKdh3j4brtknD9v9UgDWTLpmmY3KXj7h3XGH4FDTFa1NnCnrJnv16Bldtwq0eZALOxnNeH3D1WXiI+QHvluMX9MBugNSkaNfcONP4DZ0Fr2L/p/RfGmNMaJUubuGQTkBFSDcVOmHCGz5GqMbWwfAO/O9LJZqkoivuaZ4C/kVwhTvJ7lwKhtOlVpl8nfr2/g1P/zXE2ays1M6UumplVyX5E8FWAHSsdr/Eptqfy2i0O4+HXdfAq6f+neYuq9dyXaCnEW6F9kFwhCxxNlJrRBB6EgtDbfCW0wvDSbEUu0XppBewt7UYzk8Z+oIYPyb6gbkC43bB6IbdXaeWXbDeAIY+xk8tk5/kDFWYPmN0AlrKbq3mnuf3uG+x/IVMd7sf9a9hqXgTo9fi40T45OkQx2MH6b7zv/3C3v8LpFURY6ksLjNn90Jki0gKRXuWEzuc8MCdw0Or+h73HNpS2cag0SQeZF4Pe0w5sfg+++0W3LdR3S+E7arUfCaRIhZcPUsD5+19r72E//T7b7tEE7OTwfr97vHv8G+e3lJnMDwAA" /></Footer>{/* END_ACCOUNTING_JOURNALENTRY_CREATE_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_journalEntries
+      parameters:
+      - name: is_debug_mode
+        in: query
+        description: Whether to include debug fields (such as log file links) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: run_async
+        in: query
+        description: Whether or not third-party updates should be run asynchronously.
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JournalEntryResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JournalEntryEndpointRequest'
+  /accounting/v1/journal-entries/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `JournalEntry` object with the given `id`.{/* BEGIN_ACCOUNTING_JOURNALENTRY_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+1Za1MiORT9K1Q+WkCvMmhJ1dYWLx3doXUUZ3WnrFRMX5pAd9LmgcDU/PetNI02ig+wEXZ2v0Ee9ya55+Se3P6BKNHgCzlCFUQoFYZrxn2UR6HwIEAVdCyM5CRoci1HKI9IxFwSwsxoPNhBeaRMFAmpwTtgEHjqs4QOqiAnBOlDwXDWYeA5D5McxjX4kmgmuHLuJxc68WyURwHjffCqkwmvm5sMLyQtj/4qJ2BKozyKiFK6K4Xxu2dwa0C9wbJdWwAhcE2Cgkc0cVJWCnJiZl6b3YUHAWjwGkSTBmigdruJx67Wkao4TheCqBh7L3owcIA7RGpGA1BOubS/s7dfLiRWYu9/YD/4fXurd3sjbva2sE8DTMxWq02Hbvvozu35n9z6p6E7vii74/7Y7fV/28I+2Wq1W+WT9lXppFHdPpkzAJ/vXu5/qzVqx+4WHTdLbu/qzm3T7Vab9m/GR6XjQ3p3/Pnr0B1f7bQaFyW33SwfH4rtk/qZatXPRKtaLKI8SkcVVb7/SDckwDmQAFUfuI1HqvcoJD6kjmUSDxKxQmRuAkaLqlQkIRkLTu5UkYrQCcFjxDkNiO4IGXYkALFmsbo1RALun+lR43CnGMV4jo+QCX4fBVRBTfdz1a03G7PAqA4IC8hNAKiipYEnyEaV71NWfGEciglUUH6m1QNFJYtiT7M9vclvDAml0n0cNCbhHHMSQqEBWwA834Mjorvzu5k3oRRYUIYQCpRHszbn2EnPTX6byCMaPEzsArUkXJH4NO08QNd23K1hErxTIkkIGqQ9r+uf+WeQoLo1IfoqGyg82MPnEwx8Eb4o9qJ1AGD1YZ6GM+miEh5Cs0BsFwxai1EplOjoXGPEScioypV2y7maUXY5Kle3GyZBNhG9d4anznBpt4ynznDiDNdFICTeHzYPdnf31sR4KsKI8NG/4B5It2tJaN8m8UQIsBhSp2RkE54dcaQhLJIoCpjF1nRNjwcwPhCMwpyeaPIf5dHDAU23zk14A/LpzRQJFQsLpYk2ahOuKhf0uWEasoG1C1pZa0mqegGwbrV99K25GrhyTeiTViMlcPp2FEMYBWIEsAC4Y2mJjXmCxWdRH0nRA7p6LpAhlhYcK6EIleAxjbmIHbydQI+P8nmCpSR5BJIJu7/pspJRaoaHqWjDkHYJ92F6AIzTwCg2ACw6WJPhG1j7zjwUk3TOQb+XuieS0AByB0YxwXP1QBgv1zw7zYbJE+N4YhzHxnHz7BQXEgWyrly0MI0fhX8zEtXCHJsOiHGyXJZ63DO7kRd6p5t5Zki8oXkMfYGEy+bJpSj4cr7MI8PZrbH7AK7tI1kuSsSvhtF+LM9zDVB9LaJsX4AP9jHUevzC3K1NCc5LrcspwcWT5QdJxGVg++4MsQppl4LlCbcrzQaVD2YLSUHiorOzW9vb3iC19x+Rddnot1dyywfIuzlSbvncsZFcPCc+pEoJsVarpsvSGRDT+sC1enVaI/pzcDkonffWlCvWXw3MQra/P+hH9n6K74KsQpxYnIZ5MGCu2iNrun3nlYZW+wJfVtFnfI1/8CN7RZf0q8+DeJvvL3Bt1m38l5B9j4yyVemJ0Y2S5r/Ic/kNon3zELqCis8lSJENaK2lRL7//x3xV7zOP54G7wX336Irchl+NLX2nn4z3aRPaFmWUzasXskW+my2KZXCLATH9c9/AAyuAId8JAAA" /></Footer>{/* END_ACCOUNTING_JOURNALENTRY_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_journalEntries
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/JournalEntriesIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_fields
+        in: query
+        description: Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JournalEntry'
+  /accounting/v1/journal-entries/lines/remote-field-classes:
+    get:
+      operationId: lines-remote-field-classes-list
+      summary: Lines Remote Field Classes List
+      description: Returns a list of `RemoteFieldClass` objects.{/* BEGIN_ACCOUNTING_JOURNALENTRY_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+1Za1MiORT9K1Q+WkCvMmhJ1dYWLx3doXUUZ3WnrFRMX5pAd9LmgcDU/PetNI02ig+wEXZ2v0Ee9ya55+Se3P6BKNHgCzlCFUQoFYZrxn2UR6HwIEAVdCyM5CRoci1HKI9IxFwSwsxoPNhBeaRMFAmpwTtgEHjqs4QOqiAnBOlDwXDWYeA5D5McxjX4kmgmuHLuJxc68WyURwHjffCqkwmvm5sMLyQtj/4qJ2BKozyKiFK6K4Xxu2dwa0C9wbJdWwAhcE2Cgkc0cVJWCnJiZl6b3YUHAWjwGkSTBmigdruJx67Wkao4TheCqBh7L3owcIA7RGpGA1BOubS/s7dfLiRWYu9/YD/4fXurd3sjbva2sE8DTMxWq02Hbvvozu35n9z6p6E7vii74/7Y7fV/28I+2Wq1W+WT9lXppFHdPpkzAJ/vXu5/qzVqx+4WHTdLbu/qzm3T7Vab9m/GR6XjQ3p3/Pnr0B1f7bQaFyW33SwfH4rtk/qZatXPRKtaLKI8SkcVVb7/SDckwDmQAFUfuI1HqvcoJD6kjmUSDxKxQmRuAkaLqlQkIRkLTu5UkYrQCcFjxDkNiO4IGXYkALFmsbo1RALun+lR43CnGMV4jo+QCX4fBVRBTfdz1a03G7PAqA4IC8hNAKiipYEnyEaV71NWfGEciglUUH6m1QNFJYtiT7M9vclvDAml0n0cNCbhHHMSQqEBWwA834Mjorvzu5k3oRRYUIYQCpRHszbn2EnPTX6byCMaPEzsArUkXJH4NO08QNd23K1hErxTIkkIGqQ9r+uf+WeQoLo1IfoqGyg82MPnEwx8Eb4o9qJ1AGD1YZ6GM+miEh5Cs0BsFwxai1EplOjoXGPEScioypV2y7maUXY5Kle3GyZBNhG9d4anznBpt4ynznDiDNdFICTeHzYPdnf31sR4KsKI8NG/4B5It2tJaN8m8UQIsBhSp2RkE54dcaQhLJIoCpjF1nRNjwcwPhCMwpyeaPIf5dHDAU23zk14A/LpzRQJFQsLpYk2ahOuKhf0uWEasoG1C1pZa0mqegGwbrV99K25GrhyTeiTViMlcPp2FEMYBWIEsAC4Y2mJjXmCxWdRH0nRA7p6LpAhlhYcK6EIleAxjbmIHbydQI+P8nmCpSR5BJIJu7/pspJRaoaHqWjDkHYJ92F6AIzTwCg2ACw6WJPhG1j7zjwUk3TOQb+XuieS0AByB0YxwXP1QBgv1zw7zYbJE+N4YhzHxnHz7BQXEgWyrly0MI0fhX8zEtXCHJsOiHGyXJZ63DO7kRd6p5t5Zki8oXkMfYGEy+bJpSj4cr7MI8PZrbH7AK7tI1kuSsSvhtF+LM9zDVB9LaJsX4AP9jHUevzC3K1NCc5LrcspwcWT5QdJxGVg++4MsQppl4LlCbcrzQaVD2YLSUHiorOzW9vb3iC19x+Rddnot1dyywfIuzlSbvncsZFcPCc+pEoJsVarpsvSGRDT+sC1enVaI/pzcDkonffWlCvWXw3MQra/P+hH9n6K74KsQpxYnIZ5MGCu2iNrun3nlYZW+wJfVtFnfI1/8CN7RZf0q8+DeJvvL3Bt1m38l5B9j4yyVemJ0Y2S5r/Ic/kNon3zELqCis8lSJENaK2lRL7//x3xV7zOP54G7wX336Irchl+NLX2nn4z3aRPaFmWUzasXskW+my2KZXCLATH9c9/AAyuAId8JAAA" /></Footer>{/* END_ACCOUNTING_JOURNALENTRY_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_journalEntries
+      parameters:
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: is_common_model_field
+        in: query
+        description: If provided, will only return remote field classes with this is_common_model_field value
+        required: false
+        schema:
+          type: boolean
+      - name: is_custom
+        in: query
+        description: If provided, will only return remote fields classes with this is_custom value
+        required: false
+        schema:
+          type: boolean
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRemoteFieldClassList'
+  /accounting/v1/journal-entries/meta/post:
+    get:
+      operationId: meta-post-retrieve
+      summary: Meta Post Retrieve
+      description: Returns metadata for `JournalEntry` POSTs.{/* BEGIN_ACCOUNTING_JOURNALENTRY_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+1Za1MiORT9K1Q+WkCvMmhJ1dYWLx3doXUUZ3WnrFRMX5pAd9LmgcDU/PetNI02ig+wEXZ2v0Ee9ya55+Se3P6BKNHgCzlCFUQoFYZrxn2UR6HwIEAVdCyM5CRoci1HKI9IxFwSwsxoPNhBeaRMFAmpwTtgEHjqs4QOqiAnBOlDwXDWYeA5D5McxjX4kmgmuHLuJxc68WyURwHjffCqkwmvm5sMLyQtj/4qJ2BKozyKiFK6K4Xxu2dwa0C9wbJdWwAhcE2Cgkc0cVJWCnJiZl6b3YUHAWjwGkSTBmigdruJx67Wkao4TheCqBh7L3owcIA7RGpGA1BOubS/s7dfLiRWYu9/YD/4fXurd3sjbva2sE8DTMxWq02Hbvvozu35n9z6p6E7vii74/7Y7fV/28I+2Wq1W+WT9lXppFHdPpkzAJ/vXu5/qzVqx+4WHTdLbu/qzm3T7Vab9m/GR6XjQ3p3/Pnr0B1f7bQaFyW33SwfH4rtk/qZatXPRKtaLKI8SkcVVb7/SDckwDmQAFUfuI1HqvcoJD6kjmUSDxKxQmRuAkaLqlQkIRkLTu5UkYrQCcFjxDkNiO4IGXYkALFmsbo1RALun+lR43CnGMV4jo+QCX4fBVRBTfdz1a03G7PAqA4IC8hNAKiipYEnyEaV71NWfGEciglUUH6m1QNFJYtiT7M9vclvDAml0n0cNCbhHHMSQqEBWwA834Mjorvzu5k3oRRYUIYQCpRHszbn2EnPTX6byCMaPEzsArUkXJH4NO08QNd23K1hErxTIkkIGqQ9r+uf+WeQoLo1IfoqGyg82MPnEwx8Eb4o9qJ1AGD1YZ6GM+miEh5Cs0BsFwxai1EplOjoXGPEScioypV2y7maUXY5Kle3GyZBNhG9d4anznBpt4ynznDiDNdFICTeHzYPdnf31sR4KsKI8NG/4B5It2tJaN8m8UQIsBhSp2RkE54dcaQhLJIoCpjF1nRNjwcwPhCMwpyeaPIf5dHDAU23zk14A/LpzRQJFQsLpYk2ahOuKhf0uWEasoG1C1pZa0mqegGwbrV99K25GrhyTeiTViMlcPp2FEMYBWIEsAC4Y2mJjXmCxWdRH0nRA7p6LpAhlhYcK6EIleAxjbmIHbydQI+P8nmCpSR5BJIJu7/pspJRaoaHqWjDkHYJ92F6AIzTwCg2ACw6WJPhG1j7zjwUk3TOQb+XuieS0AByB0YxwXP1QBgv1zw7zYbJE+N4YhzHxnHz7BQXEgWyrly0MI0fhX8zEtXCHJsOiHGyXJZ63DO7kRd6p5t5Zki8oXkMfYGEy+bJpSj4cr7MI8PZrbH7AK7tI1kuSsSvhtF+LM9zDVB9LaJsX4AP9jHUevzC3K1NCc5LrcspwcWT5QdJxGVg++4MsQppl4LlCbcrzQaVD2YLSUHiorOzW9vb3iC19x+Rddnot1dyywfIuzlSbvncsZFcPCc+pEoJsVarpsvSGRDT+sC1enVaI/pzcDkonffWlCvWXw3MQra/P+hH9n6K74KsQpxYnIZ5MGCu2iNrun3nlYZW+wJfVtFnfI1/8CN7RZf0q8+DeJvvL3Bt1m38l5B9j4yyVemJ0Y2S5r/Ic/kNon3zELqCis8lSJENaK2lRL7//x3xV7zOP54G7wX336Irchl+NLX2nn4z3aRPaFmWUzasXskW+my2KZXCLATH9c9/AAyuAId8JAAA" /></Footer>{/* END_ACCOUNTING_JOURNALENTRY_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_journalEntries
+      parameters:
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaResponse'
+  /accounting/v1/journal-entries/remote-field-classes:
+    get:
+      operationId: remote-field-classes-list
+      summary: Remote Field Classes List
+      description: Returns a list of `RemoteFieldClass` objects.{/* BEGIN_ACCOUNTING_JOURNALENTRY_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+1Za1MiORT9K1Q+WkCvMmhJ1dYWLx3doXUUZ3WnrFRMX5pAd9LmgcDU/PetNI02ig+wEXZ2v0Ee9ya55+Se3P6BKNHgCzlCFUQoFYZrxn2UR6HwIEAVdCyM5CRoci1HKI9IxFwSwsxoPNhBeaRMFAmpwTtgEHjqs4QOqiAnBOlDwXDWYeA5D5McxjX4kmgmuHLuJxc68WyURwHjffCqkwmvm5sMLyQtj/4qJ2BKozyKiFK6K4Xxu2dwa0C9wbJdWwAhcE2Cgkc0cVJWCnJiZl6b3YUHAWjwGkSTBmigdruJx67Wkao4TheCqBh7L3owcIA7RGpGA1BOubS/s7dfLiRWYu9/YD/4fXurd3sjbva2sE8DTMxWq02Hbvvozu35n9z6p6E7vii74/7Y7fV/28I+2Wq1W+WT9lXppFHdPpkzAJ/vXu5/qzVqx+4WHTdLbu/qzm3T7Vab9m/GR6XjQ3p3/Pnr0B1f7bQaFyW33SwfH4rtk/qZatXPRKtaLKI8SkcVVb7/SDckwDmQAFUfuI1HqvcoJD6kjmUSDxKxQmRuAkaLqlQkIRkLTu5UkYrQCcFjxDkNiO4IGXYkALFmsbo1RALun+lR43CnGMV4jo+QCX4fBVRBTfdz1a03G7PAqA4IC8hNAKiipYEnyEaV71NWfGEciglUUH6m1QNFJYtiT7M9vclvDAml0n0cNCbhHHMSQqEBWwA834Mjorvzu5k3oRRYUIYQCpRHszbn2EnPTX6byCMaPEzsArUkXJH4NO08QNd23K1hErxTIkkIGqQ9r+uf+WeQoLo1IfoqGyg82MPnEwx8Eb4o9qJ1AGD1YZ6GM+miEh5Cs0BsFwxai1EplOjoXGPEScioypV2y7maUXY5Kle3GyZBNhG9d4anznBpt4ynznDiDNdFICTeHzYPdnf31sR4KsKI8NG/4B5It2tJaN8m8UQIsBhSp2RkE54dcaQhLJIoCpjF1nRNjwcwPhCMwpyeaPIf5dHDAU23zk14A/LpzRQJFQsLpYk2ahOuKhf0uWEasoG1C1pZa0mqegGwbrV99K25GrhyTeiTViMlcPp2FEMYBWIEsAC4Y2mJjXmCxWdRH0nRA7p6LpAhlhYcK6EIleAxjbmIHbydQI+P8nmCpSR5BJIJu7/pspJRaoaHqWjDkHYJ92F6AIzTwCg2ACw6WJPhG1j7zjwUk3TOQb+XuieS0AByB0YxwXP1QBgv1zw7zYbJE+N4YhzHxnHz7BQXEgWyrly0MI0fhX8zEtXCHJsOiHGyXJZ63DO7kRd6p5t5Zki8oXkMfYGEy+bJpSj4cr7MI8PZrbH7AK7tI1kuSsSvhtF+LM9zDVB9LaJsX4AP9jHUevzC3K1NCc5LrcspwcWT5QdJxGVg++4MsQppl4LlCbcrzQaVD2YLSUHiorOzW9vb3iC19x+Rddnot1dyywfIuzlSbvncsZFcPCc+pEoJsVarpsvSGRDT+sC1enVaI/pzcDkonffWlCvWXw3MQra/P+hH9n6K74KsQpxYnIZ5MGCu2iNrun3nlYZW+wJfVtFnfI1/8CN7RZf0q8+DeJvvL3Bt1m38l5B9j4yyVemJ0Y2S5r/Ic/kNon3zELqCis8lSJENaK2lRL7//x3xV7zOP54G7wX336Irchl+NLX2nn4z3aRPaFmWUzasXskW+my2KZXCLATH9c9/AAyuAId8JAAA" /></Footer>{/* END_ACCOUNTING_JOURNALENTRY_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_journalEntries
+      parameters:
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: is_common_model_field
+        in: query
+        description: If provided, will only return remote field classes with this is_common_model_field value
+        required: false
+        schema:
+          type: boolean
+      - name: is_custom
+        in: query
+        description: If provided, will only return remote fields classes with this is_custom value
+        required: false
+        schema:
+          type: boolean
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRemoteFieldClassList'
+components:
+  schemas:
+    JournalEntryEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/JournalEntryRequest'
+      required:
+      - model
+      title: JournalEntryEndpointRequest
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    RemoteFieldRequest:
+      type: object
+      properties:
+        remote_field_class:
+          type: string
+          format: uuid
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteFieldRequest
+    JournalEntryFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: JournalEntryFieldMappings
+    JournalEntry:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        transaction_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The journal entry's transaction date.
+        payments:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Array of `Payment` object IDs.
+        applied_payments:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: A list of the Payment Applied to Lines common models related to a given Invoice, Credit Note, or Journal Entry.
+        memo:
+          type:
+          - string
+          - 'null'
+          description: The journal entry's private note.
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: The journal's currency. The currency code in ISO 4217 format.
+        exchange_rate:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The journal entry's exchange rate.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the journal entry belongs to.
+        inclusive_of_tax:
+          type:
+          - boolean
+          - 'null'
+          description: If the transaction is inclusive or exclusive of tax. `True` if inclusive, `False` if exclusive.
+        lines:
+          type: array
+          items:
+            $ref: '#/components/schemas/JournalLine'
+        journal_number:
+          type:
+          - string
+          - 'null'
+          description: Reference number for identifying journal entries.
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        posting_status:
+          oneOf:
+          - $ref: '#/components/schemas/PostingStatusEnum'
+          - type: 'null'
+          description: The journal's posting status.
+        accounting_period:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The accounting period that the JournalEntry was generated in.
+        remote_created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's journal entry was created.
+        remote_updated_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's journal entry was updated.
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/JournalEntryFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteField'
+      description: '# The JournalEntry Object
+
+        ### Description
+
+        A `JournalEntry` is a record of a transaction or event that is entered into a company''s accounting system.
+
+
+        The `JournalEntry` common model contains records that are automatically created as a result of a certain type of transaction, like an Invoice, and records that are manually created against a company’s ledger.
+
+
+        The lines of a given `JournalEntry` object should always sum to 0. A positive `net_amount` means the line represents a debit and a negative net_amount represents a credit.
+
+
+        ### Usage Example
+
+        Fetch from the `GET JournalEntry` endpoint and view a company''s journey entry.'
+      title: JournalEntry
+    ItemTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemTypeEnum
+    ItemFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemFormatEnum
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    JournalLine:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        net_amount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The value of the line item including taxes and other fees.
+        tracking_category:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: The journal line item's associated tracking categories.
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: The journal line item's currency. The currency code in ISO 4217 format.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the journal entry belongs to.
+        employee:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        project:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        contact:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        tax_rate:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The tax rate that applies to this line item.
+        description:
+          type:
+          - string
+          - 'null'
+          description: The line's description.
+        exchange_rate:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The journal line item's exchange rate.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteField'
+      description: '# The JournalLine Object
+
+        ### Description
+
+        The `JournalLine` object is used to represent a journal entry''s line items.
+
+
+        ### Usage Example
+
+        Fetch from the `GET JournalEntry` endpoint and view the journal entry''s line items.'
+      title: JournalLine
+    JournalEntryRequest:
+      type: object
+      properties:
+        transaction_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The journal entry's transaction date.
+        payments:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Array of `Payment` object IDs.
+        memo:
+          type:
+          - string
+          - 'null'
+          description: The journal entry's private note.
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: The journal's currency. The currency code in ISO 4217 format.
+        exchange_rate:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The journal entry's exchange rate.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the journal entry belongs to.
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+        inclusive_of_tax:
+          type:
+          - boolean
+          - 'null'
+          description: If the transaction is inclusive or exclusive of tax. `True` if inclusive, `False` if exclusive.
+        lines:
+          type: array
+          items:
+            $ref: '#/components/schemas/JournalLineRequest'
+        journal_number:
+          type:
+          - string
+          - 'null'
+          description: Reference number for identifying journal entries.
+        posting_status:
+          oneOf:
+          - $ref: '#/components/schemas/PostingStatusEnum'
+          - type: 'null'
+          description: The journal's posting status.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldRequest'
+      description: '# The JournalEntry Object
+
+        ### Description
+
+        The `JournalEntry` object is used to get a record of all manually created entries made in a company’s general ledger. The journal line items for each journal entry should sum to zero.
+
+
+        ### Usage Example
+
+        Fetch from the `GET JournalEntry` endpoint and view a company''s journey entry.'
+      title: JournalEntryRequest
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    JournalEntriesIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - accounting_period
+      - applied_payments
+      - company
+      - lines
+      - payments
+      - tracking_categories
+      title: JournalEntriesIdGetParametersExpandSchemaItems
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    PaginatedRemoteFieldClassList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldClass'
+      title: PaginatedRemoteFieldClassList
+    JournalLineRequest:
+      type: object
+      properties:
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        net_amount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The value of the line item including taxes and other fees.
+        tracking_category:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: The journal line item's associated tracking categories.
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: The journal line item's currency. The currency code in ISO 4217 format.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the journal entry belongs to.
+        employee:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        project:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        contact:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        tax_rate:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The tax rate that applies to this line item.
+        description:
+          type:
+          - string
+          - 'null'
+          description: The line's description.
+        exchange_rate:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The journal line item's exchange rate.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldRequest'
+      description: '# The JournalLine Object
+
+        ### Description
+
+        The `JournalLine` object is used to represent a journal entry''s line items.
+
+
+        ### Usage Example
+
+        Fetch from the `GET JournalEntry` endpoint and view the journal entry''s line items.'
+      title: JournalLineRequest
+    ItemSchema:
+      type: object
+      properties:
+        item_type:
+          $ref: '#/components/schemas/ItemTypeEnum'
+        item_format:
+          $ref: '#/components/schemas/ItemFormatEnum'
+        item_choices:
+          type: array
+          items:
+            type: string
+      title: ItemSchema
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    RemoteField:
+      type: object
+      properties:
+        remote_field_class:
+          $ref: '#/components/schemas/RemoteFieldClass'
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteField
+    RemoteFieldClass:
+      type: object
+      properties:
+        id:
+          type: string
+        display_name:
+          type: string
+        remote_key_name:
+          type: string
+        description:
+          type: string
+        is_custom:
+          type: boolean
+        is_common_model_field:
+          type: boolean
+        is_required:
+          type: boolean
+        field_type:
+          $ref: '#/components/schemas/FieldTypeEnum'
+        field_format:
+          $ref: '#/components/schemas/FieldFormatEnum'
+        field_choices:
+          type: array
+          items:
+            type: string
+        item_schema:
+          $ref: '#/components/schemas/ItemSchema'
+      title: RemoteFieldClass
+    PostingStatusEnum:
+      type: string
+      enum:
+      - UNPOSTED
+      - POSTED
+      title: PostingStatusEnum
+    FieldFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldFormatEnum
+    JournalEntryResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/JournalEntry'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: JournalEntryResponse
+    JournalEntriesGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - accounting_period
+      - applied_payments
+      - company
+      - lines
+      - payments
+      - tracking_categories
+      title: JournalEntriesGetParametersExpandSchemaItems
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    TransactionCurrencyEnum:
+      type: string
+      enum:
+      - XUA
+      - AFN
+      - AFA
+      - ALL
+      - ALK
+      - DZD
+      - ADP
+      - AOA
+      - AOK
+      - AON
+      - AOR
+      - ARA
+      - ARS
+      - ARM
+      - ARP
+      - ARL
+      - AMD
+      - AWG
+      - AUD
+      - ATS
+      - AZN
+      - AZM
+      - BSD
+      - BHD
+      - BDT
+      - BBD
+      - BYN
+      - BYB
+      - BYR
+      - BEF
+      - BEC
+      - BEL
+      - BZD
+      - BMD
+      - BTN
+      - BOB
+      - BOL
+      - BOV
+      - BOP
+      - BAM
+      - BAD
+      - BAN
+      - BWP
+      - BRC
+      - BRZ
+      - BRE
+      - BRR
+      - BRN
+      - BRB
+      - BRL
+      - GBP
+      - BND
+      - BGL
+      - BGN
+      - BGO
+      - BGM
+      - BUK
+      - BIF
+      - XPF
+      - KHR
+      - CAD
+      - CVE
+      - KYD
+      - XAF
+      - CLE
+      - CLP
+      - CLF
+      - CNX
+      - CNY
+      - CNH
+      - COP
+      - COU
+      - KMF
+      - CDF
+      - CRC
+      - HRD
+      - HRK
+      - CUC
+      - CUP
+      - CYP
+      - CZK
+      - CSK
+      - DKK
+      - DJF
+      - DOP
+      - NLG
+      - XCD
+      - DDM
+      - ECS
+      - ECV
+      - EGP
+      - GQE
+      - ERN
+      - EEK
+      - ETB
+      - EUR
+      - XBA
+      - XEU
+      - XBB
+      - XBC
+      - XBD
+      - FKP
+      - FJD
+      - FIM
+      - FRF
+      - XFO
+      - XFU
+      - GMD
+      - GEK
+      - GEL
+      - DEM
+      - GHS
+      - GHC
+      - GIP
+      - XAU
+      - GRD
+      - GTQ
+      - GWP
+      - GNF
+      - GNS
+      - GYD
+      - HTG
+      - HNL
+      - HKD
+      - HUF
+      - IMP
+      - ISK
+      - ISJ
+      - INR
+      - IDR
+      - IRR
+      - IQD
+      - IEP
+      - ILS
+      - ILP
+      - ILR
+      - ITL
+      - JMD
+      - JPY
+      - JOD
+      - KZT
+      - KES
+      - KWD
+      - KGS
+      - LAK
+      - LVL
+      - LVR
+      - LBP
+      - LSL
+      - LRD
+      - LYD
+      - LTL
+      - LTT
+      - LUL
+      - LUC
+      - LUF
+      - MOP
+      - MKD
+      - MKN
+      - MGA
+      - MGF
+      - MWK
+      - MYR
+      - MVR
+      - MVP
+      - MLF
+      - MTL
+      - MTP
+      - MRU
+      - MRO
+      - MUR
+      - MXV
+      - MXN
+      - MXP
+      - MDC
+      - MDL
+      - MCF
+      - MNT
+      - MAD
+      - MAF
+      - MZE
+      - MZN
+      - MZM
+      - MMK
+      - NAD
+      - NPR
+      - ANG
+      - TWD
+      - NZD
+      - NIO
+      - NIC
+      - NGN
+      - KPW
+      - NOK
+      - OMR
+      - PKR
+      - XPD
+      - PAB
+      - PGK
+      - PYG
+      - PEI
+      - PEN
+      - PES
+      - PHP
+      - XPT
+      - PLN
+      - PLZ
+      - PTE
+      - GWE
+      - QAR
+      - XRE
+      - RHD
+      - RON
+      - ROL
+      - RUB
+      - RUR
+      - RWF
+      - SVC
+      - WST
+      - SAR
+      - RSD
+      - CSD
+      - SCR
+      - SLL
+      - XAG
+      - SGD
+      - SKK
+      - SIT
+      - SBD
+      - SOS
+      - ZAR
+      - ZAL
+      - KRH
+      - KRW
+      - KRO
+      - SSP
+      - SUR
+      - ESP
+      - ESA
+      - ESB
+      - XDR
+      - LKR
+      - SHP
+      - XSU
+      - SDD
+      - SDG
+      - SDP
+      - SRD
+      - SRG
+      - SZL
+      - SEK
+      - CHF
+      - SYP
+      - STN
+      - STD
+      - TVD
+      - TJR
+      - TJS
+      - TZS
+      - XTS
+      - THB
+      - XXX
+      - TPE
+      - TOP
+      - TTD
+      - TND
+      - TRY
+      - TRL
+      - TMT
+      - TMM
+      - USD
+      - USN
+      - USS
+      - UGX
+      - UGS
+      - UAH
+      - UAK
+      - AED
+      - UYW
+      - UYU
+      - UYP
+      - UYI
+      - UZS
+      - VUV
+      - VES
+      - VEB
+      - VEF
+      - VND
+      - VNN
+      - CHE
+      - CHW
+      - XOF
+      - YDD
+      - YER
+      - YUN
+      - YUD
+      - YUM
+      - YUR
+      - ZWN
+      - ZRN
+      - ZRZ
+      - ZMW
+      - ZMK
+      - ZWD
+      - ZWR
+      - ZWL
+      description: The currency code in ISO 4217 format.
+      title: TransactionCurrencyEnum
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    FieldTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldTypeEnum
+    PaginatedJournalEntryList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/JournalEntry'
+      title: PaginatedJournalEntryList
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

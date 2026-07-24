@@ -1,0 +1,250 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_departments API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_departments
+paths:
+  /ats/v1/departments:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Department` objects.{/* BEGIN_ATS_DEPARTMENT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA92abW/aOhTHvwrKy4qHFsq2Il1d8fwwCC2k7XqnKXKcQzA4cWo7UJj23ackQMm9u5W6OevCS9L455y//+f4OOlXDSMJDuMbraYhKbS85jIbqFbTWuAjLl3wpJbXkE905EJ8k7kqa3lNBL7PuAS7Q4DaosdhptW0kgvcgULgkRkBu4SkKBFPgsORJMwTpcOowiwapuU1Srwl2HWMWeDJFzjxfQUU3/ivn+GfRfikPhJCzjkLnPkEHgMQLyHDp6EQxohowUYSlY6GF3g8/kfXwue2gYIEu4UkaoEEHAa4m2oupS9qpdIcqF+Mpi3asCqBV0JcEkxBlKqVq/L7q2phR4lm/9t06F8XZ4tHi1nvz0wHUxMFZyMDP+lGf60vnEu9efmkb2+r+na51RfL8zPTQWcjY1QdGw+Vcat+Mf7BDeb03aeru0arMdDP8LZd0RcPa93AFyMDL61tvzLo4vWgd/Okbx/Ko9ZtRTfa1UGXXYybEzFqTtioXixqee14HbXa56/HF3bmqPs+JRh5cioRXibH9F3kwJE28WognxT8wKIEF0WliFy0ZR5aiyJmbskFm6BSkmlOHwPEwRwyh5nrRu/hbjIsLnxnvx6EeYfF0GpaW+/V9Wa7lTRGfYUIRRYFrSZ5AP/xslb7rC2YFS6yFwaW1zi4TIIZLlLyl+kjOde+hNceA8LBvkYcuSCBh5Qv3/I/lEnMrY0idUJUQpRKcHOPVuui7/2fKHrd6N+1U5bkcInYr5dn41pUlT4hay/Qylp2ZzPxgjZqDPPKgBvItRjrTdSEvKcdu+LtU+QX/NDgAFtF+RKz/ixpXilHs25M1YgRkhK1Y3CpLx9ZO9NuaVK0UZVK1xTJGeNuzDRFLNV5b+1VW8NUqkhSnp+InnEPuJDMg5yBKHhySDxFO/ER+89KoF/Qyy7eEQ8TtXZprUKm+W6MHrAzS3O3iZp1MwiI/ZNbTxuJDeYBkWoVCLHNEPvbgk/PIh0OYi4BuWokOuB2OZR6M5KmNl1w1RqnC675tLrDHy+q2RaGA3hzFghQo88z72RK73NIuQGzcg2GuJ2rX/dTFgyyq1hvkmtSFthqFOpNzIh2MoYizf5oqrYc9UPkru/LdD0aoO1WVVccsxIHh/sbPGqN7Le3z2tlYVaLrJBa0+ygv+F8kIZRmDXFjCvatva0wimkELMEi3pNNcKEsEQSDcu32PZu3j6Jfk2kFZHq3BPCEhtUlh00hBVwNdJEqIR72IPzYdO4f3v3vFKUsUc3s43aChwxSZpeUWmLMUeYxq9rmBodItTJ9HXXwAXzCMtNIHpVQaJlVSBTOf3jwGtDJZ7PSPTJVUU67GhpNrCpr/5u0YHPKFur0eWA7FC2ThTRc3+76HTKmU6XKXIgp6rXD2HmUbNfsdaX70eZ3oWn9evcNMAYhOggLBkXiqRKMBO2auBPzOmcZ9tWLuLykDmqNEtCE6ItPqyGs/Z9pr0WbsSwVdvcxMxsFvPdJ6nNTPH3hmdu5u3iyQnATF0fGPNO5gxlAHIlIpQpOkg9806mXzaAhsu+b5dB0WlcxliT77Gn8F7U4MQCH9mKy9GOmmlpbj92c9dc/anr9mN3/58U5caj/TQmmZbpHihmLuQky8k55AaB51BQa6fdFKZkppyDGU+RzQbgnvFl9AxKBNrTEn3jeEWpTq9SL+E/EbmNFL/o2kEznUD/sPmhyKhVJyTvt6vfvlm9KMSXb98B6NWUP3ovAAA=" /></Footer>{/* END_ATS_DEPARTMENT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_departments
+      parameters:
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedDepartmentList'
+  /ats/v1/departments/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `Department` object with the given `id`.{/* BEGIN_ATS_DEPARTMENT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA92abW/aOhTHvwrKy4qHFsq2Il1d8fwwCC2k7XqnKXKcQzA4cWo7UJj23ackQMm9u5W6OevCS9L455y//+f4OOlXDSMJDuMbraYhKbS85jIbqFbTWuAjLl3wpJbXkE905EJ8k7kqa3lNBL7PuAS7Q4DaosdhptW0kgvcgULgkRkBu4SkKBFPgsORJMwTpcOowiwapuU1Srwl2HWMWeDJFzjxfQUU3/ivn+GfRfikPhJCzjkLnPkEHgMQLyHDp6EQxohowUYSlY6GF3g8/kfXwue2gYIEu4UkaoEEHAa4m2oupS9qpdIcqF+Mpi3asCqBV0JcEkxBlKqVq/L7q2phR4lm/9t06F8XZ4tHi1nvz0wHUxMFZyMDP+lGf60vnEu9efmkb2+r+na51RfL8zPTQWcjY1QdGw+Vcat+Mf7BDeb03aeru0arMdDP8LZd0RcPa93AFyMDL61tvzLo4vWgd/Okbx/Ko9ZtRTfa1UGXXYybEzFqTtioXixqee14HbXa56/HF3bmqPs+JRh5cioRXibH9F3kwJE28WognxT8wKIEF0WliFy0ZR5aiyJmbskFm6BSkmlOHwPEwRwyh5nrRu/hbjIsLnxnvx6EeYfF0GpaW+/V9Wa7lTRGfYUIRRYFrSZ5AP/xslb7rC2YFS6yFwaW1zi4TIIZLlLyl+kjOde+hNceA8LBvkYcuSCBh5Qv3/I/lEnMrY0idUJUQpRKcHOPVuui7/2fKHrd6N+1U5bkcInYr5dn41pUlT4hay/Qylp2ZzPxgjZqDPPKgBvItRjrTdSEvKcdu+LtU+QX/NDgAFtF+RKz/ixpXilHs25M1YgRkhK1Y3CpLx9ZO9NuaVK0UZVK1xTJGeNuzDRFLNV5b+1VW8NUqkhSnp+InnEPuJDMg5yBKHhySDxFO/ER+89KoF/Qyy7eEQ8TtXZprUKm+W6MHrAzS3O3iZp1MwiI/ZNbTxuJDeYBkWoVCLHNEPvbgk/PIh0OYi4BuWokOuB2OZR6M5KmNl1w1RqnC675tLrDHy+q2RaGA3hzFghQo88z72RK73NIuQGzcg2GuJ2rX/dTFgyyq1hvkmtSFthqFOpNzIh2MoYizf5oqrYc9UPkru/LdD0aoO1WVVccsxIHh/sbPGqN7Le3z2tlYVaLrJBa0+ygv+F8kIZRmDXFjCvatva0wimkELMEi3pNNcKEsEQSDcu32PZu3j6Jfk2kFZHq3BPCEhtUlh00hBVwNdJEqIR72IPzYdO4f3v3vFKUsUc3s43aChwxSZpeUWmLMUeYxq9rmBodItTJ9HXXwAXzCMtNIHpVQaJlVSBTOf3jwGtDJZ7PSPTJVUU67GhpNrCpr/5u0YHPKFur0eWA7FC2ThTRc3+76HTKmU6XKXIgp6rXD2HmUbNfsdaX70eZ3oWn9evcNMAYhOggLBkXiqRKMBO2auBPzOmcZ9tWLuLykDmqNEtCE6ItPqyGs/Z9pr0WbsSwVdvcxMxsFvPdJ6nNTPH3hmdu5u3iyQnATF0fGPNO5gxlAHIlIpQpOkg9806mXzaAhsu+b5dB0WlcxliT77Gn8F7U4MQCH9mKy9GOmmlpbj92c9dc/anr9mN3/58U5caj/TQmmZbpHihmLuQky8k55AaB51BQa6fdFKZkppyDGU+RzQbgnvFl9AxKBNrTEn3jeEWpTq9SL+E/EbmNFL/o2kEznUD/sPmhyKhVJyTvt6vfvlm9KMSXb98B6NWUP3ovAAA=" /></Footer>{/* END_ATS_DEPARTMENT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_departments
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Department'
+components:
+  schemas:
+    DepartmentFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: DepartmentFieldMappings
+    PaginatedDepartmentList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Department'
+      title: PaginatedDepartmentList
+    Department:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The department's name.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/DepartmentFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The Department Object
+
+        ### Description
+
+        The `Department` object is used to represent a department within a company.
+
+        ### Usage Example
+
+        Fetch from the `LIST Departments` endpoint and view the departments within a company.'
+      title: Department
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

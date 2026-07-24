@@ -1,0 +1,1130 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_groups API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_groups
+paths:
+  /groups:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Group` objects.{/* BEGIN_CHAT_GROUP_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA31T207bQBD9lWofI9vbEFKEpaoKhEIi2aFgUCOErMnuxNlk1+vshVAj/r2yk6ahRTzO0ZkzlzPzQhg4LLT5RWLCFuBIQJTmKElMLo32FQkIVCIFhTtC/nREAmJ9VWnjkH8XKLm9MjgnMaEKTYGhL8VcIKcNnYrSYWHACV1auk8L520eCYgU5Qr5gDHtS/eR0JYYwpb5T2ipFLZpvgJr3cJoXyxucO3RfqjZ9CNRYelAhhwc0IP80GwF3sOazjlKdMiH4GCIDlkz4q7WwrnKxpQuUFZRWzfi+ESxpGCcYBIt7fdOj05O++FOpa3+LS/k125nuZ7p2UknL5jMwXeSjD2n2WiTLovj9Pz4Oa3v+mm9qtPl6nMnL6CTZEl/kk17k+GgO3mHkN9++Xl6fzY8G6cdVl/00uV0k2asm2RsNatHvfEl24yvfjyn9fQoGd710uyiP77U3cn5jU3Ob3QyiCISkEMnSfzwcgjsDiQRzGir5+5ThqCaJR1wRgoKPFjO1g+oRFj5mRQssr0IFNS6hI2NmFZUIRdA96J5K5rfrj0YjKqy+GOC0OXeARKTdJCN7i/eHsPgCYSEmUQSO+Pxvwsm8QNRqGZomq7bF8i9F5wEpGxmC4hBpR3mzCA45Hn7Kjus8e5tlFfgFn+hVsfbRvyxAddeGOTXYECha9D44fH18fU3CEMvBo4DAAA=" /></Footer>{/* END_CHAT_GROUP_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_groups
+      parameters:
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupsGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGroupList'
+  /groups/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `Group` object with the given `id`.{/* BEGIN_CHAT_GROUP_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA31T207bQBD9lWofI9vbEFKEpaoKhEIi2aFgUCOErMnuxNlk1+vshVAj/r2yk6ahRTzO0ZkzlzPzQhg4LLT5RWLCFuBIQJTmKElMLo32FQkIVCIFhTtC/nREAmJ9VWnjkH8XKLm9MjgnMaEKTYGhL8VcIKcNnYrSYWHACV1auk8L520eCYgU5Qr5gDHtS/eR0JYYwpb5T2ipFLZpvgJr3cJoXyxucO3RfqjZ9CNRYelAhhwc0IP80GwF3sOazjlKdMiH4GCIDlkz4q7WwrnKxpQuUFZRWzfi+ESxpGCcYBIt7fdOj05O++FOpa3+LS/k125nuZ7p2UknL5jMwXeSjD2n2WiTLovj9Pz4Oa3v+mm9qtPl6nMnL6CTZEl/kk17k+GgO3mHkN9++Xl6fzY8G6cdVl/00uV0k2asm2RsNatHvfEl24yvfjyn9fQoGd710uyiP77U3cn5jU3Ob3QyiCISkEMnSfzwcgjsDiQRzGir5+5ThqCaJR1wRgoKPFjO1g+oRFj5mRQssr0IFNS6hI2NmFZUIRdA96J5K5rfrj0YjKqy+GOC0OXeARKTdJCN7i/eHsPgCYSEmUQSO+Pxvwsm8QNRqGZomq7bF8i9F5wEpGxmC4hBpR3mzCA45Hn7Kjus8e5tlFfgFn+hVsfbRvyxAddeGOTXYECha9D44fH18fU3CEMvBo4DAAA=" /></Footer>{/* END_CHAT_GROUP_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_groups
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupsIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+  /filestorage/v1/groups:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Group` objects.{/* BEGIN_FILESTORAGE_GROUP_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA82WbW/aMBSF/8rkjygvo4xVjTRNQBgFDdO1abWuqiKTXBKDYwe/AE3V/z4l0Ba2au0mqu5bfHTvse/joyS3KCIaEiFvkIcmlIHSQpIEkIUyEQNDHupJYXJkIZJTTDLYrQsXB8hCyuS5kBriLxRYrI4lTJCH3AxkArbhdEIhdre6XMo1JJJoKrhyH7rtSdWOLMQon0HciiJhuH6B37reJuuGX5bKZVRpZKGcKKVTKUySnsLcgHqJdXk6BhlwTZgdE03cLRtbrn2e0so5YmCgIfaJJj5oiMqBN1umWufKc90UWO5U2zsxLFzgLpGaRgyU22wcHRweNe2NS7X75zBhn+q16Xwsxoe1MIlYSExtGEQrHPSXeJp8wJ0PK1ycN3ExK/B09r4WJqQ2DIbNUXDZGPmt+uiJgvDs4/eji7bfHuBaVHQbeHq5xEFUHwbRbFz0G4NetBwcf1vh4vJg6J83cNBtDnqiPuqcqmHnVAxbjoMstH2vyLu63RY24WmL1W5hPyvz9ghkfRUkp3ZuxoxGjmo4JCOF4GSpnEhkbgYxJe4JI3oiZNYWq1DNDZEQTrFc/jjkTs6Te/hU8AfyyENdfNzCna6/m4bWglBGxgyQp6WB3wKNvKvt0OcgM6pUNaSFeDmXhXZFCZnQEJY3trsKc6LTR4nGyEJGgVTouhTnhkqIT4gkGehS9a6u76ynOPpS5ON9s9yY3vPMvvKLlN+8Cs83wtYTImHwzpd0Aftht3YMK8fwrAL3B2C4FfQvun+PK0opi8OkfBeXoLbSWGm70n8R0BGHPVK+T+iIQ1yRXkf0VaL5POs9IOV0bspn4Lr86Mh/xXyWEgkngnK9X9CVb176Po/69UJd/YSExlTM3ob69d1PM/qMCSUJAAA=" /></Footer>{/* END_FILESTORAGE_GROUP_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_groups
+      parameters:
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupsGetParametersExpandSchemaItems_2'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGroupList'
+  /filestorage/v1/groups/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `Group` object with the given `id`.{/* BEGIN_FILESTORAGE_GROUP_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA82WbW/aMBSF/8rkjygvo4xVjTRNQBgFDdO1abWuqiKTXBKDYwe/AE3V/z4l0Ba2au0mqu5bfHTvse/joyS3KCIaEiFvkIcmlIHSQpIEkIUyEQNDHupJYXJkIZJTTDLYrQsXB8hCyuS5kBriLxRYrI4lTJCH3AxkArbhdEIhdre6XMo1JJJoKrhyH7rtSdWOLMQon0HciiJhuH6B37reJuuGX5bKZVRpZKGcKKVTKUySnsLcgHqJdXk6BhlwTZgdE03cLRtbrn2e0so5YmCgIfaJJj5oiMqBN1umWufKc90UWO5U2zsxLFzgLpGaRgyU22wcHRweNe2NS7X75zBhn+q16Xwsxoe1MIlYSExtGEQrHPSXeJp8wJ0PK1ycN3ExK/B09r4WJqQ2DIbNUXDZGPmt+uiJgvDs4/eji7bfHuBaVHQbeHq5xEFUHwbRbFz0G4NetBwcf1vh4vJg6J83cNBtDnqiPuqcqmHnVAxbjoMstH2vyLu63RY24WmL1W5hPyvz9ghkfRUkp3ZuxoxGjmo4JCOF4GSpnEhkbgYxJe4JI3oiZNYWq1DNDZEQTrFc/jjkTs6Te/hU8AfyyENdfNzCna6/m4bWglBGxgyQp6WB3wKNvKvt0OcgM6pUNaSFeDmXhXZFCZnQEJY3trsKc6LTR4nGyEJGgVTouhTnhkqIT4gkGehS9a6u76ynOPpS5ON9s9yY3vPMvvKLlN+8Cs83wtYTImHwzpd0Aftht3YMK8fwrAL3B2C4FfQvun+PK0opi8OkfBeXoLbSWGm70n8R0BGHPVK+T+iIQ1yRXkf0VaL5POs9IOV0bspn4Lr86Mh/xXyWEgkngnK9X9CVb176Po/69UJd/YSExlTM3ob69d1PM/qMCSUJAAA=" /></Footer>{/* END_FILESTORAGE_GROUP_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_groups
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupsIdGetParametersExpandSchemaItems_2'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group_2'
+  /hris/v1/groups:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Group` objects.{/* BEGIN_HRIS_GROUP_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="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" /></Footer>{/* END_HRIS_GROUP_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_groups
+      parameters:
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupsGetParametersExpandSchemaItems_3'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: is_commonly_used_as_team
+        in: query
+        description: If provided, specifies whether to return only Group objects which refer to a team in the third party platform. Note that this is an opinionated view based on how a team may be represented in the third party platform.
+        required: false
+        schema:
+          type: string
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: names
+        in: query
+        description: If provided, will only return groups with these names. Multiple values can be separated by commas.
+        required: false
+        schema:
+          type: string
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_fields
+        in: query
+        description: Deprecated. Use show_enum_origins.
+        required: false
+        schema:
+          $ref: '#/components/schemas/GroupsGetParametersRemoteFields'
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: show_enum_origins
+        in: query
+        description: A comma separated list of enum field names for which you'd like the original values to be returned, instead of Merge's normalized enum values. [Learn more](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+        required: false
+        schema:
+          $ref: '#/components/schemas/GroupsGetParametersShowEnumOrigins'
+      - name: types
+        in: query
+        description: If provided, will only return groups of these types. Multiple values can be separated by commas.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGroupList'
+  /hris/v1/groups/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `Group` object with the given `id`.{/* BEGIN_HRIS_GROUP_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+WcbVPbSBLHv4pKr+4ogwHDEqi6ujI2fiBYdozJbbKVmhpLbXnwaEbMjLDN1n73Kz0ZyKZyh9O2hf0qQZb+kn7q7unuGelP26UGfKnm9oU9VkzbJTuQHnD7wm4qGYV2yaYhc2gA2Q7k8dgu2ToKQ6kMeA0G3NMtBSP7wi4HoHzYjwQbMfDK8e5lJgz4ihomhS4vDtsfJcfZJZszMQGv6royEuZnQumO+zTd87s/45+1sUt2SLU2YyUjf9yHhwj0TzXj6+EQgDCU73vU0PKL4/dVKvCjbfGVe8DBgFenhtbBgBvfYnausTGhviiXx8DDg+S8Bx48lkGUqTLM5aDLp5Xz47Pz0/1MJTn7v4nP/3W0d/8wlMOzPeK7nNBorzNwZ86gPXXu/ROndjJznu5OnafJk3M/OdwjPt3rDDqn3cGXSrdePer+YAdy+9vv558v65fXzp77dFVx7r9MnYF71Bm4k+FTu3LddKfXrU8z5+nLcad+V3EGV6fXTXnUrfV1p9aXnerBgV2yXz5J++KPP19uyAzkTI/ZKIHz4rd2QH14ASV9DjRk+2E05Mw90JUDGtAnKehUH7gyKAfgMVrucWpGUgWZKOkpGYIyc3LcfhZ/3lq5fYiogucNJ8//Ozr9QHTy80Eo/PzZMSkWD86+sK+cVtWpXdVfW1H1kTJOhxzsC6Mi+Jvp2xd/2BCEXM4B4hsXMYmSrSCQBgjz7JJt5iHY3+JtDxFT4PWoogEYUPHB3/4q/Yhktd6z6le1dr1918HBWa33SB1c5rEoILdrhRFSBcIQPwsoGZvY4l//RUJqxt/B09EwPVD/AkkHZsZqgsAjGSuSJoj1kFzilvt3Dt7d9u+cdZkM08SVQSAFn5NIg0eoJgZo8DfX+v/MZ1mL+Y9Uk5FULliOnOKBXMgSR07/N1KnOmh/vnr/QDlnVLjQqnVwh4ZWP5feTHhfJTIDilo9OleScyQDTDQzqyM30pcrx/UGTm8EdEmDoZStPg6aXO0VnPtw06FuGcu5VEDNGJC4pGIvsZDGl/Ov/n1QADwr98IaPFEhwMIys0xvX+9O+lUbU8UZkjlmYt/56Q6kJPGNm5YM8TDGasfrGjWLQJDTOZYb5+lHqplBJIetqTit36wEZiE8WUpeowrLlTO1dEzJ3Nk/Gc69s7utyeJq8yGoqpogIcvUyHh23g3PpgXE9EY+daqmTAzlDAfQQm7NA+yvmkmdzpOiEDc65aq7EN3rAByZHgDfBXJXyeXELXCrBUriQHwW3Y9FN+OOq2PWoK6RilEkk1vIFSWrTWaASBQlgNYGVfKJRqu0cjdOVHcozW3ISCVCGHaZaG1bZ62hQI+zp4IBKZfboQZ5EwQo5lq3jUEPh6KfKhI9MmFeTwXXldlhe23FwI9rK5zSqSmlzyGZVNAhxUr0UlWyUF1bnMOtRt/KMtJG4g4SiWRudiwW2wUvblHGYY4+4qaypNXfCYZsKIfI/GLJnWDXt2pcRh4OvlafJGoFm8FZB8UeVUaAwuKYyRUM5HJskrERe845Ed3uQbYVBZQKJHKZ2BYYVFvoEBQzc6unIGBYPpebFsvlt63mihfscc6wUo2F3FpNqghzMO1++9aqUe1SD6mIiBVJpliIeWkkULeSP4KH7J86EV3lDN/q5lquoyBEzLdiOTdJuLYsVl1H2kzx0oaF3CZi1cphfaScMy9CYpWrFadfuxQTmFAcHhOY0OKwWL0xgbhH7uwkku9s6f8N0FDLRAqRRK5awDj9Vj6R6yI5WCL1k2C8nvXXG80oO8xVUsuRsa6EUdRq15GmgGM10q7nbdXz2tON/2mw4sXuKze++B8+x0GUahWsLF55lO+ORsxlIAwOxIXcDg2U3UmijEFvYvIXAt7/wNAVcCN9hvSWV662bfVNV1GXQ9p6t+LWnLBqNGSGcqtDBfWT12Gtf7RqnX8igUxOuHUY59qAwupopWrbxqhH5+4YkBZ3ZmJFWSNVhNwtRiID3Doh1SyuCZbsSLCHKN4EwsTv8qulsCG37sNEszg5yKbtssEMul2OWIGSvCW5cOkyg1Q/LORevZ530wyOGp4oAKLNODfIkAPaopZMjVRdF3Tew30PbJeyT1BaCobVg8vUcutsyM+0efazDsBuBEcm/K7A6u4x4bcTXynypPFbCXEqPDpHHj9S0QLSWdKMFNMBVpgLY7HxuuuP5W5bxh98wEouMrWtnJvrJ8fjgEqvJVsfwNdReq2P0qPkkbHSkR6HVqZZnGxhowNen4UhZwkDxHiuMlWi+h9mlaHzztbjLYfylvp4H6OIxciLNVSV4fTkrFMAa125zycYMR0+QZkK5jjd2W3b/XhfmDi5FKdqz7qNksonfUcRaZ3Ha81X1eul+7v0G4cFmAjbrKODTq8CMWKmmoUxyF924jENAcsgEy1SV0CDQfwuXzZp/UgbI+NdFicmLk+LpadDansu5IqT46zc4AaKOYBUeAwUE2B2h5oVv6aSxSFMguRoFxjefWxaPaxvM9x9bBani76RFnGG88U3Pp8nvrEZE4+efzo8Xf0Qsk5b7AP15uikfKCtDw+9AljlRlO/2CrRu5+ZaNE+KrJR0F+BI89RxooFMN+Vx4CvcixR6+evciyz+vkdfyvo21//BYJbb6RPYQAA" /></Footer>{/* END_HRIS_GROUP_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_groups
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupsIdGetParametersExpandSchemaItems_3'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: remote_fields
+        in: query
+        description: Deprecated. Use show_enum_origins.
+        required: false
+        schema:
+          $ref: '#/components/schemas/GroupsIdGetParametersRemoteFields'
+      - name: show_enum_origins
+        in: query
+        description: A comma separated list of enum field names for which you'd like the original values to be returned, instead of Merge's normalized enum values. [Learn more](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+        required: false
+        schema:
+          $ref: '#/components/schemas/GroupsIdGetParametersShowEnumOrigins'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group_3'
+  /hris/v1/groups/types:
+    get:
+      operationId: types-list
+      summary: Get group types
+      description: Returns a list of distinct group type values from the Groups common model.{/* BEGIN_HRIS_GROUP_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="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" /></Footer>{/* END_HRIS_GROUP_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_groups
+      parameters:
+      - name: include_deleted_data
+        in: query
+        description: Whether to include data that was marked as deleted by third party webhooks.
+        required: false
+        schema:
+          type: boolean
+      - name: show_enum_origins
+        in: query
+        description: A comma separated list of enum field names for which you'd like the original values instead of Merge's normalized enum values. [Learn more](https://help.merge.dev/articles/8950958-show-enum-origins-query-parameter)
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/groups_typesList_Response_200'
+  /knowledgebase/v1/groups:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Group` objects.
+      tags:
+      - subpackage_groups
+      parameters:
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          $ref: '#/components/schemas/GroupsGetParametersExpand'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGroupList'
+  /knowledgebase/v1/groups/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `Group` object with the given `id`.
+      tags:
+      - subpackage_groups
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          $ref: '#/components/schemas/GroupsIdGetParametersExpand'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group_4'
+components:
+  schemas:
+    GroupTypeEnum:
+      type: string
+      enum:
+      - TEAM
+      - DEPARTMENT
+      - COST_CENTER
+      - BUSINESS_UNIT
+      - GROUP
+      title: GroupTypeEnum
+    GroupsGetParametersExpandSchemaItems_2:
+      type: string
+      enum:
+      - child_groups
+      - users
+      title: GroupsGetParametersExpandSchemaItems
+    Group_2:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The group's name.
+        users:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: The users that belong in the group. If null, this typically means it's either a domain or the third-party platform does not surface this information.
+        child_groups:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Groups that inherit the permissions of the parent group.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/GroupFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      required:
+      - users
+      description: '# The Group Object
+
+        ### Description
+
+        The `Group` object is used to represent any subset of `Users`. This can extend to company domains as well.
+
+        ### Usage Example
+
+        Fetch from the `GET /api/filestorage/v1/groups` endpoint and view their groups.'
+      title: Group
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The user's name.
+        email_address:
+          type:
+          - string
+          - 'null'
+          description: The user's email address.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/UserFieldMappings'
+          - type: 'null'
+      description: '# The User Object
+
+        ### Description
+
+        The `User` object is used to represent a user within the Knowledge Base account.
+
+        ### Usage Example
+
+        Fetch from the `GET /api/knowledgebase/users` endpoint and view their users.'
+      title: User
+    GroupsGetParametersRemoteFields:
+      type: string
+      enum:
+      - type
+      title: GroupsGetParametersRemoteFields
+    GroupFieldMappings_2:
+      type: object
+      properties: {}
+      title: GroupFieldMappings
+    GroupsGetParametersExpand:
+      type: string
+      enum:
+      - parent_group
+      - users
+      - users,parent_group
+      title: GroupsGetParametersExpand
+    Group_4:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The group's name.
+        parent_group:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The parent group for this group.
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/GroupFieldMappings_2'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The Group Object
+
+        ### Description
+
+        The `Group` object is used to represent any subset of `Users`. This can extend to company domains as well.
+
+        ### Usage Example
+
+        Fetch from the `GET /api/knowledgebase/groups` endpoint and view their groups.'
+      title: Group
+    GroupsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - users
+      title: GroupsIdGetParametersExpandSchemaItems
+    Group:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The name of the Group
+        users:
+          type: array
+          items:
+            type: string
+            format: uuid
+        remote_created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's group was created.
+        remote_updated_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's group was updated.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/GroupFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The Group Object
+
+        ### Description
+
+        The `Group` object is used to represent any subset of `Users`.
+
+        ### Usage Example
+
+        Fetch from the `GET /api/chat/v1/groups` endpoint and view their groups.'
+      title: Group
+    Group_3:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        parent_group:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The parent group for this group.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The group name.
+        type:
+          oneOf:
+          - $ref: '#/components/schemas/GroupTypeEnum'
+          - type: 'null'
+          description: The Group type returned directly from the third-party.
+        is_commonly_used_as_team:
+          type:
+          - boolean
+          - 'null'
+          description: Indicates whether the Group refers to a team in the third party platform. Note that this is an opinionated view based on how Merge observes most organizations representing teams in each third party platform. If your customer uses a platform different from most, there is a chance this will not be correct.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/GroupFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The Group Object
+
+        ### Description
+
+        The `Group` object is used to represent any subset of employees across, for example, `DEPARTMENT` or `TEAM`. Employees can be in multiple Groups.
+
+
+        ### Usage Example
+
+        Fetch from the `LIST Employee` endpoint and expand groups to view an employee''s groups.'
+      title: Group
+    GroupFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: GroupFieldMappings
+    GroupsIdGetParametersExpand:
+      type: string
+      enum:
+      - parent_group
+      - users
+      - users,parent_group
+      title: GroupsIdGetParametersExpand
+    GroupsIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - type
+      title: GroupsIdGetParametersShowEnumOrigins
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    UserFieldMappings:
+      type: object
+      properties: {}
+      title: UserFieldMappings
+    GroupsGetParametersExpandSchemaItems_3:
+      type: string
+      enum:
+      - parent_group
+      title: GroupsGetParametersExpandSchemaItems
+    GroupsIdGetParametersExpandSchemaItems_3:
+      type: string
+      enum:
+      - parent_group
+      title: GroupsIdGetParametersExpandSchemaItems
+    GroupsGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - type
+      title: GroupsGetParametersShowEnumOrigins
+    GroupsIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - type
+      title: GroupsIdGetParametersRemoteFields
+    GroupsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - users
+      title: GroupsGetParametersExpandSchemaItems
+    GroupsIdGetParametersExpandSchemaItems_2:
+      type: string
+      enum:
+      - child_groups
+      - users
+      title: GroupsIdGetParametersExpandSchemaItems
+    PaginatedGroupList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Group'
+      title: PaginatedGroupList
+    groups_typesList_Response_200:
+      type: object
+      properties:
+        types:
+          type: array
+          items:
+            type: string
+          description: List of distinct group types
+      title: groups_typesList_Response_200
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

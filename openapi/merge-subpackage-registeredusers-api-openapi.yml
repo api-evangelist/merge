@@ -1,0 +1,323 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_registeredUsers API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_registeredUsers
+paths:
+  /api/v1/registered-users/:
+    get:
+      operationId: list
+      summary: List Registered Users
+      description: Retrieves a list of Registered Users
+      tags:
+      - subpackage_registeredUsers
+      parameters:
+      - name: origin_user_id
+        in: query
+        description: Filter by the origin user ID of the Registered User
+        required: false
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: A page number within the paginated result set.
+        required: false
+        schema:
+          type: integer
+      - name: page_size
+        in: query
+        description: Number of results to return per page.
+        required: false
+        schema:
+          type: integer
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRegisteredUserPublicResponseList'
+    post:
+      operationId: create
+      summary: Create Registered User
+      description: Creates a Registered User with the given values
+      tags:
+      - subpackage_registeredUsers
+      parameters:
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisteredUserPublicResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisteredUserPublicRequest'
+  /api/v1/registered-users/{registered_user_id}/:
+    get:
+      operationId: retrieve
+      summary: Get Registered User
+      description: Retrieves a Registered User by ID
+      tags:
+      - subpackage_registeredUsers
+      parameters:
+      - name: registered_user_id
+        in: path
+        description: Agent Handler ID of the Registered User
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisteredUserPublicResponse'
+    delete:
+      operationId: destroy
+      summary: Delete Registered User
+      description: Deletes a Registered User by ID
+      tags:
+      - subpackage_registeredUsers
+      parameters:
+      - name: registered_user_id
+        in: path
+        description: Agent Handler ID of the Registered User
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+    patch:
+      operationId: partial-update
+      summary: Update Registered User
+      description: Updates fields on a Registered User by ID
+      tags:
+      - subpackage_registeredUsers
+      parameters:
+      - name: registered_user_id
+        in: path
+        description: Agent Handler ID of the Registered User
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisteredUserPublicResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedRegisteredUserPublicRequest'
+components:
+  schemas:
+    RegisteredUserPublicRequestUserType:
+      type: string
+      enum:
+      - HUMAN
+      - SYSTEM
+      default: HUMAN
+      description: 'ENUM of `HUMAN` or `SYSTEM`
+
+
+        * `HUMAN` - HUMAN
+
+        * `SYSTEM` - SYSTEM'
+      title: RegisteredUserPublicRequestUserType
+    PatchedRegisteredUserPublicRequest:
+      type: object
+      properties:
+        id:
+          type: string
+        origin_user_id:
+          type: string
+          description: Unique identifier for Registered User
+        origin_user_name:
+          type: string
+          description: The human readable name of Registered User
+        shared_credential_group:
+          $ref: '#/components/schemas/SharedCredentialGroup'
+          description: Object used to identify which the groupings a Registered User is part of and can share credentials across.
+        user_type:
+          oneOf:
+          - $ref: '#/components/schemas/PatchedRegisteredUserPublicRequestUserType'
+          - type: 'null'
+          description: 'ENUM of `HUMAN` or `SYSTEM`
+
+
+            * `HUMAN` - HUMAN
+
+            * `SYSTEM` - SYSTEM'
+      title: PatchedRegisteredUserPublicRequest
+    RegisteredUserPublicResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        origin_user_id:
+          type: string
+          description: Unique identifier for Registered User
+        origin_user_name:
+          type: string
+          default: Yash
+          description: The human readable name of Registered User
+        shared_credential_group:
+          oneOf:
+          - $ref: '#/components/schemas/SharedCredentialGroup'
+          - type: 'null'
+          description: Object used to identify which the groupings a Registered User is part of and can share credentials across.
+        user_type:
+          type: string
+          default: HUMAN
+          description: ENUM of `HUMAN` or `SYSTEM`
+        authenticated_connectors:
+          type: array
+          items:
+            type: string
+          description: List of connector slugs that the user has authenticated with
+        is_test:
+          type: boolean
+          default: false
+          description: Whether this is a test user or production user
+      required:
+      - id
+      - origin_user_id
+      - shared_credential_group
+      - authenticated_connectors
+      title: RegisteredUserPublicResponse
+    PaginatedRegisteredUserPublicResponseList:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RegisteredUserPublicResponse'
+      required:
+      - count
+      - results
+      title: PaginatedRegisteredUserPublicResponseList
+    RegisteredUserPublicRequest:
+      type: object
+      properties:
+        id:
+          type: string
+        origin_user_id:
+          type: string
+          description: Unique identifier for Registered User
+        origin_user_name:
+          type: string
+          description: The human readable name of Registered User
+        shared_credential_group:
+          $ref: '#/components/schemas/SharedCredentialGroup'
+          description: Object used to identify which the groupings a Registered User is part of and can share credentials across.
+        user_type:
+          oneOf:
+          - $ref: '#/components/schemas/RegisteredUserPublicRequestUserType'
+          - type: 'null'
+          description: 'ENUM of `HUMAN` or `SYSTEM`
+
+
+            * `HUMAN` - HUMAN
+
+            * `SYSTEM` - SYSTEM'
+      required:
+      - id
+      - origin_user_id
+      - origin_user_name
+      title: RegisteredUserPublicRequest
+    SharedCredentialGroup:
+      type: object
+      properties:
+        origin_company_id:
+          type:
+          - string
+          - 'null'
+          description: Unique identifier for the company of the Registered User
+        origin_company_name:
+          type:
+          - string
+          - 'null'
+          description: The human readable name of the company of the Registered User
+        custom_groupings:
+          type: object
+          additionalProperties:
+            type: string
+          description: Optional identifier / grouping that you can provide to further segment Registered Users
+      title: SharedCredentialGroup
+    PatchedRegisteredUserPublicRequestUserType:
+      type: string
+      enum:
+      - HUMAN
+      - SYSTEM
+      default: HUMAN
+      description: 'ENUM of `HUMAN` or `SYSTEM`
+
+
+        * `HUMAN` - HUMAN
+
+        * `SYSTEM` - SYSTEM'
+      title: PatchedRegisteredUserPublicRequestUserType
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

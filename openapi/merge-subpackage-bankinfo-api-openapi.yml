@@ -1,0 +1,393 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_bankInfo API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_bankInfo
+paths:
+  /hris/v1/bank-info:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `BankInfo` objects.{/* BEGIN_HRIS_BANKINFO_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+WYbW/iOBDHvwrySwRkKcvtFem04qFAH0g5oLvbW1XR4AyJwbGD47TAar/7KQQq2OuttqqPh+MdMeO/k59nPDP+Riho9KSakwrxFYtIjgTSRU4qpAZicilGkuQIhMyGAFc2zuMZyZEoDkOpNLpNhtyN2gpHpEKsAJWH+ViwEUPXSswtJjR6CjSTIrKep+VHy3kkRzgTE3SrlMpY6J8JpYZ5SC1/eEz+jjTJkRCiSPtKxp7fw2mM0U81k/fhGKDQwPMuaLA25udVKvDSWPLmLnLU6DZAQwM10uQTV2v5WodRxbJ85GFhuW7BxUcLhQVKM8oxssql87MP5+X8SmW5+kfH438Us+PpUA4/ZB2PcgfibGdAZ/bg8skee+/t+vuZvbgr24vJwh5P3mUdD7KdQad8O7gv3TaqxdsXDJz+b1/OP9UatSs7SxcXJXt8/2QPaLEzoJPh4rJ01aJPV+0/Z/bi/qzTuCvZg4vyVUsWb+u9qFPvyU61UCA5srmTpPL12+bAykFqCkH7uG18GYCHG1DSfYCQ5cN4yBktRKUCBLCQAp6iApWBFaDLwFqJOf1pDAqdG+lJp3l//pc3Dgrj0FvvAJPiGT+pkAu7XbXrF41tX6g+AuMw5EgqWsX4Dwcmla9k5UqOiIMhKpIjQxATRyRfliMYhFzOMfmpMJAanWTDtp+cELSfDMlYM+GthR4So2nMFLpdUBCgRpUs+PA99xLDug+KM0MMV2Lt3ibFQij+t/QaMB9JRQ3h63LQI6mCtepuyK0H9DzEvYFsAtVSMeBmSD7L/eeOuCdcCiNfIwSGcK3lVrgOPGTTIea+GWMbGMd5pt0zG7+prNPuHTjHbXY5Egs2jROwKHRStryeJxvKoWGWieQJHYTt3mepJpFhiKnobjD+OqvXookDAGEIzUpsKz8cQJlHkyoUXQf0bk/Cy77kj+iadTsWLUWPK3qNIb1GMZZmgS4lnegAcvSbyNzElIIZMkup3QTufryoC/M6hBqYMORKMKep3k796Bej862oqI8zc5x8nO2+kf2B1H4LuoSCDMweYqnmqcJUZmGGS81DDOWdHpFcUqbnxiI/ldu6CrxpBcWmK07RbVGGHI31yCs1p0opRuv6+6ga5dfy4yBcmBs+RFPRI+/o+tVuph8vHSG9sTPU3G1rbsVxjX6RXvPdvkrGl/o7A0fgQDEbdabdy6wdxAzIgWICtVM80cxyd93KdJWhJu7uunXaeTqh2UNw56Z5Oh5C+/dp97i4Gk/UyR2f8UTzORU9ZrT/jvHh+9/eXrbGlSAAAA==" /></Footer>{/* END_HRIS_BANKINFO_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_bankInfo
+      parameters:
+      - name: account_type
+        in: query
+        description: 'If provided, will only return BankInfo''s with this account type. Options: (''SAVINGS'', ''CHECKING'')
+
+
+          '
+        required: false
+        schema:
+          $ref: '#/components/schemas/BankInfoGetParametersAccountType'
+      - name: bank_name
+        in: query
+        description: If provided, will only return BankInfo's with this bank name.
+        required: false
+        schema:
+          type: string
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: employee_id
+        in: query
+        description: If provided, will only return bank accounts for this employee.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/BankInfoGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: order_by
+        in: query
+        description: 'Overrides the default ordering for this endpoint. Possible values include: remote_created_at, -remote_created_at.'
+        required: false
+        schema:
+          $ref: '#/components/schemas/BankInfoGetParametersOrderBy'
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_fields
+        in: query
+        description: Deprecated. Use show_enum_origins.
+        required: false
+        schema:
+          $ref: '#/components/schemas/BankInfoGetParametersRemoteFields'
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: show_enum_origins
+        in: query
+        description: A comma separated list of enum field names for which you'd like the original values to be returned, instead of Merge's normalized enum values. [Learn more](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+        required: false
+        schema:
+          $ref: '#/components/schemas/BankInfoGetParametersShowEnumOrigins'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBankInfoList'
+  /hris/v1/bank-info/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `BankInfo` object with the given `id`.{/* BEGIN_HRIS_BANKINFO_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+WYbW/iOBDHvwrySwRkKcvtFem04qFAH0g5oLvbW1XR4AyJwbGD47TAar/7KQQq2OuttqqPh+MdMeO/k59nPDP+Riho9KSakwrxFYtIjgTSRU4qpAZicilGkuQIhMyGAFc2zuMZyZEoDkOpNLpNhtyN2gpHpEKsAJWH+ViwEUPXSswtJjR6CjSTIrKep+VHy3kkRzgTE3SrlMpY6J8JpYZ5SC1/eEz+jjTJkRCiSPtKxp7fw2mM0U81k/fhGKDQwPMuaLA25udVKvDSWPLmLnLU6DZAQwM10uQTV2v5WodRxbJ85GFhuW7BxUcLhQVKM8oxssql87MP5+X8SmW5+kfH438Us+PpUA4/ZB2PcgfibGdAZ/bg8skee+/t+vuZvbgr24vJwh5P3mUdD7KdQad8O7gv3TaqxdsXDJz+b1/OP9UatSs7SxcXJXt8/2QPaLEzoJPh4rJ01aJPV+0/Z/bi/qzTuCvZg4vyVUsWb+u9qFPvyU61UCA5srmTpPL12+bAykFqCkH7uG18GYCHG1DSfYCQ5cN4yBktRKUCBLCQAp6iApWBFaDLwFqJOf1pDAqdG+lJp3l//pc3Dgrj0FvvAJPiGT+pkAu7XbXrF41tX6g+AuMw5EgqWsX4Dwcmla9k5UqOiIMhKpIjQxATRyRfliMYhFzOMfmpMJAanWTDtp+cELSfDMlYM+GthR4So2nMFLpdUBCgRpUs+PA99xLDug+KM0MMV2Lt3ibFQij+t/QaMB9JRQ3h63LQI6mCtepuyK0H9DzEvYFsAtVSMeBmSD7L/eeOuCdcCiNfIwSGcK3lVrgOPGTTIea+GWMbGMd5pt0zG7+prNPuHTjHbXY5Egs2jROwKHRStryeJxvKoWGWieQJHYTt3mepJpFhiKnobjD+OqvXookDAGEIzUpsKz8cQJlHkyoUXQf0bk/Cy77kj+iadTsWLUWPK3qNIb1GMZZmgS4lnegAcvSbyNzElIIZMkup3QTufryoC/M6hBqYMORKMKep3k796Bej862oqI8zc5x8nO2+kf2B1H4LuoSCDMweYqnmqcJUZmGGS81DDOWdHpFcUqbnxiI/ldu6CrxpBcWmK07RbVGGHI31yCs1p0opRuv6+6ga5dfy4yBcmBs+RFPRI+/o+tVuph8vHSG9sTPU3G1rbsVxjX6RXvPdvkrGl/o7A0fgQDEbdabdy6wdxAzIgWICtVM80cxyd93KdJWhJu7uunXaeTqh2UNw56Z5Oh5C+/dp97i4Gk/UyR2f8UTzORU9ZrT/jvHh+9/eXrbGlSAAAA==" /></Footer>{/* END_HRIS_BANKINFO_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_bankInfo
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/BankInfoIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: remote_fields
+        in: query
+        description: Deprecated. Use show_enum_origins.
+        required: false
+        schema:
+          $ref: '#/components/schemas/BankInfoIdGetParametersRemoteFields'
+      - name: show_enum_origins
+        in: query
+        description: A comma separated list of enum field names for which you'd like the original values to be returned, instead of Merge's normalized enum values. [Learn more](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+        required: false
+        schema:
+          $ref: '#/components/schemas/BankInfoIdGetParametersShowEnumOrigins'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BankInfo'
+components:
+  schemas:
+    AccountTypeEnum:
+      type: string
+      enum:
+      - SAVINGS
+      - CHECKING
+      title: AccountTypeEnum
+    BankInfo:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        employee:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The employee with this bank account.
+        account_number:
+          type:
+          - string
+          - 'null'
+          description: The account number.
+        routing_number:
+          type:
+          - string
+          - 'null'
+          description: The routing number.
+        bank_name:
+          type:
+          - string
+          - 'null'
+          description: The bank name.
+        account_type:
+          oneOf:
+          - $ref: '#/components/schemas/AccountTypeEnum'
+          - type: 'null'
+          description: The bank account type
+        remote_created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the matching bank object was created in the third party system.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/BankInfoFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The BankInfo Object
+
+        ### Description
+
+        The `BankInfo` object is used to represent the Bank Account information for an Employee.
+
+
+        ### Usage Example
+
+        Fetch from the `LIST BankInfo` endpoint and filter by `ID` to show all bank information.'
+      title: BankInfo
+    BankInfoIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - account_type
+      title: BankInfoIdGetParametersRemoteFields
+    BankInfoGetParametersRemoteFields:
+      type: string
+      enum:
+      - account_type
+      title: BankInfoGetParametersRemoteFields
+    BankInfoIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - employee
+      title: BankInfoIdGetParametersExpandSchemaItems
+    BankInfoGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - account_type
+      title: BankInfoGetParametersShowEnumOrigins
+    BankInfoGetParametersAccountType:
+      type: string
+      enum:
+      - CHECKING
+      - SAVINGS
+      title: BankInfoGetParametersAccountType
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    PaginatedBankInfoList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BankInfo'
+      title: PaginatedBankInfoList
+    BankInfoIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - account_type
+      title: BankInfoIdGetParametersShowEnumOrigins
+    BankInfoGetParametersOrderBy:
+      type: string
+      enum:
+      - -remote_created_at
+      - remote_created_at
+      title: BankInfoGetParametersOrderBy
+    BankInfoGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - employee
+      title: BankInfoGetParametersExpandSchemaItems
+    BankInfoFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: BankInfoFieldMappings
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

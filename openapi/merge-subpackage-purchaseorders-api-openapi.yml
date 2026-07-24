@@ -1,0 +1,1602 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_purchaseOrders API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_purchaseOrders
+paths:
+  /accounting/v1/purchase-orders:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `PurchaseOrder` objects.{/* BEGIN_ACCOUNTING_PURCHASEORDER_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+2YbW/aOhTHvwrySwRkLYOqSFdXFOhGdQldS6dVU2UdnENwSezUD5Qy7btfJYSnjYeOItRWe5c4x/8TH/vnv5MfhIFBX6onUiHAmLTCcOGTHAmlhwGpkEurWB80tpWHiuQIRNyFEJfC6fCY5Ii2USSVQe+cY+Dpzwp7pEKcEJWPeSt4j6PnzDs5XBj0FRguhXZmnfO9pDfJkYCLAXrVSYftcpPwfNryy612Aq4NyZEItDZ9Ja3fv8IHi/oZyvG7BRiiMBDkPTDgLKjk1URmVVs8Cg8DNOjVwUAdDbJ4uGnGvjGRrjhOH4OokGQveDh0UDigDGcBaqdUPD0+OS3lU5Uk+7/UD/45yt4/dGX3JEt9FlCw2VaHjdxO89G99z+6tY8jd3xTcseDsXs/+JClPmRbnVap3bkttuvVo/aKAHpd/nb69ax+duFm2bhRdO9vH90OO2p12KA7bhYvPrHHi89fRu749rhVvym6nUbp4pM8ateudKt2JVvVQoHkyOKsksr3H4sN6cJpcaaklj2TqT8JCDnTmWK5lDmzmgvUOlNDYRQEy2LNEHxcKNpktiDi+ch2A84KuliAEMZSwKMuMBk6IXocnFkyOk1Gi+USnSajaTJak4FU9HTUOC+XTwpRwkBSdS7FbOJIhTTcz1W31qgvr6XqEHgA3QBJxSiLv8FAKt+XSfqPC2waDAvpOiO5Nc891EzxKMm+LoYbDNc+jNJWKlOCV4c9WBCGm6e1AQpDaZByb22EgRGFcONojDQQ0IAL3BqpgA3ivSXdoDjqtbFWcEMjxRmSHGEyjEDE42BWKRQsvvQw4ENUTxQ8T6GOpbjWFqkHJu6UvFFcxvjJcsWosGE3KVxaAaYQDHoUzLwt5nL5jkZg+vOmpGzptY28uYA2YGycdVKaWVVWj3+IwpOK3MVaD5Yr9C5BQYgGVbzG7n7mngncORcgGGZAeJl2hFNg94LcZQCmJ1W4Ar00LaXznAdkbb40dmdtzzilC2drzHQ5vQo2d+Jt1pQixwULrOZDpLJHDYxeguTz8JuhthtFLppry9N3fzEkLhodq1H9YEHhBgrcaqf5tXEov9nGyMIkrw7AEeuD8JGqyTzuYFnJ2ZNau2E9v2MMYbS5dAfw0IWjfYSKS28d579O9iqoxVBylmRez3eIoUxW+FN8zKYGVfgejbitgAWYObeaS5GpBdJ6mcbV5X52lIk4nYjTRJw2ri5pnl5v22IObbRbN5HXdup9pzb9G75vEdDdUPxiORucSTnQmbaIh7ofCOey+Ymx05vecfns5OjVGPyL0Tq8O28C5gAflJvs7q+3TYG6Bh8zTWGAMbMflmJFmiqmHkaHQ+7qE3hLXvb3QPzG/xmlfvje4N/NN7+hkvvBO1ZKTfL9mOPr+tv6Cj4l2Z8A9Qd/hKZg7ePH0F6pufv5PwDWzQZVGwAA" /></Footer>{/* END_ACCOUNTING_PURCHASEORDER_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_purchaseOrders
+      parameters:
+      - name: company_id
+        in: query
+        description: If provided, will only return purchase orders for this company.
+        required: false
+        schema:
+          type: string
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/PurchaseOrdersGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_fields
+        in: query
+        description: Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: issue_date_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: issue_date_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_fields
+        in: query
+        description: Deprecated. Use show_enum_origins.
+        required: false
+        schema:
+          $ref: '#/components/schemas/PurchaseOrdersGetParametersRemoteFields'
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: show_enum_origins
+        in: query
+        description: A comma separated list of enum field names for which you'd like the original values to be returned, instead of Merge's normalized enum values. [Learn more](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+        required: false
+        schema:
+          $ref: '#/components/schemas/PurchaseOrdersGetParametersShowEnumOrigins'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPurchaseOrderList'
+    post:
+      operationId: create
+      summary: Create
+      description: Creates a `PurchaseOrder` object with the given values.{/* BEGIN_ACCOUNTING_PURCHASEORDER_CREATE_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST" data="H4sIAAAAAAAAA8WUbW8aORDHv0rllwh2j1AaBel0IoE2RGJpE1JdVFXWYE8WBz8sfiAJVb/7ybvbAGlyaaq0fYN2hpm/PePfzBfCwGNu7C3pEWDMBO2FzkmTKMNRkh55Hyybg8OJ5WhJk0AhMlC4E05Xe6RJXCgKYz3ytwIld8cWL0mPpAptjq2gxaVAnm6SUqE95ha8MNqld8mtyzKbNIkUeoG8XyU8LVeFt2rPPdOlUjhPmqQA5/zcmpDPT3EZ0P2AcrybRIXag2xx8JBuqbRsJfOQL1bBUaJHPgAPA/TIYrn1iXPvC9dL0znKIilPTziuUtQpWC+YRJd2Owd7+wfdVq1Snv4PzeXf7cbVcmZm+w2aM0khNMZTdpNNR9fZVf46O3p9k63Pu9l6sc6uFn81aA6N8XTcnUwvOpNBvz15IICevfn34OPh4PAka7D1sJNdXVxnU9YeT9lith51Tt6x65PjDzfZ+mJvPDjvZNNh9+SdaU+OTt346NSM+0lCmmT7VUnv05dtRw1Ohv4sCI+70SMFOW51pXoOKESrCDMpWOI6CShYGw3XLmFGpQq5gDRD76IadcsAFpOixLdsmDD6rufx3P509HG4C0F/BULCTCLpeRvwO4pJ7xNhRhWgb0mTsGAtahY/8YbNQedILVSVOBeQ8sqQQiMVHlUkQKEy5aG3ESHq0apo1nNFTRwsqoOalfNlURmPlFkEj5yC3/juJqO2Bd98h4Jv4p0HH2KgNx4kBRVJjqYFtojzWg+9wBi0Qs2NJZ+j1jIIi/w9WFDo0VblP170Tp0bI9m58I5FmQR3L7q6Zem4u+oPKHy799fmQ5B9CIItDo1ZuFcTHbVfhraNbKvijZ5f7r053G//Cu42jWfBeaNKQP4AeL8JtK3noUX8JyZ970zq1fxs5J4MeQSlM8jx1Uh7YMy/DEVRkdaK9KziaLUSmduH/+FomB33s6Ph4IU2GEcpVmhvv7HzfLB+A0mrJ5i5X8RjGyn+7nqWAbQXPnbi5zfXg5w/Z3d9/vofpgAaQIMJAAA=" /></Footer>{/* END_ACCOUNTING_PURCHASEORDER_CREATE_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_purchaseOrders
+      parameters:
+      - name: is_debug_mode
+        in: query
+        description: Whether to include debug fields (such as log file links) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: run_async
+        in: query
+        description: Whether or not third-party updates should be run asynchronously.
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PurchaseOrderResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PurchaseOrderEndpointRequest'
+  /accounting/v1/purchase-orders/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `PurchaseOrder` object with the given `id`.{/* BEGIN_ACCOUNTING_PURCHASEORDER_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+2YbW/aOhTHvwrySwRkLYOqSFdXFOhGdQldS6dVU2UdnENwSezUD5Qy7btfJYSnjYeOItRWe5c4x/8TH/vnv5MfhIFBX6onUiHAmLTCcOGTHAmlhwGpkEurWB80tpWHiuQIRNyFEJfC6fCY5Ii2USSVQe+cY+Dpzwp7pEKcEJWPeSt4j6PnzDs5XBj0FRguhXZmnfO9pDfJkYCLAXrVSYftcpPwfNryy612Aq4NyZEItDZ9Ja3fv8IHi/oZyvG7BRiiMBDkPTDgLKjk1URmVVs8Cg8DNOjVwUAdDbJ4uGnGvjGRrjhOH4OokGQveDh0UDigDGcBaqdUPD0+OS3lU5Uk+7/UD/45yt4/dGX3JEt9FlCw2VaHjdxO89G99z+6tY8jd3xTcseDsXs/+JClPmRbnVap3bkttuvVo/aKAHpd/nb69ax+duFm2bhRdO9vH90OO2p12KA7bhYvPrHHi89fRu749rhVvym6nUbp4pM8ateudKt2JVvVQoHkyOKsksr3H4sN6cJpcaaklj2TqT8JCDnTmWK5lDmzmgvUOlNDYRQEy2LNEHxcKNpktiDi+ch2A84KuliAEMZSwKMuMBk6IXocnFkyOk1Gi+USnSajaTJak4FU9HTUOC+XTwpRwkBSdS7FbOJIhTTcz1W31qgvr6XqEHgA3QBJxSiLv8FAKt+XSfqPC2waDAvpOiO5Nc891EzxKMm+LoYbDNc+jNJWKlOCV4c9WBCGm6e1AQpDaZByb22EgRGFcONojDQQ0IAL3BqpgA3ivSXdoDjqtbFWcEMjxRmSHGEyjEDE42BWKRQsvvQw4ENUTxQ8T6GOpbjWFqkHJu6UvFFcxvjJcsWosGE3KVxaAaYQDHoUzLwt5nL5jkZg+vOmpGzptY28uYA2YGycdVKaWVVWj3+IwpOK3MVaD5Yr9C5BQYgGVbzG7n7mngncORcgGGZAeJl2hFNg94LcZQCmJ1W4Ar00LaXznAdkbb40dmdtzzilC2drzHQ5vQo2d+Jt1pQixwULrOZDpLJHDYxeguTz8JuhthtFLppry9N3fzEkLhodq1H9YEHhBgrcaqf5tXEov9nGyMIkrw7AEeuD8JGqyTzuYFnJ2ZNau2E9v2MMYbS5dAfw0IWjfYSKS28d579O9iqoxVBylmRez3eIoUxW+FN8zKYGVfgejbitgAWYObeaS5GpBdJ6mcbV5X52lIk4nYjTRJw2ri5pnl5v22IObbRbN5HXdup9pzb9G75vEdDdUPxiORucSTnQmbaIh7ofCOey+Ymx05vecfns5OjVGPyL0Tq8O28C5gAflJvs7q+3TYG6Bh8zTWGAMbMflmJFmiqmHkaHQ+7qE3hLXvb3QPzG/xmlfvje4N/NN7+hkvvBO1ZKTfL9mOPr+tv6Cj4l2Z8A9Qd/hKZg7ePH0F6pufv5PwDWzQZVGwAA" /></Footer>{/* END_ACCOUNTING_PURCHASEORDER_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_purchaseOrders
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/PurchaseOrdersIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_fields
+        in: query
+        description: Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: remote_fields
+        in: query
+        description: Deprecated. Use show_enum_origins.
+        required: false
+        schema:
+          $ref: '#/components/schemas/PurchaseOrdersIdGetParametersRemoteFields'
+      - name: show_enum_origins
+        in: query
+        description: A comma separated list of enum field names for which you'd like the original values to be returned, instead of Merge's normalized enum values. [Learn more](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+        required: false
+        schema:
+          $ref: '#/components/schemas/PurchaseOrdersIdGetParametersShowEnumOrigins'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PurchaseOrder'
+  /accounting/v1/purchase-orders/line-items/remote-field-classes:
+    get:
+      operationId: line-items-remote-field-classes-list
+      summary: Line Items Remote Field Classes List
+      description: Returns a list of `RemoteFieldClass` objects.{/* BEGIN_ACCOUNTING_PURCHASEORDER_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+2YbW/aOhTHvwrySwRkLYOqSFdXFOhGdQldS6dVU2UdnENwSezUD5Qy7btfJYSnjYeOItRWe5c4x/8TH/vnv5MfhIFBX6onUiHAmLTCcOGTHAmlhwGpkEurWB80tpWHiuQIRNyFEJfC6fCY5Ii2USSVQe+cY+Dpzwp7pEKcEJWPeSt4j6PnzDs5XBj0FRguhXZmnfO9pDfJkYCLAXrVSYftcpPwfNryy612Aq4NyZEItDZ9Ja3fv8IHi/oZyvG7BRiiMBDkPTDgLKjk1URmVVs8Cg8DNOjVwUAdDbJ4uGnGvjGRrjhOH4OokGQveDh0UDigDGcBaqdUPD0+OS3lU5Uk+7/UD/45yt4/dGX3JEt9FlCw2VaHjdxO89G99z+6tY8jd3xTcseDsXs/+JClPmRbnVap3bkttuvVo/aKAHpd/nb69ax+duFm2bhRdO9vH90OO2p12KA7bhYvPrHHi89fRu749rhVvym6nUbp4pM8ateudKt2JVvVQoHkyOKsksr3H4sN6cJpcaaklj2TqT8JCDnTmWK5lDmzmgvUOlNDYRQEy2LNEHxcKNpktiDi+ch2A84KuliAEMZSwKMuMBk6IXocnFkyOk1Gi+USnSajaTJak4FU9HTUOC+XTwpRwkBSdS7FbOJIhTTcz1W31qgvr6XqEHgA3QBJxSiLv8FAKt+XSfqPC2waDAvpOiO5Nc891EzxKMm+LoYbDNc+jNJWKlOCV4c9WBCGm6e1AQpDaZByb22EgRGFcONojDQQ0IAL3BqpgA3ivSXdoDjqtbFWcEMjxRmSHGEyjEDE42BWKRQsvvQw4ENUTxQ8T6GOpbjWFqkHJu6UvFFcxvjJcsWosGE3KVxaAaYQDHoUzLwt5nL5jkZg+vOmpGzptY28uYA2YGycdVKaWVVWj3+IwpOK3MVaD5Yr9C5BQYgGVbzG7n7mngncORcgGGZAeJl2hFNg94LcZQCmJ1W4Ar00LaXznAdkbb40dmdtzzilC2drzHQ5vQo2d+Jt1pQixwULrOZDpLJHDYxeguTz8JuhthtFLppry9N3fzEkLhodq1H9YEHhBgrcaqf5tXEov9nGyMIkrw7AEeuD8JGqyTzuYFnJ2ZNau2E9v2MMYbS5dAfw0IWjfYSKS28d579O9iqoxVBylmRez3eIoUxW+FN8zKYGVfgejbitgAWYObeaS5GpBdJ6mcbV5X52lIk4nYjTRJw2ri5pnl5v22IObbRbN5HXdup9pzb9G75vEdDdUPxiORucSTnQmbaIh7ofCOey+Ymx05vecfns5OjVGPyL0Tq8O28C5gAflJvs7q+3TYG6Bh8zTWGAMbMflmJFmiqmHkaHQ+7qE3hLXvb3QPzG/xmlfvje4N/NN7+hkvvBO1ZKTfL9mOPr+tv6Cj4l2Z8A9Qd/hKZg7ePH0F6pufv5PwDWzQZVGwAA" /></Footer>{/* END_ACCOUNTING_PURCHASEORDER_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_purchaseOrders
+      parameters:
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: is_common_model_field
+        in: query
+        description: If provided, will only return remote field classes with this is_common_model_field value
+        required: false
+        schema:
+          type: boolean
+      - name: is_custom
+        in: query
+        description: If provided, will only return remote fields classes with this is_custom value
+        required: false
+        schema:
+          type: boolean
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRemoteFieldClassList'
+  /accounting/v1/purchase-orders/meta/post:
+    get:
+      operationId: meta-post-retrieve
+      summary: Meta Post Retrieve
+      description: Returns metadata for `PurchaseOrder` POSTs.{/* BEGIN_ACCOUNTING_PURCHASEORDER_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+2YbW/aOhTHvwrySwRkLYOqSFdXFOhGdQldS6dVU2UdnENwSezUD5Qy7btfJYSnjYeOItRWe5c4x/8TH/vnv5MfhIFBX6onUiHAmLTCcOGTHAmlhwGpkEurWB80tpWHiuQIRNyFEJfC6fCY5Ii2USSVQe+cY+Dpzwp7pEKcEJWPeSt4j6PnzDs5XBj0FRguhXZmnfO9pDfJkYCLAXrVSYftcpPwfNryy612Aq4NyZEItDZ9Ja3fv8IHi/oZyvG7BRiiMBDkPTDgLKjk1URmVVs8Cg8DNOjVwUAdDbJ4uGnGvjGRrjhOH4OokGQveDh0UDigDGcBaqdUPD0+OS3lU5Uk+7/UD/45yt4/dGX3JEt9FlCw2VaHjdxO89G99z+6tY8jd3xTcseDsXs/+JClPmRbnVap3bkttuvVo/aKAHpd/nb69ax+duFm2bhRdO9vH90OO2p12KA7bhYvPrHHi89fRu749rhVvym6nUbp4pM8ateudKt2JVvVQoHkyOKsksr3H4sN6cJpcaaklj2TqT8JCDnTmWK5lDmzmgvUOlNDYRQEy2LNEHxcKNpktiDi+ch2A84KuliAEMZSwKMuMBk6IXocnFkyOk1Gi+USnSajaTJak4FU9HTUOC+XTwpRwkBSdS7FbOJIhTTcz1W31qgvr6XqEHgA3QBJxSiLv8FAKt+XSfqPC2waDAvpOiO5Nc891EzxKMm+LoYbDNc+jNJWKlOCV4c9WBCGm6e1AQpDaZByb22EgRGFcONojDQQ0IAL3BqpgA3ivSXdoDjqtbFWcEMjxRmSHGEyjEDE42BWKRQsvvQw4ENUTxQ8T6GOpbjWFqkHJu6UvFFcxvjJcsWosGE3KVxaAaYQDHoUzLwt5nL5jkZg+vOmpGzptY28uYA2YGycdVKaWVVWj3+IwpOK3MVaD5Yr9C5BQYgGVbzG7n7mngncORcgGGZAeJl2hFNg94LcZQCmJ1W4Ar00LaXznAdkbb40dmdtzzilC2drzHQ5vQo2d+Jt1pQixwULrOZDpLJHDYxeguTz8JuhthtFLppry9N3fzEkLhodq1H9YEHhBgrcaqf5tXEov9nGyMIkrw7AEeuD8JGqyTzuYFnJ2ZNau2E9v2MMYbS5dAfw0IWjfYSKS28d579O9iqoxVBylmRez3eIoUxW+FN8zKYGVfgejbitgAWYObeaS5GpBdJ6mcbV5X52lIk4nYjTRJw2ri5pnl5v22IObbRbN5HXdup9pzb9G75vEdDdUPxiORucSTnQmbaIh7ofCOey+Ymx05vecfns5OjVGPyL0Tq8O28C5gAflJvs7q+3TYG6Bh8zTWGAMbMflmJFmiqmHkaHQ+7qE3hLXvb3QPzG/xmlfvje4N/NN7+hkvvBO1ZKTfL9mOPr+tv6Cj4l2Z8A9Qd/hKZg7ePH0F6pufv5PwDWzQZVGwAA" /></Footer>{/* END_ACCOUNTING_PURCHASEORDER_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_purchaseOrders
+      parameters:
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaResponse'
+  /accounting/v1/purchase-orders/remote-field-classes:
+    get:
+      operationId: remote-field-classes-list
+      summary: Remote Field Classes List
+      description: Returns a list of `RemoteFieldClass` objects.{/* BEGIN_ACCOUNTING_PURCHASEORDER_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+2YbW/aOhTHvwrySwRkLYOqSFdXFOhGdQldS6dVU2UdnENwSezUD5Qy7btfJYSnjYeOItRWe5c4x/8TH/vnv5MfhIFBX6onUiHAmLTCcOGTHAmlhwGpkEurWB80tpWHiuQIRNyFEJfC6fCY5Ii2USSVQe+cY+Dpzwp7pEKcEJWPeSt4j6PnzDs5XBj0FRguhXZmnfO9pDfJkYCLAXrVSYftcpPwfNryy612Aq4NyZEItDZ9Ja3fv8IHi/oZyvG7BRiiMBDkPTDgLKjk1URmVVs8Cg8DNOjVwUAdDbJ4uGnGvjGRrjhOH4OokGQveDh0UDigDGcBaqdUPD0+OS3lU5Uk+7/UD/45yt4/dGX3JEt9FlCw2VaHjdxO89G99z+6tY8jd3xTcseDsXs/+JClPmRbnVap3bkttuvVo/aKAHpd/nb69ax+duFm2bhRdO9vH90OO2p12KA7bhYvPrHHi89fRu749rhVvym6nUbp4pM8ateudKt2JVvVQoHkyOKsksr3H4sN6cJpcaaklj2TqT8JCDnTmWK5lDmzmgvUOlNDYRQEy2LNEHxcKNpktiDi+ch2A84KuliAEMZSwKMuMBk6IXocnFkyOk1Gi+USnSajaTJak4FU9HTUOC+XTwpRwkBSdS7FbOJIhTTcz1W31qgvr6XqEHgA3QBJxSiLv8FAKt+XSfqPC2waDAvpOiO5Nc891EzxKMm+LoYbDNc+jNJWKlOCV4c9WBCGm6e1AQpDaZByb22EgRGFcONojDQQ0IAL3BqpgA3ivSXdoDjqtbFWcEMjxRmSHGEyjEDE42BWKRQsvvQw4ENUTxQ8T6GOpbjWFqkHJu6UvFFcxvjJcsWosGE3KVxaAaYQDHoUzLwt5nL5jkZg+vOmpGzptY28uYA2YGycdVKaWVVWj3+IwpOK3MVaD5Yr9C5BQYgGVbzG7n7mngncORcgGGZAeJl2hFNg94LcZQCmJ1W4Ar00LaXznAdkbb40dmdtzzilC2drzHQ5vQo2d+Jt1pQixwULrOZDpLJHDYxeguTz8JuhthtFLppry9N3fzEkLhodq1H9YEHhBgrcaqf5tXEov9nGyMIkrw7AEeuD8JGqyTzuYFnJ2ZNau2E9v2MMYbS5dAfw0IWjfYSKS28d579O9iqoxVBylmRez3eIoUxW+FN8zKYGVfgejbitgAWYObeaS5GpBdJ6mcbV5X52lIk4nYjTRJw2ri5pnl5v22IObbRbN5HXdup9pzb9G75vEdDdUPxiORucSTnQmbaIh7ofCOey+Ymx05vecfns5OjVGPyL0Tq8O28C5gAflJvs7q+3TYG6Bh8zTWGAMbMflmJFmiqmHkaHQ+7qE3hLXvb3QPzG/xmlfvje4N/NN7+hkvvBO1ZKTfL9mOPr+tv6Cj4l2Z8A9Qd/hKZg7ePH0F6pufv5PwDWzQZVGwAA" /></Footer>{/* END_ACCOUNTING_PURCHASEORDER_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_purchaseOrders
+      parameters:
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: is_common_model_field
+        in: query
+        description: If provided, will only return remote field classes with this is_common_model_field value
+        required: false
+        schema:
+          type: boolean
+      - name: is_custom
+        in: query
+        description: If provided, will only return remote fields classes with this is_custom value
+        required: false
+        schema:
+          type: boolean
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRemoteFieldClassList'
+components:
+  schemas:
+    PurchaseOrderEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/PurchaseOrderRequest'
+      required:
+      - model
+      title: PurchaseOrderEndpointRequest
+    PurchaseOrderResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/PurchaseOrder'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: PurchaseOrderResponse
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    RemoteFieldRequest:
+      type: object
+      properties:
+        remote_field_class:
+          type: string
+          format: uuid
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteFieldRequest
+    ItemTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemTypeEnum
+    ItemFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemFormatEnum
+    PurchaseOrdersIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - status
+      title: PurchaseOrdersIdGetParametersShowEnumOrigins
+    PurchaseOrdersGetParametersRemoteFields:
+      type: string
+      enum:
+      - status
+      title: PurchaseOrdersGetParametersRemoteFields
+    PaginatedPurchaseOrderList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PurchaseOrder'
+      title: PaginatedPurchaseOrderList
+    PurchaseOrderLineItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        description:
+          type:
+          - string
+          - 'null'
+          description: A description of the good being purchased.
+        unit_price:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The line item's unit price.
+        quantity:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The line item's quantity.
+        item:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The purchase order line item's account.
+        tracking_category:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The purchase order line item's associated tracking category.
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: The purchase order line item's associated tracking categories.
+        tax_amount:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The purchase order line item's tax amount.
+        total_line_amount:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The purchase order line item's total amount.
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: The purchase order line item's currency. The currency code in ISO 4217 format.
+        tax_rate:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The tax rate that applies to this line item.
+        exchange_rate:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The purchase order line item's exchange rate.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the purchase order line item belongs to.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteField'
+      description: '# The PurchaseOrderLineItem Object
+
+        ### Description
+
+        The `PurchaseOrderLineItem` object is used to represent a purchase order''s line item.
+
+
+        ### Usage Example
+
+        Fetch from the `GET PurchaseOrder` endpoint and view a company''s purchase orders.'
+      title: PurchaseOrderLineItem
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    PurchaseOrdersGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - accounting_period
+      - company
+      - delivery_address
+      - line_items
+      - payment_term
+      - tracking_categories
+      - vendor
+      title: PurchaseOrdersGetParametersExpandSchemaItems
+    PurchaseOrderLineItemRequest:
+      type: object
+      properties:
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        description:
+          type:
+          - string
+          - 'null'
+          description: A description of the good being purchased.
+        unit_price:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The line item's unit price.
+        quantity:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The line item's quantity.
+        item:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The purchase order line item's account.
+        tracking_category:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The purchase order line item's associated tracking category.
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: The purchase order line item's associated tracking categories.
+        tax_amount:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The purchase order line item's tax amount.
+        total_line_amount:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The purchase order line item's total amount.
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: The purchase order line item's currency. The currency code in ISO 4217 format.
+        tax_rate:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The tax rate that applies to this line item.
+        exchange_rate:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The purchase order line item's exchange rate.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the purchase order line item belongs to.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldRequest'
+      description: '# The PurchaseOrderLineItem Object
+
+        ### Description
+
+        The `PurchaseOrderLineItem` object is used to represent a purchase order''s line item.
+
+
+        ### Usage Example
+
+        Fetch from the `GET PurchaseOrder` endpoint and view a company''s purchase orders.'
+      title: PurchaseOrderLineItemRequest
+    PurchaseOrderRequest:
+      type: object
+      properties:
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/PurchaseOrderStatusEnum'
+          - type: 'null'
+          description: The purchase order's status.
+        issue_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The purchase order's issue date.
+        delivery_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The purchase order's delivery date.
+        delivery_address:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The purchase order's delivery address.
+        customer:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The contact making the purchase order.
+        vendor:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The party fulfilling the purchase order.
+        memo:
+          type:
+          - string
+          - 'null'
+          description: A memo attached to the purchase order.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the purchase order belongs to.
+        total_amount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The purchase order's total amount.
+        payment_term:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The payment term that applies to this transaction.
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: The purchase order's currency. The currency code in ISO 4217 format.
+        inclusive_of_tax:
+          type:
+          - boolean
+          - 'null'
+          description: If the transaction is inclusive or exclusive of tax. `True` if inclusive, `False` if exclusive.
+        exchange_rate:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The purchase order's exchange rate.
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+        line_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/PurchaseOrderLineItemRequest'
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldRequest'
+      description: '# The PurchaseOrder Object
+
+        ### Description
+
+        The `PurchaseOrder` object is a record of request for a product or service between a buyer and seller.
+
+
+        ### Usage Example
+
+        Fetch from the `LIST PurchaseOrders` endpoint and view a company''s purchase orders.'
+      title: PurchaseOrderRequest
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    PurchaseOrdersIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - accounting_period
+      - company
+      - delivery_address
+      - line_items
+      - payment_term
+      - tracking_categories
+      - vendor
+      title: PurchaseOrdersIdGetParametersExpandSchemaItems
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    PurchaseOrdersIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - status
+      title: PurchaseOrdersIdGetParametersRemoteFields
+    PaginatedRemoteFieldClassList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldClass'
+      title: PaginatedRemoteFieldClassList
+    PurchaseOrderStatusEnum:
+      type: string
+      enum:
+      - DRAFT
+      - SUBMITTED
+      - AUTHORIZED
+      - BILLED
+      - DELETED
+      title: PurchaseOrderStatusEnum
+    ItemSchema:
+      type: object
+      properties:
+        item_type:
+          $ref: '#/components/schemas/ItemTypeEnum'
+        item_format:
+          $ref: '#/components/schemas/ItemFormatEnum'
+        item_choices:
+          type: array
+          items:
+            type: string
+      title: ItemSchema
+    PurchaseOrderFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: PurchaseOrderFieldMappings
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    RemoteField:
+      type: object
+      properties:
+        remote_field_class:
+          $ref: '#/components/schemas/RemoteFieldClass'
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteField
+    RemoteFieldClass:
+      type: object
+      properties:
+        id:
+          type: string
+        display_name:
+          type: string
+        remote_key_name:
+          type: string
+        description:
+          type: string
+        is_custom:
+          type: boolean
+        is_common_model_field:
+          type: boolean
+        is_required:
+          type: boolean
+        field_type:
+          $ref: '#/components/schemas/FieldTypeEnum'
+        field_format:
+          $ref: '#/components/schemas/FieldFormatEnum'
+        field_choices:
+          type: array
+          items:
+            type: string
+        item_schema:
+          $ref: '#/components/schemas/ItemSchema'
+      title: RemoteFieldClass
+    FieldFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldFormatEnum
+    PurchaseOrder:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/PurchaseOrderStatusEnum'
+          - type: 'null'
+          description: The purchase order's status.
+        issue_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The purchase order's issue date.
+        purchase_order_number:
+          type:
+          - string
+          - 'null'
+          description: The human-readable number of the purchase order.
+        delivery_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The purchase order's delivery date.
+        delivery_address:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The purchase order's delivery address.
+        customer:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The contact making the purchase order.
+        vendor:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The party fulfilling the purchase order.
+        memo:
+          type:
+          - string
+          - 'null'
+          description: A memo attached to the purchase order.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the purchase order belongs to.
+        total_amount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The purchase order's total amount.
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: The purchase order's currency. The currency code in ISO 4217 format.
+        exchange_rate:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The purchase order's exchange rate.
+        payment_term:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The payment term that applies to this transaction.
+        line_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/PurchaseOrderLineItem'
+        inclusive_of_tax:
+          type:
+          - boolean
+          - 'null'
+          description: If the transaction is inclusive or exclusive of tax. `True` if inclusive, `False` if exclusive.
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+        accounting_period:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The accounting period that the PurchaseOrder was generated in.
+        remote_created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's purchase order note was created.
+        remote_updated_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's purchase order note was updated.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/PurchaseOrderFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteField'
+      description: '# The PurchaseOrder Object
+
+        ### Description
+
+        A `PurchaseOrder` represents a request to purchase goods or services from a vendor. It outlines the details of the purchase, such as the items or services requested, quantities, prices, and delivery details.
+
+
+        A `PurchaseOrder` is a crucial component of the procurement process, but does not typically result in any impact on the company’s general ledger. The general ledger is typically only affected when the `PurchaseOrder` is fulfilled as an *Accounts Payable* `Invoice` object (also known as a Bill).
+
+
+        ### Usage Example
+
+        Fetch from the `LIST PurchaseOrders` endpoint and view a company''s purchase orders.'
+      title: PurchaseOrder
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    TransactionCurrencyEnum:
+      type: string
+      enum:
+      - XUA
+      - AFN
+      - AFA
+      - ALL
+      - ALK
+      - DZD
+      - ADP
+      - AOA
+      - AOK
+      - AON
+      - AOR
+      - ARA
+      - ARS
+      - ARM
+      - ARP
+      - ARL
+      - AMD
+      - AWG
+      - AUD
+      - ATS
+      - AZN
+      - AZM
+      - BSD
+      - BHD
+      - BDT
+      - BBD
+      - BYN
+      - BYB
+      - BYR
+      - BEF
+      - BEC
+      - BEL
+      - BZD
+      - BMD
+      - BTN
+      - BOB
+      - BOL
+      - BOV
+      - BOP
+      - BAM
+      - BAD
+      - BAN
+      - BWP
+      - BRC
+      - BRZ
+      - BRE
+      - BRR
+      - BRN
+      - BRB
+      - BRL
+      - GBP
+      - BND
+      - BGL
+      - BGN
+      - BGO
+      - BGM
+      - BUK
+      - BIF
+      - XPF
+      - KHR
+      - CAD
+      - CVE
+      - KYD
+      - XAF
+      - CLE
+      - CLP
+      - CLF
+      - CNX
+      - CNY
+      - CNH
+      - COP
+      - COU
+      - KMF
+      - CDF
+      - CRC
+      - HRD
+      - HRK
+      - CUC
+      - CUP
+      - CYP
+      - CZK
+      - CSK
+      - DKK
+      - DJF
+      - DOP
+      - NLG
+      - XCD
+      - DDM
+      - ECS
+      - ECV
+      - EGP
+      - GQE
+      - ERN
+      - EEK
+      - ETB
+      - EUR
+      - XBA
+      - XEU
+      - XBB
+      - XBC
+      - XBD
+      - FKP
+      - FJD
+      - FIM
+      - FRF
+      - XFO
+      - XFU
+      - GMD
+      - GEK
+      - GEL
+      - DEM
+      - GHS
+      - GHC
+      - GIP
+      - XAU
+      - GRD
+      - GTQ
+      - GWP
+      - GNF
+      - GNS
+      - GYD
+      - HTG
+      - HNL
+      - HKD
+      - HUF
+      - IMP
+      - ISK
+      - ISJ
+      - INR
+      - IDR
+      - IRR
+      - IQD
+      - IEP
+      - ILS
+      - ILP
+      - ILR
+      - ITL
+      - JMD
+      - JPY
+      - JOD
+      - KZT
+      - KES
+      - KWD
+      - KGS
+      - LAK
+      - LVL
+      - LVR
+      - LBP
+      - LSL
+      - LRD
+      - LYD
+      - LTL
+      - LTT
+      - LUL
+      - LUC
+      - LUF
+      - MOP
+      - MKD
+      - MKN
+      - MGA
+      - MGF
+      - MWK
+      - MYR
+      - MVR
+      - MVP
+      - MLF
+      - MTL
+      - MTP
+      - MRU
+      - MRO
+      - MUR
+      - MXV
+      - MXN
+      - MXP
+      - MDC
+      - MDL
+      - MCF
+      - MNT
+      - MAD
+      - MAF
+      - MZE
+      - MZN
+      - MZM
+      - MMK
+      - NAD
+      - NPR
+      - ANG
+      - TWD
+      - NZD
+      - NIO
+      - NIC
+      - NGN
+      - KPW
+      - NOK
+      - OMR
+      - PKR
+      - XPD
+      - PAB
+      - PGK
+      - PYG
+      - PEI
+      - PEN
+      - PES
+      - PHP
+      - XPT
+      - PLN
+      - PLZ
+      - PTE
+      - GWE
+      - QAR
+      - XRE
+      - RHD
+      - RON
+      - ROL
+      - RUB
+      - RUR
+      - RWF
+      - SVC
+      - WST
+      - SAR
+      - RSD
+      - CSD
+      - SCR
+      - SLL
+      - XAG
+      - SGD
+      - SKK
+      - SIT
+      - SBD
+      - SOS
+      - ZAR
+      - ZAL
+      - KRH
+      - KRW
+      - KRO
+      - SSP
+      - SUR
+      - ESP
+      - ESA
+      - ESB
+      - XDR
+      - LKR
+      - SHP
+      - XSU
+      - SDD
+      - SDG
+      - SDP
+      - SRD
+      - SRG
+      - SZL
+      - SEK
+      - CHF
+      - SYP
+      - STN
+      - STD
+      - TVD
+      - TJR
+      - TJS
+      - TZS
+      - XTS
+      - THB
+      - XXX
+      - TPE
+      - TOP
+      - TTD
+      - TND
+      - TRY
+      - TRL
+      - TMT
+      - TMM
+      - USD
+      - USN
+      - USS
+      - UGX
+      - UGS
+      - UAH
+      - UAK
+      - AED
+      - UYW
+      - UYU
+      - UYP
+      - UYI
+      - UZS
+      - VUV
+      - VES
+      - VEB
+      - VEF
+      - VND
+      - VNN
+      - CHE
+      - CHW
+      - XOF
+      - YDD
+      - YER
+      - YUN
+      - YUD
+      - YUM
+      - YUR
+      - ZWN
+      - ZRN
+      - ZRZ
+      - ZMW
+      - ZMK
+      - ZWD
+      - ZWR
+      - ZWL
+      description: The currency code in ISO 4217 format.
+      title: TransactionCurrencyEnum
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    PurchaseOrdersGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - status
+      title: PurchaseOrdersGetParametersShowEnumOrigins
+    FieldTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldTypeEnum
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

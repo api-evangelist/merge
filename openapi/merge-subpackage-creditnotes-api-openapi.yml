@@ -1,0 +1,1584 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_creditNotes API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_creditNotes
+paths:
+  /accounting/v1/credit-notes:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `CreditNote` objects.{/* BEGIN_ACCOUNTING_CREDITNOTE_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+1ZbVMiORD+K1Q+WsCcsmhJ1dUVb656y+gqbultWamYaYfATDLmBYGt/e9XGQYHcAC5xdfbb5B0ujPdTz/dSX4gSjT4Qg5RBRFKheGacR/lUSg8CFAF1SV4TLtCA8ojEjGXhDAji/s7KI+UiSIhNXgHDAJPHUq4RRXkhCB9KBjObhl4TrrIYVyDL4lmgivnYXHhNl6N8ihgvAdedbxgtbqxeCEZmfurnIApjfIoIkrpjhTG75zBnQH1BM12bwGEwDUJCh7RxJnSUpBjNVlj9is8CECD1yCaNEADtZ+bWOxoHamK43QgiIqx9aIHfQe4Q6RmNADllEv7O3v75UKiJbb+F/aDP7e3unc34mZvC/s0wMRstdp04LaP7t2u/8mtfxq4o4uyO+qN3G7vjy3sk61Wu1U+aV+VThrV7ZMMAXy+e7n/rdaoHbtbdNQsud2re7dNt1tt2rsZHZWOP9P748OvA3d0tdNqXJTcdrN8/Flsn9TPVKt+JlrVYhHl0XRUUeX7j+mBBDgHElSnJkTP+mdq+igkPkz5ZRwQErFCZG4CRouqVCQhGQlO7lWRitAJwWPESfXh8ztDJOAvwhfFbmRBHHuOCf7gfFRBTfew6tabjVk8VPuEBeQmAFTR0sAjQKPKd0SNlMDpEOURtx9jFQwtMuynSAiFBmxjNPsPR0R30iHm2WzRRBu7SgtNAkxCizb7VxKuSLxTu9aa0MMI0LVdfmeYBO+USBKCBmm3dP0zn+XjFqNSKHGrc40hJyGjKlfaLedqRjEOSuXqwLUkwWYC8GAMT4zh0m4ZT4zhxBiui0BIvD9oHuzu7hUjvvn4pFT1hXE40hAWk0RG+axJKsKI8OGCyXgI8zHxZQh4oKhkUbzrTAGmIcyeuTOEa6YXWJ4GSsb0GDIB45DiJktMEtqz9JwQPAOVLWg40ziSjNrvPB0DOvVfFAUMvNTSvADjfZG9NMkNlEepn6ngmtB4LM2l+FOss+wGuQlvQKbpQiUQbTeg182x5LeJvFTBkrzLcNaGstEFfW5YvHwD6eaCVlYbVjHbLUkkt9o++tb8lTSqRlEwtAF9jINlQomvskQWZVUqkQJq7XRelbFTmFsrXeNWCBuzKCMjKboQo3rjuU4GWM57840ywaz7n84TXWEkJwG2ZWK4lEemes4IJBPWaZNtTVXiyZAWsW/UagaCAe0Q7sPE14zTwCjWByxusSaDeZKaAUTSCkwTF2E89nfskTfKZWuS2IkkNIDcgVFM8Fw9EMbLNc9ON8NpY+V4rBzHynHz7BQXkpbuWbqFtQE+R2//pRLOz8yCYMnsBBQLRJi3bjy/GkZ7cducO+EW3JuJZKq2MK5P+OJ2Z7e2t/27Tr1IZxlCKF6riCUoXi4wAfLHroUrqOIFSuUTy+ITiuHC9vxFqtyLFLdz4sPU6TgubtXpy7ANMKO1gWv16uSW4u/+Zb903n2W0vb4ouINNCWbOErFgTqyoI1Ru6mwJBonoen3mav2yP+iZKWzi1g8U+IxjT8SW8Tjz3gls/yAt7KszjPfyx0S330FfSsVcmWrzZ7t0DhbJ9/eofCXKuQlSLEZwrWakrPBb4J9BYJ97Wvt98tx7+WU8CyngFVXYg9MN/sk9hGazn9ER+Q2+GJp9T1+sHwTD2Lv/M3r1Z+y4IP2BNc//wXzu9O5KSIAAA==" /></Footer>{/* END_ACCOUNTING_CREDITNOTE_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_creditNotes
+      parameters:
+      - name: company_id
+        in: query
+        description: If provided, will only return credit notes for this company.
+        required: false
+        schema:
+          type: string
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreditNotesGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_fields
+        in: query
+        description: Deprecated. Use show_enum_origins.
+        required: false
+        schema:
+          $ref: '#/components/schemas/CreditNotesGetParametersRemoteFields'
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: show_enum_origins
+        in: query
+        description: A comma separated list of enum field names for which you'd like the original values to be returned, instead of Merge's normalized enum values. [Learn more](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+        required: false
+        schema:
+          $ref: '#/components/schemas/CreditNotesGetParametersShowEnumOrigins'
+      - name: transaction_date_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: transaction_date_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCreditNoteList'
+    post:
+      operationId: create
+      summary: Create
+      description: Creates a `CreditNote` object with the given values.{/* BEGIN_ACCOUNTING_CREDITNOTE_CREATE_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST" data="H4sIAAAAAAAAA9VVYW8aORD9K5U/omX3CKVRkKoTCbmWSCxNQqpGVWQN9rA4eO2NPUsIVf77ybu0wDVRU4m79r6s7PHMG8+8N94vTABhZt0D6zIQwpaGlMlYxHIrUbMuO3EoFaWWkEUMCpVCjju+fHHAIubLorCOUP6lUEv/3uGUdVmSo8uwWRo1VSiTTVCiDGHmgJQ1PvkW3JxW0SxiWpk5yl4d8GO42r25tvxj6xOtPLGIFeA9zZwts9kF3pXoX4Ac7qYxR0OgmxIIki2UpqthnrKFKiRqJJR9IOgjoQjlrjPOiArfTZIZ6iKusscSFwmaBBwpodEnnfbRweFRp7lGqbL/yTP9ttW4vZvYyWGDZ0JzKBvDsVim48F9epu9Tk9eL9PVVSddzVfp7fyPBs+gMRwPO6PxdXvU77VGTzjwyzefjj4e94/P0oZYnbbT2+v7dCxaw7GYT1aD9tk7cX/2/nyZrq4Phv2rdjo+7Zy9s63RyYUfnlzYYS+OWcS2WWXdz1+2DWvhpEiXparUtHU4yCHDra7UdEChmkU50UrEvh1DDitr4N7HwuZJjlJBkiL5gMb9XQkO46LSbtUwZc23noe8vfHg4+muCHoLUBomGlmXXInfqZh1P28LvUCnrKzGoNAKJSfLtTIYmBY2L8A8VCtDIILcROkcGhGMuBQzMBlyB+vShS69WiC3U06wrBWPXBHmAc6EZkXMlPkEHYuYwxyUCZcQ1TzWJksY9kAoOWzZlNysy0Juzj0BlQGfLIHmkIfSwtaBmFfo9WugqprIgfFQNZAHEHYTUO9K5VB+AAc5ErqqSTt332zi8GU3j9FTQjgvlZgfWzv3r0YmxOxHERvYZq0JfjU9eHN82Po3tPGUDl7A/i7Ve+Z4z9R+LegZFi8hw1eD4FIVvQcCAyJfI/LLmsLFQqX+EP4rCv/no/yTzO6wxovg4+MCHsI/j+dIMyufY/8TOrsf1gPSemB/o0FVP+L2V5EaMXooXsTtc09znaEyrNPcPN48/g1qr/EBEAoAAA==" /></Footer>{/* END_ACCOUNTING_CREDITNOTE_CREATE_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_creditNotes
+      parameters:
+      - name: is_debug_mode
+        in: query
+        description: Whether to include debug fields (such as log file links) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: run_async
+        in: query
+        description: Whether or not third-party updates should be run asynchronously.
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditNoteResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreditNoteEndpointRequest'
+  /accounting/v1/credit-notes/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `CreditNote` object with the given `id`.{/* BEGIN_ACCOUNTING_CREDITNOTE_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+1ZbVMiORD+K1Q+WsCcsmhJ1dUVb656y+gqbultWamYaYfATDLmBYGt/e9XGQYHcAC5xdfbb5B0ujPdTz/dSX4gSjT4Qg5RBRFKheGacR/lUSg8CFAF1SV4TLtCA8ojEjGXhDAji/s7KI+UiSIhNXgHDAJPHUq4RRXkhCB9KBjObhl4TrrIYVyDL4lmgivnYXHhNl6N8ihgvAdedbxgtbqxeCEZmfurnIApjfIoIkrpjhTG75zBnQH1BM12bwGEwDUJCh7RxJnSUpBjNVlj9is8CECD1yCaNEADtZ+bWOxoHamK43QgiIqx9aIHfQe4Q6RmNADllEv7O3v75UKiJbb+F/aDP7e3unc34mZvC/s0wMRstdp04LaP7t2u/8mtfxq4o4uyO+qN3G7vjy3sk61Wu1U+aV+VThrV7ZMMAXy+e7n/rdaoHbtbdNQsud2re7dNt1tt2rsZHZWOP9P748OvA3d0tdNqXJTcdrN8/Flsn9TPVKt+JlrVYhHl0XRUUeX7j+mBBDgHElSnJkTP+mdq+igkPkz5ZRwQErFCZG4CRouqVCQhGQlO7lWRitAJwWPESfXh8ztDJOAvwhfFbmRBHHuOCf7gfFRBTfew6tabjVk8VPuEBeQmAFTR0sAjQKPKd0SNlMDpEOURtx9jFQwtMuynSAiFBmxjNPsPR0R30iHm2WzRRBu7SgtNAkxCizb7VxKuSLxTu9aa0MMI0LVdfmeYBO+USBKCBmm3dP0zn+XjFqNSKHGrc40hJyGjKlfaLedqRjEOSuXqwLUkwWYC8GAMT4zh0m4ZT4zhxBiui0BIvD9oHuzu7hUjvvn4pFT1hXE40hAWk0RG+axJKsKI8OGCyXgI8zHxZQh4oKhkUbzrTAGmIcyeuTOEa6YXWJ4GSsb0GDIB45DiJktMEtqz9JwQPAOVLWg40ziSjNrvPB0DOvVfFAUMvNTSvADjfZG9NMkNlEepn6ngmtB4LM2l+FOss+wGuQlvQKbpQiUQbTeg182x5LeJvFTBkrzLcNaGstEFfW5YvHwD6eaCVlYbVjHbLUkkt9o++tb8lTSqRlEwtAF9jINlQomvskQWZVUqkQJq7XRelbFTmFsrXeNWCBuzKCMjKboQo3rjuU4GWM57840ywaz7n84TXWEkJwG2ZWK4lEemes4IJBPWaZNtTVXiyZAWsW/UagaCAe0Q7sPE14zTwCjWByxusSaDeZKaAUTSCkwTF2E89nfskTfKZWuS2IkkNIDcgVFM8Fw9EMbLNc9ON8NpY+V4rBzHynHz7BQXkpbuWbqFtQE+R2//pRLOz8yCYMnsBBQLRJi3bjy/GkZ7cducO+EW3JuJZKq2MK5P+OJ2Z7e2t/27Tr1IZxlCKF6riCUoXi4wAfLHroUrqOIFSuUTy+ITiuHC9vxFqtyLFLdz4sPU6TgubtXpy7ANMKO1gWv16uSW4u/+Zb903n2W0vb4ouINNCWbOErFgTqyoI1Ru6mwJBonoen3mav2yP+iZKWzi1g8U+IxjT8SW8Tjz3gls/yAt7KszjPfyx0S330FfSsVcmWrzZ7t0DhbJ9/eofCXKuQlSLEZwrWakrPBb4J9BYJ97Wvt98tx7+WU8CyngFVXYg9MN/sk9hGazn9ER+Q2+GJp9T1+sHwTD2Lv/M3r1Z+y4IP2BNc//wXzu9O5KSIAAA==" /></Footer>{/* END_ACCOUNTING_CREDITNOTE_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_creditNotes
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreditNotesIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: remote_fields
+        in: query
+        description: Deprecated. Use show_enum_origins.
+        required: false
+        schema:
+          $ref: '#/components/schemas/CreditNotesIdGetParametersRemoteFields'
+      - name: show_enum_origins
+        in: query
+        description: A comma separated list of enum field names for which you'd like the original values to be returned, instead of Merge's normalized enum values. [Learn more](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+        required: false
+        schema:
+          $ref: '#/components/schemas/CreditNotesIdGetParametersShowEnumOrigins'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditNote'
+    patch:
+      operationId: partial-update
+      summary: Partial Update
+      description: Updates a `CreditNote` object with the given `id`.{/* BEGIN_ACCOUNTING_CREDITNOTE_EDIT_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="PATCH" data="H4sIAAAAAAAAA8WTbU8aQRDHv0qzL8nBFRCNJE3Dg1VIOKqi0RizGfaGY2Fv99gHQIzfvdkDFVprbWPju5vZmf/czG/mnjCwmCh9R+oEGFNOWi4TEpBUxShInbQ0xtxGyiIJCGQ8ghR3Yum8QgJiXJYpbTH+xlHE5kTjiNRJmKJOsOgkH3GMw+ekkEuLiQbLlTThU3JxlGeTgAgupxg31gl/lluHFzeen0wTCm4sCUgGxtixVi4Zn+HMoXmDsv83gSlKC6IYg4VwS6Wo1zIv+XwXMQq0GLfBQhstMt/upuLY2szUw3CMIivl1UsxzkOUIWjLmUAT1qqHlYPDWnGjklf/ShPxpVyYzIZqeFCgCRMUXKE3YMto0FlEk2Qvau0to9VFLVpNV9Fk+rlAEyj0Br1af3Bd7bcb5f4LAfR8/+rwstludqMCWx1Vo8n1Ihqwcm/ApsNVp9o9ZovuyekyWl1Xeu2LajQ4qnWPVbnfOjO91pnqNUolEpBtqqR+c7/t2CxOhPbc8Xybth47KSS4NZU1Dsh4MXNDwVnJVEuQwkpJWJgSU2mYYswhjNAar0bNzIHGUpbvbj4wruTTzH3dxqBzebS7BI05cAFDgaRutcNftpjUb7YXPUPNVUwCwlSagbzLv6QF5neLOa1RMu/EJRuDTJBqyPsUXCLlFlPzeFfUOe6FpJ9JQKRLh6hJQDSmwKWvxfKzW7uURW+DxZjCli+X2Hy7LH5+Nxas88WssiAopL4Db2pg01x9ffQc8yAN0kA+J+pFyK1XnTmuMf4OGlK0qP0sbh+Cl4ieOs6mTaWm5lNf+l7fB+2zbHENl16MKvvNg/J/gPz3GP8RmT/hXYtmYMdvYPq+KAlkmeBe+1GQy7niDMlvIF+hVu/D1SttiH4USS6ZcIbPkaoRtbD8cLivHOwuz4DYu+y1C719+AF70JGn0wcAAA==" /></Footer>{/* END_ACCOUNTING_CREDITNOTE_EDIT_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_creditNotes
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: is_debug_mode
+        in: query
+        description: Whether to include debug fields (such as log file links) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: run_async
+        in: query
+        description: Whether or not third-party updates should be run asynchronously.
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditNoteResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCreditNoteEndpointRequest'
+  /accounting/v1/credit-notes/{id}/application:
+    post:
+      operationId: application-create
+      summary: Application Create
+      description: Creates a new CreditNoteApplyLine to apply a credit note to an invoice{/* BEGIN_ACCOUNTING_CREDITNOTE_CREATE_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST" data="H4sIAAAAAAAAA9VVYW8aORD9K5U/omX3CKVRkKoTCbmWSCxNQqpGVWQN9rA4eO2NPUsIVf77ybu0wDVRU4m79r6s7PHMG8+8N94vTABhZt0D6zIQwpaGlMlYxHIrUbMuO3EoFaWWkEUMCpVCjju+fHHAIubLorCOUP6lUEv/3uGUdVmSo8uwWRo1VSiTTVCiDGHmgJQ1PvkW3JxW0SxiWpk5yl4d8GO42r25tvxj6xOtPLGIFeA9zZwts9kF3pXoX4Ac7qYxR0OgmxIIki2UpqthnrKFKiRqJJR9IOgjoQjlrjPOiArfTZIZ6iKusscSFwmaBBwpodEnnfbRweFRp7lGqbL/yTP9ttW4vZvYyWGDZ0JzKBvDsVim48F9epu9Tk9eL9PVVSddzVfp7fyPBs+gMRwPO6PxdXvU77VGTzjwyzefjj4e94/P0oZYnbbT2+v7dCxaw7GYT1aD9tk7cX/2/nyZrq4Phv2rdjo+7Zy9s63RyYUfnlzYYS+OWcS2WWXdz1+2DWvhpEiXparUtHU4yCHDra7UdEChmkU50UrEvh1DDitr4N7HwuZJjlJBkiL5gMb9XQkO46LSbtUwZc23noe8vfHg4+muCHoLUBomGlmXXInfqZh1P28LvUCnrKzGoNAKJSfLtTIYmBY2L8A8VCtDIILcROkcGhGMuBQzMBlyB+vShS69WiC3U06wrBWPXBHmAc6EZkXMlPkEHYuYwxyUCZcQ1TzWJksY9kAoOWzZlNysy0Juzj0BlQGfLIHmkIfSwtaBmFfo9WugqprIgfFQNZAHEHYTUO9K5VB+AAc5ErqqSTt332zi8GU3j9FTQjgvlZgfWzv3r0YmxOxHERvYZq0JfjU9eHN82Po3tPGUDl7A/i7Ve+Z4z9R+LegZFi8hw1eD4FIVvQcCAyJfI/LLmsLFQqX+EP4rCv/no/yTzO6wxovg4+MCHsI/j+dIMyufY/8TOrsf1gPSemB/o0FVP+L2V5EaMXooXsTtc09znaEyrNPcPN48/g1qr/EBEAoAAA==" /></Footer>{/* END_ACCOUNTING_CREDITNOTE_CREATE_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_creditNotes
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: is_debug_mode
+        in: query
+        description: Whether to include debug fields (such as log file links) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: run_async
+        in: query
+        description: Whether or not third-party updates should be run asynchronously.
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditNoteResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplyCreditNoteRequest'
+  /accounting/v1/credit-notes/meta/patch/{id}:
+    get:
+      operationId: meta-patch-retrieve
+      summary: Meta Patch Retrieve
+      description: Returns metadata for `CreditNote` PATCHs.{/* BEGIN_ACCOUNTING_CREDITNOTE_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+1ZbVMiORD+K1Q+WsCcsmhJ1dUVb656y+gqbultWamYaYfATDLmBYGt/e9XGQYHcAC5xdfbb5B0ujPdTz/dSX4gSjT4Qg5RBRFKheGacR/lUSg8CFAF1SV4TLtCA8ojEjGXhDAji/s7KI+UiSIhNXgHDAJPHUq4RRXkhCB9KBjObhl4TrrIYVyDL4lmgivnYXHhNl6N8ihgvAdedbxgtbqxeCEZmfurnIApjfIoIkrpjhTG75zBnQH1BM12bwGEwDUJCh7RxJnSUpBjNVlj9is8CECD1yCaNEADtZ+bWOxoHamK43QgiIqx9aIHfQe4Q6RmNADllEv7O3v75UKiJbb+F/aDP7e3unc34mZvC/s0wMRstdp04LaP7t2u/8mtfxq4o4uyO+qN3G7vjy3sk61Wu1U+aV+VThrV7ZMMAXy+e7n/rdaoHbtbdNQsud2re7dNt1tt2rsZHZWOP9P748OvA3d0tdNqXJTcdrN8/Flsn9TPVKt+JlrVYhHl0XRUUeX7j+mBBDgHElSnJkTP+mdq+igkPkz5ZRwQErFCZG4CRouqVCQhGQlO7lWRitAJwWPESfXh8ztDJOAvwhfFbmRBHHuOCf7gfFRBTfew6tabjVk8VPuEBeQmAFTR0sAjQKPKd0SNlMDpEOURtx9jFQwtMuynSAiFBmxjNPsPR0R30iHm2WzRRBu7SgtNAkxCizb7VxKuSLxTu9aa0MMI0LVdfmeYBO+USBKCBmm3dP0zn+XjFqNSKHGrc40hJyGjKlfaLedqRjEOSuXqwLUkwWYC8GAMT4zh0m4ZT4zhxBiui0BIvD9oHuzu7hUjvvn4pFT1hXE40hAWk0RG+axJKsKI8OGCyXgI8zHxZQh4oKhkUbzrTAGmIcyeuTOEa6YXWJ4GSsb0GDIB45DiJktMEtqz9JwQPAOVLWg40ziSjNrvPB0DOvVfFAUMvNTSvADjfZG9NMkNlEepn6ngmtB4LM2l+FOss+wGuQlvQKbpQiUQbTeg182x5LeJvFTBkrzLcNaGstEFfW5YvHwD6eaCVlYbVjHbLUkkt9o++tb8lTSqRlEwtAF9jINlQomvskQWZVUqkQJq7XRelbFTmFsrXeNWCBuzKCMjKboQo3rjuU4GWM57840ywaz7n84TXWEkJwG2ZWK4lEemes4IJBPWaZNtTVXiyZAWsW/UagaCAe0Q7sPE14zTwCjWByxusSaDeZKaAUTSCkwTF2E89nfskTfKZWuS2IkkNIDcgVFM8Fw9EMbLNc9ON8NpY+V4rBzHynHz7BQXkpbuWbqFtQE+R2//pRLOz8yCYMnsBBQLRJi3bjy/GkZ7cducO+EW3JuJZKq2MK5P+OJ2Z7e2t/27Tr1IZxlCKF6riCUoXi4wAfLHroUrqOIFSuUTy+ITiuHC9vxFqtyLFLdz4sPU6TgubtXpy7ANMKO1gWv16uSW4u/+Zb903n2W0vb4ouINNCWbOErFgTqyoI1Ru6mwJBonoen3mav2yP+iZKWzi1g8U+IxjT8SW8Tjz3gls/yAt7KszjPfyx0S330FfSsVcmWrzZ7t0DhbJ9/eofCXKuQlSLEZwrWakrPBb4J9BYJ97Wvt98tx7+WU8CyngFVXYg9MN/sk9hGazn9ER+Q2+GJp9T1+sHwTD2Lv/M3r1Z+y4IP2BNc//wXzu9O5KSIAAA==" /></Footer>{/* END_ACCOUNTING_CREDITNOTE_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_creditNotes
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaResponse'
+  /accounting/v1/credit-notes/meta/post:
+    get:
+      operationId: meta-post-retrieve
+      summary: Meta Post Retrieve
+      description: Returns metadata for `CreditNote` POSTs.{/* BEGIN_ACCOUNTING_CREDITNOTE_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+1ZbVMiORD+K1Q+WsCcsmhJ1dUVb656y+gqbultWamYaYfATDLmBYGt/e9XGQYHcAC5xdfbb5B0ujPdTz/dSX4gSjT4Qg5RBRFKheGacR/lUSg8CFAF1SV4TLtCA8ojEjGXhDAji/s7KI+UiSIhNXgHDAJPHUq4RRXkhCB9KBjObhl4TrrIYVyDL4lmgivnYXHhNl6N8ihgvAdedbxgtbqxeCEZmfurnIApjfIoIkrpjhTG75zBnQH1BM12bwGEwDUJCh7RxJnSUpBjNVlj9is8CECD1yCaNEADtZ+bWOxoHamK43QgiIqx9aIHfQe4Q6RmNADllEv7O3v75UKiJbb+F/aDP7e3unc34mZvC/s0wMRstdp04LaP7t2u/8mtfxq4o4uyO+qN3G7vjy3sk61Wu1U+aV+VThrV7ZMMAXy+e7n/rdaoHbtbdNQsud2re7dNt1tt2rsZHZWOP9P748OvA3d0tdNqXJTcdrN8/Flsn9TPVKt+JlrVYhHl0XRUUeX7j+mBBDgHElSnJkTP+mdq+igkPkz5ZRwQErFCZG4CRouqVCQhGQlO7lWRitAJwWPESfXh8ztDJOAvwhfFbmRBHHuOCf7gfFRBTfew6tabjVk8VPuEBeQmAFTR0sAjQKPKd0SNlMDpEOURtx9jFQwtMuynSAiFBmxjNPsPR0R30iHm2WzRRBu7SgtNAkxCizb7VxKuSLxTu9aa0MMI0LVdfmeYBO+USBKCBmm3dP0zn+XjFqNSKHGrc40hJyGjKlfaLedqRjEOSuXqwLUkwWYC8GAMT4zh0m4ZT4zhxBiui0BIvD9oHuzu7hUjvvn4pFT1hXE40hAWk0RG+axJKsKI8OGCyXgI8zHxZQh4oKhkUbzrTAGmIcyeuTOEa6YXWJ4GSsb0GDIB45DiJktMEtqz9JwQPAOVLWg40ziSjNrvPB0DOvVfFAUMvNTSvADjfZG9NMkNlEepn6ngmtB4LM2l+FOss+wGuQlvQKbpQiUQbTeg182x5LeJvFTBkrzLcNaGstEFfW5YvHwD6eaCVlYbVjHbLUkkt9o++tb8lTSqRlEwtAF9jINlQomvskQWZVUqkQJq7XRelbFTmFsrXeNWCBuzKCMjKboQo3rjuU4GWM57840ywaz7n84TXWEkJwG2ZWK4lEemes4IJBPWaZNtTVXiyZAWsW/UagaCAe0Q7sPE14zTwCjWByxusSaDeZKaAUTSCkwTF2E89nfskTfKZWuS2IkkNIDcgVFM8Fw9EMbLNc9ON8NpY+V4rBzHynHz7BQXkpbuWbqFtQE+R2//pRLOz8yCYMnsBBQLRJi3bjy/GkZ7cducO+EW3JuJZKq2MK5P+OJ2Z7e2t/27Tr1IZxlCKF6riCUoXi4wAfLHroUrqOIFSuUTy+ITiuHC9vxFqtyLFLdz4sPU6TgubtXpy7ANMKO1gWv16uSW4u/+Zb903n2W0vb4ouINNCWbOErFgTqyoI1Ru6mwJBonoen3mav2yP+iZKWzi1g8U+IxjT8SW8Tjz3gls/yAt7KszjPfyx0S330FfSsVcmWrzZ7t0DhbJ9/eofCXKuQlSLEZwrWakrPBb4J9BYJ97Wvt98tx7+WU8CyngFVXYg9MN/sk9hGazn9ER+Q2+GJp9T1+sHwTD2Lv/M3r1Z+y4IP2BNc//wXzu9O5KSIAAA==" /></Footer>{/* END_ACCOUNTING_CREDITNOTE_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_creditNotes
+      parameters:
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaResponse'
+components:
+  schemas:
+    CreditNoteApplyLineForCreditNoteRequest:
+      type: object
+      properties:
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        invoice:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        applied_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Date that the credit note is applied to the invoice.
+        applied_amount:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The amount of the Credit Note applied to the invoice.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The CreditNoteApplyLine Object
+
+        ### Description
+
+        The `CreditNoteApplyLine` is attached to the CreditNote model.
+
+
+        ### Usage Example
+
+        Fetch from the `GET CreditNote` endpoint and view the invoice''s applied to lines.'
+      title: CreditNoteApplyLineForCreditNoteRequest
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    CreditNotesIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - status
+      - status,type
+      - type
+      title: CreditNotesIdGetParametersRemoteFields
+    CreditNotesGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - status
+      - status,type
+      - type
+      title: CreditNotesGetParametersShowEnumOrigins
+    CreditNote:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        transaction_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The credit note's transaction date.
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/CreditNoteStatusEnum'
+          - type: 'null'
+          description: The credit note's status.
+        number:
+          type:
+          - string
+          - 'null'
+          description: The credit note's number.
+        contact:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The credit note's contact.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the credit note belongs to.
+        exchange_rate:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The credit note's exchange rate.
+        total_amount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The credit note's total amount.
+        remaining_credit:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The amount of value remaining in the credit note that the customer can use.
+        inclusive_of_tax:
+          type:
+          - boolean
+          - 'null'
+          description: If the transaction is inclusive or exclusive of tax. `True` if inclusive, `False` if exclusive.
+        line_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreditNoteLineItem'
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: The credit note's currency. The currency code in ISO 4217 format.
+        remote_created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's credit note was created.
+        remote_updated_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's credit note was updated.
+        payments:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Array of `Payment` object IDs
+        applied_payments:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: A list of the Payment Applied to Lines common models related to a given Invoice, Credit Note, or Journal Entry.
+        accounting_period:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The accounting period that the CreditNote was generated in.
+        applied_to_lines:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreditNoteApplyLineForCreditNote'
+          description: A list of the CreditNote Applied to Lines common models related to a given Credit Note
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/CreditNoteFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The CreditNote Object
+
+        ### Description
+
+        A `CreditNote` is transaction issued to a customer, indicating a reduction or cancellation of the amount owed by the customer. It is most generally used as an adjustment note used to rectify errors, returns, or overpayments related to a sales transaction. A `CreditNote` can be applied to *Accounts Receivable* Invoices to decrease the overall amount of the Invoice.
+
+
+        ### Usage Example
+
+        Fetch from the `LIST CreditNotes` endpoint and view a company''s credit notes.'
+      title: CreditNote
+    PaginatedCreditNoteList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreditNote'
+      title: PaginatedCreditNoteList
+    CreditNoteEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/CreditNoteRequest'
+      required:
+      - model
+      title: CreditNoteEndpointRequest
+    CreditNoteLineItemRequest:
+      type: object
+      properties:
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        item:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+          description: The credit note line item's name.
+        description:
+          type:
+          - string
+          - 'null'
+          description: The description of the item that is owed.
+        quantity:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The credit note line item's quantity.
+        memo:
+          type:
+          - string
+          - 'null'
+          description: The credit note line item's memo.
+        unit_price:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The credit note line item's unit price.
+        tax_rate:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The tax rate that applies to this line item.
+        total_line_amount:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The credit note line item's total.
+        tracking_category:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The credit note line item's associated tracking category.
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: The credit note line item's associated tracking categories.
+        account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The credit note line item's account.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the credit note belongs to.
+        contact:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The credit note's contact.
+        project:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The CreditNoteLineItem Object
+
+        ### Description
+
+        The `CreditNoteLineItem` object is used to represent a credit note''s line items.
+
+
+        ### Usage Example
+
+        Fetch from the `GET CreditNote` endpoint and view the credit note''s line items.'
+      title: CreditNoteLineItemRequest
+    CreditNotesGetParametersRemoteFields:
+      type: string
+      enum:
+      - status
+      - status,type
+      - type
+      title: CreditNotesGetParametersRemoteFields
+    CreditNoteStatusEnum:
+      type: string
+      enum:
+      - SUBMITTED
+      - AUTHORIZED
+      - PAID
+      title: CreditNoteStatusEnum
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    CreditNoteRequest:
+      type: object
+      properties:
+        transaction_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The credit note's transaction date.
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/CreditNoteStatusEnum'
+          - type: 'null'
+          description: The credit note's status.
+        number:
+          type:
+          - string
+          - 'null'
+          description: The credit note's number.
+        contact:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The credit note's contact.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the credit note belongs to.
+        exchange_rate:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The credit note's exchange rate.
+        total_amount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The credit note's total amount.
+        remaining_credit:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The amount of value remaining in the credit note that the customer can use.
+        inclusive_of_tax:
+          type:
+          - boolean
+          - 'null'
+          description: If the transaction is inclusive or exclusive of tax. `True` if inclusive, `False` if exclusive.
+        line_items:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/CreditNoteLineItemRequest'
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: The credit note's currency. The currency code in ISO 4217 format.
+        payments:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Array of `Payment` object IDs
+        applied_payments:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: A list of the Payment Applied to Lines common models related to a given Invoice, Credit Note, or Journal Entry.
+        accounting_period:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The accounting period that the CreditNote was generated in.
+        applied_to_lines:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreditNoteApplyLineForCreditNoteRequest'
+          description: A list of the CreditNote Applied to Lines common models related to a given Credit Note
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The CreditNote Object
+
+        ### Description
+
+        A `CreditNote` is transaction issued to a customer, indicating a reduction or cancellation of the amount owed by the customer. It is most generally used as an adjustment note used to rectify errors, returns, or overpayments related to a sales transaction. A `CreditNote` can be applied to *Accounts Receivable* Invoices to decrease the overall amount of the Invoice.
+
+
+        ### Usage Example
+
+        Fetch from the `LIST CreditNotes` endpoint and view a company''s credit notes.'
+      title: CreditNoteRequest
+    CreditNotesIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - accounting_period
+      - applied_payments
+      - company
+      - contact
+      - line_items
+      - payments
+      - tracking_categories
+      title: CreditNotesIdGetParametersExpandSchemaItems
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    PatchedCreditNoteEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/CreditNoteRequest'
+      required:
+      - model
+      title: PatchedCreditNoteEndpointRequest
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    CreditNotesGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - accounting_period
+      - applied_payments
+      - company
+      - contact
+      - line_items
+      - payments
+      - tracking_categories
+      title: CreditNotesGetParametersExpandSchemaItems
+    ApplyCreditNoteRequest:
+      type: object
+      properties:
+        invoice:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The invoice to apply the credit note to.
+        applied_date:
+          type: string
+          format: date-time
+          description: Date that the credit note is applied to the invoice.
+        applied_amount:
+          type: string
+          format: decimal
+          description: The amount of credit applied to the invoice.
+      required:
+      - invoice
+      - applied_date
+      - applied_amount
+      title: ApplyCreditNoteRequest
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    CreditNotesIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - status
+      - status,type
+      - type
+      title: CreditNotesIdGetParametersShowEnumOrigins
+    CreditNoteFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: CreditNoteFieldMappings
+    CreditNoteApplyLineForCreditNote:
+      type: object
+      properties:
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        invoice:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        applied_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Date that the credit note is applied to the invoice.
+        applied_amount:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The amount of the Credit Note applied to the invoice.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+      description: '# The CreditNoteApplyLine Object
+
+        ### Description
+
+        The `CreditNoteApplyLine` is attached to the CreditNote model.
+
+
+        ### Usage Example
+
+        Fetch from the `GET CreditNote` endpoint and view the invoice''s applied to lines.'
+      title: CreditNoteApplyLineForCreditNote
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    TransactionCurrencyEnum:
+      type: string
+      enum:
+      - XUA
+      - AFN
+      - AFA
+      - ALL
+      - ALK
+      - DZD
+      - ADP
+      - AOA
+      - AOK
+      - AON
+      - AOR
+      - ARA
+      - ARS
+      - ARM
+      - ARP
+      - ARL
+      - AMD
+      - AWG
+      - AUD
+      - ATS
+      - AZN
+      - AZM
+      - BSD
+      - BHD
+      - BDT
+      - BBD
+      - BYN
+      - BYB
+      - BYR
+      - BEF
+      - BEC
+      - BEL
+      - BZD
+      - BMD
+      - BTN
+      - BOB
+      - BOL
+      - BOV
+      - BOP
+      - BAM
+      - BAD
+      - BAN
+      - BWP
+      - BRC
+      - BRZ
+      - BRE
+      - BRR
+      - BRN
+      - BRB
+      - BRL
+      - GBP
+      - BND
+      - BGL
+      - BGN
+      - BGO
+      - BGM
+      - BUK
+      - BIF
+      - XPF
+      - KHR
+      - CAD
+      - CVE
+      - KYD
+      - XAF
+      - CLE
+      - CLP
+      - CLF
+      - CNX
+      - CNY
+      - CNH
+      - COP
+      - COU
+      - KMF
+      - CDF
+      - CRC
+      - HRD
+      - HRK
+      - CUC
+      - CUP
+      - CYP
+      - CZK
+      - CSK
+      - DKK
+      - DJF
+      - DOP
+      - NLG
+      - XCD
+      - DDM
+      - ECS
+      - ECV
+      - EGP
+      - GQE
+      - ERN
+      - EEK
+      - ETB
+      - EUR
+      - XBA
+      - XEU
+      - XBB
+      - XBC
+      - XBD
+      - FKP
+      - FJD
+      - FIM
+      - FRF
+      - XFO
+      - XFU
+      - GMD
+      - GEK
+      - GEL
+      - DEM
+      - GHS
+      - GHC
+      - GIP
+      - XAU
+      - GRD
+      - GTQ
+      - GWP
+      - GNF
+      - GNS
+      - GYD
+      - HTG
+      - HNL
+      - HKD
+      - HUF
+      - IMP
+      - ISK
+      - ISJ
+      - INR
+      - IDR
+      - IRR
+      - IQD
+      - IEP
+      - ILS
+      - ILP
+      - ILR
+      - ITL
+      - JMD
+      - JPY
+      - JOD
+      - KZT
+      - KES
+      - KWD
+      - KGS
+      - LAK
+      - LVL
+      - LVR
+      - LBP
+      - LSL
+      - LRD
+      - LYD
+      - LTL
+      - LTT
+      - LUL
+      - LUC
+      - LUF
+      - MOP
+      - MKD
+      - MKN
+      - MGA
+      - MGF
+      - MWK
+      - MYR
+      - MVR
+      - MVP
+      - MLF
+      - MTL
+      - MTP
+      - MRU
+      - MRO
+      - MUR
+      - MXV
+      - MXN
+      - MXP
+      - MDC
+      - MDL
+      - MCF
+      - MNT
+      - MAD
+      - MAF
+      - MZE
+      - MZN
+      - MZM
+      - MMK
+      - NAD
+      - NPR
+      - ANG
+      - TWD
+      - NZD
+      - NIO
+      - NIC
+      - NGN
+      - KPW
+      - NOK
+      - OMR
+      - PKR
+      - XPD
+      - PAB
+      - PGK
+      - PYG
+      - PEI
+      - PEN
+      - PES
+      - PHP
+      - XPT
+      - PLN
+      - PLZ
+      - PTE
+      - GWE
+      - QAR
+      - XRE
+      - RHD
+      - RON
+      - ROL
+      - RUB
+      - RUR
+      - RWF
+      - SVC
+      - WST
+      - SAR
+      - RSD
+      - CSD
+      - SCR
+      - SLL
+      - XAG
+      - SGD
+      - SKK
+      - SIT
+      - SBD
+      - SOS
+      - ZAR
+      - ZAL
+      - KRH
+      - KRW
+      - KRO
+      - SSP
+      - SUR
+      - ESP
+      - ESA
+      - ESB
+      - XDR
+      - LKR
+      - SHP
+      - XSU
+      - SDD
+      - SDG
+      - SDP
+      - SRD
+      - SRG
+      - SZL
+      - SEK
+      - CHF
+      - SYP
+      - STN
+      - STD
+      - TVD
+      - TJR
+      - TJS
+      - TZS
+      - XTS
+      - THB
+      - XXX
+      - TPE
+      - TOP
+      - TTD
+      - TND
+      - TRY
+      - TRL
+      - TMT
+      - TMM
+      - USD
+      - USN
+      - USS
+      - UGX
+      - UGS
+      - UAH
+      - UAK
+      - AED
+      - UYW
+      - UYU
+      - UYP
+      - UYI
+      - UZS
+      - VUV
+      - VES
+      - VEB
+      - VEF
+      - VND
+      - VNN
+      - CHE
+      - CHW
+      - XOF
+      - YDD
+      - YER
+      - YUN
+      - YUD
+      - YUM
+      - YUR
+      - ZWN
+      - ZRN
+      - ZRZ
+      - ZMW
+      - ZMK
+      - ZWD
+      - ZWR
+      - ZWL
+      description: The currency code in ISO 4217 format.
+      title: TransactionCurrencyEnum
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    CreditNoteResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/CreditNote'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: CreditNoteResponse
+    CreditNoteLineItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        item:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+          description: The credit note line item's name.
+        description:
+          type:
+          - string
+          - 'null'
+          description: The description of the item that is owed.
+        quantity:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The credit note line item's quantity.
+        memo:
+          type:
+          - string
+          - 'null'
+          description: The credit note line item's memo.
+        unit_price:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The credit note line item's unit price.
+        tax_rate:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The tax rate that applies to this line item.
+        total_line_amount:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The credit note line item's total.
+        tracking_category:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The credit note line item's associated tracking category.
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: The credit note line item's associated tracking categories.
+        account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The credit note line item's account.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the credit note belongs to.
+        contact:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The credit note's contact.
+        project:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+      description: '# The CreditNoteLineItem Object
+
+        ### Description
+
+        The `CreditNoteLineItem` object is used to represent a credit note''s line items.
+
+
+        ### Usage Example
+
+        Fetch from the `GET CreditNote` endpoint and view the credit note''s line items.'
+      title: CreditNoteLineItem
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

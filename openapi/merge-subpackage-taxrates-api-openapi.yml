@@ -1,0 +1,398 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_taxRates API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_taxRates
+paths:
+  /accounting/v1/tax-rates:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `TaxRate` objects.{/* BEGIN_ACCOUNTING_TAXRATE_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+1YbW/aOhT+K8gfKyBrGVRFmq5469reS+go3W03TZZxDsHg2KntUMq0/37lJEDS0rt1DZt0db8FvzwHP+d5znHyFVFiwJfqATURoVRGwjDhozIKpAccNdGILIfEACojEjKXBJBbiBdHqIx0FIZSGfBOGXBPnymYoCZyAlA+VCLBJgw8Z7vJYcKAr4hhUmhns7kyiXejMuJMzMFrJRu+D5csr6Qjj35qhzNtUBmFRGszVTLyp0O4i0D/ALL9bxwCEIbwikcMcTIoFZXA7Bqzp/CAgwGvSwzpggFqj5tGnBoT6qbjTIGH1Th61YOFA8IhyjDKQTv12snR8Um9kqLE0f/APn93eDC7G8vx8QH2KcckOuiP6NIdnd+7M/+t23m7dFfXdXc1X7mz+ZsD7JOD/qhfH4xua4Nu63CwYwG+atycfGx32xfuAV31au7s9t4d0cP+iM7Hq/PaxXt6f3H2Yemubo/63euaO+rVL97Lw0FnqPudoey3qlVURtmsoubnr9mBVDinCvS0LeXc8pOZPg+IDxlekoSQkFXCaMwZrepalQRkJQW511UqAycAjxFni4ev7iKiAP8lfVmdhVbBMXNMig35qIl67lnL7fS6eT20FoRxMuaAmkZF8ETQqPkZwWRiURaADVlilVhC2GOVkYJAGsA2RflfOCRmuh1iHiojIw3hW5AvdvYuYgq8S6JIAAaUDfjlW3kXg31GldRyYkrdB0ECRnWp1qiX2pFmArQudUAYRXgx9G6C4XUwXGvU8ToYToPhjuRS4ZNl77TROK6Gonj2qfQs0VQGIREPMbymioUxsD3rQjIKmDMBmBkI9E8l56W5kAIexkx5xbB9yYmZSBVsYPfCZJ64X6hcF8xVxGLbFECWC0ZbNKxj3++FqhFZdmQQSgHC2NDJEzYPoT1EbjbVWm4srRH5sRzfz02tyd81H2ciN5GpR9vWZRQRmsQcWFNYT8T+eWSjeLmKnxR4zAhpILM+LxZYhiB04jL9nOtmMlKCcDu29WAYKTolGrBUHqj8hhdJUBMOOoNiAbQhJrIPlohNmvRTwZbRAoQnVXLU+B++UMMDRSiH0mmkmRSlDpeRV+oNL4uRdAKOE3Acg+Pe8BJX0t6238K61sGjlBfV9bZJelUR+RAxOo8bfmkQC7sY6rewlaSe4OvJUaN9fPh/XYkzvlZJbBxsi0Tew3sXzXec/UIVXREfMlem2Mat7MtPAZKyMXC701pfTP9c3CxqV7P/Vk+PiTwXhlBqCqQtRVxTt1gwVx+TX3Ox/JE+uEvf6+aowIbYNKd0eFOqdnTMdDATLu2hG5AiC+7rm+DfZAGlUyaIoKyoN4313ddi47OJtzx6Y/aZ73xCf2NDuwEli6HQIqXd61+Yc1uj84+9V96FmU6qcSS833ARfq4v/bRn8+Z86sPdd9n4EppZvJ/O9nq7fpJTWSrwm8snOZVPP7nsx6u73/Z35nI/Xe/Lt38A4K9OVyIVAAA=" /></Footer>{/* END_ACCOUNTING_TAXRATE_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_taxRates
+      parameters:
+      - name: company_id
+        in: query
+        description: If provided, will only return tax rates for this company.
+        required: false
+        schema:
+          type: string
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaxRatesGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: name
+        in: query
+        description: If provided, will only return TaxRates with this name.
+        required: false
+        schema:
+          type: string
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTaxRateList'
+  /accounting/v1/tax-rates/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `TaxRate` object with the given `id`.{/* BEGIN_ACCOUNTING_TAXRATE_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+1YbW/aOhT+K8gfKyBrGVRFmq5469reS+go3W03TZZxDsHg2KntUMq0/37lJEDS0rt1DZt0db8FvzwHP+d5znHyFVFiwJfqATURoVRGwjDhozIKpAccNdGILIfEACojEjKXBJBbiBdHqIx0FIZSGfBOGXBPnymYoCZyAlA+VCLBJgw8Z7vJYcKAr4hhUmhns7kyiXejMuJMzMFrJRu+D5csr6Qjj35qhzNtUBmFRGszVTLyp0O4i0D/ALL9bxwCEIbwikcMcTIoFZXA7Bqzp/CAgwGvSwzpggFqj5tGnBoT6qbjTIGH1Th61YOFA8IhyjDKQTv12snR8Um9kqLE0f/APn93eDC7G8vx8QH2KcckOuiP6NIdnd+7M/+t23m7dFfXdXc1X7mz+ZsD7JOD/qhfH4xua4Nu63CwYwG+atycfGx32xfuAV31au7s9t4d0cP+iM7Hq/PaxXt6f3H2Yemubo/63euaO+rVL97Lw0FnqPudoey3qlVURtmsoubnr9mBVDinCvS0LeXc8pOZPg+IDxlekoSQkFXCaMwZrepalQRkJQW511UqAycAjxFni4ev7iKiAP8lfVmdhVbBMXNMig35qIl67lnL7fS6eT20FoRxMuaAmkZF8ETQqPkZwWRiURaADVlilVhC2GOVkYJAGsA2RflfOCRmuh1iHiojIw3hW5AvdvYuYgq8S6JIAAaUDfjlW3kXg31GldRyYkrdB0ECRnWp1qiX2pFmArQudUAYRXgx9G6C4XUwXGvU8ToYToPhjuRS4ZNl77TROK6Gonj2qfQs0VQGIREPMbymioUxsD3rQjIKmDMBmBkI9E8l56W5kAIexkx5xbB9yYmZSBVsYPfCZJ64X6hcF8xVxGLbFECWC0ZbNKxj3++FqhFZdmQQSgHC2NDJEzYPoT1EbjbVWm4srRH5sRzfz02tyd81H2ciN5GpR9vWZRQRmsQcWFNYT8T+eWSjeLmKnxR4zAhpILM+LxZYhiB04jL9nOtmMlKCcDu29WAYKTolGrBUHqj8hhdJUBMOOoNiAbQhJrIPlohNmvRTwZbRAoQnVXLU+B++UMMDRSiH0mmkmRSlDpeRV+oNL4uRdAKOE3Acg+Pe8BJX0t6238K61sGjlBfV9bZJelUR+RAxOo8bfmkQC7sY6rewlaSe4OvJUaN9fPh/XYkzvlZJbBxsi0Tew3sXzXec/UIVXREfMlem2Mat7MtPAZKyMXC701pfTP9c3CxqV7P/Vk+PiTwXhlBqCqQtRVxTt1gwVx+TX3Ox/JE+uEvf6+aowIbYNKd0eFOqdnTMdDATLu2hG5AiC+7rm+DfZAGlUyaIoKyoN4313ddi47OJtzx6Y/aZ73xCf2NDuwEli6HQIqXd61+Yc1uj84+9V96FmU6qcSS833ARfq4v/bRn8+Z86sPdd9n4EppZvJ/O9nq7fpJTWSrwm8snOZVPP7nsx6u73/Z35nI/Xe/Lt38A4K9OVyIVAAA=" /></Footer>{/* END_ACCOUNTING_TAXRATE_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_taxRates
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaxRatesIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaxRate'
+components:
+  schemas:
+    Status7d1Enum:
+      type: string
+      enum:
+      - ACTIVE
+      - ARCHIVED
+      title: Status7d1Enum
+    TaxRate:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The subsidiary that the tax rate belongs to (in the case of multi-entity systems).
+        code:
+          type:
+          - string
+          - 'null'
+          description: The tax code associated with this tax rate or group of tax rates from the third-party platform.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The tax rate’s name.
+        description:
+          type:
+          - string
+          - 'null'
+          description: The tax rate's description.
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/Status7d1Enum'
+          - type: 'null'
+          description: The tax rate’s status - `ACTIVE` if an active tax rate, `ARCHIVED` if not active.
+        country:
+          type:
+          - string
+          - 'null'
+          description: The country the tax rate is associated with.
+        total_tax_rate:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The tax’s total tax rate - sum of the tax components (not compounded).
+        effective_tax_rate:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The tax rate’s effective tax rate - total amount of tax with compounding.
+        tax_components:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaxComponent'
+          description: The related tax components of the tax rate.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/TaxRateFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The TaxRate Object
+
+        ### Description
+
+        The `TaxRate` object is used to represent a tax rate.
+
+
+        ### Usage Example
+
+        Fetch from the `LIST TaxRates` endpoint and view tax rates relevant to a company.'
+      title: TaxRate
+    PaginatedTaxRateList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaxRate'
+      title: PaginatedTaxRateList
+    ComponentTypeEnum:
+      type: string
+      enum:
+      - SALES
+      - PURCHASE
+      title: ComponentTypeEnum
+    TaxComponent:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The tax rate’s name.
+        rate:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The tax component’s rate.
+        is_compound:
+          type:
+          - boolean
+          - 'null'
+          description: Returns True if the tax component is compound, False if not.
+        component_type:
+          oneOf:
+          - $ref: '#/components/schemas/ComponentTypeEnum'
+          - type: 'null'
+          description: Returns PURCHASE if the tax component corresponds to a purchase tax or SALES if the tax component corresponds to a sales tax.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+      description: '# The TaxRate Object
+
+        ### Description
+
+        The `TaxComponent` object is used to represent any sub-taxes that make up the `TaxRate`.
+
+
+        ### Usage Example
+
+        Fetch from the `LIST TaxRates` endpoint and view tax components relevant to a tax rate.'
+      title: TaxComponent
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    TaxRatesGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - company
+      title: TaxRatesGetParametersExpandSchemaItems
+    TaxRateFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: TaxRateFieldMappings
+    TaxRatesIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - company
+      title: TaxRatesIdGetParametersExpandSchemaItems
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

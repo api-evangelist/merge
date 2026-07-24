@@ -1,0 +1,803 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_employments API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_employments
+paths:
+  /hris/v1/employments:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Employment` objects.{/* BEGIN_HRIS_EMPLOYMENT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="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" /></Footer>{/* END_HRIS_EMPLOYMENT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_employments
+      parameters:
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: employee_id
+        in: query
+        description: If provided, will only return employments for this employee.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmploymentsGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: order_by
+        in: query
+        description: 'Overrides the default ordering for this endpoint. Possible values include: effective_date, -effective_date.'
+        required: false
+        schema:
+          $ref: '#/components/schemas/EmploymentsGetParametersOrderBy'
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_fields
+        in: query
+        description: Deprecated. Use show_enum_origins.
+        required: false
+        schema:
+          $ref: '#/components/schemas/EmploymentsGetParametersRemoteFields'
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: show_enum_origins
+        in: query
+        description: A comma separated list of enum field names for which you'd like the original values to be returned, instead of Merge's normalized enum values. [Learn more](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+        required: false
+        schema:
+          $ref: '#/components/schemas/EmploymentsGetParametersShowEnumOrigins'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedEmploymentList'
+  /hris/v1/employments/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns an `Employment` object with the given `id`.{/* BEGIN_HRIS_EMPLOYMENT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="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" /></Footer>{/* END_HRIS_EMPLOYMENT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_employments
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmploymentsIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: remote_fields
+        in: query
+        description: Deprecated. Use show_enum_origins.
+        required: false
+        schema:
+          $ref: '#/components/schemas/EmploymentsIdGetParametersRemoteFields'
+      - name: show_enum_origins
+        in: query
+        description: A comma separated list of enum field names for which you'd like the original values to be returned, instead of Merge's normalized enum values. [Learn more](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+        required: false
+        schema:
+          $ref: '#/components/schemas/EmploymentsIdGetParametersShowEnumOrigins'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employment'
+components:
+  schemas:
+    PayPeriodEnum:
+      type: string
+      enum:
+      - HOUR
+      - DAY
+      - WEEK
+      - EVERY_TWO_WEEKS
+      - SEMIMONTHLY
+      - MONTH
+      - QUARTER
+      - EVERY_SIX_MONTHS
+      - YEAR
+      title: PayPeriodEnum
+    EmploymentsIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - employment_type
+      - employment_type,flsa_status
+      - employment_type,flsa_status,pay_frequency
+      - employment_type,flsa_status,pay_frequency,pay_period
+      - employment_type,flsa_status,pay_period
+      - employment_type,pay_frequency
+      - employment_type,pay_frequency,pay_period
+      - employment_type,pay_period
+      - flsa_status
+      - flsa_status,pay_frequency
+      - flsa_status,pay_frequency,pay_period
+      - flsa_status,pay_period
+      - pay_frequency
+      - pay_frequency,pay_period
+      - pay_period
+      title: EmploymentsIdGetParametersRemoteFields
+    FlsaStatusEnum:
+      type: string
+      enum:
+      - EXEMPT
+      - SALARIED_NONEXEMPT
+      - NONEXEMPT
+      - OWNER
+      title: FlsaStatusEnum
+    EmploymentsGetParametersOrderBy:
+      type: string
+      enum:
+      - -effective_date
+      - effective_date
+      title: EmploymentsGetParametersOrderBy
+    PayCurrencyEnum:
+      type: string
+      enum:
+      - XUA
+      - AFN
+      - AFA
+      - ALL
+      - ALK
+      - DZD
+      - ADP
+      - AOA
+      - AOK
+      - AON
+      - AOR
+      - ARA
+      - ARS
+      - ARM
+      - ARP
+      - ARL
+      - AMD
+      - AWG
+      - AUD
+      - ATS
+      - AZN
+      - AZM
+      - BSD
+      - BHD
+      - BDT
+      - BBD
+      - BYN
+      - BYB
+      - BYR
+      - BEF
+      - BEC
+      - BEL
+      - BZD
+      - BMD
+      - BTN
+      - BOB
+      - BOL
+      - BOV
+      - BOP
+      - BAM
+      - BAD
+      - BAN
+      - BWP
+      - BRC
+      - BRZ
+      - BRE
+      - BRR
+      - BRN
+      - BRB
+      - BRL
+      - GBP
+      - BND
+      - BGL
+      - BGN
+      - BGO
+      - BGM
+      - BUK
+      - BIF
+      - XPF
+      - KHR
+      - CAD
+      - CVE
+      - KYD
+      - XAF
+      - CLE
+      - CLP
+      - CLF
+      - CNX
+      - CNY
+      - CNH
+      - COP
+      - COU
+      - KMF
+      - CDF
+      - CRC
+      - HRD
+      - HRK
+      - CUC
+      - CUP
+      - CYP
+      - CZK
+      - CSK
+      - DKK
+      - DJF
+      - DOP
+      - NLG
+      - XCD
+      - DDM
+      - ECS
+      - ECV
+      - EGP
+      - GQE
+      - ERN
+      - EEK
+      - ETB
+      - EUR
+      - XBA
+      - XEU
+      - XBB
+      - XBC
+      - XBD
+      - FKP
+      - FJD
+      - FIM
+      - FRF
+      - XFO
+      - XFU
+      - GMD
+      - GEK
+      - GEL
+      - DEM
+      - GHS
+      - GHC
+      - GIP
+      - XAU
+      - GRD
+      - GTQ
+      - GWP
+      - GNF
+      - GNS
+      - GYD
+      - HTG
+      - HNL
+      - HKD
+      - HUF
+      - IMP
+      - ISK
+      - ISJ
+      - INR
+      - IDR
+      - IRR
+      - IQD
+      - IEP
+      - ILS
+      - ILP
+      - ILR
+      - ITL
+      - JMD
+      - JPY
+      - JOD
+      - KZT
+      - KES
+      - KWD
+      - KGS
+      - LAK
+      - LVL
+      - LVR
+      - LBP
+      - LSL
+      - LRD
+      - LYD
+      - LTL
+      - LTT
+      - LUL
+      - LUC
+      - LUF
+      - MOP
+      - MKD
+      - MKN
+      - MGA
+      - MGF
+      - MWK
+      - MYR
+      - MVR
+      - MVP
+      - MLF
+      - MTL
+      - MTP
+      - MRU
+      - MRO
+      - MUR
+      - MXV
+      - MXN
+      - MXP
+      - MDC
+      - MDL
+      - MCF
+      - MNT
+      - MAD
+      - MAF
+      - MZE
+      - MZN
+      - MZM
+      - MMK
+      - NAD
+      - NPR
+      - ANG
+      - TWD
+      - NZD
+      - NIO
+      - NIC
+      - NGN
+      - KPW
+      - NOK
+      - OMR
+      - PKR
+      - XPD
+      - PAB
+      - PGK
+      - PYG
+      - PEI
+      - PEN
+      - PES
+      - PHP
+      - XPT
+      - PLN
+      - PLZ
+      - PTE
+      - GWE
+      - QAR
+      - XRE
+      - RHD
+      - RON
+      - ROL
+      - RUB
+      - RUR
+      - RWF
+      - SVC
+      - WST
+      - SAR
+      - RSD
+      - CSD
+      - SCR
+      - SLL
+      - XAG
+      - SGD
+      - SKK
+      - SIT
+      - SBD
+      - SOS
+      - ZAR
+      - ZAL
+      - KRH
+      - KRW
+      - KRO
+      - SSP
+      - SUR
+      - ESP
+      - ESA
+      - ESB
+      - XDR
+      - LKR
+      - SHP
+      - XSU
+      - SDD
+      - SDG
+      - SDP
+      - SRD
+      - SRG
+      - SZL
+      - SEK
+      - CHF
+      - SYP
+      - STN
+      - STD
+      - TVD
+      - TJR
+      - TJS
+      - TZS
+      - XTS
+      - THB
+      - XXX
+      - TPE
+      - TOP
+      - TTD
+      - TND
+      - TRY
+      - TRL
+      - TMT
+      - TMM
+      - USD
+      - USN
+      - USS
+      - UGX
+      - UGS
+      - UAH
+      - UAK
+      - AED
+      - UYW
+      - UYU
+      - UYP
+      - UYI
+      - UZS
+      - VUV
+      - VES
+      - VEB
+      - VEF
+      - VND
+      - VNN
+      - CHE
+      - CHW
+      - XOF
+      - YDD
+      - YER
+      - YUN
+      - YUD
+      - YUM
+      - YUR
+      - ZWN
+      - ZRN
+      - ZRZ
+      - ZMW
+      - ZMK
+      - ZWD
+      - ZWR
+      - ZWL
+      description: The currency code in ISO 4217 format.
+      title: PayCurrencyEnum
+    EmploymentsIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - employment_type
+      - employment_type,flsa_status
+      - employment_type,flsa_status,pay_frequency
+      - employment_type,flsa_status,pay_frequency,pay_period
+      - employment_type,flsa_status,pay_period
+      - employment_type,pay_frequency
+      - employment_type,pay_frequency,pay_period
+      - employment_type,pay_period
+      - flsa_status
+      - flsa_status,pay_frequency
+      - flsa_status,pay_frequency,pay_period
+      - flsa_status,pay_period
+      - pay_frequency
+      - pay_frequency,pay_period
+      - pay_period
+      title: EmploymentsIdGetParametersShowEnumOrigins
+    PaginatedEmploymentList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Employment'
+      title: PaginatedEmploymentList
+    EmploymentsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - employee
+      - pay_group
+      title: EmploymentsIdGetParametersExpandSchemaItems
+    EmploymentFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: EmploymentFieldMappings
+    Employment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        employee:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The employee holding this position.
+        job_title:
+          type:
+          - string
+          - 'null'
+          description: The position's title.
+        pay_rate:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The position's pay rate.
+        pay_period:
+          oneOf:
+          - $ref: '#/components/schemas/PayPeriodEnum'
+          - type: 'null'
+          description: The time period this pay rate encompasses.
+        pay_frequency:
+          oneOf:
+          - $ref: '#/components/schemas/PayFrequencyEnum'
+          - type: 'null'
+          description: The position's pay frequency.
+        pay_currency:
+          oneOf:
+          - $ref: '#/components/schemas/PayCurrencyEnum'
+          - type: 'null'
+          description: The position's currency code. The currency code in ISO 4217 format.
+        pay_group:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The employment's pay group
+        flsa_status:
+          oneOf:
+          - $ref: '#/components/schemas/FlsaStatusEnum'
+          - type: 'null'
+          description: The position's FLSA status.
+        effective_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The position's effective date.
+        employment_type:
+          oneOf:
+          - $ref: '#/components/schemas/EmploymentTypeEnum'
+          - type: 'null'
+          description: The position's type of employment.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/EmploymentFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The Employment Object
+
+        ### Description
+
+        The `Employment` object is used to represent a job position at a company.
+
+
+        If an integration supports historical tracking of employments, it will be reflected in the data. If not, a new `Employment` object will be created whenever there is a change in job title or pay. The `effective_date` field should be used to order `Employment` objects, with the most recent date corresponding to the latest employment record for an employee.
+
+
+        ### Usage Example
+
+        Fetch from the `LIST Employments` endpoint and filter by `ID` to show all employees.'
+      title: Employment
+    PayFrequencyEnum:
+      type: string
+      enum:
+      - WEEKLY
+      - BIWEEKLY
+      - MONTHLY
+      - QUARTERLY
+      - SEMIANNUALLY
+      - ANNUALLY
+      - THIRTEEN-MONTHLY
+      - PRO_RATA
+      - SEMIMONTHLY
+      title: PayFrequencyEnum
+    EmploymentTypeEnum:
+      type: string
+      enum:
+      - FULL_TIME
+      - PART_TIME
+      - INTERN
+      - CONTRACTOR
+      - FREELANCE
+      title: EmploymentTypeEnum
+    EmploymentsGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - employment_type
+      - employment_type,flsa_status
+      - employment_type,flsa_status,pay_frequency
+      - employment_type,flsa_status,pay_frequency,pay_period
+      - employment_type,flsa_status,pay_period
+      - employment_type,pay_frequency
+      - employment_type,pay_frequency,pay_period
+      - employment_type,pay_period
+      - flsa_status
+      - flsa_status,pay_frequency
+      - flsa_status,pay_frequency,pay_period
+      - flsa_status,pay_period
+      - pay_frequency
+      - pay_frequency,pay_period
+      - pay_period
+      title: EmploymentsGetParametersShowEnumOrigins
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    EmploymentsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - employee
+      - pay_group
+      title: EmploymentsGetParametersExpandSchemaItems
+    EmploymentsGetParametersRemoteFields:
+      type: string
+      enum:
+      - employment_type
+      - employment_type,flsa_status
+      - employment_type,flsa_status,pay_frequency
+      - employment_type,flsa_status,pay_frequency,pay_period
+      - employment_type,flsa_status,pay_period
+      - employment_type,pay_frequency
+      - employment_type,pay_frequency,pay_period
+      - employment_type,pay_period
+      - flsa_status
+      - flsa_status,pay_frequency
+      - flsa_status,pay_frequency,pay_period
+      - flsa_status,pay_period
+      - pay_frequency
+      - pay_frequency,pay_period
+      - pay_period
+      title: EmploymentsGetParametersRemoteFields
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

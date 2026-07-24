@@ -1,0 +1,1800 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_tickets API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_tickets
+paths:
+  /ticketing/v1/tickets:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Ticket` objects.{/* BEGIN_TICKETING_TICKET_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="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" /></Footer>{/* END_TICKETING_TICKET_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_tickets
+      parameters:
+      - name: account_id
+        in: query
+        description: If provided, will only return tickets for this account.
+        required: false
+        schema:
+          type: string
+      - name: assignee_ids
+        in: query
+        description: If provided, will only return tickets assigned to the assignee_ids; multiple assignee_ids can be separated by commas.
+        required: false
+        schema:
+          type: string
+      - name: collection_ids
+        in: query
+        description: If provided, will only return tickets assigned to the specified collection_ids, including tickets in any nested or child collections. Multiple collection_ids can be separated by commas.
+        required: false
+        schema:
+          type: string
+      - name: completed_after
+        in: query
+        description: If provided, will only return tickets completed after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: completed_before
+        in: query
+        description: If provided, will only return tickets completed before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: contact_id
+        in: query
+        description: If provided, will only return tickets for this contact.
+        required: false
+        schema:
+          type: string
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: creator_id
+        in: query
+        description: If provided, will only return tickets created by this creator_id.
+        required: false
+        schema:
+          type: string
+      - name: creator_ids
+        in: query
+        description: If provided, will only return tickets created by the creator_ids; multiple creator_ids can be separated by commas.
+        required: false
+        schema:
+          type: string
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: due_after
+        in: query
+        description: If provided, will only return tickets due after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: due_before
+        in: query
+        description: If provided, will only return tickets due before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/TicketsGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_fields
+        in: query
+        description: Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: name
+        in: query
+        description: If provided, will only return tickets with this name.
+        required: false
+        schema:
+          type: string
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: parent_ticket_id
+        in: query
+        description: If provided, will only return sub tickets of the parent_ticket_id.
+        required: false
+        schema:
+          type: string
+      - name: priority
+        in: query
+        description: 'If provided, will only return tickets of this priority.
+
+
+          '
+        required: false
+        schema:
+          $ref: '#/components/schemas/TicketsGetParametersPriority'
+      - name: remote_created_after
+        in: query
+        description: If provided, will only return tickets created in the third party platform after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: remote_created_before
+        in: query
+        description: If provided, will only return tickets created in the third party platform before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: remote_fields
+        in: query
+        description: Deprecated. Use show_enum_origins.
+        required: false
+        schema:
+          $ref: '#/components/schemas/TicketsGetParametersRemoteFields'
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: remote_ids
+        in: query
+        description: If provided, will only return tickets with these remote IDs (comma-separated).
+        required: false
+        schema:
+          type: string
+      - name: remote_updated_after
+        in: query
+        description: If provided, will only return tickets updated in the third party platform after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: remote_updated_before
+        in: query
+        description: If provided, will only return tickets updated in the third party platform before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: show_enum_origins
+        in: query
+        description: A comma separated list of enum field names for which you'd like the original values to be returned, instead of Merge's normalized enum values. [Learn more](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+        required: false
+        schema:
+          $ref: '#/components/schemas/TicketsGetParametersShowEnumOrigins'
+      - name: status
+        in: query
+        description: If provided, will only return tickets of this status.
+        required: false
+        schema:
+          type: string
+      - name: tags
+        in: query
+        description: If provided, will only return tickets matching the tags; multiple tags can be separated by commas.
+        required: false
+        schema:
+          type: string
+      - name: ticket_type
+        in: query
+        description: If provided, will only return tickets of this type.
+        required: false
+        schema:
+          type: string
+      - name: ticket_url
+        in: query
+        description: If provided, will only return tickets where the URL matches or contains the substring
+        required: false
+        schema:
+          type: string
+          format: uri
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTicketList'
+    post:
+      operationId: create
+      summary: Create
+      description: Creates a `Ticket` object with the given values.{/* BEGIN_TICKETING_TICKET_CREATE_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST" data="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" /></Footer>{/* END_TICKETING_TICKET_CREATE_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_tickets
+      parameters:
+      - name: is_debug_mode
+        in: query
+        description: Whether to include debug fields (such as log file links) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: run_async
+        in: query
+        description: Whether or not third-party updates should be run asynchronously.
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TicketResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TicketEndpointRequest'
+  /ticketing/v1/tickets/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `Ticket` object with the given `id`.{/* BEGIN_TICKETING_TICKET_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="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" /></Footer>{/* END_TICKETING_TICKET_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_tickets
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/TicketsIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_fields
+        in: query
+        description: Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: remote_fields
+        in: query
+        description: Deprecated. Use show_enum_origins.
+        required: false
+        schema:
+          $ref: '#/components/schemas/TicketsIdGetParametersRemoteFields'
+      - name: show_enum_origins
+        in: query
+        description: A comma separated list of enum field names for which you'd like the original values to be returned, instead of Merge's normalized enum values. [Learn more](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+        required: false
+        schema:
+          $ref: '#/components/schemas/TicketsIdGetParametersShowEnumOrigins'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ticket'
+    patch:
+      operationId: partial-update
+      summary: Partial Update
+      description: Updates a `Ticket` object with the given `id`.{/* BEGIN_TICKETING_TICKET_EDIT_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="PATCH" data="H4sIAAAAAAAAA9WZbVPiOhTHv4o3LxmgV1nvjszcucOCDzhL3VV017vjdA7poQTSpuYBlJ397nfaIg8KF9GU1VeamvzTnl/OyT/xJ6GgMRDynlSJZnSAmkUBKZJQ+MhJlbTTZ6RIIGYuhDjfzRvukSJRJo6F1OgfMeS+OpHYJVXihCgDLJmIdRn6znSMwyKNgQTNRKSc6dhSNx1MioSzaIB+jVJhIr1WLetdgqz7o6ZyOFPJu8eglO5JYYLeOd4aVOuFkzfjGGKkgZd80ODMiZRkprLsWfINPnLU6DdAQwM10uRjJxP2tI5V1XF6yONyOnnZx6GDkQNSM8pROfuVg72PB/uliUo6+z9ewP/eLfRvO6LzseAFlHtgCq02vXPbzZHbDz649Q937vhy3x0Pxm5/8GfBC6DQarf2z9rXlbNGbfdsSQfv4q/vB1efGp9O3QIdH1bc/vXIbdPdVpsOOuNm5fSYjk5Pvt654+u9VuOy4rYP90+Pxe5Z/Vy16ueiVSuXSZHMMyXVHz/nH0wWTa0Hfyz2bIYQ4FxEMhIQs1JsOpzRsqqUIYSxiGCkylSETog+A6fWA0/dGpBYjtOlmsaJiWgaalIlh+5Jza0fNhbh14bAOHQ4kqqWBp+sXVL9QUApFkSICUcqOM8kM6qKShanMxSJb9DzQSMpkij5xGQiiZH2sjVEikRiKDR6zJ/9buJkiO9B8nelQZtEWJnOZFTS0hCkP9IHnr6PcdYykpObRO3WMIn+F5AQokaZvvlkjiyTyvMtj3JQitz8Ki5FoyACO2wgkSpldEpcBGKv3I9xFSS31m5eHb4O0e+DsorDqiiPjcSdBg7PYmUpERJFL1P0LtKYe59FIHJPC9AaaC+pjU+ThIowTstWFs5N8cSSCcn0/YzOdGN4L+lU54wOLmM7jCdiz8RrI6GeCzA1CJ4xKY/1NGMp+kjnMpBKnLF7DVvrAI8kqp6PamAH4VRuAWLOZZGKSAN9VgY+ybj1FDaohq+joFAOGUU7IL5w0F0hw+6c8hachO9phDCtmyutxQa41hZMa4m1zaJ5zPSJ6ew0lTJpeCzgPma6ZzpeJrnVArraNE5z7lExfFHK5UukGWmUVIR2YDyozXPwrg4ae5/rnVyS75mBtR62UyYteelEaRKunFfs5lvEshqzuVHbxjaSRHEnOYjv1DFZg3a3kkQ9ZzgbmO2UipC57SLJRcRiy4tB996xV09Xx0VmBXZaEEGQXvnYTOCJz5iJl/txvsezdfBf5RO2kbOfWYRgKVN5qrXe5r04VSlFpTyOQ+T/a/HelLEbMhwlkKyjOwfO7+3W2FQyR4DvgdjLOT2qzeUhcIOr6F0AR9UVkuK0KNa5ML4doDN17+H0RRP13O+rFkFueHExj20pIus5NAm9K0aW4j7Vy/+WMPvHy6wQLj/8PvY0iy5mehZ+hp95GczHPmWrlXOjjGxL5FzYWQeZ1sIJ7Ju6a4yO795UWd3MiljPvm+SDSxdOKVSb+Tm4SXb11q/v/FetjVj/y9G9m5wH5zIRNQ7uG2Z7+wo71P5mir3++9tb379Bxb6Mtg/IAAA" /></Footer>{/* END_TICKETING_TICKET_EDIT_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_tickets
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: is_debug_mode
+        in: query
+        description: Whether to include debug fields (such as log file links) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: run_async
+        in: query
+        description: Whether or not third-party updates should be run asynchronously.
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TicketResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedTicketEndpointRequest'
+  /ticketing/v1/tickets/{ticket_id}/viewers:
+    get:
+      operationId: viewers-list
+      summary: Viewers List
+      description: Returns a list of `Viewer` objects that point to a User id or Team id that is either an assignee or viewer on a `Ticket` with the given id. [Learn more.](https://help.merge.dev/en/articles/10333658-ticketing-access-control-list-acls){/* BEGIN_TICKETING_TICKET_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+1cbW/iOBD+K1w+Vrxc2+utinQ6Uej25Uraa9m3W62iIRmCixOntgMtq/3vJycQYJc2QE1IVvupJJgnTp5nxjPjSb8aNkh0GX8y6oYk9gAl8V2jbHjMQWrUjU50zigbEBATPJwfZg0PjLIhwiBgXKLzliB1xDnHnlE3ah5yFyuhT3oEnVrymxrxJbocJGG+qCW/rfSiHxtlgxJ/gE7Dtlnoy1S0eHQF4uHfHYoaJULNPQAhZJ+z0O3f4kOIIh1YzYyih74EWnFAQm0OpMJjlGXn1D04SFGi0wIJLZRoq5udXLAvZSDqtVofaVCNLl51cFhDvwZcEpuiqB0dHh+8OT6qTFCiq/9tufSv/b37hy7rvtmzXJtaEO61O/aj2bkYmffuH2bzj0dz/O7IHA/G5v3g9z3Lhb12p3103fl0eN1q7F8vGWDd/fnx+P1J6+TS3LPHp4fm/aeR2bH32x170B1fHF6e2aPL838fzfGng3br3aHZOT26PGP7181b0W7esnajWjXKxjynRv3z1/kTE9E0+vDb4sgLD1yceyIxExCQShB2KbGr4rAKHoyZDyNRtZlX89AhUGv0wRIPIXCsBpFUo+dEmJ88aqNunJrnDbN52lokvzEEQqFL0ahLHuIP2jXqnw0Qgrg+ouIRpAS7r0SgjmxGaXyB+MhLvuAIkvFoKsLmJIgmUTacEC0HJBplw1dPQc2Foy+tWGZG2eDoMYlWBICOBXPnFOuLR1YAsj87RZzZ5zBwZgBCggzVvETYnVxKHUlwoz/RCUs+BTg7Cjk1vii0h5BwdG6Ag4cSuXoiX76VlxIqwAc9jIKCqsScVihz2UH1PsDnqDUbnYv3p+sTG3sy4rs3yD0iBGF+FRI6l34bBJSgY0lmLXKfMpgziisMkwjeCsNCoXhYPix9WtjroS2f+TJy8lYYRlJaNiDgxAP+NHf7KQMTZS8bNNPism9DnzyEStboS+WNlT2BbaMQFsUhUnUY26aTPLqXjRW6jCvDfNl4mRdEfjY2ns1tOUhuRcFOH8ji2dfYe7JCptn/VH4b+oGyMSQ4Uppb1yOMQ46lFg6vA6HJ1StEK0a07iL/YF0xl+XG8WvTDieME/kUfWT3scVmIpZsFosTEGiDF+iRxRRtRUlsumDMC2JlCTBfgr2mGLQwns6wNjKJ7IYT4Wpg84aC7DHudaewBYnuEvY0m252RDYpsQfvNBnlBCwbm1w1AiiY136dl37V4t0ij6DXnhViVqa8ikOekJidaa7JwFuOou+gGOihIYFbsMgt5FWTYkuKLabzk75MJta2ZQ71xj4REQL5kNio18J6c8gZWJpWp5tO+0Jymu6B81RKKRs/JrNrq4ZFNqVRLhFkuk50hMsri0K3c37GiDcw2zMiz8Nu6UKIMLolDUScEdkPu1YMmcfkJSXS/cH4dh/zvNo7nxF5BV1t/FLoZlqo2EKQu4N8RjOlFBz6pNd3xpi7pHP1MKlYSegZ4y4BoZmuGHRXlYR1o57dRrgbkHaONCjd2SzUHKIoXKFgCxvOpqyhhXKk52SoKWNRSAUo4BevALQ5t2FXBEyWkp04TUTHsBnWfdYJYDP1r2sScuFL5Dbz9PAwRZs3Ouv9cevgqtndgfEt7sS+2osWtRR0wZlvU3A0ccyZ36TgTDjOL60JmVmWYDeg55JwTTVwhZROy69OlqJ2siyqNWXEVMEvDHt22rpaZrYa265btF2hUaZwDREbb7wpV1FSnaKlJqpFW29CpdDzUuvVv+uaZ0FsIoO7eC+n1AYf3Kj5WOdyNNkomoFX74M8ZmEb9dDkLjPblr/4JxSSebr8xBRt1U3iV+hiK9vERcjsroiPoIkvGmFtbxPvV5P0rkPL10d83xtaTpql1ov6fgpffUOGTAItdTjYA22hXQw6wdxds+RK3fXPeOtC7iveAtW9rRhB5qslY9dx+Y7j8FusK8I0d2pxtCLUbKh+sTT3YhyV823HO6AoeozbmKRKTcpCTfXUGbo1baqzFfp2fOtqq7T2Dci8WK32tXYiCJONNKkhwdv+xuVmEVtG+XOeiyybq6XPuLR1tS9M0TLIorW/8Li+MvJYTlmX/oDJFoee5vYVtfXtKNitRuXPuQH9PbQbP98OgjdiXNOrDFO0DFtmC1rUfv0LROsSzZFSponmCGuhY+GDeGyNzh5zQvbK7OY8jP7AyUBTghNBbdsuV6oc//wv+2la+/5DX99bZtOVbwJqHT+0w4/k7a/K9K9/36GxMr3RP/LQkQUVt2a9rlNgfVY6CV2tlWoFOsMsVKX6Z3wvJuK4pc31KzhLwWVfH8ENt46L+E7xl2//A7+OZeqkTwAA" /></Footer>{/* END_TICKETING_TICKET_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_tickets
+      parameters:
+      - name: ticket_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/TicketsTicketIdViewersGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedViewerList'
+  /ticketing/v1/tickets/live-search:
+    get:
+      operationId: live-search-list
+      summary: Live Search List
+      description: Returns a list of `Ticket` objects.{/* BEGIN_TICKETING_TICKET_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="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" /></Footer>{/* END_TICKETING_TICKET_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_tickets
+      parameters:
+      - name: assignee_ids
+        in: query
+        description: Filter tickets by assignee IDs (comma-separated)
+        required: false
+        schema:
+          type: string
+      - name: assignees
+        in: query
+        description: Filter tickets by assignee names (comma-separated)
+        required: false
+        schema:
+          type: string
+      - name: collection_ids
+        in: query
+        description: Filter tickets by collection IDs (comma-separated)
+        required: false
+        schema:
+          type: string
+      - name: collections
+        in: query
+        description: Filter tickets by collection names (comma-separated)
+        required: false
+        schema:
+          type: string
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_fields
+        in: query
+        description: Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: name
+        in: query
+        description: Filter tickets by name/title
+        required: false
+        schema:
+          type: string
+      - name: remote_cursor
+        in: query
+        description: Pagination cursor for remote data
+        required: false
+        schema:
+          type: string
+      - name: remote_fields
+        in: query
+        description: Deprecated. Use show_enum_origins.
+        required: false
+        schema:
+          $ref: '#/components/schemas/TicketsLiveSearchGetParametersRemoteFields'
+      - name: show_enum_origins
+        in: query
+        description: A comma separated list of enum field names for which you'd like the original values to be returned, instead of Merge's normalized enum values. [Learn more](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+        required: false
+        schema:
+          $ref: '#/components/schemas/TicketsLiveSearchGetParametersShowEnumOrigins'
+      - name: status
+        in: query
+        description: Filter tickets by status
+        required: false
+        schema:
+          type: string
+      - name: ticket_url
+        in: query
+        description: Filter tickets by URL
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: string
+                format: binary
+  /ticketing/v1/tickets/meta/patch/{id}:
+    get:
+      operationId: meta-patch-retrieve
+      summary: Meta Patch Retrieve
+      description: Returns metadata for `Ticket` PATCHs.{/* BEGIN_TICKETING_TICKET_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="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" /></Footer>{/* END_TICKETING_TICKET_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_tickets
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaResponse'
+  /ticketing/v1/tickets/meta/post:
+    get:
+      operationId: meta-post-retrieve
+      summary: Meta Post Retrieve
+      description: Returns metadata for `Ticket` POSTs.{/* BEGIN_TICKETING_TICKET_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+1cbW/iOBD+K1w+Vrxc2+utinQ6Uej25Uraa9m3W62iIRmCixOntgMtq/3vJycQYJc2QE1IVvupJJgnTp5nxjPjSb8aNkh0GX8y6oYk9gAl8V2jbHjMQWrUjU50zigbEBATPJwfZg0PjLIhwiBgXKLzliB1xDnHnlE3ah5yFyuhT3oEnVrymxrxJbocJGG+qCW/rfSiHxtlgxJ/gE7Dtlnoy1S0eHQF4uHfHYoaJULNPQAhZJ+z0O3f4kOIIh1YzYyih74EWnFAQm0OpMJjlGXn1D04SFGi0wIJLZRoq5udXLAvZSDqtVofaVCNLl51cFhDvwZcEpuiqB0dHh+8OT6qTFCiq/9tufSv/b37hy7rvtmzXJtaEO61O/aj2bkYmffuH2bzj0dz/O7IHA/G5v3g9z3Lhb12p3103fl0eN1q7F8vGWDd/fnx+P1J6+TS3LPHp4fm/aeR2bH32x170B1fHF6e2aPL838fzfGng3br3aHZOT26PGP7181b0W7esnajWjXKxjynRv3z1/kTE9E0+vDb4sgLD1yceyIxExCQShB2KbGr4rAKHoyZDyNRtZlX89AhUGv0wRIPIXCsBpFUo+dEmJ88aqNunJrnDbN52lokvzEEQqFL0ahLHuIP2jXqnw0Qgrg+ouIRpAS7r0SgjmxGaXyB+MhLvuAIkvFoKsLmJIgmUTacEC0HJBplw1dPQc2Foy+tWGZG2eDoMYlWBICOBXPnFOuLR1YAsj87RZzZ5zBwZgBCggzVvETYnVxKHUlwoz/RCUs+BTg7Cjk1vii0h5BwdG6Ag4cSuXoiX76VlxIqwAc9jIKCqsScVihz2UH1PsDnqDUbnYv3p+sTG3sy4rs3yD0iBGF+FRI6l34bBJSgY0lmLXKfMpgziisMkwjeCsNCoXhYPix9WtjroS2f+TJy8lYYRlJaNiDgxAP+NHf7KQMTZS8bNNPism9DnzyEStboS+WNlT2BbaMQFsUhUnUY26aTPLqXjRW6jCvDfNl4mRdEfjY2ns1tOUhuRcFOH8ji2dfYe7JCptn/VH4b+oGyMSQ4Uppb1yOMQ46lFg6vA6HJ1StEK0a07iL/YF0xl+XG8WvTDieME/kUfWT3scVmIpZsFosTEGiDF+iRxRRtRUlsumDMC2JlCTBfgr2mGLQwns6wNjKJ7IYT4Wpg84aC7DHudaewBYnuEvY0m252RDYpsQfvNBnlBCwbm1w1AiiY136dl37V4t0ij6DXnhViVqa8ikOekJidaa7JwFuOou+gGOihIYFbsMgt5FWTYkuKLabzk75MJta2ZQ71xj4REQL5kNio18J6c8gZWJpWp5tO+0Jymu6B81RKKRs/JrNrq4ZFNqVRLhFkuk50hMsri0K3c37GiDcw2zMiz8Nu6UKIMLolDUScEdkPu1YMmcfkJSXS/cH4dh/zvNo7nxF5BV1t/FLoZlqo2EKQu4N8RjOlFBz6pNd3xpi7pHP1MKlYSegZ4y4BoZmuGHRXlYR1o57dRrgbkHaONCjd2SzUHKIoXKFgCxvOpqyhhXKk52SoKWNRSAUo4BevALQ5t2FXBEyWkp04TUTHsBnWfdYJYDP1r2sScuFL5Dbz9PAwRZs3Ouv9cevgqtndgfEt7sS+2osWtRR0wZlvU3A0ccyZ36TgTDjOL60JmVmWYDeg55JwTTVwhZROy69OlqJ2siyqNWXEVMEvDHt22rpaZrYa265btF2hUaZwDREbb7wpV1FSnaKlJqpFW29CpdDzUuvVv+uaZ0FsIoO7eC+n1AYf3Kj5WOdyNNkomoFX74M8ZmEb9dDkLjPblr/4JxSSebr8xBRt1U3iV+hiK9vERcjsroiPoIkvGmFtbxPvV5P0rkPL10d83xtaTpql1ov6fgpffUOGTAItdTjYA22hXQw6wdxds+RK3fXPeOtC7iveAtW9rRhB5qslY9dx+Y7j8FusK8I0d2pxtCLUbKh+sTT3YhyV823HO6AoeozbmKRKTcpCTfXUGbo1baqzFfp2fOtqq7T2Dci8WK32tXYiCJONNKkhwdv+xuVmEVtG+XOeiyybq6XPuLR1tS9M0TLIorW/8Li+MvJYTlmX/oDJFoee5vYVtfXtKNitRuXPuQH9PbQbP98OgjdiXNOrDFO0DFtmC1rUfv0LROsSzZFSponmCGuhY+GDeGyNzh5zQvbK7OY8jP7AyUBTghNBbdsuV6oc//wv+2la+/5DX99bZtOVbwJqHT+0w4/k7a/K9K9/36GxMr3RP/LQkQUVt2a9rlNgfVY6CV2tlWoFOsMsVKX6Z3wvJuK4pc31KzhLwWVfH8ENt46L+E7xl2//A7+OZeqkTwAA" /></Footer>{/* END_TICKETING_TICKET_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_tickets
+      parameters:
+      - name: collection_id
+        in: query
+        description: If provided, will only return tickets for this collection.
+        required: false
+        schema:
+          type: string
+      - name: ticket_type
+        in: query
+        description: If provided, will only return tickets for this ticket type.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaResponse'
+  /ticketing/v1/tickets/remote-field-classes:
+    get:
+      operationId: remote-field-classes-list
+      summary: Remote Field Classes List
+      description: Returns a list of `RemoteFieldClass` objects.{/* BEGIN_TICKETING_TICKET_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="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" /></Footer>{/* END_TICKETING_TICKET_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_tickets
+      parameters:
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: ids
+        in: query
+        description: If provided, will only return remote field classes with the `ids` in this list
+        required: false
+        schema:
+          type: string
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: is_common_model_field
+        in: query
+        description: If provided, will only return remote field classes with this is_common_model_field value
+        required: false
+        schema:
+          type: boolean
+      - name: is_custom
+        in: query
+        description: If provided, will only return remote fields classes with this is_custom value
+        required: false
+        schema:
+          type: boolean
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRemoteFieldClassList'
+components:
+  schemas:
+    PermissionFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: PermissionFieldMappings
+    TicketsGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - priority
+      - priority,status
+      - priority,status,ticket_type
+      - priority,ticket_type
+      - status
+      - status,ticket_type
+      - ticket_type
+      title: TicketsGetParametersShowEnumOrigins
+    PriorityEnum:
+      type: string
+      enum:
+      - URGENT
+      - HIGH
+      - NORMAL
+      - LOW
+      title: PriorityEnum
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    TicketRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          description: The ticket's name.
+        assignees:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: The individual `Users` who are assigned to this ticket. This does not include `Users` who just have view access to this ticket. To fetch all `Users` and `Teams` that can access the ticket, use the `GET /tickets/{ticket_id}/viewers` [endpoint](https://docs.merge.dev/ticketing/tickets/#tickets_viewers_list).
+        assigned_teams:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: The `Teams` that are assigned to this ticket. This does not include `Teams` who just have view access to this ticket. To fetch all `Users` and `Teams` that can access this ticket, use the `GET /tickets/{ticket_id}/viewers` [endpoint](https://docs.merge.dev/ticketing/tickets/#tickets_viewers_list).
+        creator:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The user who created this ticket.
+        due_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The ticket's due date.
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/TicketStatusEnum'
+          - type: 'null'
+          description: The current status of the ticket.
+        description:
+          type:
+          - string
+          - 'null'
+          description: The ticket’s description. HTML version of description is mapped if supported by the third-party platform.
+        collections:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: The `Collections` that this `Ticket` is included in.
+        ticket_type:
+          type:
+          - string
+          - 'null'
+          description: The sub category of the ticket within the 3rd party system. Examples include incident, task, subtask or to-do.
+        account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The account associated with the ticket.
+        contact:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The contact associated with the ticket.
+        parent_ticket:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The ticket's parent ticket.
+        attachments:
+          type: array
+          items:
+            type: string
+            format: uuid
+        access_level:
+          oneOf:
+          - $ref: '#/components/schemas/TicketAccessLevelEnum'
+          - type: 'null'
+          description: The description of who is able to access a given ticket, or where access is inherited from.
+        tags:
+          type: array
+          items:
+            type: string
+        roles:
+          type: array
+          items:
+            type: string
+            format: uuid
+        ticket_url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The 3rd party url of the Ticket.
+        priority:
+          oneOf:
+          - $ref: '#/components/schemas/PriorityEnum'
+          - type: 'null'
+          description: The priority or urgency of the Ticket.
+        completed_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the ticket was completed.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldRequest'
+      description: '# The Ticket Object
+
+        ### Description
+
+        The `Ticket` object is used to represent a ticket, issue, task or case.
+
+        ### Usage Example
+
+        TODO'
+      title: TicketRequest
+    RemoteFieldRequest:
+      type: object
+      properties:
+        remote_field_class:
+          type: string
+          format: uuid
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteFieldRequest
+    TicketsIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - priority
+      - priority,status
+      - priority,status,ticket_type
+      - priority,ticket_type
+      - status
+      - status,ticket_type
+      - ticket_type
+      title: TicketsIdGetParametersShowEnumOrigins
+    ActionsEnum:
+      type: string
+      enum:
+      - VIEW
+      - CREATE
+      - EDIT
+      - DELETE
+      title: ActionsEnum
+    TicketsLiveSearchGetParametersRemoteFields:
+      type: string
+      enum:
+      - priority
+      - priority,status
+      - priority,status,ticket_type
+      - priority,ticket_type
+      - status
+      - status,ticket_type
+      - ticket_type
+      title: TicketsLiveSearchGetParametersRemoteFields
+    ItemTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemTypeEnum
+    PaginatedTicketList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ticket'
+      title: PaginatedTicketList
+    ItemFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemFormatEnum
+    TicketsLiveSearchGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - priority
+      - priority,status
+      - priority,status,ticket_type
+      - priority,ticket_type
+      - status
+      - status,ticket_type
+      - ticket_type
+      title: TicketsLiveSearchGetParametersShowEnumOrigins
+    PaginatedViewerList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Viewer'
+      title: PaginatedViewerList
+    TicketFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: TicketFieldMappings
+    TicketsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - account
+      - assigned_teams
+      - assignees
+      - attachments
+      - collections
+      - contact
+      - creator
+      - parent_ticket
+      - permissions
+      title: TicketsGetParametersExpandSchemaItems
+    TicketsIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - priority
+      - priority,status
+      - priority,status,ticket_type
+      - priority,ticket_type
+      - status
+      - status,ticket_type
+      - ticket_type
+      title: TicketsIdGetParametersRemoteFields
+    TicketResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/Ticket'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: TicketResponse
+    Viewer:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        team:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The Team this Viewer belongs to.
+        user:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The User this Viewer belongs to.
+      description: '# The Viewer Object
+
+        ### Description
+
+        The `Viewer` object is used to represent a User or Team within a company.
+
+
+        ### Usage Example
+
+        TODO'
+      title: Viewer
+    TicketsGetParametersPriority:
+      type: string
+      enum:
+      - HIGH
+      - LOW
+      - NORMAL
+      - URGENT
+      title: TicketsGetParametersPriority
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    TicketStatusEnum:
+      type: string
+      enum:
+      - OPEN
+      - CLOSED
+      - IN_PROGRESS
+      - ON_HOLD
+      title: TicketStatusEnum
+    EffectEnum:
+      type: string
+      enum:
+      - ALLOWED
+      - DENIED
+      - INHERITED
+      title: EffectEnum
+    TicketsGetParametersRemoteFields:
+      type: string
+      enum:
+      - priority
+      - priority,status
+      - priority,status,ticket_type
+      - priority,ticket_type
+      - status
+      - status,ticket_type
+      - ticket_type
+      title: TicketsGetParametersRemoteFields
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    TicketAccessLevelEnum:
+      type: string
+      enum:
+      - COMPANY
+      - PUBLIC
+      - PRIVATE
+      - COLLECTION
+      title: TicketAccessLevelEnum
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    PaginatedRemoteFieldClassList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldClass'
+      title: PaginatedRemoteFieldClassList
+    PatchedTicketEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/PatchedTicketRequest'
+      required:
+      - model
+      title: PatchedTicketEndpointRequest
+    Ticket:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The ticket's name.
+        assignees:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: The individual `Users` who are assigned to this ticket. This does not include `Users` who just have view access to this ticket. To fetch all `Users` and `Teams` that can access the ticket, use the `GET /tickets/{ticket_id}/viewers` [endpoint](https://docs.merge.dev/ticketing/tickets/#tickets_viewers_list).
+        assigned_teams:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: The `Teams` that are assigned to this ticket. This does not include `Teams` who just have view access to this ticket. To fetch all `Users` and `Teams` that can access this ticket, use the `GET /tickets/{ticket_id}/viewers` [endpoint](https://docs.merge.dev/ticketing/tickets/#tickets_viewers_list).
+        creator:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The user who created this ticket.
+        due_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The ticket's due date.
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/TicketStatusEnum'
+          - type: 'null'
+          description: The current status of the ticket.
+        description:
+          type:
+          - string
+          - 'null'
+          description: The ticket’s description. HTML version of description is mapped if supported by the third-party platform.
+        collections:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: The `Collections` that this `Ticket` is included in.
+        ticket_type:
+          type:
+          - string
+          - 'null'
+          description: The sub category of the ticket within the 3rd party system. Examples include incident, task, subtask or to-do.
+        account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The account associated with the ticket.
+        contact:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The contact associated with the ticket.
+        parent_ticket:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The ticket's parent ticket.
+        attachments:
+          type: array
+          items:
+            type: string
+            format: uuid
+        access_level:
+          oneOf:
+          - $ref: '#/components/schemas/TicketAccessLevelEnum'
+          - type: 'null'
+          description: The description of who is able to access a given ticket, or where access is inherited from.
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Permission'
+        tags:
+          type: array
+          items:
+            type: string
+        roles:
+          type: array
+          items:
+            type: string
+            format: uuid
+        ticket_url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The 3rd party url of the Ticket.
+        priority:
+          oneOf:
+          - $ref: '#/components/schemas/PriorityEnum'
+          - type: 'null'
+          description: The priority or urgency of the Ticket.
+        remote_created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's ticket was created.
+        remote_updated_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's ticket was updated.
+        completed_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the ticket was completed.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/TicketFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteField'
+      description: '# The Ticket Object
+
+        ### Description
+
+        The `Ticket` object is used to represent a ticket, issue, task or case.
+
+        ### Usage Example
+
+        TODO'
+      title: Ticket
+    ItemSchema:
+      type: object
+      properties:
+        item_type:
+          $ref: '#/components/schemas/ItemTypeEnum'
+        item_format:
+          $ref: '#/components/schemas/ItemFormatEnum'
+        item_choices:
+          type: array
+          items:
+            type: string
+      title: ItemSchema
+    TicketsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - account
+      - assigned_teams
+      - assignees
+      - attachments
+      - collections
+      - contact
+      - creator
+      - parent_ticket
+      - permissions
+      title: TicketsIdGetParametersExpandSchemaItems
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    RemoteFieldClass:
+      type: object
+      properties:
+        id:
+          type: string
+        display_name:
+          type: string
+        remote_key_name:
+          type: string
+        description:
+          type: string
+        is_custom:
+          type: boolean
+        is_common_model_field:
+          type: boolean
+        is_required:
+          type: boolean
+        field_type:
+          $ref: '#/components/schemas/FieldTypeEnum'
+        field_format:
+          $ref: '#/components/schemas/FieldFormatEnum'
+        field_choices:
+          type: array
+          items:
+            type: string
+        item_schema:
+          $ref: '#/components/schemas/ItemSchema'
+      title: RemoteFieldClass
+    RemoteField:
+      type: object
+      properties:
+        remote_field_class:
+          $ref: '#/components/schemas/RemoteFieldClass'
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteField
+    Permission:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        effect:
+          oneOf:
+          - $ref: '#/components/schemas/EffectEnum'
+          - type: 'null'
+          description: Outcome of this permission rule for matching users.
+        actions:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/ActionsEnum'
+          description: Operations that this permission applies to. If the entity inherits permission from a parent entity, then this should be an empty array. In that case, the entity would inherit the parent entity’s actions.
+        applied_to_users:
+          type: array
+          items:
+            type: string
+            format: uuid
+        applied_to_roles:
+          type: array
+          items:
+            type: string
+            format: uuid
+        applied_to_teams:
+          type: array
+          items:
+            type: string
+            format: uuid
+        applied_to_collections:
+          type: array
+          items:
+            type: string
+            format: uuid
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/PermissionFieldMappings'
+          - type: 'null'
+      description: '# The Permission Object
+
+        ### Description
+
+        The `Permission` object is used to represent permissions that can be applied to users, roles, teams, collections, and tickets.
+
+
+        ### Usage Example
+
+        TODO'
+      title: Permission
+    PatchedTicketRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          description: The ticket's name.
+        assignees:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: The individual `Users` who are assigned to this ticket. This does not include `Users` who just have view access to this ticket. To fetch all `Users` and `Teams` that can access the ticket, use the `GET /tickets/{ticket_id}/viewers` [endpoint](https://docs.merge.dev/ticketing/tickets/#tickets_viewers_list).
+        assigned_teams:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: The `Teams` that are assigned to this ticket. This does not include `Teams` who just have view access to this ticket. To fetch all `Users` and `Teams` that can access this ticket, use the `GET /tickets/{ticket_id}/viewers` [endpoint](https://docs.merge.dev/ticketing/tickets/#tickets_viewers_list).
+        creator:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The user who created this ticket.
+        due_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The ticket's due date.
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/TicketStatusEnum'
+          - type: 'null'
+          description: The current status of the ticket.
+        description:
+          type:
+          - string
+          - 'null'
+          description: The ticket’s description. HTML version of description is mapped if supported by the third-party platform.
+        collections:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: The `Collections` that this `Ticket` is included in.
+        ticket_type:
+          type:
+          - string
+          - 'null'
+          description: The sub category of the ticket within the 3rd party system. Examples include incident, task, subtask or to-do.
+        account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The account associated with the ticket.
+        contact:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The contact associated with the ticket.
+        parent_ticket:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The ticket's parent ticket.
+        access_level:
+          oneOf:
+          - $ref: '#/components/schemas/TicketAccessLevelEnum'
+          - type: 'null'
+          description: The description of who is able to access a given ticket, or where access is inherited from.
+        tags:
+          type: array
+          items:
+            type: string
+        roles:
+          type: array
+          items:
+            type: string
+            format: uuid
+        ticket_url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The 3rd party url of the Ticket.
+        priority:
+          oneOf:
+          - $ref: '#/components/schemas/PriorityEnum'
+          - type: 'null'
+          description: The priority or urgency of the Ticket.
+        completed_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the ticket was completed.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldRequest'
+      description: '# The Ticket Object
+
+        ### Description
+
+        The `Ticket` object is used to represent a ticket, issue, task or case.
+
+        ### Usage Example
+
+        TODO'
+      title: PatchedTicketRequest
+    FieldFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldFormatEnum
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    FieldTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldTypeEnum
+    TicketsTicketIdViewersGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - team
+      - user
+      title: TicketsTicketIdViewersGetParametersExpandSchemaItems
+    TicketEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/TicketRequest'
+      required:
+      - model
+      title: TicketEndpointRequest
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

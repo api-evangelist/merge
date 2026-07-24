@@ -1,0 +1,294 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_accessKeys API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_accessKeys
+paths:
+  /api/v1/access-keys/:
+    get:
+      operationId: list
+      summary: List access keys
+      description: Lists active access keys for the organization.
+      tags:
+      - subpackage_accessKeys
+      parameters:
+      - name: page
+        in: query
+        description: A page number within the paginated result set.
+        required: false
+        schema:
+          type: integer
+      - name: page_size
+        in: query
+        description: Number of results to return per page.
+        required: false
+        schema:
+          type: integer
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAccessKeyList'
+    post:
+      operationId: create
+      summary: Create access key
+      description: Creates a new access key. Can be scoped to specific tool packs and registered users. The new key's scope must be a subset of the parent key (the access key authenticating this request).
+      tags:
+      - subpackage_accessKeys
+      parameters:
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessKeyCreate'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccessKeyCreate'
+  /api/v1/access-keys/{key_id}/:
+    get:
+      operationId: retrieve
+      summary: Get access key
+      description: Retrieves an access key by id.
+      tags:
+      - subpackage_accessKeys
+      parameters:
+      - name: key_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessKey'
+  /api/v1/access-keys/{key_id}/regenerate/:
+    post:
+      operationId: regenerate
+      summary: Regenerate access key secret
+      description: Rotates the secret of an existing access key. Scope and expiration are preserved; only the secret value changes.
+      tags:
+      - subpackage_accessKeys
+      parameters:
+      - name: key_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessKeyCreate'
+  /api/v1/access-keys/{key_id}/revoke/:
+    post:
+      operationId: revoke
+      summary: Revoke access key
+      description: Revokes an access key. Revocation is permanent.
+      tags:
+      - subpackage_accessKeys
+      parameters:
+      - name: key_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+components:
+  schemas:
+    AccessKeyCreate:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          description: Human-readable label for the key. Auto-generated if omitted.
+        key:
+          type:
+          - string
+          - 'null'
+          description: Raw secret value. Returned only on create or regenerate.
+        key_masked:
+          type: string
+          description: Truncated form of the secret safe to display in UIs.
+        tool_pack_ids:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+            format: uuid
+          description: Tool packs this key can access. Must be a subset of the parent key's `tool_pack_ids`. Pass `null` for unrestricted access to all tool packs in the organization.
+        registered_user_ids:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+            format: uuid
+          description: Registered users this key can access. Must be a subset of the parent key's `registered_user_ids`. Pass `null` for unrestricted access to all registered users in the organization.
+        scopes:
+          type: array
+          items:
+            type: string
+          description: 'Limits which actions this key can perform. Available scopes: `runtime:all` (MCP tool calls), `management:all` (resource management endpoints).'
+        is_test:
+          type: boolean
+          default: false
+          description: If true, the key can only authenticate test registered users.
+        expires_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Expiration timestamp. Must be before the parent key's `expires_at`. Defaults to 90 days from now if omitted. Pass `null` explicitly for a key that never expires.
+        expires_in:
+          type: integer
+          description: Seconds until the key expires. Alternative to `expires_at`.
+        created_at:
+          type: string
+          format: date-time
+      required:
+      - id
+      - key
+      - key_masked
+      - created_at
+      description: Request and response shape for creating or regenerating an access key.
+      title: AccessKeyCreate
+    AccessKey:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+          description: Human-readable label for the key.
+        key_masked:
+          type: string
+          description: Truncated form of the secret safe to display in UIs.
+        tool_pack_ids:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+            format: uuid
+          description: Tool packs this key can access. `null` means unrestricted access.
+        registered_user_ids:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+            format: uuid
+          description: Registered users this key can access. `null` means unrestricted access.
+        scopes:
+          type: array
+          items:
+            type: string
+          description: 'Limits which actions this key can perform. Available scopes: `runtime:all` (MCP tool calls), `management:all` (resource management endpoints).'
+        is_test:
+          type: boolean
+          description: If true, the key can only authenticate test registered users.
+        expires_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Expiration timestamp. `null` means never expires.
+        created_at:
+          type: string
+          format: date-time
+      required:
+      - id
+      - name
+      - key_masked
+      - scopes
+      - is_test
+      - expires_at
+      - created_at
+      description: Access key shape returned by list and detail endpoints.
+      title: AccessKey
+    PaginatedAccessKeyList:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccessKey'
+      required:
+      - count
+      - next
+      - previous
+      - results
+      title: PaginatedAccessKeyList
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

@@ -1,0 +1,884 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_items API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_items
+paths:
+  /accounting/v1/items:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Item` objects.{/* BEGIN_ACCOUNTING_ITEM_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA91Y73PaOBD9Vxh9ZAA3oZAJM50bfqUhd5g0IW1ynYxmkRcjkCVHkgnQ6f9+Y2wCJLmkSUx7vU9gWXrPem93tfY3wsCir/Sc1AgwpiJpufRJgQTKQ0FqpGMxIAUCIXchwK1ZdLpPCsREYai0Re+Io/DMscYhqREnQO1jMZJ8yNFz1oscLi36GixX0jh3i4vD5WpSIILLCXr1ZMHzcMn0Yjpy79I4ghtLCiQEY+xIq8gfneFNhOYHkONnExigtCCKHlhwNlCKOoF5bCzehYcCLXotsNBCiyzebso4sjY0NccZoQhLS/aSh1MHpQPacibQOJXy4f7BYaWYoizZ/6C++LCXH98M1OAgT30mKET5bp/N3H7n1h37793m+5m7uKi4i8nCHU/e5akP+W6/W+n1r8q9Vn2v98gEel69PPzcaDVO3DxbtMvu+OrW7bO9bp9NBotO+eQjuz05/jRzF1f73dZF2e23Kycf1V6veWa6zTPVrZdKpEA2XSW1r982B9LAOdJoRg2lJrE+G7c7Afi4oUtiCIS8GEYDwVnJlEsQwEJJuDUlpgInQI+Ds8aj5zcRaKR/KV+VxmEcvkvluJJ34pMaabvHdbfZbm3HQ30KXMBAIKlZHeGDgCa1r0TGOygQjYGySGM3tq9oCHa0HuLe+n8UemDRoxCHobFgI0Ou47s3EdfonYKGAC3qmOf6e+Ex4bqcaWXU0OZacwkBZyZXrlZyjchwicbkmiitBpGNqndkdEVGy9UKXZHRlIw2lVCaHs7aR9XqQSmU2YvONHrcUhmrKLhEyi0Gcez4KDF+BKtBGlgSbU/gcqo4u7cq9TCMNBuBQaq0h3p7ypv9jSS3NNScYQYeH3EJkmEOpJfrhbhKrkxcPhVgh0oHj7id0lK65tyJvS/PqZdKqiTOB1x7GUu2gt2JKk+F7i8MTxftecQtZiOli9bEaNQs6/YTQrr1fudz+xW1QwUhyDkp/HsVwVmI0iSDm1VFoOejflBcXl944l86jMSQCxF3E3dw9ytS2nvsukgZEGg2yJLrNZNZH1QFYufhi4Olp4EJzB1FhiuZawoVebn22Wk2sZOA0wScLsFp++yUFtMmYJe1aqe2vEbpTxFnk2ULlOvJ+HGy0XgNW0wylF4M96uNg71dZOovz8/XpeHdvaSe7iIvt3LwLdX7HHzcaBeXCVnffNnLIGZiDtpo1le9+J/Ty2n5fPzTD8mnbNy9VW/0qCMtMGYzdCRFXLkynXLXHMD//MT9rxysmSXwF5hi+j7As3rRW/WzMTY9Hnqz/Xf292tpM8i8L0pPPJhnrGoC+rMEfeGWL1GrbPYbI6VNws/9CHC/mPxWR/ubC8LfaqRyGX5Li/EefkrbiaHPnxM/ZOWrvHn2+9v1938Afpu4sxIXAAA=" /></Footer>{/* END_ACCOUNTING_ITEM_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_items
+      parameters:
+      - name: company_id
+        in: query
+        description: If provided, will only return items for this company.
+        required: false
+        schema:
+          type: string
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemsGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: name
+        in: query
+        description: If provided, will only return items with this name.
+        required: false
+        schema:
+          type: string
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_fields
+        in: query
+        description: Deprecated. Use show_enum_origins.
+        required: false
+        schema:
+          $ref: '#/components/schemas/ItemsGetParametersRemoteFields'
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: show_enum_origins
+        in: query
+        description: A comma separated list of enum field names for which you'd like the original values to be returned, instead of Merge's normalized enum values. [Learn more](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+        required: false
+        schema:
+          $ref: '#/components/schemas/ItemsGetParametersShowEnumOrigins'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedItemList'
+    post:
+      operationId: create
+      summary: Create
+      description: Creates an `Item` object with the given values.{/* BEGIN_ACCOUNTING_ITEM_CREATE_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST" data="H4sIAAAAAAAAA82S7U8aQRDG/5VmP5J7KSASSZqGtyokLFVPozHmMuwNx8Le7rG7B4rxf28OrnJWW5tGk36DuXl+M/vM80AYWIyVvictAoypTFouY+KQREUoSIsMLCbEIZByCgk+6wpXNeIQk6Wp0hajbxxFZE40TkmL+AnqGN1M8inHyN+LfC4txhosV9L4T2J3ulUThwguFxi1d4K3cbt2t6j88tf4ghtLHJKCMXamVRbPznCZofkLcr6bwASlBeFGYMEvUVy9w7xWy18RoUCLUQ8s9NAiy59bTJxZm5qW789QpN52uhfhykfpg7acCTR+o35Uax413IKynf41jMWXamW+nKhJsxLGTISQVUYBu6PBYE3n8QHtHtzRzUWDbhYbOl98roQxVEbBqDEOruvjXrs6fqUhPD+8Orrs9DpDWmGbfp3Or9c0YNVRwBaTzaA+PGbr4cnpHd1c10a9izoN+o3hsaqOu2dm1D1To7bnEYeUr0paNw/lQhGc04yzRUephfk0loJLfC4bJBBjyZ7dXSDlbppNBGeeqXuQwEZJWBuPqcRPMOLg77GuWWagMbyY1g47zaqXboO89ZAr+XQG0iK0HQwu+89z0V4BFzARSFpWZ/gi2KR1Q2T+EoekmWYzMBgWaSmXUs1Z3qMxURZDHu1/Z2kEFqMQcoEBgaYEMBZslifH3qe5PpPcFrDbnLDMuMboO2hI0KLer3P76Lzm9jnE+GkgLTBm38fonBgWxPB8Z/VqxalpwgdYzVSSgrwnzk/T3zT0HwwsuRKm+Zdc/7LocYtJWF6g2Gk76jcHuEKt3sf4nFRk+w9G9+lJm3b7vf8q1R9wixxZusXt4+3jD3PMaZjGBgAA" /></Footer>{/* END_ACCOUNTING_ITEM_CREATE_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_items
+      parameters:
+      - name: is_debug_mode
+        in: query
+        description: Whether to include debug fields (such as log file links) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: run_async
+        in: query
+        description: Whether or not third-party updates should be run asynchronously.
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ItemResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ItemEndpointRequest'
+  /accounting/v1/items/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns an `Item` object with the given `id`.{/* BEGIN_ACCOUNTING_ITEM_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA91Y73PaOBD9Vxh9ZAA3oZAJM50bfqUhd5g0IW1ynYxmkRcjkCVHkgnQ6f9+Y2wCJLmkSUx7vU9gWXrPem93tfY3wsCir/Sc1AgwpiJpufRJgQTKQ0FqpGMxIAUCIXchwK1ZdLpPCsREYai0Re+Io/DMscYhqREnQO1jMZJ8yNFz1oscLi36GixX0jh3i4vD5WpSIILLCXr1ZMHzcMn0Yjpy79I4ghtLCiQEY+xIq8gfneFNhOYHkONnExigtCCKHlhwNlCKOoF5bCzehYcCLXotsNBCiyzebso4sjY0NccZoQhLS/aSh1MHpQPacibQOJXy4f7BYaWYoizZ/6C++LCXH98M1OAgT30mKET5bp/N3H7n1h37793m+5m7uKi4i8nCHU/e5akP+W6/W+n1r8q9Vn2v98gEel69PPzcaDVO3DxbtMvu+OrW7bO9bp9NBotO+eQjuz05/jRzF1f73dZF2e23Kycf1V6veWa6zTPVrZdKpEA2XSW1r982B9LAOdJoRg2lJrE+G7c7Afi4oUtiCIS8GEYDwVnJlEsQwEJJuDUlpgInQI+Ds8aj5zcRaKR/KV+VxmEcvkvluJJ34pMaabvHdbfZbm3HQ30KXMBAIKlZHeGDgCa1r0TGOygQjYGySGM3tq9oCHa0HuLe+n8UemDRoxCHobFgI0Ou47s3EdfonYKGAC3qmOf6e+Ex4bqcaWXU0OZacwkBZyZXrlZyjchwicbkmiitBpGNqndkdEVGy9UKXZHRlIw2lVCaHs7aR9XqQSmU2YvONHrcUhmrKLhEyi0Gcez4KDF+BKtBGlgSbU/gcqo4u7cq9TCMNBuBQaq0h3p7ypv9jSS3NNScYQYeH3EJkmEOpJfrhbhKrkxcPhVgh0oHj7id0lK65tyJvS/PqZdKqiTOB1x7GUu2gt2JKk+F7i8MTxftecQtZiOli9bEaNQs6/YTQrr1fudz+xW1QwUhyDkp/HsVwVmI0iSDm1VFoOejflBcXl944l86jMSQCxF3E3dw9ytS2nvsukgZEGg2yJLrNZNZH1QFYufhi4Olp4EJzB1FhiuZawoVebn22Wk2sZOA0wScLsFp++yUFtMmYJe1aqe2vEbpTxFnk2ULlOvJ+HGy0XgNW0wylF4M96uNg71dZOovz8/XpeHdvaSe7iIvt3LwLdX7HHzcaBeXCVnffNnLIGZiDtpo1le9+J/Ty2n5fPzTD8mnbNy9VW/0qCMtMGYzdCRFXLkynXLXHMD//MT9rxysmSXwF5hi+j7As3rRW/WzMTY9Hnqz/Xf292tpM8i8L0pPPJhnrGoC+rMEfeGWL1GrbPYbI6VNws/9CHC/mPxWR/ubC8LfaqRyGX5Li/EefkrbiaHPnxM/ZOWrvHn2+9v1938Afpu4sxIXAAA=" /></Footer>{/* END_ACCOUNTING_ITEM_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_items
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemsIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: remote_fields
+        in: query
+        description: Deprecated. Use show_enum_origins.
+        required: false
+        schema:
+          $ref: '#/components/schemas/ItemsIdGetParametersRemoteFields'
+      - name: show_enum_origins
+        in: query
+        description: A comma separated list of enum field names for which you'd like the original values to be returned, instead of Merge's normalized enum values. [Learn more](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+        required: false
+        schema:
+          $ref: '#/components/schemas/ItemsIdGetParametersShowEnumOrigins'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+    patch:
+      operationId: partial-update
+      summary: Partial Update
+      description: Updates an `Item` object with the given `id`.{/* BEGIN_ACCOUNTING_ITEM_EDIT_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="PATCH" data="H4sIAAAAAAAAA82SW0/bQBCF/0q1j5EvTUJAWKqq3AqJlE2hBoEQsia7E2eTtdfZSwJG/PfKiQWhRb1IfeibPZrzzc6Z80QYWEyVfiQRAcaUy63IU+KRTHGUJCIjixnxCBSCQoZvupJNi3jEuKJQ2iL/IlByc65xTiISZqhT9F0u5gJ5+CoKRW4x1WCFyk34IvbnOzXxiBT5Cnl3L/g9bt/u15Uffk0ohbHEIwUYYxdauXRxiWuH5g/I1dskZphbkD4HC+EBxdd7zHu1aguOEi3yAVgYoEVWrVtPXFhbmCgMFyiLYDc94LgJMQ9BW8EkmrDTPm2dnHb8mrKb/jlJ5admY7meqdlJI0mZTMA1JjF7oPFoS5fpEe0fPdDyqkPLVUmXq4+NJIXGJJ50pvFtezroNqfvNCTfjm9Or3uD3pg2WDls0+XtlsasOYnZalaO2uMzth2fXzzQ8rY1GVy1aTzsjM9Uc9q/NJP+pZp0g4B45PCqJLp7OizUwblwgq16Sq3Mh2kuRY5vZaMMUjywZ38XKIRfuJkULDDtADIoVQ5bEzCVhRlyAeEr1jdrBxqTq3nruHfSDIpdkHceCpW/nIFEhHbj0fXwbS66GxASZhJJZLXDn4JNojuSV5t4pHCaLcBgUqflsFRowaoejZmymAj++u0KDhZ5ApXAgERzADAWrKuSYx+LSu9yYWvYfUVYO6GRfwUNGVrUu+cITu6fvfe8vkGt/o29N6hVbewvDB3S8y7tDwf/laV/6+T983frBgYWDwUAAA==" /></Footer>{/* END_ACCOUNTING_ITEM_EDIT_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_items
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: is_debug_mode
+        in: query
+        description: Whether to include debug fields (such as log file links) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: run_async
+        in: query
+        description: Whether or not third-party updates should be run asynchronously.
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ItemResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedItemEndpointRequest'
+  /accounting/v1/items/meta/patch/{id}:
+    get:
+      operationId: meta-patch-retrieve
+      summary: Meta Patch Retrieve
+      description: Returns metadata for `Item` PATCHs.{/* BEGIN_ACCOUNTING_ITEM_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA91Y73PaOBD9Vxh9ZAA3oZAJM50bfqUhd5g0IW1ynYxmkRcjkCVHkgnQ6f9+Y2wCJLmkSUx7vU9gWXrPem93tfY3wsCir/Sc1AgwpiJpufRJgQTKQ0FqpGMxIAUCIXchwK1ZdLpPCsREYai0Re+Io/DMscYhqREnQO1jMZJ8yNFz1oscLi36GixX0jh3i4vD5WpSIILLCXr1ZMHzcMn0Yjpy79I4ghtLCiQEY+xIq8gfneFNhOYHkONnExigtCCKHlhwNlCKOoF5bCzehYcCLXotsNBCiyzebso4sjY0NccZoQhLS/aSh1MHpQPacibQOJXy4f7BYaWYoizZ/6C++LCXH98M1OAgT30mKET5bp/N3H7n1h37793m+5m7uKi4i8nCHU/e5akP+W6/W+n1r8q9Vn2v98gEel69PPzcaDVO3DxbtMvu+OrW7bO9bp9NBotO+eQjuz05/jRzF1f73dZF2e23Kycf1V6veWa6zTPVrZdKpEA2XSW1r982B9LAOdJoRg2lJrE+G7c7Afi4oUtiCIS8GEYDwVnJlEsQwEJJuDUlpgInQI+Ds8aj5zcRaKR/KV+VxmEcvkvluJJ34pMaabvHdbfZbm3HQ30KXMBAIKlZHeGDgCa1r0TGOygQjYGySGM3tq9oCHa0HuLe+n8UemDRoxCHobFgI0Ou47s3EdfonYKGAC3qmOf6e+Ex4bqcaWXU0OZacwkBZyZXrlZyjchwicbkmiitBpGNqndkdEVGy9UKXZHRlIw2lVCaHs7aR9XqQSmU2YvONHrcUhmrKLhEyi0Gcez4KDF+BKtBGlgSbU/gcqo4u7cq9TCMNBuBQaq0h3p7ypv9jSS3NNScYQYeH3EJkmEOpJfrhbhKrkxcPhVgh0oHj7id0lK65tyJvS/PqZdKqiTOB1x7GUu2gt2JKk+F7i8MTxftecQtZiOli9bEaNQs6/YTQrr1fudz+xW1QwUhyDkp/HsVwVmI0iSDm1VFoOejflBcXl944l86jMSQCxF3E3dw9ytS2nvsukgZEGg2yJLrNZNZH1QFYufhi4Olp4EJzB1FhiuZawoVebn22Wk2sZOA0wScLsFp++yUFtMmYJe1aqe2vEbpTxFnk2ULlOvJ+HGy0XgNW0wylF4M96uNg71dZOovz8/XpeHdvaSe7iIvt3LwLdX7HHzcaBeXCVnffNnLIGZiDtpo1le9+J/Ty2n5fPzTD8mnbNy9VW/0qCMtMGYzdCRFXLkynXLXHMD//MT9rxysmSXwF5hi+j7As3rRW/WzMTY9Hnqz/Xf292tpM8i8L0pPPJhnrGoC+rMEfeGWL1GrbPYbI6VNws/9CHC/mPxWR/ubC8LfaqRyGX5Li/EefkrbiaHPnxM/ZOWrvHn2+9v1938Afpu4sxIXAAA=" /></Footer>{/* END_ACCOUNTING_ITEM_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_items
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaResponse'
+  /accounting/v1/items/meta/post:
+    get:
+      operationId: meta-post-retrieve
+      summary: Meta Post Retrieve
+      description: Returns metadata for `Item` POSTs.{/* BEGIN_ACCOUNTING_ITEM_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA91Y73PaOBD9Vxh9ZAA3oZAJM50bfqUhd5g0IW1ynYxmkRcjkCVHkgnQ6f9+Y2wCJLmkSUx7vU9gWXrPem93tfY3wsCir/Sc1AgwpiJpufRJgQTKQ0FqpGMxIAUCIXchwK1ZdLpPCsREYai0Re+Io/DMscYhqREnQO1jMZJ8yNFz1oscLi36GixX0jh3i4vD5WpSIILLCXr1ZMHzcMn0Yjpy79I4ghtLCiQEY+xIq8gfneFNhOYHkONnExigtCCKHlhwNlCKOoF5bCzehYcCLXotsNBCiyzebso4sjY0NccZoQhLS/aSh1MHpQPacibQOJXy4f7BYaWYoizZ/6C++LCXH98M1OAgT30mKET5bp/N3H7n1h37793m+5m7uKi4i8nCHU/e5akP+W6/W+n1r8q9Vn2v98gEel69PPzcaDVO3DxbtMvu+OrW7bO9bp9NBotO+eQjuz05/jRzF1f73dZF2e23Kycf1V6veWa6zTPVrZdKpEA2XSW1r982B9LAOdJoRg2lJrE+G7c7Afi4oUtiCIS8GEYDwVnJlEsQwEJJuDUlpgInQI+Ds8aj5zcRaKR/KV+VxmEcvkvluJJ34pMaabvHdbfZbm3HQ30KXMBAIKlZHeGDgCa1r0TGOygQjYGySGM3tq9oCHa0HuLe+n8UemDRoxCHobFgI0Ou47s3EdfonYKGAC3qmOf6e+Ex4bqcaWXU0OZacwkBZyZXrlZyjchwicbkmiitBpGNqndkdEVGy9UKXZHRlIw2lVCaHs7aR9XqQSmU2YvONHrcUhmrKLhEyi0Gcez4KDF+BKtBGlgSbU/gcqo4u7cq9TCMNBuBQaq0h3p7ypv9jSS3NNScYQYeH3EJkmEOpJfrhbhKrkxcPhVgh0oHj7id0lK65tyJvS/PqZdKqiTOB1x7GUu2gt2JKk+F7i8MTxftecQtZiOli9bEaNQs6/YTQrr1fudz+xW1QwUhyDkp/HsVwVmI0iSDm1VFoOejflBcXl944l86jMSQCxF3E3dw9ytS2nvsukgZEGg2yJLrNZNZH1QFYufhi4Olp4EJzB1FhiuZawoVebn22Wk2sZOA0wScLsFp++yUFtMmYJe1aqe2vEbpTxFnk2ULlOvJ+HGy0XgNW0wylF4M96uNg71dZOovz8/XpeHdvaSe7iIvt3LwLdX7HHzcaBeXCVnffNnLIGZiDtpo1le9+J/Ty2n5fPzTD8mnbNy9VW/0qCMtMGYzdCRFXLkynXLXHMD//MT9rxysmSXwF5hi+j7As3rRW/WzMTY9Hnqz/Xf292tpM8i8L0pPPJhnrGoC+rMEfeGWL1GrbPYbI6VNws/9CHC/mPxWR/ubC8LfaqRyGX5Li/EefkrbiaHPnxM/ZOWrvHn2+9v1938Afpu4sxIXAAA=" /></Footer>{/* END_ACCOUNTING_ITEM_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_items
+      parameters:
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaResponse'
+components:
+  schemas:
+    PatchedItemEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/PatchedItemRequestRequest'
+      required:
+      - model
+      title: PatchedItemEndpointRequest
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    ItemsIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - status
+      title: ItemsIdGetParametersRemoteFields
+    ItemsGetParametersRemoteFields:
+      type: string
+      enum:
+      - status
+      title: ItemsGetParametersRemoteFields
+    PaginatedItemList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Item'
+      title: PaginatedItemList
+    ItemFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: ItemFieldMappings
+    ItemResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/Item'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: ItemResponse
+    Type2bbEnum:
+      type: string
+      enum:
+      - INVENTORY
+      - NON_INVENTORY
+      - SERVICE
+      - UNKNOWN
+      title: Type2bbEnum
+    Item:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The item's name.
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/Status7d1Enum'
+          - type: 'null'
+          description: The item's status.
+        type:
+          oneOf:
+          - $ref: '#/components/schemas/Type2bbEnum'
+          - type: 'null'
+          description: The item's type.
+        unit_price:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The item's unit price.
+        purchase_price:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The price at which the item is purchased from a vendor.
+        purchase_account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: References the default account used to record a purchase of the item.
+        sales_account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: References the default account used to record a sale.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the item belongs to.
+        purchase_tax_rate:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The default purchase tax rate for this item.
+        sales_tax_rate:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The default sales tax rate for this item.
+        remote_updated_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's item note was updated.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/ItemFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The Item Object
+
+        ### Description
+
+        The `Item` object refers to the goods involved in a transaction.
+
+
+        ### Usage Example
+
+        Fetch from the `LIST Items` endpoint and view a company''s items.'
+      title: Item
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    ItemsGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - status
+      title: ItemsGetParametersShowEnumOrigins
+    Status7d1Enum:
+      type: string
+      enum:
+      - ACTIVE
+      - ARCHIVED
+      title: Status7d1Enum
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    ItemsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - company
+      - purchase_account
+      - purchase_tax_rate
+      - sales_account
+      - sales_tax_rate
+      title: ItemsGetParametersExpandSchemaItems
+    PatchedItemRequestRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          description: The item's name.
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/Status7d1Enum'
+          - type: 'null'
+          description: The item's status.
+        type:
+          oneOf:
+          - $ref: '#/components/schemas/Type2bbEnum'
+          - type: 'null'
+          description: The item's type.
+        unit_price:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The item's unit price.
+        purchase_price:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The price at which the item is purchased from a vendor.
+        purchase_account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: References the default account used to record a purchase of the item.
+        sales_account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: References the default account used to record a sale.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the item belongs to.
+        purchase_tax_rate:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The default purchase tax rate for this item.
+        sales_tax_rate:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The default sales tax rate for this item.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The Item Object
+
+        ### Description
+
+        The `Item` object refers to the goods involved in a transaction.
+
+
+        ### Usage Example
+
+        Fetch from the `LIST Items` endpoint and view a company''s items.'
+      title: PatchedItemRequestRequest
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    ItemsIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - status
+      title: ItemsIdGetParametersShowEnumOrigins
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    ItemsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - company
+      - purchase_account
+      - purchase_tax_rate
+      - sales_account
+      - sales_tax_rate
+      title: ItemsIdGetParametersExpandSchemaItems
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    ItemEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/ItemRequestRequest'
+      required:
+      - model
+      title: ItemEndpointRequest
+    ItemRequestRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          description: The item's name.
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/Status7d1Enum'
+          - type: 'null'
+          description: The item's status.
+        type:
+          oneOf:
+          - $ref: '#/components/schemas/Type2bbEnum'
+          - type: 'null'
+          description: The item's type.
+        unit_price:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The item's unit price.
+        purchase_price:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The price at which the item is purchased from a vendor.
+        purchase_account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: References the default account used to record a purchase of the item.
+        sales_account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: References the default account used to record a sale.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the item belongs to.
+        purchase_tax_rate:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The default purchase tax rate for this item.
+        sales_tax_rate:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The default sales tax rate for this item.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The Item Object
+
+        ### Description
+
+        The `Item` object refers to the goods involved in a transaction.
+
+
+        ### Usage Example
+
+        Fetch from the `LIST Items` endpoint and view a company''s items.'
+      title: ItemRequestRequest
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

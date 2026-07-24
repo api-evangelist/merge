@@ -1,0 +1,533 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_containers API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_containers
+paths:
+  /knowledgebase/v1/containers:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Container` objects.
+      tags:
+      - subpackage_containers
+      parameters:
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          $ref: '#/components/schemas/ContainersGetParametersExpand'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: parent_article_id
+        in: query
+        description: If provided, will only return sub containers of the parent_article_id.
+        required: false
+        schema:
+          type: string
+          format: uuid
+      - name: parent_container_id
+        in: query
+        description: If provided, will only return sub containers of the parent_container_id.
+        required: false
+        schema:
+          type: string
+          format: uuid
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: type
+        in: query
+        description: If provided, will only return containers of the given type.
+        required: false
+        schema:
+          $ref: '#/components/schemas/ContainersGetParametersType'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedContainerList'
+  /knowledgebase/v1/containers/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `Container` object with the given `id`.
+      tags:
+      - subpackage_containers
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          $ref: '#/components/schemas/ContainersIdGetParametersExpand'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Container'
+components:
+  schemas:
+    Status3c6Enum:
+      type: string
+      enum:
+      - DRAFT
+      - PUBLISHED
+      - ARCHIVED
+      - TRASH
+      description: '* `DRAFT` - DRAFT
+
+        * `PUBLISHED` - PUBLISHED
+
+        * `ARCHIVED` - ARCHIVED
+
+        * `TRASH` - TRASH'
+      title: Status3c6Enum
+    Permission:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        user:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        group:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        type:
+          oneOf:
+          - $ref: '#/components/schemas/PermissionTypeEnum'
+          - type: 'null'
+          description: 'Denotes what type of people have access to the Article or Container.
+
+
+            * `USER` - USER
+
+            * `GROUP` - GROUP
+
+            * `COMPANY` - COMPANY
+
+            * `ANYONE` - ANYONE'
+        roles:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RolesEnum'
+          description: The permissions that the user or group has for the Article or Container. It is possible for a user or group to have multiple roles, such as viewing & uploading.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/PermissionFieldMappings'
+          - type: 'null'
+      description: '# The Permission Object
+
+        ### Description
+
+        The `Permission` object is used to represent a user''s or group''s access to an article or container. Permissions are unexpanded by default.
+
+        ### Usage Example'
+      title: Permission
+    ContainersGetParametersType:
+      type: string
+      enum:
+      - ''
+      - CATEGORY
+      - COLLECTION
+      - DATABASE
+      - FOLDER
+      - SECTION
+      - SPACE
+      title: ContainersGetParametersType
+    PermissionFieldMappings:
+      type: object
+      properties: {}
+      title: PermissionFieldMappings
+    PermissionTypeEnum:
+      type: string
+      enum:
+      - USER
+      - GROUP
+      - COMPANY
+      - ANYONE
+      description: '* `USER` - USER
+
+        * `GROUP` - GROUP
+
+        * `COMPANY` - COMPANY
+
+        * `ANYONE` - ANYONE'
+      title: PermissionTypeEnum
+    ContainersIdGetParametersExpand:
+      type: string
+      enum:
+      - parent_article
+      - parent_article,parent_container
+      - parent_container
+      - permissions
+      - permissions,parent_article
+      - permissions,parent_article,parent_container
+      - permissions,parent_container
+      title: ContainersIdGetParametersExpand
+    PaginatedContainerList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Container'
+      title: PaginatedContainerList
+    ContainersGetParametersExpand:
+      type: string
+      enum:
+      - parent_article
+      - parent_article,parent_container
+      - parent_container
+      - permissions
+      - permissions,parent_article
+      - permissions,parent_article,parent_container
+      - permissions,parent_container
+      title: ContainersGetParametersExpand
+    Container:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        name:
+          type:
+          - string
+          - 'null'
+          description: Name of the container.
+        description:
+          type:
+          - string
+          - 'null'
+          description: Description of the container.
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/Status3c6Enum'
+          - type: 'null'
+          description: 'The container''s status.
+
+
+            * `DRAFT` - DRAFT
+
+            * `PUBLISHED` - PUBLISHED
+
+            * `ARCHIVED` - ARCHIVED
+
+            * `TRASH` - TRASH'
+        container_url:
+          type:
+          - string
+          - 'null'
+          description: The URL to the webpage of the container.
+        type:
+          oneOf:
+          - $ref: '#/components/schemas/ContainerTypeEnum'
+          - type: 'null'
+          description: 'The container''s type.
+
+
+            * `FOLDER` - FOLDER
+
+            * `SPACE` - SPACE
+
+            * `COLLECTION` - COLLECTION
+
+            * `SECTION` - SECTION
+
+            * `CATEGORY` - CATEGORY
+
+            * `DATABASE` - DATABASE'
+        visibility:
+          oneOf:
+          - $ref: '#/components/schemas/VisibilityEnum'
+          - type: 'null'
+          description: 'The container''s visibility.
+
+
+            * `PUBLIC` - PUBLIC
+
+            * `INTERNAL` - INTERNAL
+
+            * `RESTRICTED` - RESTRICTED'
+        remote_created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's container was created.
+        remote_updated_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's container was updated.
+        parent_article:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The parent article a container is nested within.
+        parent_container:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The parent container a container is nested within.
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Permission'
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/ContainerFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The Container Object
+
+        ### Description
+
+        The Container object is used to represent a grouping of articles in the knowledge base. This can include Spaces, Folders, Databases, etc.
+
+        ### Usage Example
+
+        Fetch from the `GET /api/knowledgebase/containers` endpoint and view their containers.'
+      title: Container
+    ContainerFieldMappings:
+      type: object
+      properties: {}
+      title: ContainerFieldMappings
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    VisibilityEnum:
+      type: string
+      enum:
+      - PUBLIC
+      - INTERNAL
+      - RESTRICTED
+      description: '* `PUBLIC` - PUBLIC
+
+        * `INTERNAL` - INTERNAL
+
+        * `RESTRICTED` - RESTRICTED'
+      title: VisibilityEnum
+    ContainerTypeEnum:
+      type: string
+      enum:
+      - FOLDER
+      - SPACE
+      - COLLECTION
+      - SECTION
+      - CATEGORY
+      - DATABASE
+      description: '* `FOLDER` - FOLDER
+
+        * `SPACE` - SPACE
+
+        * `COLLECTION` - COLLECTION
+
+        * `SECTION` - SECTION
+
+        * `CATEGORY` - CATEGORY
+
+        * `DATABASE` - DATABASE'
+      title: ContainerTypeEnum
+    RolesEnum:
+      type: string
+      enum:
+      - READ
+      - WRITE
+      - OWNER
+      description: '* `READ` - READ
+
+        * `WRITE` - WRITE
+
+        * `OWNER` - OWNER'
+      title: RolesEnum
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

@@ -1,0 +1,444 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_eeocs API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_eeocs
+paths:
+  /ats/v1/eeocs:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `EEOC` objects.{/* BEGIN_ATS_EEOC_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+WTb0/bMBDGv8rkl1WaUEo3UWmaSv9QqiWFtgwQQtHFvqZuHTvYTgtBfPcpbWHthpAmyiS0l2ffPXf+3eMHQsFirPQ9qROwhjgkUQwFqZN2u98kDoGUB5Dg6jqc7xOHmCxNlbbIOhwFM12NY1InXoI6xnIm+Zgj88Aaj0uLsQbLlTTec1V5vCwjDhFczpA1KFWZtK/orPLKsEr8LSyujSUOScEYO9EqiycDvM3QvCZZTCMwQWlBlBlY8DbKy3pV/9JZMTdDgRZZCyy00CItHrhuNbE2NXXPm6BI3WVbl+HcQ+mBtpwKNF6terj/5bBWXqssu38LY/G1UpreRir6UgpjKkLISv6I3gWjk0UwjQ+C5sFdkJ/XgnyWB9PZXimMoeSP/Fp/dFXttxqV/gsJ4fDz5eGPo9ZRLyjRvF0NpleLYEQr/ojOovyk2jumi1737C7Ir/b91nk1GLVrvWNV6TcHxm8OlN9wXeKQzT2S+vXD5sHaHJ1iFcDldvZJAjFuUFntAVJeTrNIcOqaqgsJ5ErCwrhUJV6CjIP3pBYObzPQGH5XsXJTGT+x50o+gy+sGnQbQbPd2jZBYw5cQCSQ1K3O8A/fkvo1oSAZZ2CROCRGyVATh2igRawxURbDYj3bUZiCnSz/QZRwa5GFYMlNkXKbcY3sFDQkaFEXLW4enZd4HWtEOVGZwd0Q+6W3xWyavi8zxg1EXHB7HxoLNjNv5uiQeYEO5JPgX4LtQZ53B7uButLaBBpenFG/5bOPAfaNJFU058thdoFyJfaBPvRb8Q0bp5+GGaVoTAeoVdrshuS25pY5j+ilijt7/4M5L5SeMbjfDdJTAXasdLIWfXdj/lt+N48/AQijJaTmCQAA" /></Footer>{/* END_ATS_EEOC_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_eeocs
+      parameters:
+      - name: candidate_id
+        in: query
+        description: If provided, will only return EEOC info for this candidate.
+        required: false
+        schema:
+          type: string
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/EeocsGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_fields
+        in: query
+        description: Deprecated. Use show_enum_origins.
+        required: false
+        schema:
+          $ref: '#/components/schemas/EeocsGetParametersRemoteFields'
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: show_enum_origins
+        in: query
+        description: A comma separated list of enum field names for which you'd like the original values to be returned, instead of Merge's normalized enum values. [Learn more](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+        required: false
+        schema:
+          $ref: '#/components/schemas/EeocsGetParametersShowEnumOrigins'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedEEOCList'
+  /ats/v1/eeocs/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns an `EEOC` object with the given `id`.{/* BEGIN_ATS_EEOC_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+WTb0/bMBDGv8rkl1WaUEo3UWmaSv9QqiWFtgwQQtHFvqZuHTvYTgtBfPcpbWHthpAmyiS0l2ffPXf+3eMHQsFirPQ9qROwhjgkUQwFqZN2u98kDoGUB5Dg6jqc7xOHmCxNlbbIOhwFM12NY1InXoI6xnIm+Zgj88Aaj0uLsQbLlTTec1V5vCwjDhFczpA1KFWZtK/orPLKsEr8LSyujSUOScEYO9EqiycDvM3QvCZZTCMwQWlBlBlY8DbKy3pV/9JZMTdDgRZZCyy00CItHrhuNbE2NXXPm6BI3WVbl+HcQ+mBtpwKNF6terj/5bBWXqssu38LY/G1UpreRir6UgpjKkLISv6I3gWjk0UwjQ+C5sFdkJ/XgnyWB9PZXimMoeSP/Fp/dFXttxqV/gsJ4fDz5eGPo9ZRLyjRvF0NpleLYEQr/ojOovyk2jumi1737C7Ir/b91nk1GLVrvWNV6TcHxm8OlN9wXeKQzT2S+vXD5sHaHJ1iFcDldvZJAjFuUFntAVJeTrNIcOqaqgsJ5ErCwrhUJV6CjIP3pBYObzPQGH5XsXJTGT+x50o+gy+sGnQbQbPd2jZBYw5cQCSQ1K3O8A/fkvo1oSAZZ2CROCRGyVATh2igRawxURbDYj3bUZiCnSz/QZRwa5GFYMlNkXKbcY3sFDQkaFEXLW4enZd4HWtEOVGZwd0Q+6W3xWyavi8zxg1EXHB7HxoLNjNv5uiQeYEO5JPgX4LtQZ53B7uButLaBBpenFG/5bOPAfaNJFU058thdoFyJfaBPvRb8Q0bp5+GGaVoTAeoVdrshuS25pY5j+ilijt7/4M5L5SeMbjfDdJTAXasdLIWfXdj/lt+N48/AQijJaTmCQAA" /></Footer>{/* END_ATS_EEOC_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_eeocs
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/EeocsIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: remote_fields
+        in: query
+        description: Deprecated. Use show_enum_origins.
+        required: false
+        schema:
+          $ref: '#/components/schemas/EeocsIdGetParametersRemoteFields'
+      - name: show_enum_origins
+        in: query
+        description: A comma separated list of enum field names for which you'd like the original values to be returned, instead of Merge's normalized enum values. [Learn more](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+        required: false
+        schema:
+          $ref: '#/components/schemas/EeocsIdGetParametersShowEnumOrigins'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EEOC'
+components:
+  schemas:
+    EeocsGetParametersRemoteFields:
+      type: string
+      enum:
+      - disability_status
+      - disability_status,gender
+      - disability_status,gender,race
+      - disability_status,gender,race,veteran_status
+      - disability_status,gender,veteran_status
+      - disability_status,race
+      - disability_status,race,veteran_status
+      - disability_status,veteran_status
+      - gender
+      - gender,race
+      - gender,race,veteran_status
+      - gender,veteran_status
+      - race
+      - race,veteran_status
+      - veteran_status
+      title: EeocsGetParametersRemoteFields
+    RaceEnum:
+      type: string
+      enum:
+      - AMERICAN_INDIAN_OR_ALASKAN_NATIVE
+      - ASIAN
+      - BLACK_OR_AFRICAN_AMERICAN
+      - HISPANIC_OR_LATINO
+      - WHITE
+      - NATIVE_HAWAIIAN_OR_OTHER_PACIFIC_ISLANDER
+      - TWO_OR_MORE_RACES
+      - DECLINE_TO_SELF_IDENTIFY
+      title: RaceEnum
+    EEOC:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        candidate:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The candidate being represented.
+        submitted_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the information was submitted.
+        race:
+          oneOf:
+          - $ref: '#/components/schemas/RaceEnum'
+          - type: 'null'
+          description: The candidate's race.
+        gender:
+          oneOf:
+          - $ref: '#/components/schemas/GenderEnum'
+          - type: 'null'
+          description: The candidate's gender.
+        veteran_status:
+          oneOf:
+          - $ref: '#/components/schemas/VeteranStatusEnum'
+          - type: 'null'
+          description: The candidate's veteran status.
+        disability_status:
+          oneOf:
+          - $ref: '#/components/schemas/DisabilityStatusEnum'
+          - type: 'null'
+          description: The candidate's disability status.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/EeocFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The EEOC Object
+
+        ### Description
+
+        The `EEOC` object is used to represent the Equal Employment Opportunity Commission information for a candidate (race, gender, veteran status, disability status).
+
+        ### Usage Example
+
+        Fetch from the `LIST EEOCs` endpoint and filter by `candidate` to show all EEOC information for a candidate.'
+      title: EEOC
+    GenderEnum:
+      type: string
+      enum:
+      - MALE
+      - FEMALE
+      - NON-BINARY
+      - OTHER
+      - DECLINE_TO_SELF_IDENTIFY
+      title: GenderEnum
+    VeteranStatusEnum:
+      type: string
+      enum:
+      - I_AM_NOT_A_PROTECTED_VETERAN
+      - I_IDENTIFY_AS_ONE_OR_MORE_OF_THE_CLASSIFICATIONS_OF_A_PROTECTED_VETERAN
+      - I_DONT_WISH_TO_ANSWER
+      title: VeteranStatusEnum
+    EeocFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: EeocFieldMappings
+    EeocsIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - disability_status
+      - disability_status,gender
+      - disability_status,gender,race
+      - disability_status,gender,race,veteran_status
+      - disability_status,gender,veteran_status
+      - disability_status,race
+      - disability_status,race,veteran_status
+      - disability_status,veteran_status
+      - gender
+      - gender,race
+      - gender,race,veteran_status
+      - gender,veteran_status
+      - race
+      - race,veteran_status
+      - veteran_status
+      title: EeocsIdGetParametersShowEnumOrigins
+    EeocsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - candidate
+      title: EeocsGetParametersExpandSchemaItems
+    PaginatedEEOCList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/EEOC'
+      title: PaginatedEEOCList
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    EeocsGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - disability_status
+      - disability_status,gender
+      - disability_status,gender,race
+      - disability_status,gender,race,veteran_status
+      - disability_status,gender,veteran_status
+      - disability_status,race
+      - disability_status,race,veteran_status
+      - disability_status,veteran_status
+      - gender
+      - gender,race
+      - gender,race,veteran_status
+      - gender,veteran_status
+      - race
+      - race,veteran_status
+      - veteran_status
+      title: EeocsGetParametersShowEnumOrigins
+    DisabilityStatusEnum:
+      type: string
+      enum:
+      - YES_I_HAVE_A_DISABILITY_OR_PREVIOUSLY_HAD_A_DISABILITY
+      - NO_I_DONT_HAVE_A_DISABILITY
+      - I_DONT_WISH_TO_ANSWER
+      title: DisabilityStatusEnum
+    EeocsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - candidate
+      title: EeocsIdGetParametersExpandSchemaItems
+    EeocsIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - disability_status
+      - disability_status,gender
+      - disability_status,gender,race
+      - disability_status,gender,race,veteran_status
+      - disability_status,gender,veteran_status
+      - disability_status,race
+      - disability_status,race,veteran_status
+      - disability_status,veteran_status
+      - gender
+      - gender,race
+      - gender,race,veteran_status
+      - gender,veteran_status
+      - race
+      - race,veteran_status
+      - veteran_status
+      title: EeocsIdGetParametersRemoteFields
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

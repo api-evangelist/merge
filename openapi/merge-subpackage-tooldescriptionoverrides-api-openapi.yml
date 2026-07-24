@@ -1,0 +1,266 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_toolDescriptionOverrides API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_toolDescriptionOverrides
+paths:
+  /api/v1/connectors/tool-description-overrides/:
+    get:
+      operationId: list
+      summary: List tool description overrides (connector)
+      description: List tool description overrides, optionally filtered by connector slug. Returns paginated results.
+      tags:
+      - subpackage_toolDescriptionOverrides
+      parameters:
+      - name: page
+        in: query
+        description: A page number within the paginated result set.
+        required: false
+        schema:
+          type: integer
+      - name: page_size
+        in: query
+        description: Number of results to return per page.
+        required: false
+        schema:
+          type: integer
+      - name: slug
+        in: query
+        description: Filter by connector slug.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedToolDescriptionOverrideList'
+    patch:
+      operationId: bulk-upsert-delete
+      summary: Bulk upsert/delete tool description overrides (connector)
+      description: Bulk upsert or delete tool description overrides. Send a list of items with connector_slug, tool_name, and description. Set description to null to delete an override.
+      tags:
+      - subpackage_toolDescriptionOverrides
+      parameters:
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ToolDescriptionOverride'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/BulkToolDescriptionOverrideInput'
+  /api/v1/tool-packs/{tool_pack_id}/tool-description-overrides/:
+    get:
+      operationId: list-tool-pack
+      summary: List tool description overrides (Tool Pack)
+      description: List tool-pack-level description overrides, optionally filtered by connector slug. Returns paginated results.
+      tags:
+      - subpackage_toolDescriptionOverrides
+      parameters:
+      - name: tool_pack_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: page
+        in: query
+        description: A page number within the paginated result set.
+        required: false
+        schema:
+          type: integer
+      - name: page_size
+        in: query
+        description: Number of results to return per page.
+        required: false
+        schema:
+          type: integer
+      - name: slug
+        in: query
+        description: Filter by connector slug.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedToolPackToolDescriptionOverrideList'
+    patch:
+      operationId: bulk-upsert-delete-tool-pack
+      summary: Bulk upsert/delete tool description overrides (Tool Pack)
+      description: Bulk upsert or delete tool-pack-level description overrides. Send a list of items with connector_slug, tool_name, and description. Set description to null to delete an override.
+      tags:
+      - subpackage_toolDescriptionOverrides
+      parameters:
+      - name: tool_pack_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ToolDescriptionOverride'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/BulkToolDescriptionOverrideInput'
+components:
+  schemas:
+    PaginatedToolPackToolDescriptionOverrideList:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ToolDescriptionOverride'
+      required:
+      - count
+      - next
+      - previous
+      - results
+      title: PaginatedToolPackToolDescriptionOverrideList
+    PaginatedToolDescriptionOverrideList:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ToolDescriptionOverride'
+      required:
+      - count
+      - next
+      - previous
+      - results
+      title: PaginatedToolDescriptionOverrideList
+    ToolDescriptionOverride:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        connector_slug:
+          type: string
+        tool_name:
+          type: string
+          description: Name of the tool being overridden
+        description:
+          type: string
+          description: Custom description for the tool
+        defined_at:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        modified_at:
+          type: string
+          format: date-time
+      required:
+      - id
+      - connector_slug
+      - tool_name
+      - description
+      - defined_at
+      - created_at
+      - modified_at
+      description: 'Response serializer for tool-level description overrides.
+
+
+        Includes a computed `defined_at` field (CONNECTOR or TOOL_PACK) indicating
+
+        whether the override originates from the connector level or tool pack level.'
+      title: ToolDescriptionOverride
+    BulkToolDescriptionOverrideInput:
+      type: object
+      properties:
+        connector_slug:
+          type: string
+        tool_name:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+      required:
+      - connector_slug
+      - tool_name
+      - description
+      description: Input serializer for each item in a bulk PATCH request.
+      title: BulkToolDescriptionOverrideInput
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

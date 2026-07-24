@@ -1,0 +1,800 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_transactions API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_transactions
+paths:
+  /accounting/v1/transactions:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Transaction` objects.{/* BEGIN_ACCOUNTING_TRANSACTION_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA92WbW8aORDHvwryS7TsHqGAgnQ68ZSG6DBtsqkSVZE1eIfF4LU3tpcQqn73kxcSSC9qexJR1XvpWc9/PPMbj/cL4eAw1eaRdAhwrgvlhEpJQDKdoCQdEhtQFrgTWpGAQC4oZPhiM1udkIDYIs+1cZicCZSJPTc4Ix0SZWhSrBVKzAQm0d4pEsphasDr2ujZuTYrvUlApFBLTLpbhx/LbbfXdpZvljaSwjoSkBysdXOji3R+ifcF2p9Q9meTmKFyIGsJOIgOVGpmK/OazWeRoESHyQAcDNBhWcZdxLlzue1E0RxlHpbRwwRXEaoIjBNcoo2ajdOT9mmztlMpo//FUvlnvbq4n+ppu8pSLhkU1XHM1zQePdBF+o72363p5rpJN8sNXSz/qLIUquN43JzEt43JoFufvLKBXbVuTj/1Br0LWuWbYYMubh9ozOvjmC+nm1Hj4j1/uDj/uKab25Px4LpB42Hz4r2uT/qXdty/1ONuGJKAHFIlnc9fDg27xjkzaOc9rZe+PgefRxmkeFCXLRDIRS0vplLw0DZCyGCjFTzYkOssyjAREO312NV9AQbZ3zrV4SL3XVxWTmj1XHzSIUN63qX94eBlP3RXICRMJZKOMwX+q6FJ5zPhhTGo+GN5cC4LK1bI9Iw5WJOAqCKboiEBMZhph8zTerliObj53iQSEhCnHUgGmW83v9xfN++C35jcY47kzivcF8Jg8gEMZOjQ+PPdfQ1eK/hYcKOtnrnK4FFBJritNFrNSq+wQqG1lT4qZ0Aeh8ZzMPYUjDVaTfYUjO2Csb6W2rDT9fCs1WqHuXoDWDrLQXlWXCsH3Ff3AKAUCplwmNkjouNLPw93I1WgfRugFN1VIUqpIxCj6KxXY7a8Pd9hQbvx6NPwv5PYDVP/fOwfjRyN0L6KP+CEaz4HlSIz2+K9cvF+Y5QfC8GX5fCqTJTP4zhM97K1LVV2PTtp9dr1N6X7U/xewCp/MlhRlAx+L3JXkGJl5BMuMz4CNK/IdopPT9lqJahtw68YkP9XcDdo9HGA3aDRu/v1JoC+S+DX/WTcff0HAoCmNzYMAAA=" /></Footer>{/* END_ACCOUNTING_TRANSACTION_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_transactions
+      parameters:
+      - name: company_id
+        in: query
+        description: If provided, will only return accounting transactions for this company.
+        required: false
+        schema:
+          type: string
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransactionsGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: transaction_date_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: transaction_date_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTransactionList'
+  /accounting/v1/transactions/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `Transaction` object with the given `id`.{/* BEGIN_ACCOUNTING_TRANSACTION_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA92WbW8aORDHvwryS7TsHqGAgnQ68ZSG6DBtsqkSVZE1eIfF4LU3tpcQqn73kxcSSC9qexJR1XvpWc9/PPMbj/cL4eAw1eaRdAhwrgvlhEpJQDKdoCQdEhtQFrgTWpGAQC4oZPhiM1udkIDYIs+1cZicCZSJPTc4Ix0SZWhSrBVKzAQm0d4pEsphasDr2ujZuTYrvUlApFBLTLpbhx/LbbfXdpZvljaSwjoSkBysdXOji3R+ifcF2p9Q9meTmKFyIGsJOIgOVGpmK/OazWeRoESHyQAcDNBhWcZdxLlzue1E0RxlHpbRwwRXEaoIjBNcoo2ajdOT9mmztlMpo//FUvlnvbq4n+ppu8pSLhkU1XHM1zQePdBF+o72363p5rpJN8sNXSz/qLIUquN43JzEt43JoFufvLKBXbVuTj/1Br0LWuWbYYMubh9ozOvjmC+nm1Hj4j1/uDj/uKab25Px4LpB42Hz4r2uT/qXdty/1ONuGJKAHFIlnc9fDg27xjkzaOc9rZe+PgefRxmkeFCXLRDIRS0vplLw0DZCyGCjFTzYkOssyjAREO312NV9AQbZ3zrV4SL3XVxWTmj1XHzSIUN63qX94eBlP3RXICRMJZKOMwX+q6FJ5zPhhTGo+GN5cC4LK1bI9Iw5WJOAqCKboiEBMZhph8zTerliObj53iQSEhCnHUgGmW83v9xfN++C35jcY47kzivcF8Jg8gEMZOjQ+PPdfQ1eK/hYcKOtnrnK4FFBJritNFrNSq+wQqG1lT4qZ0Aeh8ZzMPYUjDVaTfYUjO2Csb6W2rDT9fCs1WqHuXoDWDrLQXlWXCsH3Ff3AKAUCplwmNkjouNLPw93I1WgfRugFN1VIUqpIxCj6KxXY7a8Pd9hQbvx6NPwv5PYDVP/fOwfjRyN0L6KP+CEaz4HlSIz2+K9cvF+Y5QfC8GX5fCqTJTP4zhM97K1LVV2PTtp9dr1N6X7U/xewCp/MlhRlAx+L3JXkGJl5BMuMz4CNK/IdopPT9lqJahtw68YkP9XcDdo9HGA3aDRu/v1JoC+S+DX/WTcff0HAoCmNzYMAAA=" /></Footer>{/* END_ACCOUNTING_TRANSACTION_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_transactions
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransactionsIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+components:
+  schemas:
+    TransactionsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - account
+      - accounting_period
+      - company
+      - contact
+      - line_items
+      - tracking_categories
+      title: TransactionsIdGetParametersExpandSchemaItems
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        transaction_type:
+          type:
+          - string
+          - 'null'
+          description: The type of transaction, which can by any transaction object not already included in Merge’s common model.
+        number:
+          type:
+          - string
+          - 'null'
+          description: The transaction's number used for identifying purposes.
+        transaction_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date upon which the transaction occurred.
+        account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The transaction's account.
+        contact:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The contact to whom the transaction relates to.
+        inclusive_of_tax:
+          type:
+          - boolean
+          - 'null'
+          description: If the transaction is inclusive or exclusive of tax. `True` if inclusive, `False` if exclusive.
+        total_amount:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The total amount being paid after taxes.
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: The transaction's currency. The currency code in ISO 4217 format.
+        exchange_rate:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The transaction's exchange rate.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the transaction belongs to.
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+        line_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransactionLineItem'
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        accounting_period:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The accounting period that the Transaction was generated in.
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The Transaction Object
+
+        ### Description
+
+        The `Transaction` common model includes records of all types of transactions that do not appear in other common models. The type of transaction can be identified through the type field. More specifically, it will contain all types of transactions outside of:
+
+        * __Credit Notes__
+
+        * __Expenses__
+
+        * __Invoices__
+
+        * __Journal Entries__
+
+        * __Payments__
+
+        * __Purchase Orders__
+
+        * __Vendor Credits__
+
+
+        ### Usage Example
+
+        Fetch from the `GET Transaction` endpoint and view a company''s transactions.'
+      title: Transaction
+    TransactionsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - account
+      - accounting_period
+      - company
+      - contact
+      - line_items
+      - tracking_categories
+      title: TransactionsGetParametersExpandSchemaItems
+    TransactionCurrencyEnum:
+      type: string
+      enum:
+      - XUA
+      - AFN
+      - AFA
+      - ALL
+      - ALK
+      - DZD
+      - ADP
+      - AOA
+      - AOK
+      - AON
+      - AOR
+      - ARA
+      - ARS
+      - ARM
+      - ARP
+      - ARL
+      - AMD
+      - AWG
+      - AUD
+      - ATS
+      - AZN
+      - AZM
+      - BSD
+      - BHD
+      - BDT
+      - BBD
+      - BYN
+      - BYB
+      - BYR
+      - BEF
+      - BEC
+      - BEL
+      - BZD
+      - BMD
+      - BTN
+      - BOB
+      - BOL
+      - BOV
+      - BOP
+      - BAM
+      - BAD
+      - BAN
+      - BWP
+      - BRC
+      - BRZ
+      - BRE
+      - BRR
+      - BRN
+      - BRB
+      - BRL
+      - GBP
+      - BND
+      - BGL
+      - BGN
+      - BGO
+      - BGM
+      - BUK
+      - BIF
+      - XPF
+      - KHR
+      - CAD
+      - CVE
+      - KYD
+      - XAF
+      - CLE
+      - CLP
+      - CLF
+      - CNX
+      - CNY
+      - CNH
+      - COP
+      - COU
+      - KMF
+      - CDF
+      - CRC
+      - HRD
+      - HRK
+      - CUC
+      - CUP
+      - CYP
+      - CZK
+      - CSK
+      - DKK
+      - DJF
+      - DOP
+      - NLG
+      - XCD
+      - DDM
+      - ECS
+      - ECV
+      - EGP
+      - GQE
+      - ERN
+      - EEK
+      - ETB
+      - EUR
+      - XBA
+      - XEU
+      - XBB
+      - XBC
+      - XBD
+      - FKP
+      - FJD
+      - FIM
+      - FRF
+      - XFO
+      - XFU
+      - GMD
+      - GEK
+      - GEL
+      - DEM
+      - GHS
+      - GHC
+      - GIP
+      - XAU
+      - GRD
+      - GTQ
+      - GWP
+      - GNF
+      - GNS
+      - GYD
+      - HTG
+      - HNL
+      - HKD
+      - HUF
+      - IMP
+      - ISK
+      - ISJ
+      - INR
+      - IDR
+      - IRR
+      - IQD
+      - IEP
+      - ILS
+      - ILP
+      - ILR
+      - ITL
+      - JMD
+      - JPY
+      - JOD
+      - KZT
+      - KES
+      - KWD
+      - KGS
+      - LAK
+      - LVL
+      - LVR
+      - LBP
+      - LSL
+      - LRD
+      - LYD
+      - LTL
+      - LTT
+      - LUL
+      - LUC
+      - LUF
+      - MOP
+      - MKD
+      - MKN
+      - MGA
+      - MGF
+      - MWK
+      - MYR
+      - MVR
+      - MVP
+      - MLF
+      - MTL
+      - MTP
+      - MRU
+      - MRO
+      - MUR
+      - MXV
+      - MXN
+      - MXP
+      - MDC
+      - MDL
+      - MCF
+      - MNT
+      - MAD
+      - MAF
+      - MZE
+      - MZN
+      - MZM
+      - MMK
+      - NAD
+      - NPR
+      - ANG
+      - TWD
+      - NZD
+      - NIO
+      - NIC
+      - NGN
+      - KPW
+      - NOK
+      - OMR
+      - PKR
+      - XPD
+      - PAB
+      - PGK
+      - PYG
+      - PEI
+      - PEN
+      - PES
+      - PHP
+      - XPT
+      - PLN
+      - PLZ
+      - PTE
+      - GWE
+      - QAR
+      - XRE
+      - RHD
+      - RON
+      - ROL
+      - RUB
+      - RUR
+      - RWF
+      - SVC
+      - WST
+      - SAR
+      - RSD
+      - CSD
+      - SCR
+      - SLL
+      - XAG
+      - SGD
+      - SKK
+      - SIT
+      - SBD
+      - SOS
+      - ZAR
+      - ZAL
+      - KRH
+      - KRW
+      - KRO
+      - SSP
+      - SUR
+      - ESP
+      - ESA
+      - ESB
+      - XDR
+      - LKR
+      - SHP
+      - XSU
+      - SDD
+      - SDG
+      - SDP
+      - SRD
+      - SRG
+      - SZL
+      - SEK
+      - CHF
+      - SYP
+      - STN
+      - STD
+      - TVD
+      - TJR
+      - TJS
+      - TZS
+      - XTS
+      - THB
+      - XXX
+      - TPE
+      - TOP
+      - TTD
+      - TND
+      - TRY
+      - TRL
+      - TMT
+      - TMM
+      - USD
+      - USN
+      - USS
+      - UGX
+      - UGS
+      - UAH
+      - UAK
+      - AED
+      - UYW
+      - UYU
+      - UYP
+      - UYI
+      - UZS
+      - VUV
+      - VES
+      - VEB
+      - VEF
+      - VND
+      - VNN
+      - CHE
+      - CHW
+      - XOF
+      - YDD
+      - YER
+      - YUN
+      - YUD
+      - YUM
+      - YUR
+      - ZWN
+      - ZRN
+      - ZRZ
+      - ZMW
+      - ZMK
+      - ZWD
+      - ZWR
+      - ZWL
+      description: The currency code in ISO 4217 format.
+      title: TransactionCurrencyEnum
+    TransactionFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: TransactionFieldMappings
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    TransactionLineItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        memo:
+          type:
+          - string
+          - 'null'
+          description: An internal note used by the business to clarify purpose of the transaction.
+        unit_price:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The line item's unit price.
+        quantity:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The line item's quantity.
+        item:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The line item's account.
+        tracking_category:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The line's associated tracking category.
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: The transaction line item's associated tracking categories.
+        total_line_amount:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The line item's total.
+        tax_rate:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The tax rate that applies to this line item.
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: The line item's currency. The currency code in ISO 4217 format.
+        exchange_rate:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The line item's exchange rate.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the line belongs to.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+      description: '# The TransactionLineItem Object
+
+        ### Description
+
+        The `TransactionLineItem` object is used to represent a transaction''s line items.
+
+
+        ### Usage Example
+
+        Fetch from the `GET TransactionLineItem` endpoint and view the transaction''s line items.'
+      title: TransactionLineItem
+    PaginatedTransactionList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transaction'
+      title: PaginatedTransactionList
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

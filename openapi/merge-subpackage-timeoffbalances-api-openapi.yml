@@ -1,0 +1,374 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_timeOffBalances API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_timeOffBalances
+paths:
+  /hris/v1/time-off-balances:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `TimeOffBalance` objects.{/* BEGIN_HRIS_TIMEOFFBALANCE_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+WY/2/iNhTA/5XIP20ISFuu64o0TRQKtB0hK/TuqlMVPZxHMDh2sJ3y5XT/+xQIFb31bir1brT7DSf2x/En7znPfCYUDEZSLUiVjBTTpEhiGSInVdJnMXaHwzPgICiSIoGEeRBj3jO4PyJFotMkkcpg2GTIQ91WOCRV4saoIiylgg0Zhm7W3WXCYKTAMCm0+zCsNFyNI0XCmZhgWKNUpsJ8D7TuWIJ1z6+a2W1tSJEkoLUZKZlGo2ucpqi/y8yeh2OMwgAvhWDA3RpfUmvAU9eyJw+Ro8GwAQYaaJBmS8znGhmT6KrrjpAn5dW85RDvXRQuKMMoR+0eV06PTk6PSzllNfvvQcR/OyyMpwM5OCkEEeUBpIVOn869/sXMG0fvvPq7ube8OfaWk6U3nhwUgggKnX7nuNu/rXQbtcPuEx2C3i8fT9+fNc4uvQJdnle88e3M69PDTp9OBsuLymWLzi7bf8695e1Rp3FT8frnx5cteditX+tO/Vp2auUyKZLtN0mqnz5vX8gDpNbwHQ/nxmmheDziIoYIt8ysXwYkrJSkA85oWVfKEMNSCpjpMpWxG2PIwK01/CAjBi0UQW+agsJyIqKNfibFg3tSJedeu+bVzxuPA6F2D4zDgCOpGpXi36KXVD+RwUO4Y5xwucDsZyI5o4vALJKspTCWBoPsRT1uBQmYESmSVGNI7rJb05QpDH1QEKNBlc1w96X4LWMfpJoMpaLoeHJmT9sDNvDk7E264wYVOD4slOTckrgVM7cV/CEj+aaUnUE8kLJ9bUfWhvZI1zh5O7rqI1CcoR1bOewrXT8suv5RUH6JhTvKasBitd3YseVzMEOp4g11f9NQsGmaaUNhstJCPddbU/KJdmzl5Mbbihrofdn1X5KFTZmq1WALetas/fHylKVn6mmhQMWo02v2fTuSojUx0EOT5KqC+LIyP7i4+Y+V7bw5tdlADuxm2Aq5pyG0o6Q0BhDajqYc9ipqg5dGV1cB5ejUuUxDJ1u4cOqQMAPc6YCAaHXEdH5q1zs/25G7nnC/t7GXa/VhUYfEALN0mPRhQde8H25up+Wj0lIwaWnxOW2TkE35Hlon/bcbPBxECAu7e34O/Vek7VarP9eKkpyBMJa05LT/xSbfgwitlekZLNg6ClYGs3cnnVd0yHmBQx9lwtGixzVw45LOexf0aryXJ+vn6qr5Ti+lFLVuAjVSWarNHjO3szc4ox9l1Dx4BVn8TJc3Vy3HV5Y+pjdXrX0vvnZJz8zRNUK4sG0piBDav079vbX10o9D9me79Wrjwxq6p9K+bejuy1/b9JJrYRwAAA==" /></Footer>{/* END_HRIS_TIMEOFFBALANCE_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_timeOffBalances
+      parameters:
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: employee_id
+        in: query
+        description: If provided, will only return time off balances for this employee.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeOffBalancesGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: policy_type
+        in: query
+        description: 'If provided, will only return TimeOffBalance with this policy type. Options: (''VACATION'', ''SICK'', ''PERSONAL'', ''JURY_DUTY'', ''VOLUNTEER'', ''BEREAVEMENT'')
+
+
+          '
+        required: false
+        schema:
+          $ref: '#/components/schemas/TimeOffBalancesGetParametersPolicyType'
+      - name: remote_fields
+        in: query
+        description: Deprecated. Use show_enum_origins.
+        required: false
+        schema:
+          $ref: '#/components/schemas/TimeOffBalancesGetParametersRemoteFields'
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: show_enum_origins
+        in: query
+        description: A comma separated list of enum field names for which you'd like the original values to be returned, instead of Merge's normalized enum values. [Learn more](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+        required: false
+        schema:
+          $ref: '#/components/schemas/TimeOffBalancesGetParametersShowEnumOrigins'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTimeOffBalanceList'
+  /hris/v1/time-off-balances/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `TimeOffBalance` object with the given `id`.{/* BEGIN_HRIS_TIMEOFFBALANCE_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+WY/2/iNhTA/5XIP20ISFuu64o0TRQKtB0hK/TuqlMVPZxHMDh2sJ3y5XT/+xQIFb31bir1brT7DSf2x/En7znPfCYUDEZSLUiVjBTTpEhiGSInVdJnMXaHwzPgICiSIoGEeRBj3jO4PyJFotMkkcpg2GTIQ91WOCRV4saoIiylgg0Zhm7W3WXCYKTAMCm0+zCsNFyNI0XCmZhgWKNUpsJ8D7TuWIJ1z6+a2W1tSJEkoLUZKZlGo2ucpqi/y8yeh2OMwgAvhWDA3RpfUmvAU9eyJw+Ro8GwAQYaaJBmS8znGhmT6KrrjpAn5dW85RDvXRQuKMMoR+0eV06PTk6PSzllNfvvQcR/OyyMpwM5OCkEEeUBpIVOn869/sXMG0fvvPq7ube8OfaWk6U3nhwUgggKnX7nuNu/rXQbtcPuEx2C3i8fT9+fNc4uvQJdnle88e3M69PDTp9OBsuLymWLzi7bf8695e1Rp3FT8frnx5cteditX+tO/Vp2auUyKZLtN0mqnz5vX8gDpNbwHQ/nxmmheDziIoYIt8ysXwYkrJSkA85oWVfKEMNSCpjpMpWxG2PIwK01/CAjBi0UQW+agsJyIqKNfibFg3tSJedeu+bVzxuPA6F2D4zDgCOpGpXi36KXVD+RwUO4Y5xwucDsZyI5o4vALJKspTCWBoPsRT1uBQmYESmSVGNI7rJb05QpDH1QEKNBlc1w96X4LWMfpJoMpaLoeHJmT9sDNvDk7E264wYVOD4slOTckrgVM7cV/CEj+aaUnUE8kLJ9bUfWhvZI1zh5O7rqI1CcoR1bOewrXT8suv5RUH6JhTvKasBitd3YseVzMEOp4g11f9NQsGmaaUNhstJCPddbU/KJdmzl5Mbbihrofdn1X5KFTZmq1WALetas/fHylKVn6mmhQMWo02v2fTuSojUx0EOT5KqC+LIyP7i4+Y+V7bw5tdlADuxm2Aq5pyG0o6Q0BhDajqYc9ipqg5dGV1cB5ejUuUxDJ1u4cOqQMAPc6YCAaHXEdH5q1zs/25G7nnC/t7GXa/VhUYfEALN0mPRhQde8H25up+Wj0lIwaWnxOW2TkE35Hlon/bcbPBxECAu7e34O/Vek7VarP9eKkpyBMJa05LT/xSbfgwitlekZLNg6ClYGs3cnnVd0yHmBQx9lwtGixzVw45LOexf0aryXJ+vn6qr5Ti+lFLVuAjVSWarNHjO3szc4ox9l1Dx4BVn8TJc3Vy3HV5Y+pjdXrX0vvnZJz8zRNUK4sG0piBDav079vbX10o9D9me79Wrjwxq6p9K+bejuy1/b9JJrYRwAAA==" /></Footer>{/* END_HRIS_TIMEOFFBALANCE_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_timeOffBalances
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeOffBalancesIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: remote_fields
+        in: query
+        description: Deprecated. Use show_enum_origins.
+        required: false
+        schema:
+          $ref: '#/components/schemas/TimeOffBalancesIdGetParametersRemoteFields'
+      - name: show_enum_origins
+        in: query
+        description: A comma separated list of enum field names for which you'd like the original values to be returned, instead of Merge's normalized enum values. [Learn more](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+        required: false
+        schema:
+          $ref: '#/components/schemas/TimeOffBalancesIdGetParametersShowEnumOrigins'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimeOffBalance'
+components:
+  schemas:
+    TimeOffBalancesIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - policy_type
+      title: TimeOffBalancesIdGetParametersShowEnumOrigins
+    PolicyTypeEnum:
+      type: string
+      enum:
+      - VACATION
+      - SICK
+      - PERSONAL
+      - JURY_DUTY
+      - VOLUNTEER
+      - BEREAVEMENT
+      title: PolicyTypeEnum
+    TimeOffBalancesIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - employee
+      title: TimeOffBalancesIdGetParametersExpandSchemaItems
+    PaginatedTimeOffBalanceList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeOffBalance'
+      title: PaginatedTimeOffBalanceList
+    TimeOffBalancesGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - employee
+      title: TimeOffBalancesGetParametersExpandSchemaItems
+    TimeOffBalancesGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - policy_type
+      title: TimeOffBalancesGetParametersShowEnumOrigins
+    TimeOffBalancesIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - policy_type
+      title: TimeOffBalancesIdGetParametersRemoteFields
+    TimeOffBalancesGetParametersRemoteFields:
+      type: string
+      enum:
+      - policy_type
+      title: TimeOffBalancesGetParametersRemoteFields
+    TimeOffBalance:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        employee:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The employee the balance belongs to.
+        balance:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The current remaining PTO balance, measured in hours. For integrations that return this value in days, Merge multiplies by 8 to calculate hours.
+        used:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The amount of PTO used in terms of hours. For integrations that return this value in days, Merge multiplies by 8 to calculate hours.
+        policy_type:
+          oneOf:
+          - $ref: '#/components/schemas/PolicyTypeEnum'
+          - type: 'null'
+          description: The policy type of this time off balance.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/TimeOffBalanceFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The TimeOffBalance Object
+
+        ### Description
+
+        The `TimeOffBalance` object is used to represent current balances for an employee''s Time Off plan.
+
+
+        ### Usage Example
+
+        Fetch from the `LIST TimeOffBalances` endpoint and filter by `ID` to show all time off balances.'
+      title: TimeOffBalance
+    TimeOffBalanceFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: TimeOffBalanceFieldMappings
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    TimeOffBalancesGetParametersPolicyType:
+      type: string
+      enum:
+      - BEREAVEMENT
+      - JURY_DUTY
+      - PERSONAL
+      - SICK
+      - VACATION
+      - VOLUNTEER
+      title: TimeOffBalancesGetParametersPolicyType
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

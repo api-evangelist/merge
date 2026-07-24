@@ -1,0 +1,464 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_tags API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_tags
+paths:
+  /ats/v1/tags:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Tag` objects.{/* BEGIN_ATS_TAG_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA92ZbW/iOBCA/0rljwhIW8rtFul04rWFQmhLemxvVUWDMwSDEwfbgTar/e+n8NI2d1Ulru4e7cc49uP48czEUX4QChp9IR9IhYBWJE8C4SEnFeKAT/IEImZDgOu77uKY5ImKo0hIjV6LIffUucQxqRArQOljIQ7ZmKFngVYWCzX6EjQTobIeRxXGq2EkTzgLZ+hVKRVxqF/hrPsVYN3xH5fpbaVJnkSglJ5IEfuTa5zHqF5Dpk/DMcBQAy94oMF6Nrwg1+Nfakuf20OOGr0GaGigRpoucDPVROtIVSxrgjwqrqYteriwMLRAakY5KqtcOj3+cloubCir2f9wff77UW46H4nRl5zrU+5CnOs59N522kt76p/Y9ZN7O7kp28kssaezw5zrQ67n9Mp957bUb1SP+i90cAe/fTv9s9aodewcTZole3q7tB161HPobJS0S50zuuycX93bye1xr3FTsp1muXMmjvr1a9WrX4tetVgkefJ8H0nl+4/nDZvgqKrJ6CHbtR2Aj8+UrDcBIlaI4hFntKhKRQggESEsVZGKwArQY2CtUO5gHoNEtyt84ZbiqyEslsUoTCNy5Y2J8FE9qZCmfV61681GNgyqC2AcRhxJRcsY/xW5pPKdUAg95oHGdGPDdDF5IjEQGt10Y7JXbgR68tTEPHKXXsxjJtG7BAkBapQp9+5n/iVNNYmYGPK0Zj0XVZxGeyFoRyn1qjMwoyQlZSKnc2LP5qK5L2LeEDl1LuhsKeTMkKkt7v+Mn/9gQcgQpdIixAMHOIa6y0JTSp7YnyGpJHLQaEbNJQc9FjLYQF210vMJ6nGLg6YTadbSBurOgnp90p6/i6b3N5OerYCFZtRsaZnE2pPw2VHMmUQMJyJWhnLribePVecNEcTq7d7AbGa1U+R7Vp93l9KBJDm/NmNlzcqcd4ZXtNfoeZ8gejpiNKBCGkqyLa2wX2+unZ2YqsfbhEqJm3xyH7yjJsQXv8jNjkvv4gINvaZXqEzWiFv/60NtuC9Zs6Oaa6QyZhrlmIulGUWPyBYXy4yqwyiZtlrHH1TVoHp5MIgpRaVaQLWQyoyvLDMjrEa/Cb91+Akq8iAAqR8jw5S5LDSjbvp10R03hx+0WG8+Tx/G2mzJfuJ+VDEIgQbGhaF6/sTbxwP0znJ4ur0H25QwdP7Ra6wrt9g9+4Tf1ZKE8ZiZTqw11J06Xqf8V3df1LyhYt9cnB1cSrENJrZakAFjNxdn20PjcW3u3ffZfh4ah0LOVnMYWfWWlnlH9Rec2/z0g1aboZAzDwz9j9jm0Qb6q/Pn1fS4+/k3OYyn8ukcAAA=" /></Footer>{/* END_ATS_TAG_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_tags
+      parameters:
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTagList'
+  /tags:
+    get:
+      operationId: list
+      summary: List Tags
+      description: 'List all available tags.
+
+
+        Returns tags available for the authenticated organization,
+
+        including both global and org-scoped tags.'
+      tags:
+      - subpackage_tags
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagsListResponse'
+  /ticketing/v1/tags:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Tag` objects.{/* BEGIN_TICKETING_TAG_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA92Z4W/aOBTA/xXOHxGQaxk3Fek0UdICvRJ6bbqtnaroJXlNDE4cbAc6pv3vJ4fQwl2l6jhvB3yM5fyS9/Pzi+18IwEojLj4StpE0WCCiqYRqZGEh8hIm7igryCjDiS43sebHZMakXmWcaEwPKfIQtkX+EjaxEpQRFjPU/pIMbSe77FoqjASoChPpfV8b/2xuJnUCKPpBMNOEPA8VW/Slr3rsOz+t0tpMSoVqZEMpFSx4HkUX+M0R/k2WL8ZwwRTBaweggJrDVIXS8prbTqGEBkqDG1QYKPCQAdbPjBWKpNty4qRZY3i4Y0QZxamFghFA4bSajVPjt+ftOolpXj6By9ivx9Vx1Of+++rXhQwD/Lq0A2eHHcwd8bRO6f77slZ3LacxWThjCe/Vr0IqkN32Bq5d82R3TkavdLBu/nt88nHU/v0wqkGi7OmM76bO25wNHSDib8YNC96wfyi/+eTs7g7Htq3Tcc9a130+NGoey2H3Ws+7DQapEbWx5S0v3xbbyiTphPDL5s9BwlEuGZkORKQ0XqW+4wGDdlsQAILnsJcNgKeWAmGFKxODJ6c5iCwkRV5WniiPH1WTdrkzOl3nO6ZvTn4nRlQBj5D0lYix3/kLml/Ial+3xoRmHCFnna/eeVloOKXJhqSWjkjJHnQzdOcCgyvQECCCoWGPnyvvepEQgpmpIBG1Zda6oxH/LgxznC/7SxygRUbZ6NMGsocTfSWRO+mcOVd8oj/yDzaMvguo8HkNjMTdwn7WSG/mRxbOjkXKOMQ5cSMlWfchpf/ddb8FzESxYwGaMbNFQP1yEXyuEbehaK7tSCeKrNmCuQuKDFQaXtU9XO/MpAyR0OltkdVnPveErkzhceMq0vwjUli4B+UHS4iCtLsVCuhBzLZ+siyyk3Ac8MFSXOlxh6KJzoz9DHTpB2cZP/WR+7LjKuKu7ZDNyFnif2RSbNlAgxShSLgiZk4V7T1RPA+ntjHl11/36fKBRWGtpGaVBrax3Wefv2KPnWpdFGPt9kKq+l7a+VmuYivDCGFqDjXMpkx5Q7hBd4YZ3vn6Y9cKp6YypoVbXd2lwYqzSVNEQwJYgXrQFYrV3TGFbCKKyCYGCs8S2jJPBBT18DYV7OFuUAeih5s61ANn+MI9ArqT5C0ZdzlJ8ThczORv/B2Zum/rZmYCxWY2i6uaAf1WXIRkjkXhg6GV7SdSRwThgQyxg35KVgbG6lP8sme95723dI9pub+L6xqbwn1TqbD/DM938cSdM9jXjnNI6OrGw19YR7I57swZRvLoXsec0/j9rQWPXz/C5V6CWZeIgAA" /></Footer>{/* END_TICKETING_TAG_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_tags
+      parameters:
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTagList'
+  /ticketing/v1/tags/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `Tag` object with the given `id`.{/* BEGIN_TICKETING_TAG_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA92Z4W/aOBTA/xXOHxGQaxk3Fek0UdICvRJ6bbqtnaroJXlNDE4cbAc6pv3vJ4fQwl2l6jhvB3yM5fyS9/Pzi+18IwEojLj4StpE0WCCiqYRqZGEh8hIm7igryCjDiS43sebHZMakXmWcaEwPKfIQtkX+EjaxEpQRFjPU/pIMbSe77FoqjASoChPpfV8b/2xuJnUCKPpBMNOEPA8VW/Slr3rsOz+t0tpMSoVqZEMpFSx4HkUX+M0R/k2WL8ZwwRTBaweggJrDVIXS8prbTqGEBkqDG1QYKPCQAdbPjBWKpNty4qRZY3i4Y0QZxamFghFA4bSajVPjt+ftOolpXj6By9ivx9Vx1Of+++rXhQwD/Lq0A2eHHcwd8bRO6f77slZ3LacxWThjCe/Vr0IqkN32Bq5d82R3TkavdLBu/nt88nHU/v0wqkGi7OmM76bO25wNHSDib8YNC96wfyi/+eTs7g7Htq3Tcc9a130+NGoey2H3Ws+7DQapEbWx5S0v3xbbyiTphPDL5s9BwlEuGZkORKQ0XqW+4wGDdlsQAILnsJcNgKeWAmGFKxODJ6c5iCwkRV5WniiPH1WTdrkzOl3nO6ZvTn4nRlQBj5D0lYix3/kLml/Ial+3xoRmHCFnna/eeVloOKXJhqSWjkjJHnQzdOcCgyvQECCCoWGPnyvvepEQgpmpIBG1Zda6oxH/LgxznC/7SxygRUbZ6NMGsocTfSWRO+mcOVd8oj/yDzaMvguo8HkNjMTdwn7WSG/mRxbOjkXKOMQ5cSMlWfchpf/ddb8FzESxYwGaMbNFQP1yEXyuEbehaK7tSCeKrNmCuQuKDFQaXtU9XO/MpAyR0OltkdVnPveErkzhceMq0vwjUli4B+UHS4iCtLsVCuhBzLZ+siyyk3Ac8MFSXOlxh6KJzoz9DHTpB2cZP/WR+7LjKuKu7ZDNyFnif2RSbNlAgxShSLgiZk4V7T1RPA+ntjHl11/36fKBRWGtpGaVBrax3Wefv2KPnWpdFGPt9kKq+l7a+VmuYivDCGFqDjXMpkx5Q7hBd4YZ3vn6Y9cKp6YypoVbXd2lwYqzSVNEQwJYgXrQFYrV3TGFbCKKyCYGCs8S2jJPBBT18DYV7OFuUAeih5s61ANn+MI9ArqT5C0ZdzlJ8ThczORv/B2Zum/rZmYCxWY2i6uaAf1WXIRkjkXhg6GV7SdSRwThgQyxg35KVgbG6lP8sme95723dI9pub+L6xqbwn1TqbD/DM938cSdM9jXjnNI6OrGw19YR7I57swZRvLoXsec0/j9rQWPXz/C5V6CWZeIgAA" /></Footer>{/* END_TICKETING_TAG_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_tags
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag_2'
+components:
+  schemas:
+    Tag:
+      type: object
+      properties:
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The tag's name.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/TagFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The Tag Object
+
+        ### Description
+
+        The `Tag` object is used to represent a tag for a candidate.
+
+        ### Usage Example
+
+        Fetch from the `LIST Tags` endpoint and view the tags used within a company.'
+      title: Tag
+    Tag_2:
+      type: object
+      properties:
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        id:
+          type: string
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+          description: The tag's name.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/TagFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The Tag Object
+
+        ### Description
+
+        The `Tag` object is used to represent a tag or label for a ticket.
+
+
+        ### Usage Example
+
+        TODO'
+      title: Tag
+    PaginatedTagList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+      title: PaginatedTagList
+    TagSchema:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique tag identifier
+        object:
+          type: string
+          enum:
+          - tag
+        tag_key:
+          type: string
+          description: Tag key
+        tag_value:
+          type: string
+          description: Tag value
+        org_id:
+          type:
+          - string
+          - 'null'
+          description: Organization ID, null for global tags
+        is_global:
+          type: boolean
+          default: false
+          description: Whether this is a global tag
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - id
+      - tag_key
+      - tag_value
+      description: A tag available through the gateway.
+      title: TagSchema
+    TagFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: TagFieldMappings
+    TagsListResponse:
+      type: object
+      properties:
+        object:
+          type: string
+          enum:
+          - list
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/TagSchema'
+        has_more:
+          type: boolean
+          default: false
+        next_cursor:
+          type:
+          - string
+          - 'null'
+      required:
+      - data
+      description: Response for GET /v1/tags.
+      title: TagsListResponse
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

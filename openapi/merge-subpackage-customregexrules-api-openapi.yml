@@ -1,0 +1,769 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_customRegexRules API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_customRegexRules
+paths:
+  /api/v1/security/custom-regex-rules/:
+    get:
+      operationId: list-custom-regex-rules
+      summary: List custom regex rules
+      description: Returns all custom regex rules for the organization.
+      tags:
+      - subpackage_customRegexRules
+      parameters:
+      - name: page
+        in: query
+        description: A page number within the paginated result set.
+        required: false
+        schema:
+          type: integer
+      - name: page_size
+        in: query
+        description: Number of results to return per page.
+        required: false
+        schema:
+          type: integer
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCustomRegexRuleResponseList'
+    post:
+      operationId: create-custom-regex-rule
+      summary: Create custom regex rule
+      description: Create a new custom regex rule for the organization.
+      tags:
+      - subpackage_customRegexRules
+      parameters:
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomRegexRuleResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomRegexRuleCreateInput'
+  /api/v1/security/custom-regex-rules/{rule_id}/:
+    get:
+      operationId: get-custom-regex-rule
+      summary: Get custom regex rule
+      description: Retrieve a single custom regex rule by ID.
+      tags:
+      - subpackage_customRegexRules
+      parameters:
+      - name: rule_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomRegexRuleResponse'
+    delete:
+      operationId: delete-custom-regex-rule
+      summary: Delete custom regex rule
+      description: Delete a custom regex rule.
+      tags:
+      - subpackage_customRegexRules
+      parameters:
+      - name: rule_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+    patch:
+      operationId: update-custom-regex-rule
+      summary: Update custom regex rule
+      description: Update a custom regex rule. Name cannot be changed after creation.
+      tags:
+      - subpackage_customRegexRules
+      parameters:
+      - name: rule_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomRegexRuleResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCustomRegexRuleUpdateInput'
+  /api/v1/tool-packs/{tool_pack_id}/custom-regex-rules/:
+    get:
+      operationId: list-custom-regex-rules-tool-pack
+      summary: List custom regex rules (Tool Pack)
+      description: Returns custom regex rules for a tool pack, including organization defaults. Tool-pack-level rules take precedence where both exist.
+      tags:
+      - subpackage_customRegexRules
+      parameters:
+      - name: tool_pack_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: defined_at
+        in: query
+        description: 'Filter by where the rule is defined. Values: ORGANIZATION, TOOL_PACK.'
+        required: false
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: A page number within the paginated result set.
+        required: false
+        schema:
+          type: integer
+      - name: page_size
+        in: query
+        description: Number of results to return per page.
+        required: false
+        schema:
+          type: integer
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPublicCombinedCustomRegexRuleList'
+    post:
+      operationId: create-custom-regex-rule-tool-pack
+      summary: Create custom regex rule (Tool Pack)
+      description: Create a custom regex rule for a tool pack. If name matches an org rule, creates an override.
+      tags:
+      - subpackage_customRegexRules
+      parameters:
+      - name: tool_pack_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicCombinedCustomRegexRule'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomRegexOverrideCreateInput'
+  /api/v1/tool-packs/{tool_pack_id}/custom-regex-rules/{rule_id}/:
+    get:
+      operationId: get-custom-regex-rule-tool-pack
+      summary: Get custom regex rule (Tool Pack)
+      description: Retrieve a single custom regex rule for a tool pack by ID.
+      tags:
+      - subpackage_customRegexRules
+      parameters:
+      - name: rule_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: tool_pack_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicCombinedCustomRegexRule'
+    delete:
+      operationId: delete-custom-regex-rule-tool-pack
+      summary: Delete custom regex rule (Tool Pack)
+      description: Delete a custom regex rule override (reverts to org default) or permanently delete a tool-pack-only rule.
+      tags:
+      - subpackage_customRegexRules
+      parameters:
+      - name: rule_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: tool_pack_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+    patch:
+      operationId: update-custom-regex-rule-tool-pack
+      summary: Update custom regex rule (Tool Pack)
+      description: Update a custom regex rule for a tool pack. Name cannot be changed after creation.
+      tags:
+      - subpackage_customRegexRules
+      parameters:
+      - name: rule_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: tool_pack_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicCombinedCustomRegexRule'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedToolPackCustomRegexOverride'
+components:
+  schemas:
+    PatchedCustomRegexRuleUpdateInputOutboundAction:
+      type: string
+      enum:
+      - BLOCK
+      - REDACT
+      - LOG
+      - NONE
+      description: '* `BLOCK` - BLOCK
+
+        * `REDACT` - REDACT
+
+        * `LOG` - LOG
+
+        * `NONE` - NONE'
+      title: PatchedCustomRegexRuleUpdateInputOutboundAction
+    PatchedToolPackCustomRegexOverrideOutboundAction:
+      type: string
+      enum:
+      - BLOCK
+      - REDACT
+      - LOG
+      - NONE
+      description: '* `BLOCK` - BLOCK
+
+        * `REDACT` - REDACT
+
+        * `LOG` - LOG
+
+        * `NONE` - NONE'
+      title: PatchedToolPackCustomRegexOverrideOutboundAction
+    PatchedToolPackCustomRegexOverrideInboundAction:
+      type: string
+      enum:
+      - BLOCK
+      - REDACT
+      - LOG
+      - NONE
+      description: '* `BLOCK` - BLOCK
+
+        * `REDACT` - REDACT
+
+        * `LOG` - LOG
+
+        * `NONE` - NONE'
+      title: PatchedToolPackCustomRegexOverrideInboundAction
+    CustomRegexRuleCreateInputOutboundAction:
+      type: string
+      enum:
+      - BLOCK
+      - REDACT
+      - LOG
+      - NONE
+      default: REDACT
+      description: '* `BLOCK` - BLOCK
+
+        * `REDACT` - REDACT
+
+        * `LOG` - LOG
+
+        * `NONE` - NONE'
+      title: CustomRegexRuleCreateInputOutboundAction
+    CustomRegexRuleCreateInput:
+      type: object
+      properties:
+        name:
+          type: string
+        regex:
+          type: string
+        score:
+          type: number
+          format: double
+          default: 0.5
+        inbound_action:
+          $ref: '#/components/schemas/CustomRegexRuleCreateInputInboundAction'
+          description: '* `BLOCK` - BLOCK
+
+            * `REDACT` - REDACT
+
+            * `LOG` - LOG
+
+            * `NONE` - NONE'
+        outbound_action:
+          $ref: '#/components/schemas/CustomRegexRuleCreateInputOutboundAction'
+          description: '* `BLOCK` - BLOCK
+
+            * `REDACT` - REDACT
+
+            * `LOG` - LOG
+
+            * `NONE` - NONE'
+        context_keywords:
+          type: array
+          items:
+            type: string
+      required:
+      - name
+      - regex
+      description: 'Shared field validators for create and update input serializers.
+
+
+        The presidio validate_* functions raise RequestValidationError (a DRF APIException),
+
+        which bypasses the serializer''s field error mapping. We catch and re-raise as
+
+        serializers.ValidationError so errors are attributed to the correct field.'
+      title: CustomRegexRuleCreateInput
+    PatchedToolPackCustomRegexOverride:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        is_active:
+          type: boolean
+        regex:
+          type: string
+        score:
+          type: number
+          format: double
+        context_keywords:
+          description: Any type
+        inbound_action:
+          $ref: '#/components/schemas/PatchedToolPackCustomRegexOverrideInboundAction'
+          description: '* `BLOCK` - BLOCK
+
+            * `REDACT` - REDACT
+
+            * `LOG` - LOG
+
+            * `NONE` - NONE'
+        outbound_action:
+          $ref: '#/components/schemas/PatchedToolPackCustomRegexOverrideOutboundAction'
+          description: '* `BLOCK` - BLOCK
+
+            * `REDACT` - REDACT
+
+            * `LOG` - LOG
+
+            * `NONE` - NONE'
+        created_at:
+          type: string
+          format: date-time
+        modified_at:
+          type: string
+          format: date-time
+      description: Rejects requests that explicitly set defined_at to ORGANIZATION in tool pack endpoints.
+      title: PatchedToolPackCustomRegexOverride
+    CustomRegexRuleCreateInputInboundAction:
+      type: string
+      enum:
+      - BLOCK
+      - REDACT
+      - LOG
+      - NONE
+      default: REDACT
+      description: '* `BLOCK` - BLOCK
+
+        * `REDACT` - REDACT
+
+        * `LOG` - LOG
+
+        * `NONE` - NONE'
+      title: CustomRegexRuleCreateInputInboundAction
+    CustomRegexOverrideCreateInput:
+      type: object
+      properties:
+        name:
+          type: string
+        regex:
+          type: string
+        score:
+          type: number
+          format: double
+        context_keywords:
+          description: Any type
+        is_active:
+          type: boolean
+        inbound_action:
+          $ref: '#/components/schemas/CustomRegexOverrideCreateInputInboundAction'
+          description: '* `BLOCK` - BLOCK
+
+            * `REDACT` - REDACT
+
+            * `LOG` - LOG
+
+            * `NONE` - NONE'
+        outbound_action:
+          $ref: '#/components/schemas/CustomRegexOverrideCreateInputOutboundAction'
+          description: '* `BLOCK` - BLOCK
+
+            * `REDACT` - REDACT
+
+            * `LOG` - LOG
+
+            * `NONE` - NONE'
+      required:
+      - name
+      - regex
+      - score
+      - context_keywords
+      - is_active
+      - inbound_action
+      - outbound_action
+      description: Input serializer for POST /tool-packs/<id>/custom-regex-rules/.
+      title: CustomRegexOverrideCreateInput
+    CustomRegexOverrideCreateInputOutboundAction:
+      type: string
+      enum:
+      - BLOCK
+      - REDACT
+      - LOG
+      - NONE
+      description: '* `BLOCK` - BLOCK
+
+        * `REDACT` - REDACT
+
+        * `LOG` - LOG
+
+        * `NONE` - NONE'
+      title: CustomRegexOverrideCreateInputOutboundAction
+    CustomRegexOverrideCreateInputInboundAction:
+      type: string
+      enum:
+      - BLOCK
+      - REDACT
+      - LOG
+      - NONE
+      description: '* `BLOCK` - BLOCK
+
+        * `REDACT` - REDACT
+
+        * `LOG` - LOG
+
+        * `NONE` - NONE'
+      title: CustomRegexOverrideCreateInputInboundAction
+    CustomRegexRuleResponseOutboundAction:
+      type: string
+      enum:
+      - BLOCK
+      - REDACT
+      - LOG
+      - NONE
+      description: '* `BLOCK` - BLOCK
+
+        * `REDACT` - REDACT
+
+        * `LOG` - LOG
+
+        * `NONE` - NONE'
+      title: CustomRegexRuleResponseOutboundAction
+    PatchedCustomRegexRuleUpdateInputInboundAction:
+      type: string
+      enum:
+      - BLOCK
+      - REDACT
+      - LOG
+      - NONE
+      description: '* `BLOCK` - BLOCK
+
+        * `REDACT` - REDACT
+
+        * `LOG` - LOG
+
+        * `NONE` - NONE'
+      title: PatchedCustomRegexRuleUpdateInputInboundAction
+    PaginatedPublicCombinedCustomRegexRuleList:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicCombinedCustomRegexRule'
+      required:
+      - count
+      - results
+      title: PaginatedPublicCombinedCustomRegexRuleList
+    PublicCombinedCustomRegexRule:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        regex:
+          type: string
+        score:
+          type: number
+          format: double
+        context_keywords:
+          description: Any type
+        is_active:
+          type: boolean
+        outbound_action:
+          type: string
+        defined_at:
+          type: string
+      required:
+      - id
+      - name
+      - regex
+      - score
+      - context_keywords
+      - is_active
+      - outbound_action
+      - defined_at
+      description: Custom regex rule with effective configuration for a tool pack.
+      title: PublicCombinedCustomRegexRule
+    CustomRegexRuleResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        regex:
+          type: string
+        score:
+          type: number
+          format: double
+        context_keywords:
+          type: array
+          items:
+            type: string
+        is_active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        modified_at:
+          type: string
+          format: date-time
+        outbound_action:
+          oneOf:
+          - $ref: '#/components/schemas/CustomRegexRuleResponseOutboundAction'
+          - type: 'null'
+          description: '* `BLOCK` - BLOCK
+
+            * `REDACT` - REDACT
+
+            * `LOG` - LOG
+
+            * `NONE` - NONE'
+        defined_at:
+          type: string
+      required:
+      - id
+      - name
+      - regex
+      - score
+      - context_keywords
+      - is_active
+      - created_at
+      - modified_at
+      - outbound_action
+      - defined_at
+      description: Custom regex rule for an organization.
+      title: CustomRegexRuleResponse
+    PatchedCustomRegexRuleUpdateInput:
+      type: object
+      properties:
+        name:
+          type: string
+        regex:
+          type: string
+        score:
+          type: number
+          format: double
+        inbound_action:
+          $ref: '#/components/schemas/PatchedCustomRegexRuleUpdateInputInboundAction'
+          description: '* `BLOCK` - BLOCK
+
+            * `REDACT` - REDACT
+
+            * `LOG` - LOG
+
+            * `NONE` - NONE'
+        outbound_action:
+          $ref: '#/components/schemas/PatchedCustomRegexRuleUpdateInputOutboundAction'
+          description: '* `BLOCK` - BLOCK
+
+            * `REDACT` - REDACT
+
+            * `LOG` - LOG
+
+            * `NONE` - NONE'
+        context_keywords:
+          type: array
+          items:
+            type: string
+        is_active:
+          type: boolean
+      description: 'Shared field validators for create and update input serializers.
+
+
+        The presidio validate_* functions raise RequestValidationError (a DRF APIException),
+
+        which bypasses the serializer''s field error mapping. We catch and re-raise as
+
+        serializers.ValidationError so errors are attributed to the correct field.'
+      title: PatchedCustomRegexRuleUpdateInput
+    PaginatedCustomRegexRuleResponseList:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomRegexRuleResponse'
+      required:
+      - count
+      - results
+      title: PaginatedCustomRegexRuleResponseList
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

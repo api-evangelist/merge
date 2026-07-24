@@ -1,0 +1,1110 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_employees API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_employees
+paths:
+  /accounting/v1/employees:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Employee` objects.{/* BEGIN_ACCOUNTING_EMPLOYEE_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA82Vb2/aOhTGv0rklyghowxQka4m/nWlEqGjdGo1VdbBOQSDY6e2QynTvvuVIWuhrdbtivbuXXzi85z4/M7jfCcMLCZK35MmAcZULi2XCfFJqmIUpEl6aSbUPSLxCWQ8ghT3dtLlEfGJybNMaYvxCUcRm1ONU9IkYYo6wSCXfMoxDh+TQi4tJhosV9KED8nBdJNNfCK4XGDc2ia8LrfdHhSRJ0sTCm4s8UkGxtiZVnkyG+FtjuY3lN23CUxRWhBBDBbCHZVAb2VeirlTxCjQYtwFC120yNxxi4ozazPTDMMZiqy8qV6OcRmiDEFbzgSasFY9Pmoc14JCZVP9E03EP5XS/HaiJo0STZigkJcGY7aKxv27aJ58jDofV9H6shatF+tovvhQogmUBuNBbTi+rg67rcrwhQ30on51/LXdbZ9FJbbuVaP59V00ZpXBmC0m63717DO7Ozv9sorW10eD7mU1GvdqZ59VZdgZmUFnpAatcpn4ZJcqaX77vhsoBmfAmVZGTa3XvZeQcma8ar3mtXPDJRrjdVBaDWJfrJ9CgjtN29KCjAdZPhGclU21DCmslYQ7U2YqDVOMOYQPxejPYrRar9GfxWhRjHaUUJoer3on9XqjnG3Gf9N1ruQDOGeF6LQVdXrd/VlqLYELmAgkTatzfGYG0vxGmEozkPfEJ5gCFxTiWKNxM4KFvajM0wlq4pMp18ZS6frlEwGPzxpTZZG6Odhf0Qzs7DHEY+dICzY35MZFb3OuMT4HDSla1O6Lbn74L+GJ0F7k3OJh+h+hNU6NmtscNP6is1Fr3P/ae9u+4ipDaZBqdCpUuBl4Ft6JmKcsEpToxkVgnKCmVoM0sDnBgxg3lCk3VMwqV3Ouci1dSvH+nXEONTCB3kluuJJeR6g89nqj88PQ3YrTrTjdiNPe6JwG9OI13O9jpOdk93A+ZfUf2fwhki85Z4u2UgvjDaUbi8PAeJQNtmajl9OjertReRMKv937V5v+PxvkAhL0+tICY/YwIJwiLRQLI9DlkkemAX/J/ffyxfeL+3AfoFwqzrYqlFtM/8Jr7wq1OgzNK9SqMNSbGOmd/vU3P/4FWHhQHegLAAA=" /></Footer>{/* END_ACCOUNTING_EMPLOYEE_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_employees
+      parameters:
+      - name: company_id
+        in: query
+        description: If provided, will only return employees for this company.
+        required: false
+        schema:
+          type: string
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmployeesGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedEmployeeList'
+  /accounting/v1/employees/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns an `Employee` object with the given `id`.{/* BEGIN_ACCOUNTING_EMPLOYEE_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA82Vb2/aOhTGv0rklyghowxQka4m/nWlEqGjdGo1VdbBOQSDY6e2QynTvvuVIWuhrdbtivbuXXzi85z4/M7jfCcMLCZK35MmAcZULi2XCfFJqmIUpEl6aSbUPSLxCWQ8ghT3dtLlEfGJybNMaYvxCUcRm1ONU9IkYYo6wSCXfMoxDh+TQi4tJhosV9KED8nBdJNNfCK4XGDc2ia8LrfdHhSRJ0sTCm4s8UkGxtiZVnkyG+FtjuY3lN23CUxRWhBBDBbCHZVAb2VeirlTxCjQYtwFC120yNxxi4ozazPTDMMZiqy8qV6OcRmiDEFbzgSasFY9Pmoc14JCZVP9E03EP5XS/HaiJo0STZigkJcGY7aKxv27aJ58jDofV9H6shatF+tovvhQogmUBuNBbTi+rg67rcrwhQ30on51/LXdbZ9FJbbuVaP59V00ZpXBmC0m63717DO7Ozv9sorW10eD7mU1GvdqZ59VZdgZmUFnpAatcpn4ZJcqaX77vhsoBmfAmVZGTa3XvZeQcma8ar3mtXPDJRrjdVBaDWJfrJ9CgjtN29KCjAdZPhGclU21DCmslYQ7U2YqDVOMOYQPxejPYrRar9GfxWhRjHaUUJoer3on9XqjnG3Gf9N1ruQDOGeF6LQVdXrd/VlqLYELmAgkTatzfGYG0vxGmEozkPfEJ5gCFxTiWKNxM4KFvajM0wlq4pMp18ZS6frlEwGPzxpTZZG6Odhf0Qzs7DHEY+dICzY35MZFb3OuMT4HDSla1O6Lbn74L+GJ0F7k3OJh+h+hNU6NmtscNP6is1Fr3P/ae9u+4ipDaZBqdCpUuBl4Ft6JmKcsEpToxkVgnKCmVoM0sDnBgxg3lCk3VMwqV3Ouci1dSvH+nXEONTCB3kluuJJeR6g89nqj88PQ3YrTrTjdiNPe6JwG9OI13O9jpOdk93A+ZfUf2fwhki85Z4u2UgvjDaUbi8PAeJQNtmajl9OjertReRMKv937V5v+PxvkAhL0+tICY/YwIJwiLRQLI9DlkkemAX/J/ffyxfeL+3AfoFwqzrYqlFtM/8Jr7wq1OgzNK9SqMNSbGOmd/vU3P/4FWHhQHegLAAA=" /></Footer>{/* END_ACCOUNTING_EMPLOYEE_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_employees
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmployeesIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee'
+  /hris/v1/employees:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Employee` objects.{/* BEGIN_HRIS_EMPLOYEE_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="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" /></Footer>{/* END_HRIS_EMPLOYEE_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_employees
+      parameters:
+      - name: company_id
+        in: query
+        description: If provided, will only return employees for this company.
+        required: false
+        schema:
+          type: string
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: display_full_name
+        in: query
+        description: If provided, will only return employees with this display name.
+        required: false
+        schema:
+          type: string
+      - name: employee_number
+        in: query
+        description: If provided, will only return employees with this employee number.
+        required: false
+        schema:
+          type: string
+      - name: employment_status
+        in: query
+        description: 'If provided, will only return employees with this employment status.
+
+
+          '
+        required: false
+        schema:
+          $ref: '#/components/schemas/EmployeesGetParametersEmploymentStatus'
+      - name: employment_type
+        in: query
+        description: If provided, will only return employees that have an employment of the specified employment type.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmployeesGetParametersExpandSchemaItems_2'
+      - name: first_name
+        in: query
+        description: If provided, will only return employees with this first name.
+        required: false
+        schema:
+          type: string
+      - name: groups
+        in: query
+        description: If provided, will only return employees matching the group ids; multiple groups can be separated by commas.
+        required: false
+        schema:
+          type: string
+      - name: home_location_id
+        in: query
+        description: If provided, will only return employees for this home location.
+        required: false
+        schema:
+          type: string
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_sensitive_fields
+        in: query
+        description: Whether to include sensitive fields (such as social security numbers) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: job_title
+        in: query
+        description: If provided, will only return employees that have an employment of the specified job title.
+        required: false
+        schema:
+          type: string
+      - name: last_name
+        in: query
+        description: If provided, will only return employees with this last name.
+        required: false
+        schema:
+          type: string
+      - name: manager_id
+        in: query
+        description: If provided, will only return employees for this manager.
+        required: false
+        schema:
+          type: string
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: pay_group_id
+        in: query
+        description: If provided, will only return employees for this pay group
+        required: false
+        schema:
+          type: string
+      - name: personal_email
+        in: query
+        description: If provided, will only return Employees with this personal email
+        required: false
+        schema:
+          type: string
+      - name: remote_fields
+        in: query
+        description: Deprecated. Use show_enum_origins.
+        required: false
+        schema:
+          $ref: '#/components/schemas/EmployeesGetParametersRemoteFields'
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: show_enum_origins
+        in: query
+        description: A comma separated list of enum field names for which you'd like the original values to be returned, instead of Merge's normalized enum values. [Learn more](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+        required: false
+        schema:
+          $ref: '#/components/schemas/EmployeesGetParametersShowEnumOrigins'
+      - name: started_after
+        in: query
+        description: If provided, will only return employees that started after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: started_before
+        in: query
+        description: If provided, will only return employees that started before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: team_id
+        in: query
+        description: If provided, will only return employees for this team.
+        required: false
+        schema:
+          type: string
+      - name: terminated_after
+        in: query
+        description: If provided, will only return employees that were terminated after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: terminated_before
+        in: query
+        description: If provided, will only return employees that were terminated before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: work_email
+        in: query
+        description: If provided, will only return Employees with this work email
+        required: false
+        schema:
+          type: string
+      - name: work_location_id
+        in: query
+        description: If provided, will only return employees for this location.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedEmployeeList'
+  /hris/v1/employees/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns an `Employee` object with the given `id`.{/* BEGIN_HRIS_EMPLOYEE_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="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" /></Footer>{/* END_HRIS_EMPLOYEE_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_employees
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmployeesIdGetParametersExpandSchemaItems_2'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_sensitive_fields
+        in: query
+        description: Whether to include sensitive fields (such as social security numbers) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: remote_fields
+        in: query
+        description: Deprecated. Use show_enum_origins.
+        required: false
+        schema:
+          $ref: '#/components/schemas/EmployeesIdGetParametersRemoteFields'
+      - name: show_enum_origins
+        in: query
+        description: A comma separated list of enum field names for which you'd like the original values to be returned, instead of Merge's normalized enum values. [Learn more](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+        required: false
+        schema:
+          $ref: '#/components/schemas/EmployeesIdGetParametersShowEnumOrigins'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee_2'
+  /hris/v1/employees/ignore/{model_id}:
+    post:
+      operationId: ignore-create
+      summary: Ignore Create
+      description: Ignores a specific row based on the `model_id` in the url. These records will have their properties set to null, and will not be updated in future syncs. The "reason" and "message" fields in the request body will be stored for audit purposes.{/* BEGIN_HRIS_EMPLOYEE_CREATE_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST" data="H4sIAAAAAAAAA9VXbU/jOBD+Kyd/rNJkocshKq1WhXZ52WvgoKBDK2RN42ni4tjBdoB2xX8/JU1LWtJS2HIvn1rbzzwznnlm3P4kAVgMlR6RJok0N8QhsWIoSJN04kSoESJxCCTchxgLDL3fJg4xaZIobZF94yiYOdI4IE3ixahDrKeSDzgyL4N7XFoMNViupPFmZvVBbkccIri8RdYKApVKu4poAqzDBLmwzI6NJQ5JwBgbaZWG0TnepWhWcmbxCIxRWhB1Bha8kn1dTwiq9rLIGQq0yNpgoY0Wg+yKha/I2sQ0PS9Ckbi5X5fhvYfSA215INB4O4297d29nXrBknv/SkPxZas2vOur/m6NhoGgkNa6veDR7x0/+MPws3/w+dEfX+7449uxP7z9VKMh1Lq97s5p77px2m5tnVYA6MXvf+1d7bf3T/xaMO40/OH1g98Ltrq94LY/Pm6cHAYPJ0d/Pvrj6+1u+7Lh9zo7J4dq6/Tg3HQPzlW35brEIeVKkuaPn+WNQiD7EPeVOjqfRx/HEGIpK5NCQMLrSdoXPHBNw4UYxkrCg3EDFXsxMg7elI1e3KWgkf6hQuUOk3Cae67kLPGkSfxW7/iqM6+B1j1wAX2BpGl1ii+ES5o/CNyDBZ2RgkWqBrTPtY2yNTeJgBEdpEJQmd3QIVj0BZVp3Edd2jGz75meqLFg0/m9fGUjyQNuR8QhA66NnRKHKFnOF6kYqVBBnrqsQeAZFIOEMEfFoLkF8ewmVn0ukCaRkqXgEtRGSRAUY+CCOERjrCxSzrImNhm/saAtze5OHGIR4vxDx1zmEUxPHpS+nbHki1mMNxntXco1sjPQEKNFnWe2ZHPz5FQJ5iiNAaTZjF4KsjXl0vGPWv5Bp/12wQQqTkCO3qSYN9Sfa5wmfa727yhwRWnfU8fSFdyh6lPLrcDFC5RjnXO8ymO1Ko6lRSH4pubIjO7DlfErE2SqkHdMhbcrIzWoC+tyk64WQDnmZ/9Laph9iNFmCjjh+k/29f/nJYARDbVKk3/9VVg6NV6EVQpiicrOchOuNqOzKdtUad/UFRzu9txEfsCoWPlULBNNtVDyupqFbC59CDZas9ef+Mvvh7+d6Q1V6PL7ITV5cT6kKP/sBPiVri+3c1HpQCNYZBTs6x1dPf/XlsPyPC3MuNIPBxwMsgrdz37czB0+J8uOksXT7LIJaq5YxYEu2N48TufWbmG6sJn9t9Qv97OCYsWuRrR068XBmCc0UAzne4AmWU6Nu48SB9zSC5RcaW5HtD1hr8Cug+kXfGaGZUuxDFmatw2dWk1FtQpsVqEQtOQyXIkZIEMNgg644DJ87o8KaJZEQXNdckktPFKNhrO5tqow02UQruPIBBGyVCCjkUr1MtAaOV3bY36pavTrTf+iqW+ebp7+Bm03jVrSEQAA" /></Footer>{/* END_HRIS_EMPLOYEE_CREATE_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_employees
+      parameters:
+      - name: model_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: No response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/employees_ignoreCreate_Response_200'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IgnoreCommonModelRequest'
+  /hris/v1/employees/meta/post:
+    get:
+      operationId: meta-post-retrieve
+      summary: Meta Post Retrieve
+      description: Returns metadata for `Employee` POSTs.{/* BEGIN_HRIS_EMPLOYEE_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+1dbVPbSBL+Ky59uqMAhxCWQNXVFbEBG7BxjMltsrWlGkttefBII0YjwGztf78avRizAeKXHnkEfEosy4+E5lF3T/fTM39ZDpHgcTG29q2hoJG1bvncBWbtW4d+yPgYwFq3SEjbxIfsHPvmo7VuRXEYciHBPaLA3KghYGDtW1UfhAcbcUAHFNyqOr1KAwmeIJLyIKpOfrYxSH5nrVuMBiNwDxyHx4F8CSg9cYOkZ/7jo/o6kta6FZIokkPBY2/YhesYohcx1f0w8CGQhG24RJLq1O83RArw1DF15y4wkODWiSR1kOCoPzG71lDKMNqvVofAws3kupsu3FQhqBIhqcMgqu5s733c3dvZyFCSq//X9th/ttaurvu8v7tmew6zSbzW6jl37V7ztn3lfWrXPt217y932vej+/bV6MOa7ZG1Vq+1c977vn1eP9g6f+IE++K33/e+fal/OWmvOfeH2+2r77ftnrPV6jmj/n1z++TYuT1pfL1r33//2Kpfbrd7hzsnx3zrvNaNWrUubx1sblrr1vRIWvt//DV9ICPIbjSkg+ThTH3X9IkHUw8lHQcS0o0w7jPqbEbbm8Qn9zwgt9Gmw/2qDy4l1Q4jcsCFn4HaHcFDEHJsf2w+gD8c3b64jomAhwOfHv63tfPZjpKvN8PAy8eO8mAycIry7cZBu3ZYf8yigxtCGekzsPaliOEn6lv7f1jkhkgirHXL4X5IgrG6AJFg84Hdp0IO1WcahYyM7UHMmB2op7VuQfaO2UHs90FMjig+2pEkMo4eHVOfBlREMgfwBI9DdXTIfbAZd5JHol4q8nCSz/uUgR0OeTB1JQE+l2Ar1j3+ZIckueHsEHXV2y6JkOpbhXfLxcgGn1Bm/alOu46pALdDBPFBglAP5M+/159ix0G9U6kf1pr15mULhyIH9Y5dB4e6NPbtC40DHIaC34BrS+qrYR0sOcIA00j5sWgBBkDgJrizUYEExEtO94mgkrCHa4QCBiAEuPm5ixNEgvBpkL6dP3Mm+zC5wwU41IY7WTmGAI9DCtE+hkAnh/D5Mjlm9wkjgTNFoBfIJIcBdagca6PS0wYnBBHxgLAJDZZkXBQUzrvuZRuPct3LtlaLlbukJWkXkrHgjNkiDqK5TdU8XKMiGWwoI++IXwT9/sfFaMCFA5U2v8Uj4gTWbvPbQijZhwAGNGEITsD0PE/xzGZ5ie0IIBJcm8iykJ0xqsalUWvhziQa3Rxa52xgdiZjUUxz9J+w4OURn3uEJQhS6aQvLZItSzAzA2afcY9rGd3ljVex5keryVk1j74Qv895o4vDoBztEYeuwuc41D7oNb8d4vjBnwgEoRrKdLhXNVMwk3MFxm/qqUVDAGlDIAVNnhSem/ui/PIQkLibgk1T1z76vvfDu/JfoDBuRuSB2CQY2VlmVlO8t3D6xBgeL5Ng0R+D1eCeBAFUsGxrhrdhRNz1FKMMZw8Z2wmyBotYWA6lNiSCUSSDl4H9w1sXlfx9ztQtGRLiuuwSmbfVTDQVh2SDh3iMVGgfDS41rcrKFRLaFU4fRsZY/jFPUaSYGYPsD43bYKd+Zpy7nNnqTNNh0cGcd1Q4ZzUisNxMhpZG1Jmr8T71x+7uZXmHZd73eCUztRfjknlJMe6DOBAjJFJkaPbwbu883L3VQwSU8PVpvcA8VnrpLPITNjiOQGSXXzz5UyfilgZ9foczqBM4nXMUrPlvkQHgk6xIdGJ2HCcj/Fzwt0TlobBJSZ2Mk+oXrhvPUfWkoJ9Nr2CmEc2tqJUtvaiTvQAMmbkAzCTTh6STmo88xRu0pz3ikuw4nDyQSgMExyHKA+iGAt0wWFe5lHjlF1bIKKtTmL05Io7kghIkozOB01+2fewzV2GCVpM7KZ3644izUYRWd8jdWoJaSGLOFJ3nypioh3haGRenQ4Vh0RIsnUTTWUItRSBfXucpIBpmJhSDajncr0WbC0tV5ih9vbmCfmElWf0+9xgCENSpXBz1Ojjk9FJEOxrIMK9m+Cfbdx+aetLmLzL1zZtMRAbrdutaJsLHnHsMEgV9FBKsZF+Kak9QZ4gvl9YM6qwKLBMFIlQJCjBzcSQ57rwigcwNHFVgpvdO6EyK6Gt20OhsVzPNbRDKYIw+z01h7Ua3iCzK6tWcK5jXmjmHbdA+7yNTSUFqtmaa+PReuyp3DrDRrdQYj10cQje6doI2Y1/HW1Mgvwa5eqNb6RAhg+TeUSiTwWnnzGwB3cx1/DfiSYtgVDKvw25ATUALdarvodlCoZne3q9G7BOSzL8wjFUKpt1UFdAIUa56mDkSowLsYexTHLoOY59q7QPT7x/n8n74idTCZpXNIApBUDmudAT4FCu6yt0hzeHLUC9dVYLMEFJpycurhfwYo1hJsAmcdldoFqlMmefptETd5kWlRiKHuEjVG4VoZ4jvbcnGiM6KY9QFZzfgInu0KAE1JGuqP9dUukBZI6FOYj9EzFoqOCdJWxYTHGn3W4aXmbUEOCdxJBUA0kx/AleaAKccCclViV3wiHZKGKNujMSzHK0EgmnDRYKvIvdzCiOCQ6wRjEgJSGWm1XpJA2N2ee4Ugitk4VUCqZNK71qXX6z+vyQnzkiARAmFpL2BbLFVXHEWQ1l8jYQzIGHEkysivns5arEmfNoQL9ScaUD6Qssk4yx2HCT/nEC96uJhOVbOMDocbFFH8IgPZOUwkIJUmnWkznKFZjfruZx6r3Z/5n3taZDT65lyLL/WzisxSOofNsYhRYqlX9uA3Sv0Pi/Vb4jafl8gZTwSKO1BpB5yPe+wyqfam5MB54MBdSgkUQMCCyZwBXRyrXY9nNe4Guy83BklN4NBm5HMN55Y+VKASzf6FRSYaBnRAM64R5E2hsvRVl9/0xdwFl5Pm3dEBXEYpM0gFaVzDSo1EioTVGklf1qyuNW/GrXWv5EGPbmgGdsDoehhs1YoEQevLzgtZS/6+TiSILAkbyma1jy4ro7jn6ls9sa3qK6qQ8Y1EkqC5aw6ZOykeIWU13Qn7H62ZDp1Svpa0AvqvNRiqBSlhoC0unIGVvQ6fwVuNWl2+2YpdQeKNNzHrV2lmKW0jiWL2rTnrvW26CVEQW54CRPMN6VaMI2Ophu8IyrRDd6AzpDQLDqr/dYWeJmfCoxn7w1O/JXCPdoh8uzY3zpygwIjsVcciM1mlx6X/w1Z1ioO6HWsfgiBpIO0zxPRqgEPGaCtdJWh2QeOA1FesytlQLfqYs5rWPmlk9wuxVKXZmi5lTzi38jxbm/1ieCVLIOAvSAz2lRgNRs2d2jgnQdYWkoaeM3E3uptf59Vtzp/fhWhdqSnaNRhJHDJGDmMTkFXsTkF8rJ2mirEK9oG4KlXfsKieYkjaORjxSmhAhtqney/pJA2SxDysui1LAv4dwRnlGCJjXI0U3s532pV2cwGz25ybRzmpX9HtugFK3Lf9DJJ3QzSJmDS6IazWFbSWTQOnTLMQmbiywmmZpEUPMeGKQdmqHvq0jBkNHn6iIGvyFBt0f18t91vmzC+mhZSeqZtrCTRyQXxAG09eQVmTy2ktd2//bTbKlvPtjErRRqRaVuET5h+IuFUCpjzyrm7aDqnV8WrpotdIX4eTzNfCkVrwuvioFO5iJM0e7pTJ1KzzWPMRxWpL87v3Dv6oGep7ffdBkqoyi1U83YBUQqJGEClmEZukLyEAndOT2gWxTJWLeEbhyQELGuYYNl1AcTvqe0cs/bnG3I0kO4XI2tPZY+dNIs3Lmj6nJDkYxO4oqfY79VtI2Rh6ahXOmnMisSp1Mho3xJn4dbFGRfSWcYQzDkMPUHbgJT87wkagDRIjmd0Rv+RTqqMSvaUOhW1TVEWFWLSyN56lz+Vum70Sz2Lmt2PURl5eXpc6Qgk2dTl6XGBovYCm3oQcj+vcX/y1RjRjLLJNs4DLhyY6gHH5rHtkr2vH3YMmH1pU43Ox7pFFyxEGPMuEHeMPsAekMbn607xu9EvZM1m3gDw9W2GWrygaCEX/XQGfk66K9OGLl3MQE2JEV8llY3a+LygDPyL0ktMJ/ADGHJTnEI0aPJdqJ6h3BtB/eBDjlqVVoBZVVrnNlAoKodCHK8wqlTznA7uedr8+ff/ASZlzL3ZwAAA" /></Footer>{/* END_HRIS_EMPLOYEE_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_employees
+      parameters:
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaResponse'
+components:
+  schemas:
+    EmployeesGetParametersExpandSchemaItems_2:
+      type: string
+      enum:
+      - company
+      - employments
+      - groups
+      - home_location
+      - manager
+      - pay_group
+      - team
+      - work_location
+      title: EmployeesGetParametersExpandSchemaItems
+    EmployeesIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - company
+      title: EmployeesIdGetParametersExpandSchemaItems
+    PaginatedEmployeeList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Employee'
+      title: PaginatedEmployeeList
+    MaritalStatusEnum:
+      type: string
+      enum:
+      - SINGLE
+      - MARRIED_FILING_JOINTLY
+      - MARRIED_FILING_SEPARATELY
+      - HEAD_OF_HOUSEHOLD
+      - QUALIFYING_WIDOW_OR_WIDOWER_WITH_DEPENDENT_CHILD
+      title: MaritalStatusEnum
+    Employee:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        first_name:
+          type:
+          - string
+          - 'null'
+          description: The employee's first name.
+        last_name:
+          type:
+          - string
+          - 'null'
+          description: The employee's last name.
+        is_contractor:
+          type:
+          - boolean
+          - 'null'
+          description: '`True` if the employee is a contractor, `False` if not.'
+        employee_number:
+          type:
+          - string
+          - 'null'
+          description: The employee's internal identification number.
+        email_address:
+          type:
+          - string
+          - 'null'
+          description: The employee's email address.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The subsidiary that the employee belongs to.
+        status:
+          $ref: '#/components/schemas/Status895Enum'
+          description: The employee's status in the accounting system.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/EmployeeFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      required:
+      - status
+      description: '# The Employee Object
+
+        ### Description
+
+        An `Employee` is an individual who works for the company of the linked account. The `Employee` model contains both contractors and full time employees.
+
+        * An `Employee` is a contractor if `is_contractor` property is `True`
+
+        * An `Employee` is a full time employee if `is_contractor` property is `False`
+
+
+        ### Usage Example
+
+        Fetch from the `LIST Employees` endpoint and view a company''s employees.'
+      title: Employee
+    EmployeesGetParametersRemoteFields:
+      type: string
+      enum:
+      - employment_status
+      - employment_status,ethnicity
+      - employment_status,ethnicity,gender
+      - employment_status,ethnicity,gender,marital_status
+      - employment_status,ethnicity,marital_status
+      - employment_status,gender
+      - employment_status,gender,marital_status
+      - employment_status,marital_status
+      - ethnicity
+      - ethnicity,gender
+      - ethnicity,gender,marital_status
+      - ethnicity,marital_status
+      - gender
+      - gender,marital_status
+      - marital_status
+      title: EmployeesGetParametersRemoteFields
+    EmployeesIdGetParametersExpandSchemaItems_2:
+      type: string
+      enum:
+      - company
+      - employments
+      - groups
+      - home_location
+      - manager
+      - pay_group
+      - team
+      - work_location
+      title: EmployeesIdGetParametersExpandSchemaItems
+    EmployeesGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - employment_status
+      - employment_status,ethnicity
+      - employment_status,ethnicity,gender
+      - employment_status,ethnicity,gender,marital_status
+      - employment_status,ethnicity,marital_status
+      - employment_status,gender
+      - employment_status,gender,marital_status
+      - employment_status,marital_status
+      - ethnicity
+      - ethnicity,gender
+      - ethnicity,gender,marital_status
+      - ethnicity,marital_status
+      - gender
+      - gender,marital_status
+      - marital_status
+      title: EmployeesGetParametersShowEnumOrigins
+    EmployeeFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: EmployeeFieldMappings
+    Employee_2:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        employee_number:
+          type:
+          - string
+          - 'null'
+          description: The employee's number that appears in the third-party integration's UI.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The ID of the employee's company.
+        first_name:
+          type:
+          - string
+          - 'null'
+          description: The employee's first name.
+        last_name:
+          type:
+          - string
+          - 'null'
+          description: The employee's last name.
+        preferred_name:
+          type:
+          - string
+          - 'null'
+          description: The employee's preferred first name.
+        display_full_name:
+          type:
+          - string
+          - 'null'
+          description: The employee's full name, to use for display purposes. If a preferred first name is available, the full name will include the preferred first name.
+        username:
+          type:
+          - string
+          - 'null'
+          description: The employee's username that appears in the remote UI.
+        groups:
+          type: array
+          items:
+            type: string
+            format: uuid
+        work_email:
+          type:
+          - string
+          - 'null'
+          format: email
+          description: The employee's work email.
+        personal_email:
+          type:
+          - string
+          - 'null'
+          format: email
+          description: The employee's personal email.
+        mobile_phone_number:
+          type:
+          - string
+          - 'null'
+          description: The employee's mobile phone number.
+        employments:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Array of `Employment` IDs for this Employee.
+        home_location:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The employee's home address.
+        work_location:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The employee's work address.
+        manager:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The employee ID of the employee's manager.
+        team:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The employee's team.
+        pay_group:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The employee's pay group
+        ssn:
+          type:
+          - string
+          - 'null'
+          description: The employee's social security number.
+        gender:
+          oneOf:
+          - $ref: '#/components/schemas/GenderEnum'
+          - type: 'null'
+          description: The employee's gender.
+        ethnicity:
+          oneOf:
+          - $ref: '#/components/schemas/EthnicityEnum'
+          - type: 'null'
+          description: The employee's ethnicity.
+        marital_status:
+          oneOf:
+          - $ref: '#/components/schemas/MaritalStatusEnum'
+          - type: 'null'
+          description: The employee's filing status as related to marital status.
+        date_of_birth:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The employee's date of birth.
+        hire_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: 'The date that the employee was hired, usually the day that an offer letter is signed. If an employee has multiple hire dates from previous employments, this represents the most recent hire date. Note: If you''re looking for the employee''s start date, refer to the start_date field.'
+        start_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date that the employee started working. If an employee was rehired, the most recent start date will be returned.
+        remote_created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's employee was created.
+        employment_status:
+          oneOf:
+          - $ref: '#/components/schemas/EmploymentStatusEnum'
+          - type: 'null'
+          description: The employment status of the employee.
+        termination_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The employee's termination date.
+        avatar:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The URL of the employee's avatar image.
+        custom_fields:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+          description: Custom fields configured for a given model.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/EmployeeFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The Employee Object
+
+        ### Description
+
+        The `Employee` object is used to represent any person who has been employed by a company. By default, it returns all employees. To filter for only active employees, set the `employment_status` query parameter to `ACTIVE`.
+
+
+        ### Usage Example
+
+        Fetch from the `LIST Employee` endpoint and filter by `ID` to show all employees.'
+      title: Employee
+    EmployeesIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - employment_status
+      - employment_status,ethnicity
+      - employment_status,ethnicity,gender
+      - employment_status,ethnicity,gender,marital_status
+      - employment_status,ethnicity,marital_status
+      - employment_status,gender
+      - employment_status,gender,marital_status
+      - employment_status,marital_status
+      - ethnicity
+      - ethnicity,gender
+      - ethnicity,gender,marital_status
+      - ethnicity,marital_status
+      - gender
+      - gender,marital_status
+      - marital_status
+      title: EmployeesIdGetParametersRemoteFields
+    EmployeesGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - company
+      title: EmployeesGetParametersExpandSchemaItems
+    EmployeesIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - employment_status
+      - employment_status,ethnicity
+      - employment_status,ethnicity,gender
+      - employment_status,ethnicity,gender,marital_status
+      - employment_status,ethnicity,marital_status
+      - employment_status,gender
+      - employment_status,gender,marital_status
+      - employment_status,marital_status
+      - ethnicity
+      - ethnicity,gender
+      - ethnicity,gender,marital_status
+      - ethnicity,marital_status
+      - gender
+      - gender,marital_status
+      - marital_status
+      title: EmployeesIdGetParametersShowEnumOrigins
+    employees_ignoreCreate_Response_200:
+      type: object
+      properties: {}
+      description: Empty response body
+      title: employees_ignoreCreate_Response_200
+    ReasonEnum:
+      type: string
+      enum:
+      - GENERAL_CUSTOMER_REQUEST
+      - GDPR
+      - OTHER
+      title: ReasonEnum
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    IgnoreCommonModelRequest:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/ReasonEnum'
+        message:
+          type: string
+      required:
+      - reason
+      title: IgnoreCommonModelRequest
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    GenderEnum:
+      type: string
+      enum:
+      - MALE
+      - FEMALE
+      - NON-BINARY
+      - OTHER
+      - PREFER_NOT_TO_DISCLOSE
+      title: GenderEnum
+    EmploymentStatusEnum:
+      type: string
+      enum:
+      - ACTIVE
+      - PENDING
+      - INACTIVE
+      title: EmploymentStatusEnum
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    EmployeesGetParametersEmploymentStatus:
+      type: string
+      enum:
+      - ACTIVE
+      - INACTIVE
+      - PENDING
+      title: EmployeesGetParametersEmploymentStatus
+    Status895Enum:
+      type: string
+      enum:
+      - ACTIVE
+      - INACTIVE
+      title: Status895Enum
+    EthnicityEnum:
+      type: string
+      enum:
+      - AMERICAN_INDIAN_OR_ALASKA_NATIVE
+      - ASIAN_OR_INDIAN_SUBCONTINENT
+      - BLACK_OR_AFRICAN_AMERICAN
+      - HISPANIC_OR_LATINO
+      - NATIVE_HAWAIIAN_OR_OTHER_PACIFIC_ISLANDER
+      - TWO_OR_MORE_RACES
+      - WHITE
+      - PREFER_NOT_TO_DISCLOSE
+      title: EthnicityEnum
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

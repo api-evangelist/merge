@@ -1,0 +1,280 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_roles API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_roles
+paths:
+  /ticketing/v1/roles:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Role` objects.{/* BEGIN_TICKETING_ROLE_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA92YbW/iOBCA/wrnjwjIFba3KtLpRKGlrUrYK3R326qKJs6QGJw4+AW6rPa/nxIChbtKe+IMovcxlv0k83g8tvOdUNAYCvmNNIlmdIKaJSGpkFgEyEmT3AmOpEIgZS7EuNnJm9VJhSiTpkJqDC4Z8kBdSRyRJnFilCFWTcJGDANnPcZhicZQgmYiUc56bHWUDyYVwlkywaBFqTCJ/ilt2bsKy+5/e1QOZ0qTCklBKR1JYcLoDqcG1c/B2ZdxjDHRwKsBaHA2IFW5pLzVlsUQIEeNQQc0dFAjzYItXhhpnaqm40TI01r+8lqAMwcTB6RmlKNyThtn9Y9np9WCkr/9Dy/kv5+Ux1Nf+B/LXki5B6bcG9IXd3g9d8fhB7f94cVd3J+6i8nCHU9+LXshlHvD3ml/+NDod1on/Tc6eIPfvp59Pu+c37hlurhouOOHuTukJ70hnfiL68ZNl85vrv58cRcP9V7nvuEOL05vuuKk375Tvfad6LVqNVIhm3NKmk/fNxuKpGlF8Mt2z+sYQtwwspwJSFk1NT5ntKYaNYhhIRKYqxoVsRNjwMBpReCpqQGJtTRP1NwTE8laNWmSC/eq5bYvOtuT35oB4+BzJE0tDf4jd0nziSTZ91aIxFho9DL3209eCjp6bWIBqRQrwgNKUanN56WRCjEKpSLP2aipYRKDTyAhRp21Np+ef1TeVKYgATvOIENVl9aqXISiXhunaF9eXjM8Y3IrhckUZcyUKkzs5nXlcdmQG03Y1GTdMNHZ2pU7W14YiaUOzvqpspSgGdFbEr1B7ty7FaHYZ7ruFPo5KKQQp3bCXtGOO2SmfZPlkJ2YP3HQIyFjf4U9hsq0n2rU5oxO7i3lSgE7VKps1pSdgr+UqKIA1cRO+GvcloC9VOTj2c7yoBXKGaNod/WNNsjHsAAP4VIklktYjjyAvf0I6TJ9ZfzStVIGLW3jXaYj43tL5FFval2mb8G3FjUH/90U5ivkaWlAhbG8GjKuyrAHWBG7Bc5mlqpoRjrwfP+70rmTl+tEo6QituNmRdv0430+69Rv2/7RpcQNk5auixmpCHmfUf6Hm6G1618WammwPDuUepBAmP/0semxOJi8wmvj9B2vsFuWIEg7gnjOOkCN3U41a9kzAI5qJCTFdQ61uTCBHTuvdG91uqUZ/Wgq9H7OcoVJV8wtaVzz/j/b3BAhngtp6T66oh3Kz37yZiiRc2HJSM7a2va/qJfOvPtydNv+F8kmlo6COeqorzqPmNj7DbM67BdQ72zaM1/Z5ZEeefazaB5FJEoda0ofRSS8DPcuS+3zj78AUX+9Dg4dAAA=" /></Footer>{/* END_TICKETING_ROLE_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_roles
+      parameters:
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRoleList'
+  /ticketing/v1/roles/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `Role` object with the given `id`.{/* BEGIN_TICKETING_ROLE_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA92YbW/iOBCA/wrnjwjIFba3KtLpRKGlrUrYK3R326qKJs6QGJw4+AW6rPa/nxIChbtKe+IMovcxlv0k83g8tvOdUNAYCvmNNIlmdIKaJSGpkFgEyEmT3AmOpEIgZS7EuNnJm9VJhSiTpkJqDC4Z8kBdSRyRJnFilCFWTcJGDANnPcZhicZQgmYiUc56bHWUDyYVwlkywaBFqTCJ/ilt2bsKy+5/e1QOZ0qTCklBKR1JYcLoDqcG1c/B2ZdxjDHRwKsBaHA2IFW5pLzVlsUQIEeNQQc0dFAjzYItXhhpnaqm40TI01r+8lqAMwcTB6RmlKNyThtn9Y9np9WCkr/9Dy/kv5+Ux1Nf+B/LXki5B6bcG9IXd3g9d8fhB7f94cVd3J+6i8nCHU9+LXshlHvD3ml/+NDod1on/Tc6eIPfvp59Pu+c37hlurhouOOHuTukJ70hnfiL68ZNl85vrv58cRcP9V7nvuEOL05vuuKk375Tvfad6LVqNVIhm3NKmk/fNxuKpGlF8Mt2z+sYQtwwspwJSFk1NT5ntKYaNYhhIRKYqxoVsRNjwMBpReCpqQGJtTRP1NwTE8laNWmSC/eq5bYvOtuT35oB4+BzJE0tDf4jd0nziSTZ91aIxFho9DL3209eCjp6bWIBqRQrwgNKUanN56WRCjEKpSLP2aipYRKDTyAhRp21Np+ef1TeVKYgATvOIENVl9aqXISiXhunaF9eXjM8Y3IrhckUZcyUKkzs5nXlcdmQG03Y1GTdMNHZ2pU7W14YiaUOzvqpspSgGdFbEr1B7ty7FaHYZ7ruFPo5KKQQp3bCXtGOO2SmfZPlkJ2YP3HQIyFjf4U9hsq0n2rU5oxO7i3lSgE7VKps1pSdgr+UqKIA1cRO+GvcloC9VOTj2c7yoBXKGaNod/WNNsjHsAAP4VIklktYjjyAvf0I6TJ9ZfzStVIGLW3jXaYj43tL5FFval2mb8G3FjUH/90U5ivkaWlAhbG8GjKuyrAHWBG7Bc5mlqpoRjrwfP+70rmTl+tEo6QituNmRdv0430+69Rv2/7RpcQNk5auixmpCHmfUf6Hm6G1618WammwPDuUepBAmP/0semxOJi8wmvj9B2vsFuWIEg7gnjOOkCN3U41a9kzAI5qJCTFdQ61uTCBHTuvdG91uqUZ/Wgq9H7OcoVJV8wtaVzz/j/b3BAhngtp6T66oh3Kz37yZiiRc2HJSM7a2va/qJfOvPtydNv+F8kmlo6COeqorzqPmNj7DbM67BdQ72zaM1/Z5ZEeefazaB5FJEoda0ofRSS8DPcuS+3zj78AUX+9Dg4dAAA=" /></Footer>{/* END_TICKETING_ROLE_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_roles
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+components:
+  schemas:
+    RoleFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: RoleFieldMappings
+    TicketAccessEnum:
+      type: string
+      enum:
+      - ALL
+      - ASSIGNED_ONLY
+      - TEAM_ONLY
+      title: TicketAccessEnum
+    PaginatedRoleList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Role'
+      title: PaginatedRoleList
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    TicketActionsEnum:
+      type: string
+      enum:
+      - VIEW
+      - CREATE
+      - EDIT
+      - DELETE
+      - CLOSE
+      - ASSIGN
+      title: TicketActionsEnum
+    Role:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The name of the Role.
+        ticket_actions:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/TicketActionsEnum'
+          description: 'The set of actions that a User with this Role can perform. Possible enum values include: `VIEW`, `CREATE`, `EDIT`, `DELETE`, `CLOSE`, and `ASSIGN`.'
+        ticket_access:
+          oneOf:
+          - $ref: '#/components/schemas/TicketAccessEnum'
+          - type: 'null'
+          description: The level of Ticket access that a User with this Role can perform.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/RoleFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The Role Object
+
+        ### Description
+
+        The `Role` object is used to represent the set of actions & access that a user with this role is allowed to perform.
+
+
+        ### Usage Example
+
+        TODO'
+      title: Role
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

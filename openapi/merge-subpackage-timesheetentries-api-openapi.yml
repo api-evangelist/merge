@@ -1,0 +1,609 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_timesheetEntries API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_timesheetEntries
+paths:
+  /hris/v1/timesheet-entries:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `TimesheetEntry` objects.{/* BEGIN_HRIS_TIMESHEETENTRY_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA92WX2/aMBTFvwryIwrJKGVdI00TBQq0IzAI7aqqii7OJTE4cbCd8qfqd5/SQEe3qi/Lw8RbbB+f6/zucZQnQkFjIOSG2CSUTBGDRMJHTmzisghViKjbsZYbYhBImAMR7pTe4wkxiEqTREiN/iVD7quuxBmxiRWhDLCSxmzG0LcyucVijYEEzUSsrNdtldnLPmIQzuIF+g1KRRrrj4xyYQVy5R/DbFlpYpAElNKhFGkQjnCZovrQMzsPxwhjDbzigwbrYH9F5gbvzWUn95GjRr8FGlqokWavuKsVap0o27JC5In5Utf08dHC2AKpGeWorHrt/OTsvF7ZubxU/+YF/Gu1PF9OxfSs7AWUe5CW+y5dO25v5cyDU6d5una2k7qzXWyd+eJT2Qug3Hf79YF7Vxu0GtXBOwJv/Pnn+c1F6+LKKdNtu+bM71aOS6t9ly6m217tqkNXV90fa2d7d9JvTWqO265fdUR10BypfnMk+g3TJAY57CSx758OJ3YBuYBoKkR39FbdiyDAAyp5IyBhlSSdckZNVTMhgq2IYaVMKiIrQp+BtXfzxssUJHrfRSDMeRLs2TMRv4InNmk73YbTbLfepqDxCIzDlCOxtUzxr+gS+55glHCxQSQGwdj3NIuyx1CkUnkrIRfoE4NIjIRGL+vT25GXgA5/T7FMrDRInRs9ZCvLlEn0hyAhQo0yq/rwbLyHsDu6FXKhiiE45KBnQkY7UzOJjxveEDZURMWyyz3/Y3T/gAulEjETBQHbue2v66W4gc6Ze/yh4xD7sCk4dbnp0cMbQ4ClIYqEYzEAM0MvN9wHka7HPXo9P3qWrmQO6lJ3VNqnqBikrmQxaq969AAn153SCMEv6C5PrjueyiMYIHS/LIdHTzD7zSj8W3ibmx4TvIfnX1ngaQODDQAA" /></Footer>{/* END_HRIS_TIMESHEETENTRY_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_timesheetEntries
+      parameters:
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: employee_id
+        in: query
+        description: If provided, will only return timesheet entries for this employee.
+        required: false
+        schema:
+          type: string
+      - name: ended_after
+        in: query
+        description: If provided, will only return timesheet entries ended after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: ended_before
+        in: query
+        description: If provided, will only return timesheet entries ended before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimesheetEntriesGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: order_by
+        in: query
+        description: 'Overrides the default ordering for this endpoint. Possible values include: start_time, -start_time.'
+        required: false
+        schema:
+          $ref: '#/components/schemas/TimesheetEntriesGetParametersOrderBy'
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: started_after
+        in: query
+        description: If provided, will only return timesheet entries started after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: started_before
+        in: query
+        description: If provided, will only return timesheet entries started before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTimesheetEntryList'
+    post:
+      operationId: create
+      summary: Create
+      description: Creates a `TimesheetEntry` object with the given values.{/* BEGIN_HRIS_TIMESHEETENTRY_CREATE_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST" data="H4sIAAAAAAAAA9WSX2/aMBTFv8p0H1FIRinrGmmaKDAoLYHRMK2qqujiXILBjoPtlELV7z4FaEW7rk9IU9/859xzr38+D8DQUqL0CnyYam7AAaliEuBDyCWZKZFtpVavwAHMeICSdsro7ggcMHmWKW0p/sFJxKajaQI+eJJ0QuU85RNOsVfIPZ5aSjRarlLjPZeVJ5s6cEDwdE5xnTGVp/Y9o62wjFvlq21xbSw4kKExdqpVnkyHtMjJvOtZzCNIUmpRlGO06O3Vl/XW4K2zYvKYBFmKm2ixSZZY8cRdr6m1mfE9b0oiczd93ZjuPEo91JYzQcarVU+PTk5r5Z3Lpvv3KBHfKqXZYqzGJ6UoYSLCvNQL2X0Qni+DWXIcNI7vg/WoFqzn62A2/1yKEiz1wl6tH15X+816pf+GILr68vv011nzrBuU2LpVDWbXyyBklV7I5uP1ebXbZstu5+d9sL4+6jVH1SBs1bptVek3hqbXGKpe3XXBgf2fBP/mYf9gF5AzlGOlOsOX6nOJCe1R2X4EZryc5WPBmWuqLkpcqxSXxmVKepJijt6TW3S1yFFTdKkS5c6y5Ik9V+kzePChFXTqQaPVfJmC+h1ygWNB4Fud01/RBf8GSGZCrYjAAUrjyHJZLKcq1yZaKj2nGBzQJJWliBdrY1Hbre62uFnkXFM8QI2SLOnXpq+c9qsfnbc4NnE1UZrRYTgOBNqJ0vLJ1c3Sj8bwH5wGuGJKH5ZStvGMzCZz/w/VIfCMLtqfhoTx6jCERhftHZYoIex8XQw+ZJJuH/8AGwa2df8GAAA=" /></Footer>{/* END_HRIS_TIMESHEETENTRY_CREATE_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_timesheetEntries
+      parameters:
+      - name: is_debug_mode
+        in: query
+        description: Whether to include debug fields (such as log file links) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: run_async
+        in: query
+        description: Whether or not third-party updates should be run asynchronously.
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimesheetEntryResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TimesheetEntryEndpointRequest'
+  /hris/v1/timesheet-entries/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `TimesheetEntry` object with the given `id`.{/* BEGIN_HRIS_TIMESHEETENTRY_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA92WX2/aMBTFvwryIwrJKGVdI00TBQq0IzAI7aqqii7OJTE4cbCd8qfqd5/SQEe3qi/Lw8RbbB+f6/zucZQnQkFjIOSG2CSUTBGDRMJHTmzisghViKjbsZYbYhBImAMR7pTe4wkxiEqTREiN/iVD7quuxBmxiRWhDLCSxmzG0LcyucVijYEEzUSsrNdtldnLPmIQzuIF+g1KRRrrj4xyYQVy5R/DbFlpYpAElNKhFGkQjnCZovrQMzsPxwhjDbzigwbrYH9F5gbvzWUn95GjRr8FGlqokWavuKsVap0o27JC5In5Utf08dHC2AKpGeWorHrt/OTsvF7ZubxU/+YF/Gu1PF9OxfSs7AWUe5CW+y5dO25v5cyDU6d5una2k7qzXWyd+eJT2Qug3Hf79YF7Vxu0GtXBOwJv/Pnn+c1F6+LKKdNtu+bM71aOS6t9ly6m217tqkNXV90fa2d7d9JvTWqO265fdUR10BypfnMk+g3TJAY57CSx758OJ3YBuYBoKkR39FbdiyDAAyp5IyBhlSSdckZNVTMhgq2IYaVMKiIrQp+BtXfzxssUJHrfRSDMeRLs2TMRv4InNmk73YbTbLfepqDxCIzDlCOxtUzxr+gS+55glHCxQSQGwdj3NIuyx1CkUnkrIRfoE4NIjIRGL+vT25GXgA5/T7FMrDRInRs9ZCvLlEn0hyAhQo0yq/rwbLyHsDu6FXKhiiE45KBnQkY7UzOJjxveEDZURMWyyz3/Y3T/gAulEjETBQHbue2v66W4gc6Ze/yh4xD7sCk4dbnp0cMbQ4ClIYqEYzEAM0MvN9wHka7HPXo9P3qWrmQO6lJ3VNqnqBikrmQxaq969AAn153SCMEv6C5PrjueyiMYIHS/LIdHTzD7zSj8W3ibmx4TvIfnX1ngaQODDQAA" /></Footer>{/* END_HRIS_TIMESHEETENTRY_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_timesheetEntries
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimesheetEntriesIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimesheetEntry'
+  /hris/v1/timesheet-entries/meta/post:
+    get:
+      operationId: meta-post-retrieve
+      summary: Meta Post Retrieve
+      description: Returns metadata for `TimesheetEntry` POSTs.{/* BEGIN_HRIS_TIMESHEETENTRY_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA92WX2/aMBTFvwryIwrJKGVdI00TBQq0IzAI7aqqii7OJTE4cbCd8qfqd5/SQEe3qi/Lw8RbbB+f6/zucZQnQkFjIOSG2CSUTBGDRMJHTmzisghViKjbsZYbYhBImAMR7pTe4wkxiEqTREiN/iVD7quuxBmxiRWhDLCSxmzG0LcyucVijYEEzUSsrNdtldnLPmIQzuIF+g1KRRrrj4xyYQVy5R/DbFlpYpAElNKhFGkQjnCZovrQMzsPxwhjDbzigwbrYH9F5gbvzWUn95GjRr8FGlqokWavuKsVap0o27JC5In5Utf08dHC2AKpGeWorHrt/OTsvF7ZubxU/+YF/Gu1PF9OxfSs7AWUe5CW+y5dO25v5cyDU6d5una2k7qzXWyd+eJT2Qug3Hf79YF7Vxu0GtXBOwJv/Pnn+c1F6+LKKdNtu+bM71aOS6t9ly6m217tqkNXV90fa2d7d9JvTWqO265fdUR10BypfnMk+g3TJAY57CSx758OJ3YBuYBoKkR39FbdiyDAAyp5IyBhlSSdckZNVTMhgq2IYaVMKiIrQp+BtXfzxssUJHrfRSDMeRLs2TMRv4InNmk73YbTbLfepqDxCIzDlCOxtUzxr+gS+55glHCxQSQGwdj3NIuyx1CkUnkrIRfoE4NIjIRGL+vT25GXgA5/T7FMrDRInRs9ZCvLlEn0hyAhQo0yq/rwbLyHsDu6FXKhiiE45KBnQkY7UzOJjxveEDZURMWyyz3/Y3T/gAulEjETBQHbue2v66W4gc6Ze/yh4xD7sCk4dbnp0cMbQ4ClIYqEYzEAM0MvN9wHka7HPXo9P3qWrmQO6lJ3VNqnqBikrmQxaq969AAn153SCMEv6C5PrjueyiMYIHS/LIdHTzD7zSj8W3ibmx4TvIfnX1ngaQODDQAA" /></Footer>{/* END_HRIS_TIMESHEETENTRY_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_timesheetEntries
+      parameters:
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaResponse'
+components:
+  schemas:
+    TimesheetEntryFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: TimesheetEntryFieldMappings
+    TimesheetEntriesIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - employee
+      title: TimesheetEntriesIdGetParametersExpandSchemaItems
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    TimesheetEntryResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/TimesheetEntry'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: TimesheetEntryResponse
+    TimesheetEntry:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        employee:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The employee the timesheet entry is for.
+        hours_worked:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The number of hours logged by the employee.
+        start_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The time at which the employee started work.
+        end_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The time at which the employee ended work.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/TimesheetEntryFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The Timesheet Entry Object
+
+        ### Description
+
+        The `Timesheet Entry` object is used to track coverage for hours worked by an ''Employee''.
+
+
+
+        ### Usage Example
+
+        GET and POST Timesheet Entries'
+      title: TimesheetEntry
+    PaginatedTimesheetEntryList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimesheetEntry'
+      title: PaginatedTimesheetEntryList
+    TimesheetEntriesGetParametersOrderBy:
+      type: string
+      enum:
+      - -start_time
+      - start_time
+      title: TimesheetEntriesGetParametersOrderBy
+    TimesheetEntryRequest:
+      type: object
+      properties:
+        employee:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The employee the timesheet entry is for.
+        hours_worked:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The number of hours logged by the employee.
+        start_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The time at which the employee started work.
+        end_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The time at which the employee ended work.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The Timesheet Entry Object
+
+        ### Description
+
+        The `Timesheet Entry` object is used to track coverage for hours worked by an ''Employee''.
+
+
+
+        ### Usage Example
+
+        GET and POST Timesheet Entries'
+      title: TimesheetEntryRequest
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    TimesheetEntryEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/TimesheetEntryRequest'
+      required:
+      - model
+      title: TimesheetEntryEndpointRequest
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    TimesheetEntriesGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - employee
+      title: TimesheetEntriesGetParametersExpandSchemaItems
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

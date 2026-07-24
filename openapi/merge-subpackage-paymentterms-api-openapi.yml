@@ -1,0 +1,267 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_paymentTerms API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_paymentTerms
+paths:
+  /accounting/v1/payment-terms:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `PaymentTerm` objects.{/* BEGIN_ACCOUNTING_PAYMENTTERM_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+1UXW/aMBT9K8iPiJABpaiRpomvfkmYFui0CiHrYl+CwYmD7dCWqv99SmAtbJW2SXRPe4uP7z3XPuc4z4SDw1CbJxIQ4FynsZNxSEok0gIVCcgNPEUYuxGaiJQIJJJChAfFbF0lJWLTJNHGoTiXqIS9NDgjAfEjNCF6aSxnEoX/1uTL2GFowEkdW/+12Zvl3aRElIyXKJrbht/Tbcu9HfLT0vpKWkdKJAFr3dzoNJwPcJWi/QPm7GwKMw1AeQIc+HssntnSvIdltxCo0KHogIMOOuTZdXcT584lNvD9OaqknE8vC1z7GPtgnOQKrV+vnVUbZ3Vvx5JP/8JC9blSXKymetoospArBmmxN+KPdHT1QBfhCW2fPNLNXZ1ulhu6WH4qshCKvVGv3h/d1/qdZqX/TgEbnn47+9rqtK5pkW+6Nbq4f6AjXumN+HK6uapdX/CH68vbR7q5r/Y6dzU66tavL3Sl3x7YXnuge81ymZTIvqskGD/vA7vgUHTDVDo8rL6KIMQ9VbZ2QCK9JJ0qycu2VoYINjqGB1vmOvIjFBJ8is5mbMyuUjBYTvLw5oJJHb9qTgLSpZdN2u52DmPQXINUMFVIAmdS/CXHJBgTAU+WZWlQTKTbc6+15JgZLC0D7uQ6g+PsgiWSpIbPwSLTRqDJigxG2iHL7DtcsQTc/A2SIntIoND+6J1ke6tUGhQ3YCBCl6HBePJSek/bvgGusHCeWqnjQlvpVBS6g5vjSL0lZ1tylpOz7uCGeWz4cdrvSX0ceXffCqxjkRb5c2fg/lbp21TyZUvrpS30YyXjI8X5jdbbBprdzaqnrUbl3wRbSJv/91i289FBP5ITQwixcBU74Nwdx4SMke0Yd9lm67WktgH/bRhPXiYv3wE2dDh6NwgAAA==" /></Footer>{/* END_ACCOUNTING_PAYMENTTERM_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_paymentTerms
+      parameters:
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentTermsGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPaymentTermList'
+  /accounting/v1/payment-terms/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `PaymentTerm` object with the given `id`.{/* BEGIN_ACCOUNTING_PAYMENTTERM_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+1UXW/aMBT9K8iPiJABpaiRpomvfkmYFui0CiHrYl+CwYmD7dCWqv99SmAtbJW2SXRPe4uP7z3XPuc4z4SDw1CbJxIQ4FynsZNxSEok0gIVCcgNPEUYuxGaiJQIJJJChAfFbF0lJWLTJNHGoTiXqIS9NDgjAfEjNCF6aSxnEoX/1uTL2GFowEkdW/+12Zvl3aRElIyXKJrbht/Tbcu9HfLT0vpKWkdKJAFr3dzoNJwPcJWi/QPm7GwKMw1AeQIc+HssntnSvIdltxCo0KHogIMOOuTZdXcT584lNvD9OaqknE8vC1z7GPtgnOQKrV+vnVUbZ3Vvx5JP/8JC9blSXKymetoospArBmmxN+KPdHT1QBfhCW2fPNLNXZ1ulhu6WH4qshCKvVGv3h/d1/qdZqX/TgEbnn47+9rqtK5pkW+6Nbq4f6AjXumN+HK6uapdX/CH68vbR7q5r/Y6dzU66tavL3Sl3x7YXnuge81ymZTIvqskGD/vA7vgUHTDVDo8rL6KIMQ9VbZ2QCK9JJ0qycu2VoYINjqGB1vmOvIjFBJ8is5mbMyuUjBYTvLw5oJJHb9qTgLSpZdN2u52DmPQXINUMFVIAmdS/CXHJBgTAU+WZWlQTKTbc6+15JgZLC0D7uQ6g+PsgiWSpIbPwSLTRqDJigxG2iHL7DtcsQTc/A2SIntIoND+6J1ke6tUGhQ3YCBCl6HBePJSek/bvgGusHCeWqnjQlvpVBS6g5vjSL0lZ1tylpOz7uCGeWz4cdrvSX0ceXffCqxjkRb5c2fg/lbp21TyZUvrpS30YyXjI8X5jdbbBprdzaqnrUbl3wRbSJv/91i289FBP5ITQwixcBU74Nwdx4SMke0Yd9lm67WktgH/bRhPXiYv3wE2dDh6NwgAAA==" /></Footer>{/* END_ACCOUNTING_PAYMENTTERM_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_paymentTerms
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentTermsIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentTerm'
+components:
+  schemas:
+    PaymentTermsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - company
+      title: PaymentTermsIdGetParametersExpandSchemaItems
+    PaymentTermFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: PaymentTermFieldMappings
+    PaymentTerm:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        name:
+          type: string
+          description: The name of the payment term.
+        is_active:
+          type: boolean
+          description: '`True` if the payment term is active, `False` if not.'
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The subsidiary that the payment term belongs to.
+        days_until_due:
+          type:
+          - integer
+          - 'null'
+          description: The number of days after the invoice date that payment is due.
+        discount_days:
+          type:
+          - integer
+          - 'null'
+          description: The number of days the invoice must be paid before discounts expire.
+        remote_last_modified_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's payment term was modified.
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/PaymentTermFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      required:
+      - name
+      description: '# The PaymentTerm Object
+
+        ### Description
+
+        The `PaymentTerm` object is the agreed-upon conditions between a buyer and a seller that define the timing,
+
+        amount, and conditions under which payment for goods or services must be made.
+
+
+        ### Usage Example
+
+        Fetch from the `GET PaymentTerm` endpoint and view payment term information.'
+      title: PaymentTerm
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    PaginatedPaymentTermList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentTerm'
+      title: PaginatedPaymentTermList
+    PaymentTermsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - company
+      title: PaymentTermsGetParametersExpandSchemaItems
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

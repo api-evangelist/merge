@@ -1,0 +1,492 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_standardEntityRules API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_standardEntityRules
+paths:
+  /api/v1/security/standard-entity-rules/:
+    get:
+      operationId: list-standard-entity-rules
+      summary: List standard entity rules
+      description: Returns all standard entity rules for the organization.
+      tags:
+      - subpackage_standardEntityRules
+      parameters:
+      - name: page
+        in: query
+        description: A page number within the paginated result set.
+        required: false
+        schema:
+          type: integer
+      - name: page_size
+        in: query
+        description: Number of results to return per page.
+        required: false
+        schema:
+          type: integer
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedStandardEntityRuleResponseList'
+  /api/v1/security/standard-entity-rules/{entity_type}/:
+    get:
+      operationId: get-standard-entity-rule
+      summary: Get standard entity rule
+      description: Retrieve a single standard entity rule by entity type.
+      tags:
+      - subpackage_standardEntityRules
+      parameters:
+      - name: entity_type
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardEntityRuleResponse'
+    put:
+      operationId: update-standard-entity-rule
+      summary: Update standard entity rule
+      description: Update a standard entity rule. All writable fields (is_active, inbound_action, outbound_action) are required.
+      tags:
+      - subpackage_standardEntityRules
+      parameters:
+      - name: entity_type
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardEntityRuleResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StandardEntityRulePutInput'
+  /api/v1/tool-packs/{tool_pack_id}/standard-entity-rules/:
+    get:
+      operationId: list-standard-entity-rules-tool-pack
+      summary: List standard entity rules (Tool Pack)
+      description: Returns standard entity rules for a tool pack, including organization defaults. Tool-pack-level rules take precedence where both exist.
+      tags:
+      - subpackage_standardEntityRules
+      parameters:
+      - name: tool_pack_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: defined_at
+        in: query
+        description: 'Filter by where the rule is defined. Values: ORGANIZATION, TOOL_PACK.'
+        required: false
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: A page number within the paginated result set.
+        required: false
+        schema:
+          type: integer
+      - name: page_size
+        in: query
+        description: Number of results to return per page.
+        required: false
+        schema:
+          type: integer
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPublicCombinedSecurityRuleList'
+  /api/v1/tool-packs/{tool_pack_id}/standard-entity-rules/{entity_type}/:
+    get:
+      operationId: get-standard-entity-rule-tool-pack
+      summary: Get standard entity rule (Tool Pack)
+      description: Retrieve a single standard entity rule for a tool pack by entity type.
+      tags:
+      - subpackage_standardEntityRules
+      parameters:
+      - name: entity_type
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: tool_pack_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicCombinedSecurityRule'
+    put:
+      operationId: upsert-standard-entity-rule-override-tool-pack
+      summary: Create or update standard entity rule override (Tool Pack)
+      description: Create or update a standard entity rule override for a tool pack. All fields required.
+      tags:
+      - subpackage_standardEntityRules
+      parameters:
+      - name: entity_type
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: tool_pack_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicCombinedSecurityRule'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StandardEntityOverridePutInput'
+    delete:
+      operationId: delete-standard-entity-rule-override-tool-pack
+      summary: Delete standard entity rule override (Tool Pack)
+      description: Delete a standard entity rule override, reverting to organization defaults.
+      tags:
+      - subpackage_standardEntityRules
+      parameters:
+      - name: entity_type
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: tool_pack_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+components:
+  schemas:
+    StandardEntityRuleResponseOutboundAction:
+      type: string
+      enum:
+      - BLOCK
+      - REDACT
+      - LOG
+      - NONE
+      description: '* `BLOCK` - BLOCK
+
+        * `REDACT` - REDACT
+
+        * `LOG` - LOG
+
+        * `NONE` - NONE'
+      title: StandardEntityRuleResponseOutboundAction
+    StandardEntityRuleResponse:
+      type: object
+      properties:
+        entity_type:
+          type: string
+        region:
+          type: string
+        description:
+          type: string
+        detection_method:
+          type: string
+        is_active:
+          type: boolean
+        outbound_action:
+          oneOf:
+          - $ref: '#/components/schemas/StandardEntityRuleResponseOutboundAction'
+          - type: 'null'
+          description: '* `BLOCK` - BLOCK
+
+            * `REDACT` - REDACT
+
+            * `LOG` - LOG
+
+            * `NONE` - NONE'
+        defined_at:
+          type: string
+      required:
+      - entity_type
+      - region
+      - description
+      - detection_method
+      - is_active
+      - outbound_action
+      - defined_at
+      description: Standard entity rule for an organization.
+      title: StandardEntityRuleResponse
+    StandardEntityRulePutInput:
+      type: object
+      properties:
+        is_active:
+          type: boolean
+        inbound_action:
+          $ref: '#/components/schemas/StandardEntityRulePutInputInboundAction'
+          description: '* `BLOCK` - BLOCK
+
+            * `REDACT` - REDACT
+
+            * `LOG` - LOG
+
+            * `NONE` - NONE'
+        outbound_action:
+          $ref: '#/components/schemas/StandardEntityRulePutInputOutboundAction'
+          description: '* `BLOCK` - BLOCK
+
+            * `REDACT` - REDACT
+
+            * `LOG` - LOG
+
+            * `NONE` - NONE'
+      required:
+      - is_active
+      - inbound_action
+      - outbound_action
+      description: Input serializer for PUT /standard-entity-rules/<entity_type>/. All fields required.
+      title: StandardEntityRulePutInput
+    StandardEntityOverridePutInputInboundAction:
+      type: string
+      enum:
+      - BLOCK
+      - REDACT
+      - LOG
+      - NONE
+      description: '* `BLOCK` - BLOCK
+
+        * `REDACT` - REDACT
+
+        * `LOG` - LOG
+
+        * `NONE` - NONE'
+      title: StandardEntityOverridePutInputInboundAction
+    StandardEntityRulePutInputInboundAction:
+      type: string
+      enum:
+      - BLOCK
+      - REDACT
+      - LOG
+      - NONE
+      description: '* `BLOCK` - BLOCK
+
+        * `REDACT` - REDACT
+
+        * `LOG` - LOG
+
+        * `NONE` - NONE'
+      title: StandardEntityRulePutInputInboundAction
+    StandardEntityRulePutInputOutboundAction:
+      type: string
+      enum:
+      - BLOCK
+      - REDACT
+      - LOG
+      - NONE
+      description: '* `BLOCK` - BLOCK
+
+        * `REDACT` - REDACT
+
+        * `LOG` - LOG
+
+        * `NONE` - NONE'
+      title: StandardEntityRulePutInputOutboundAction
+    PublicCombinedSecurityRule:
+      type: object
+      properties:
+        entity_type:
+          type: string
+        region:
+          type: string
+        description:
+          type: string
+        detection_method:
+          type: string
+        is_active:
+          type: boolean
+        outbound_action:
+          type: string
+        defined_at:
+          type: string
+        org_is_active:
+          type: boolean
+        org_outbound_action:
+          type: string
+      required:
+      - entity_type
+      - description
+      - detection_method
+      - is_active
+      - outbound_action
+      - defined_at
+      description: Standard entity rule with effective configuration for a tool pack.
+      title: PublicCombinedSecurityRule
+    PaginatedStandardEntityRuleResponseList:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/StandardEntityRuleResponse'
+      required:
+      - count
+      - results
+      title: PaginatedStandardEntityRuleResponseList
+    PaginatedPublicCombinedSecurityRuleList:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicCombinedSecurityRule'
+      required:
+      - count
+      - results
+      title: PaginatedPublicCombinedSecurityRuleList
+    StandardEntityOverridePutInputOutboundAction:
+      type: string
+      enum:
+      - BLOCK
+      - REDACT
+      - LOG
+      - NONE
+      description: '* `BLOCK` - BLOCK
+
+        * `REDACT` - REDACT
+
+        * `LOG` - LOG
+
+        * `NONE` - NONE'
+      title: StandardEntityOverridePutInputOutboundAction
+    StandardEntityOverridePutInput:
+      type: object
+      properties:
+        is_active:
+          type: boolean
+        inbound_action:
+          $ref: '#/components/schemas/StandardEntityOverridePutInputInboundAction'
+          description: '* `BLOCK` - BLOCK
+
+            * `REDACT` - REDACT
+
+            * `LOG` - LOG
+
+            * `NONE` - NONE'
+        outbound_action:
+          $ref: '#/components/schemas/StandardEntityOverridePutInputOutboundAction'
+          description: '* `BLOCK` - BLOCK
+
+            * `REDACT` - REDACT
+
+            * `LOG` - LOG
+
+            * `NONE` - NONE'
+      required:
+      - is_active
+      - inbound_action
+      - outbound_action
+      description: Input serializer for PUT /tool-packs/<id>/standard-entity-rules/<entity_type>/.
+      title: StandardEntityOverridePutInput
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

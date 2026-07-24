@@ -1,0 +1,798 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_articles API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_articles
+paths:
+  /knowledgebase/v1/articles:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Article` objects.
+      tags:
+      - subpackage_articles
+      parameters:
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          $ref: '#/components/schemas/ArticlesGetParametersExpand'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: parent_article_id
+        in: query
+        description: If provided, will only return sub articles of the parent_article_id.
+        required: false
+        schema:
+          type: string
+      - name: parent_container_id
+        in: query
+        description: If provided, will only return sub articles of the parent_container_id.
+        required: false
+        schema:
+          type: string
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: root_container_id
+        in: query
+        description: If provided, will only return sub articles of the root_container_id.
+        required: false
+        schema:
+          type: string
+      - name: status
+        in: query
+        description: If provided, will only return articles of the given status; multiple statuses can be separated by commas.
+        required: false
+        schema:
+          type: string
+      - name: type
+        in: query
+        description: If provided, will only return articles of the given type.
+        required: false
+        schema:
+          $ref: '#/components/schemas/ArticlesGetParametersType'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedArticleList'
+  /knowledgebase/v1/articles/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns an `Article` object with the given `id`.
+      tags:
+      - subpackage_articles
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          $ref: '#/components/schemas/ArticlesIdGetParametersExpand'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Article'
+components:
+  schemas:
+    Status3c6Enum:
+      type: string
+      enum:
+      - DRAFT
+      - PUBLISHED
+      - ARCHIVED
+      - TRASH
+      description: '* `DRAFT` - DRAFT
+
+        * `PUBLISHED` - PUBLISHED
+
+        * `ARCHIVED` - ARCHIVED
+
+        * `TRASH` - TRASH'
+      title: Status3c6Enum
+    Permission:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        user:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        group:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        type:
+          oneOf:
+          - $ref: '#/components/schemas/PermissionTypeEnum'
+          - type: 'null'
+          description: 'Denotes what type of people have access to the Article or Container.
+
+
+            * `USER` - USER
+
+            * `GROUP` - GROUP
+
+            * `COMPANY` - COMPANY
+
+            * `ANYONE` - ANYONE'
+        roles:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RolesEnum'
+          description: The permissions that the user or group has for the Article or Container. It is possible for a user or group to have multiple roles, such as viewing & uploading.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/PermissionFieldMappings'
+          - type: 'null'
+      description: '# The Permission Object
+
+        ### Description
+
+        The `Permission` object is used to represent a user''s or group''s access to an article or container. Permissions are unexpanded by default.
+
+        ### Usage Example'
+      title: Permission
+    ArticleFieldMappings:
+      type: object
+      properties: {}
+      title: ArticleFieldMappings
+    PermissionFieldMappings:
+      type: object
+      properties: {}
+      title: PermissionFieldMappings
+    PermissionTypeEnum:
+      type: string
+      enum:
+      - USER
+      - GROUP
+      - COMPANY
+      - ANYONE
+      description: '* `USER` - USER
+
+        * `GROUP` - GROUP
+
+        * `COMPANY` - COMPANY
+
+        * `ANYONE` - ANYONE'
+      title: PermissionTypeEnum
+    ArticlesIdGetParametersExpand:
+      type: string
+      enum:
+      - attachments
+      - attachments,author
+      - attachments,author,last_edited_by
+      - attachments,author,last_edited_by,parent_article
+      - attachments,author,last_edited_by,parent_article,parent_container
+      - attachments,author,last_edited_by,parent_article,parent_container,root_container
+      - attachments,author,last_edited_by,parent_article,root_container
+      - attachments,author,last_edited_by,parent_container
+      - attachments,author,last_edited_by,parent_container,root_container
+      - attachments,author,last_edited_by,root_container
+      - attachments,author,parent_article
+      - attachments,author,parent_article,parent_container
+      - attachments,author,parent_article,parent_container,root_container
+      - attachments,author,parent_article,root_container
+      - attachments,author,parent_container
+      - attachments,author,parent_container,root_container
+      - attachments,author,root_container
+      - attachments,last_edited_by
+      - attachments,last_edited_by,parent_article
+      - attachments,last_edited_by,parent_article,parent_container
+      - attachments,last_edited_by,parent_article,parent_container,root_container
+      - attachments,last_edited_by,parent_article,root_container
+      - attachments,last_edited_by,parent_container
+      - attachments,last_edited_by,parent_container,root_container
+      - attachments,last_edited_by,root_container
+      - attachments,parent_article
+      - attachments,parent_article,parent_container
+      - attachments,parent_article,parent_container,root_container
+      - attachments,parent_article,root_container
+      - attachments,parent_container
+      - attachments,parent_container,root_container
+      - attachments,root_container
+      - author
+      - author,last_edited_by
+      - author,last_edited_by,parent_article
+      - author,last_edited_by,parent_article,parent_container
+      - author,last_edited_by,parent_article,parent_container,root_container
+      - author,last_edited_by,parent_article,root_container
+      - author,last_edited_by,parent_container
+      - author,last_edited_by,parent_container,root_container
+      - author,last_edited_by,root_container
+      - author,parent_article
+      - author,parent_article,parent_container
+      - author,parent_article,parent_container,root_container
+      - author,parent_article,root_container
+      - author,parent_container
+      - author,parent_container,root_container
+      - author,root_container
+      - last_edited_by
+      - last_edited_by,parent_article
+      - last_edited_by,parent_article,parent_container
+      - last_edited_by,parent_article,parent_container,root_container
+      - last_edited_by,parent_article,root_container
+      - last_edited_by,parent_container
+      - last_edited_by,parent_container,root_container
+      - last_edited_by,root_container
+      - parent_article
+      - parent_article,parent_container
+      - parent_article,parent_container,root_container
+      - parent_article,root_container
+      - parent_container
+      - parent_container,root_container
+      - permissions
+      - permissions,attachments
+      - permissions,attachments,author
+      - permissions,attachments,author,last_edited_by
+      - permissions,attachments,author,last_edited_by,parent_article
+      - permissions,attachments,author,last_edited_by,parent_article,parent_container
+      - permissions,attachments,author,last_edited_by,parent_article,parent_container,root_container
+      - permissions,attachments,author,last_edited_by,parent_article,root_container
+      - permissions,attachments,author,last_edited_by,parent_container
+      - permissions,attachments,author,last_edited_by,parent_container,root_container
+      - permissions,attachments,author,last_edited_by,root_container
+      - permissions,attachments,author,parent_article
+      - permissions,attachments,author,parent_article,parent_container
+      - permissions,attachments,author,parent_article,parent_container,root_container
+      - permissions,attachments,author,parent_article,root_container
+      - permissions,attachments,author,parent_container
+      - permissions,attachments,author,parent_container,root_container
+      - permissions,attachments,author,root_container
+      - permissions,attachments,last_edited_by
+      - permissions,attachments,last_edited_by,parent_article
+      - permissions,attachments,last_edited_by,parent_article,parent_container
+      - permissions,attachments,last_edited_by,parent_article,parent_container,root_container
+      - permissions,attachments,last_edited_by,parent_article,root_container
+      - permissions,attachments,last_edited_by,parent_container
+      - permissions,attachments,last_edited_by,parent_container,root_container
+      - permissions,attachments,last_edited_by,root_container
+      - permissions,attachments,parent_article
+      - permissions,attachments,parent_article,parent_container
+      - permissions,attachments,parent_article,parent_container,root_container
+      - permissions,attachments,parent_article,root_container
+      - permissions,attachments,parent_container
+      - permissions,attachments,parent_container,root_container
+      - permissions,attachments,root_container
+      - permissions,author
+      - permissions,author,last_edited_by
+      - permissions,author,last_edited_by,parent_article
+      - permissions,author,last_edited_by,parent_article,parent_container
+      - permissions,author,last_edited_by,parent_article,parent_container,root_container
+      - permissions,author,last_edited_by,parent_article,root_container
+      - permissions,author,last_edited_by,parent_container
+      - permissions,author,last_edited_by,parent_container,root_container
+      - permissions,author,last_edited_by,root_container
+      - permissions,author,parent_article
+      - permissions,author,parent_article,parent_container
+      - permissions,author,parent_article,parent_container,root_container
+      - permissions,author,parent_article,root_container
+      - permissions,author,parent_container
+      - permissions,author,parent_container,root_container
+      - permissions,author,root_container
+      - permissions,last_edited_by
+      - permissions,last_edited_by,parent_article
+      - permissions,last_edited_by,parent_article,parent_container
+      - permissions,last_edited_by,parent_article,parent_container,root_container
+      - permissions,last_edited_by,parent_article,root_container
+      - permissions,last_edited_by,parent_container
+      - permissions,last_edited_by,parent_container,root_container
+      - permissions,last_edited_by,root_container
+      - permissions,parent_article
+      - permissions,parent_article,parent_container
+      - permissions,parent_article,parent_container,root_container
+      - permissions,parent_article,root_container
+      - permissions,parent_container
+      - permissions,parent_container,root_container
+      - permissions,root_container
+      - root_container
+      title: ArticlesIdGetParametersExpand
+    Article:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        title:
+          type:
+          - string
+          - 'null'
+          description: The title of the article.
+        description:
+          type:
+          - string
+          - 'null'
+          description: Description of the article.
+        author:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The user who created the article.
+        last_edited_by:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The user to last update the article.
+        visibility:
+          oneOf:
+          - $ref: '#/components/schemas/VisibilityEnum'
+          - type: 'null'
+          description: 'The visibility of the article.
+
+
+            * `PUBLIC` - PUBLIC
+
+            * `INTERNAL` - INTERNAL
+
+            * `RESTRICTED` - RESTRICTED'
+        article_content_download_url:
+          type:
+          - string
+          - 'null'
+          description: The presigned S3 URL to fetch article content.
+        checksum:
+          type:
+          - string
+          - 'null'
+          description: The SHA256 checksum of the article content.
+        article_url:
+          type:
+          - string
+          - 'null'
+          description: The URL to the webpage of the article.
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/Status3c6Enum'
+          - type: 'null'
+          description: 'The status of the article.
+
+
+            * `DRAFT` - DRAFT
+
+            * `PUBLISHED` - PUBLISHED
+
+            * `ARCHIVED` - ARCHIVED
+
+            * `TRASH` - TRASH'
+        type:
+          oneOf:
+          - $ref: '#/components/schemas/ArticleTypeEnum'
+          - type: 'null'
+          description: 'The type of the article.
+
+
+            * `PAGE` - PAGE
+
+            * `BLOG_POST` - BLOG_POST
+
+            * `SMART_LINK` - SMART_LINK'
+        remote_created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's article was created.
+        remote_updated_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's article was updated.
+        parent_article:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The parent article an article is nested within.
+        parent_container:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The parent container an article is nested within.
+        root_container:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The top-level container in the hierarchy that holds this article. This will reference a container object that will typically be a SPACE or WORKSPACE type.
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Permission'
+        attachments:
+          type: array
+          items:
+            type: string
+            format: uuid
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/ArticleFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The Article Object
+
+        ### Description
+
+        The `Article` object is used to represent a form of content in the knowledge base, such as an article or page.
+
+        ### Usage Example
+
+        Fetch from the `GET /api/knowledgebase/articles` endpoint and view their articles.'
+      title: Article
+    ArticlesGetParametersType:
+      type: string
+      enum:
+      - ''
+      - BLOG_POST
+      - PAGE
+      - SMART_LINK
+      title: ArticlesGetParametersType
+    ArticleTypeEnum:
+      type: string
+      enum:
+      - PAGE
+      - BLOG_POST
+      - SMART_LINK
+      description: '* `PAGE` - PAGE
+
+        * `BLOG_POST` - BLOG_POST
+
+        * `SMART_LINK` - SMART_LINK'
+      title: ArticleTypeEnum
+    ArticlesGetParametersExpand:
+      type: string
+      enum:
+      - attachments
+      - attachments,author
+      - attachments,author,last_edited_by
+      - attachments,author,last_edited_by,parent_article
+      - attachments,author,last_edited_by,parent_article,parent_container
+      - attachments,author,last_edited_by,parent_article,parent_container,root_container
+      - attachments,author,last_edited_by,parent_article,root_container
+      - attachments,author,last_edited_by,parent_container
+      - attachments,author,last_edited_by,parent_container,root_container
+      - attachments,author,last_edited_by,root_container
+      - attachments,author,parent_article
+      - attachments,author,parent_article,parent_container
+      - attachments,author,parent_article,parent_container,root_container
+      - attachments,author,parent_article,root_container
+      - attachments,author,parent_container
+      - attachments,author,parent_container,root_container
+      - attachments,author,root_container
+      - attachments,last_edited_by
+      - attachments,last_edited_by,parent_article
+      - attachments,last_edited_by,parent_article,parent_container
+      - attachments,last_edited_by,parent_article,parent_container,root_container
+      - attachments,last_edited_by,parent_article,root_container
+      - attachments,last_edited_by,parent_container
+      - attachments,last_edited_by,parent_container,root_container
+      - attachments,last_edited_by,root_container
+      - attachments,parent_article
+      - attachments,parent_article,parent_container
+      - attachments,parent_article,parent_container,root_container
+      - attachments,parent_article,root_container
+      - attachments,parent_container
+      - attachments,parent_container,root_container
+      - attachments,root_container
+      - author
+      - author,last_edited_by
+      - author,last_edited_by,parent_article
+      - author,last_edited_by,parent_article,parent_container
+      - author,last_edited_by,parent_article,parent_container,root_container
+      - author,last_edited_by,parent_article,root_container
+      - author,last_edited_by,parent_container
+      - author,last_edited_by,parent_container,root_container
+      - author,last_edited_by,root_container
+      - author,parent_article
+      - author,parent_article,parent_container
+      - author,parent_article,parent_container,root_container
+      - author,parent_article,root_container
+      - author,parent_container
+      - author,parent_container,root_container
+      - author,root_container
+      - last_edited_by
+      - last_edited_by,parent_article
+      - last_edited_by,parent_article,parent_container
+      - last_edited_by,parent_article,parent_container,root_container
+      - last_edited_by,parent_article,root_container
+      - last_edited_by,parent_container
+      - last_edited_by,parent_container,root_container
+      - last_edited_by,root_container
+      - parent_article
+      - parent_article,parent_container
+      - parent_article,parent_container,root_container
+      - parent_article,root_container
+      - parent_container
+      - parent_container,root_container
+      - permissions
+      - permissions,attachments
+      - permissions,attachments,author
+      - permissions,attachments,author,last_edited_by
+      - permissions,attachments,author,last_edited_by,parent_article
+      - permissions,attachments,author,last_edited_by,parent_article,parent_container
+      - permissions,attachments,author,last_edited_by,parent_article,parent_container,root_container
+      - permissions,attachments,author,last_edited_by,parent_article,root_container
+      - permissions,attachments,author,last_edited_by,parent_container
+      - permissions,attachments,author,last_edited_by,parent_container,root_container
+      - permissions,attachments,author,last_edited_by,root_container
+      - permissions,attachments,author,parent_article
+      - permissions,attachments,author,parent_article,parent_container
+      - permissions,attachments,author,parent_article,parent_container,root_container
+      - permissions,attachments,author,parent_article,root_container
+      - permissions,attachments,author,parent_container
+      - permissions,attachments,author,parent_container,root_container
+      - permissions,attachments,author,root_container
+      - permissions,attachments,last_edited_by
+      - permissions,attachments,last_edited_by,parent_article
+      - permissions,attachments,last_edited_by,parent_article,parent_container
+      - permissions,attachments,last_edited_by,parent_article,parent_container,root_container
+      - permissions,attachments,last_edited_by,parent_article,root_container
+      - permissions,attachments,last_edited_by,parent_container
+      - permissions,attachments,last_edited_by,parent_container,root_container
+      - permissions,attachments,last_edited_by,root_container
+      - permissions,attachments,parent_article
+      - permissions,attachments,parent_article,parent_container
+      - permissions,attachments,parent_article,parent_container,root_container
+      - permissions,attachments,parent_article,root_container
+      - permissions,attachments,parent_container
+      - permissions,attachments,parent_container,root_container
+      - permissions,attachments,root_container
+      - permissions,author
+      - permissions,author,last_edited_by
+      - permissions,author,last_edited_by,parent_article
+      - permissions,author,last_edited_by,parent_article,parent_container
+      - permissions,author,last_edited_by,parent_article,parent_container,root_container
+      - permissions,author,last_edited_by,parent_article,root_container
+      - permissions,author,last_edited_by,parent_container
+      - permissions,author,last_edited_by,parent_container,root_container
+      - permissions,author,last_edited_by,root_container
+      - permissions,author,parent_article
+      - permissions,author,parent_article,parent_container
+      - permissions,author,parent_article,parent_container,root_container
+      - permissions,author,parent_article,root_container
+      - permissions,author,parent_container
+      - permissions,author,parent_container,root_container
+      - permissions,author,root_container
+      - permissions,last_edited_by
+      - permissions,last_edited_by,parent_article
+      - permissions,last_edited_by,parent_article,parent_container
+      - permissions,last_edited_by,parent_article,parent_container,root_container
+      - permissions,last_edited_by,parent_article,root_container
+      - permissions,last_edited_by,parent_container
+      - permissions,last_edited_by,parent_container,root_container
+      - permissions,last_edited_by,root_container
+      - permissions,parent_article
+      - permissions,parent_article,parent_container
+      - permissions,parent_article,parent_container,root_container
+      - permissions,parent_article,root_container
+      - permissions,parent_container
+      - permissions,parent_container,root_container
+      - permissions,root_container
+      - root_container
+      title: ArticlesGetParametersExpand
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    VisibilityEnum:
+      type: string
+      enum:
+      - PUBLIC
+      - INTERNAL
+      - RESTRICTED
+      description: '* `PUBLIC` - PUBLIC
+
+        * `INTERNAL` - INTERNAL
+
+        * `RESTRICTED` - RESTRICTED'
+      title: VisibilityEnum
+    PaginatedArticleList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Article'
+      title: PaginatedArticleList
+    RolesEnum:
+      type: string
+      enum:
+      - READ
+      - WRITE
+      - OWNER
+      description: '* `READ` - READ
+
+        * `WRITE` - WRITE
+
+        * `OWNER` - OWNER'
+      title: RolesEnum
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

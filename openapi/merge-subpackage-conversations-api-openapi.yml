@@ -1,0 +1,493 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_conversations API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_conversations
+paths:
+  /conversations:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Conversation` objects.{/* BEGIN_CHAT_CONVERSATION_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA31T72/aMBD9VyZ/RCQZpaxqpGmiwNoixWxtOq2qquiwj2Bw7OAf0Kbq/z4ZWEu3qt/sp3fv7vyenwgDh6U2jyQlbA6OtEmlOUqSkoFWazQWnNCKtAnUgkKFe16xPiJtYn1da+OQfxcoub0wOCMpSSo0JUZeiZlAngR6IpTD0my1bPJSFs22daRNpFBL5H3GtFfuI6EdMYId85+rTaSwYYcarHVzo305v8KVR/uhZphHYoXKgYw4OEgO6iOzE3gPC5NzlOiQD8HBEB2ysOK+19y52qZJMkdZx9u+Mcd1gioB4wSTaJNe9/To5LQX7VW23b8VpfzaaS1WUz09aRUlkwX4VpazB5pfbuiiPKaD4wfa3PRos2zoYvm5VZTQyvKsN8lvu5NhvzN5h1Bcf/l9+utseDamLdaMunRxu6E562Q5W06by+74nG3GFz8faHN7lA1vujQf9cbnujMZXNlscKWzfhyTNjl0kqR3T4fAPiCZYEZbPXOfcoQqPNIB57KCEg8eZ+cH1CKq/VQKFttuDBU0WsHGxkxXSYVcQPIiWmxFi+uVB4Nxrcq/JgitXhwgKRnRiz4djIZv49Bfg5AwlUhSZzz+l2GS3hGOlhlR74NfYTVFE7ZQYb02MVhphwUzCA55sf00eyzY9/ZW1ODmr5Dgr2df81cB91gHba/EygcaKhcSagJmJLkPVSsvDPIfYKBCF0ZK7+6f75//AKIh9xbFAwAA" /></Footer>{/* END_CHAT_CONVERSATION_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_conversations
+      parameters:
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConversationsGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedConversationList'
+  /conversations/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `Conversation` object with the given `id`.{/* BEGIN_CHAT_CONVERSATION_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA31T72/aMBD9VyZ/RCQZpaxqpGmiwNoixWxtOq2qquiwj2Bw7OAf0Kbq/z4ZWEu3qt/sp3fv7vyenwgDh6U2jyQlbA6OtEmlOUqSkoFWazQWnNCKtAnUgkKFe16xPiJtYn1da+OQfxcoub0wOCMpSSo0JUZeiZlAngR6IpTD0my1bPJSFs22daRNpFBL5H3GtFfuI6EdMYId85+rTaSwYYcarHVzo305v8KVR/uhZphHYoXKgYw4OEgO6iOzE3gPC5NzlOiQD8HBEB2ysOK+19y52qZJMkdZx9u+Mcd1gioB4wSTaJNe9/To5LQX7VW23b8VpfzaaS1WUz09aRUlkwX4VpazB5pfbuiiPKaD4wfa3PRos2zoYvm5VZTQyvKsN8lvu5NhvzN5h1Bcf/l9+utseDamLdaMunRxu6E562Q5W06by+74nG3GFz8faHN7lA1vujQf9cbnujMZXNlscKWzfhyTNjl0kqR3T4fAPiCZYEZbPXOfcoQqPNIB57KCEg8eZ+cH1CKq/VQKFttuDBU0WsHGxkxXSYVcQPIiWmxFi+uVB4Nxrcq/JgitXhwgKRnRiz4djIZv49Bfg5AwlUhSZzz+l2GS3hGOlhlR74NfYTVFE7ZQYb02MVhphwUzCA55sf00eyzY9/ZW1ODmr5Dgr2df81cB91gHba/EygcaKhcSagJmJLkPVSsvDPIfYKBCF0ZK7+6f75//AKIh9xbFAwAA" /></Footer>{/* END_CHAT_CONVERSATION_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_conversations
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConversationsIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Conversation'
+  /conversations/{conversation_id}/members:
+    get:
+      operationId: members-list
+      summary: Members List
+      description: Returns a list of `Member` objects.{/* BEGIN_CHAT_CONVERSATION_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA31T72/aMBD9VyZ/RCQZpaxqpGmiwNoixWxtOq2qquiwj2Bw7OAf0Kbq/z4ZWEu3qt/sp3fv7vyenwgDh6U2jyQlbA6OtEmlOUqSkoFWazQWnNCKtAnUgkKFe16xPiJtYn1da+OQfxcoub0wOCMpSSo0JUZeiZlAngR6IpTD0my1bPJSFs22daRNpFBL5H3GtFfuI6EdMYId85+rTaSwYYcarHVzo305v8KVR/uhZphHYoXKgYw4OEgO6iOzE3gPC5NzlOiQD8HBEB2ysOK+19y52qZJMkdZx9u+Mcd1gioB4wSTaJNe9/To5LQX7VW23b8VpfzaaS1WUz09aRUlkwX4VpazB5pfbuiiPKaD4wfa3PRos2zoYvm5VZTQyvKsN8lvu5NhvzN5h1Bcf/l9+utseDamLdaMunRxu6E562Q5W06by+74nG3GFz8faHN7lA1vujQf9cbnujMZXNlscKWzfhyTNjl0kqR3T4fAPiCZYEZbPXOfcoQqPNIB57KCEg8eZ+cH1CKq/VQKFttuDBU0WsHGxkxXSYVcQPIiWmxFi+uVB4Nxrcq/JgitXhwgKRnRiz4djIZv49Bfg5AwlUhSZzz+l2GS3hGOlhlR74NfYTVFE7ZQYb02MVhphwUzCA55sf00eyzY9/ZW1ODmr5Dgr2df81cB91gHba/EygcaKhcSagJmJLkPVSsvDPIfYKBCF0ZK7+6f75//AKIh9xbFAwAA" /></Footer>{/* END_CHAT_CONVERSATION_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_conversations
+      parameters:
+      - name: conversation_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConversationsConversationIdMembersGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedMemberList'
+components:
+  schemas:
+    ConversationsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - members
+      title: ConversationsGetParametersExpandSchemaItems
+    ConversationFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: ConversationFieldMappings
+    PaginatedMemberList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Member'
+      title: PaginatedMemberList
+    ConversationsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - members
+      title: ConversationsIdGetParametersExpandSchemaItems
+    Conversation:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The name of the conversation
+        description:
+          type:
+          - string
+          - 'null'
+          description: The description of the conversation.
+        url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The url of the conversation.
+        type:
+          oneOf:
+          - $ref: '#/components/schemas/TypeEnum'
+          - type: 'null'
+          description: The type of the conversation.
+        members:
+          type: array
+          items:
+            type: string
+            format: uuid
+        remote_created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's conversation was created.
+        remote_updated_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's conversation was updated.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/ConversationFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The Conversation Object
+
+        ### Description
+
+        The `Conversation` object is used to represent a conversation within the Chat account.
+
+
+        ### Usage Example
+
+        Fetch from the `GET /api/chat/v1/conversations` endpoint and view their conversations.'
+      title: Conversation
+    MemberFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: MemberFieldMappings
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    ConversationsConversationIdMembersGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - group
+      - user
+      title: ConversationsConversationIdMembersGetParametersExpandSchemaItems
+    PaginatedConversationList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Conversation'
+      title: PaginatedConversationList
+    TypeEnum:
+      type: string
+      enum:
+      - PRIVATE_INTERNAL
+      - PRIVATE_EXTERNAL
+      - PUBLIC_INTERNAL
+      - PUBLIC_EXTERNAL
+      - ONE_ON_ONE_CHAT
+      - GROUP_CHAT
+      - MEETING_CHAT
+      title: TypeEnum
+    Member:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        user:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The user that is a member of the conversation. Only populated if the member is a user.
+        group:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The group that is a member of the conversation. Only populated if the member is a group.
+        remote_created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's conversation was created.
+        remote_updated_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's conversation was updated.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/MemberFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The Member Object
+
+        ### Description
+
+        The `Member` object is used to represent a member within the Chat account.
+
+
+        ### Usage Example
+
+        Fetch from the `GET /api/chat/v1/members` endpoint and view their members.'
+      title: Member
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

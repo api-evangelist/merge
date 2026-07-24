@@ -1,0 +1,1634 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_attachments API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_attachments
+paths:
+  /accounting/v1/attachments:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `AccountingAttachment` objects.{/* BEGIN_ACCOUNTING_ATTACHMENT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA9WU227aQBCGXwXtJcJ2gdAolqqKUw5UmARIlSiKVsN6MAvrXWcPQIny7pXBCtBGai+SSr3zjHb+mfnml58JA4uJ0j9ISIAx5aTlMiEVkqoYBQlJ8zXZtBbYLEVpSYVAxiNI8aiKLmukQozLMqUtxuccRWwuNU5JSIIUdYKek3zKMQ72RQGXFhMNlitpgtdib7qtJhUiuFxgXIzxZ7ndc6/I/BKaQHCTj5+BMXamlUtmQ3xyaP5COZ9NYL4/CC8GC8GBiqd3Mm/l8i1iFGgx7oCFDlpk+bpFx5m1mQmDYIYi87fd/RiXAcoAtOVMoAka9bPa6VnDK1S23b/SRHypludPEzU5LdOECQqu3B+zdTS+WkXz5CRqn6yjzW0j2iw20XzxqUwTKPfH/cZgfF8fdJrVwRsP6Ojz3dn3VqfVi8ps061H8/tVNGbV/pgtJpureu+CrXqXN+toc1/rd27r0bjb6F2o6qA9NP32UPWbvk8q5PCqJHx4PkwUxhloYAJL585wJUttoVxc6g6vj4uvUkjwANLuOpBxL3MTwZlv6j6ksFESVsZnKg1SjDkEO3G6E6dbcdodXlOPjp4caPSzrcu3QLmSrzchIelGl82o3e0c26S5BC5gIpCEVjv8zeckfCC4zlAazO895QKpzBctvp0WpEI0psoize93HNEM7Gyf4jF5zIMnxzXG16AhRYs67/L4UnmL5o3jbNFSamFKAym4xPfhuJf1zBYcvZ3WPrdOqx8C8J9TG0GCpZYzXKIxhQf3f7z3QZj3oK12s3Ae/ba8W9ZH8w8H+HHU7lCr92GTKxXG+u8M9fjyExV8kBo+BwAA" /></Footer>{/* END_ACCOUNTING_ATTACHMENT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_attachments
+      parameters:
+      - name: company_id
+        in: query
+        description: If provided, will only return accounting attachments for this company.
+        required: false
+        schema:
+          type: string
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAccountingAttachmentList'
+    post:
+      operationId: create
+      summary: Create
+      description: Creates an `AccountingAttachment` object with the given values.{/* BEGIN_ACCOUNTING_ATTACHMENT_CREATE_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST" data="H4sIAAAAAAAAA+VV72/aMBD9V5A/IkhGM0BFmiZ+bW0nzFbo1KqqrMM5gsGxU9uhLVP/9ykhbenG1mpjq6Z9w8fde3fv+ZwvhIPDSJsb0iLAuU6VEyoiFRLrECVpkfZ9sO0c8FmMypEKgURQiPFRFVvukQqxaZJo4zB8J1CG9sDglLSIH6OJsJoqMRUY+g9FvlAOIwNOaGX9++LqNK8mFSKFWmBYtPE03Dq9WkS+OVpfCpu1n4C1bmZ0Gs2O8TJF+wzkrDeJ2fwgqyE48DdQqmYNsy2WTRGiRIdhDxz00CHPxi0YZ84ltuX7M5SJl7N7IS59VD4YJ7hE69eD/b3mfr1aoOTsb1kk39TK88uJnjTLLOKSQVoejPk1HR9e0Xn0mnZfX9PVSZ2uFis6X7wqswjKg/GgPhyfBcNeuzbcksBGjdP9z51e54iW+aof0PnZFR3z2mDMF5PVYXD0nl8dHXy6pquzvUHvJKDjfv3ova4Nu8d20D3Wg7bnkQrZdJW0zr9sBoqLMxDcaKunrtS7URALbktBo17qpFYotLbUReUMyMdghzFEuCHa2i1IRDVJJ1JwzwYexLDSCq6sx3XsxxgK8O/J2B0ZCxp1dkfGCjLW1VIbtn/df9doNL0kX4VcdaHVvXGkRfr0oE27/d7ju9RegpAwkUhazqT43TKQ1jnhOk5A3ZAKmQqJTGViFL9Tk01rMNYOmQjJRXa4TIXB8CMYiNGheR7GhmIsyUrt1qDnDCgL+VAslzKjfTLT3SRILm4r21yl6EapcLgb2yg6m6Exe5mCwT9iyK/b8Jvi5yW5ltv/1jJEkzewXepPqeCLjtYLWxoqKdSONH+Ara5VZyfTvUanWfuv1N/9Zowgwo3XTeo0LD18XXfjXcbBOt02G62d+7A8XQaj+b/q3AuZdKgccO52aEmBeGfLcimobcK/astP36sCYEuCTZNQ8x+/Z6do9G40z5CKx+sFNA7BweMTS8DN/ooJG/f86UV4zrLkrVzcXtx+BQ+kvY4rDAAA" /></Footer>{/* END_ACCOUNTING_ATTACHMENT_CREATE_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_attachments
+      parameters:
+      - name: is_debug_mode
+        in: query
+        description: Whether to include debug fields (such as log file links) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: run_async
+        in: query
+        description: Whether or not third-party updates should be run asynchronously.
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountingAttachmentResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountingAttachmentEndpointRequest'
+  /accounting/v1/attachments/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns an `AccountingAttachment` object with the given `id`.{/* BEGIN_ACCOUNTING_ATTACHMENT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA9WU227aQBCGXwXtJcJ2gdAolqqKUw5UmARIlSiKVsN6MAvrXWcPQIny7pXBCtBGai+SSr3zjHb+mfnml58JA4uJ0j9ISIAx5aTlMiEVkqoYBQlJ8zXZtBbYLEVpSYVAxiNI8aiKLmukQozLMqUtxuccRWwuNU5JSIIUdYKek3zKMQ72RQGXFhMNlitpgtdib7qtJhUiuFxgXIzxZ7ndc6/I/BKaQHCTj5+BMXamlUtmQ3xyaP5COZ9NYL4/CC8GC8GBiqd3Mm/l8i1iFGgx7oCFDlpk+bpFx5m1mQmDYIYi87fd/RiXAcoAtOVMoAka9bPa6VnDK1S23b/SRHypludPEzU5LdOECQqu3B+zdTS+WkXz5CRqn6yjzW0j2iw20XzxqUwTKPfH/cZgfF8fdJrVwRsP6Ojz3dn3VqfVi8ps061H8/tVNGbV/pgtJpureu+CrXqXN+toc1/rd27r0bjb6F2o6qA9NP32UPWbvk8q5PCqJHx4PkwUxhloYAJL585wJUttoVxc6g6vj4uvUkjwANLuOpBxL3MTwZlv6j6ksFESVsZnKg1SjDkEO3G6E6dbcdodXlOPjp4caPSzrcu3QLmSrzchIelGl82o3e0c26S5BC5gIpCEVjv8zeckfCC4zlAazO895QKpzBctvp0WpEI0psoize93HNEM7Gyf4jF5zIMnxzXG16AhRYs67/L4UnmL5o3jbNFSamFKAym4xPfhuJf1zBYcvZ3WPrdOqx8C8J9TG0GCpZYzXKIxhQf3f7z3QZj3oK12s3Ae/ba8W9ZH8w8H+HHU7lCr92GTKxXG+u8M9fjyExV8kBo+BwAA" /></Footer>{/* END_ACCOUNTING_ATTACHMENT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_attachments
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountingAttachment'
+  /accounting/v1/attachments/meta/post:
+    get:
+      operationId: meta-post-retrieve
+      summary: Meta Post Retrieve
+      description: Returns metadata for `AccountingAttachment` POSTs.{/* BEGIN_ACCOUNTING_ATTACHMENT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA9WU227aQBCGXwXtJcJ2gdAolqqKUw5UmARIlSiKVsN6MAvrXWcPQIny7pXBCtBGai+SSr3zjHb+mfnml58JA4uJ0j9ISIAx5aTlMiEVkqoYBQlJ8zXZtBbYLEVpSYVAxiNI8aiKLmukQozLMqUtxuccRWwuNU5JSIIUdYKek3zKMQ72RQGXFhMNlitpgtdib7qtJhUiuFxgXIzxZ7ndc6/I/BKaQHCTj5+BMXamlUtmQ3xyaP5COZ9NYL4/CC8GC8GBiqd3Mm/l8i1iFGgx7oCFDlpk+bpFx5m1mQmDYIYi87fd/RiXAcoAtOVMoAka9bPa6VnDK1S23b/SRHypludPEzU5LdOECQqu3B+zdTS+WkXz5CRqn6yjzW0j2iw20XzxqUwTKPfH/cZgfF8fdJrVwRsP6Ojz3dn3VqfVi8ps061H8/tVNGbV/pgtJpureu+CrXqXN+toc1/rd27r0bjb6F2o6qA9NP32UPWbvk8q5PCqJHx4PkwUxhloYAJL585wJUttoVxc6g6vj4uvUkjwANLuOpBxL3MTwZlv6j6ksFESVsZnKg1SjDkEO3G6E6dbcdodXlOPjp4caPSzrcu3QLmSrzchIelGl82o3e0c26S5BC5gIpCEVjv8zeckfCC4zlAazO895QKpzBctvp0WpEI0psoize93HNEM7Gyf4jF5zIMnxzXG16AhRYs67/L4UnmL5o3jbNFSamFKAym4xPfhuJf1zBYcvZ3WPrdOqx8C8J9TG0GCpZYzXKIxhQf3f7z3QZj3oK12s3Ae/ba8W9ZH8w8H+HHU7lCr92GTKxXG+u8M9fjyExV8kBo+BwAA" /></Footer>{/* END_ACCOUNTING_ATTACHMENT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_attachments
+      parameters:
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaResponse'
+  /ats/v1/attachments:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Attachment` objects.{/* BEGIN_ATS_ATTACHMENT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+WabW/aOhTHvwryy4qHtbTbinR1xWOBldABXddNk2WcQ2Jw7NRxoDDtu1+FhIfcO023qxm0vAOT/O38/D8+xw7fESUaHKnmqISIDlAWedIGjkqorDWhrgdCoywiPrOIB/FFeHqGsigIfV8qDXaDAbeDpoIRKqGCB8qBXCjYiIFdIDooMKHBUUQzKYLC+q7caHkbyiLOxATsMqUyFPoXOvF1ORJf+K+v0c9BNFKfBIF2lQwdtwcPIQS/koxGwyF6RsJzNtGksHV7TsX3/6wtGrcNHDTYNaJJDTTQ6AGTrlyt/aBUKLjA/fyy27wN0wKIAlGaUQ5B4aJ4efbu8iKXqCx7/xs7/K/Tk/HDUA7fnWCHckzCk86APlqD1swaO+dW9fzRWtxeWIvJwhpP3pxgh5x0Bp2L7uC+2K2VT7s/uQD3336+/FSpVdrWCV3Ui9b4fmYN6GlnQCfDRavYvqKzdvPjo7W4P+vUbovWoH7RvpKn3Wov6FR7slPO51EWbc8jKn39vt2QmKPs+5xRInRfEzpJ39PyiANbbOLZID7L+eGQM5oPinnikYUUZBbkqfQKHtiMFNKauP8QEgX4WjoSzyrN+0+96/zYd1bzwaRYTwYqobrVLFvVei1tjPKUME6GHFBJqxD+42VU+orI2v5Yz31AWUSJsJlNdPR5xDhgET108jlUHGWRAk9qwNFcpr9hn2gXfYvaHkKmwL4hinigQUWdffuR/SnNwB3ODUGMpFLsiuHHOzKd5X3xMtitm5j9dI5zb8hNgYy0ViSnw8nVaBTsBOJekVWIN5Sy2TMDbaW2bcB9BW2K3G+AUQALQ0EZax0ClF2vZJWQc1cqYYbbjZI+KD3Hp62NGF63nl2BAMXopqWYIF43nK8GtOfI/Q3/JQPP9ICqkOloWjNVLkPbDNthoo/VRh/TSB8HMcR+pea3JtM9J47dLX3V8qBvhmWklMq57XNr8iDre47yHaKTHoA2Ay/xN25RKXBX8PmhVCpPZqIEqEBLAZkB4SD0NROGSuMt7QPKIjv0lwIe92cii3CiR1J5iWiyvL2+Us7Of2KCMrPQatNIE7/tknvqjHYC7c9YqhEdHhBmqDJZqaWi8dU56koBCFeGgaFI3OgdQy3clB6o0JDh3FjsADz2bFc1eybr2GYPL9VepKOeQZFVW52+2bW+FUnuMj3+z137E0m05bDGpsQsi0T0UGrRZxilLYdTZqqWSsR2nvaMFaFPhmWqQtgYiYnVjnpun9ZJ+OHgTGUI3jVMQZmht5RKbanlvfN+Xrk7hqW9QwTRhJv1YSJ6AAWEYVrRkcFobhbWUpO9qpWtqwjlkGmEAZMik1sdKzLhmKzG4l7wRnzP5cQfNWJMODr7kWZoLqWOrbC9YcKXbPlnBBMRnai9NB8+EVoScKBGXM6MnsuCanA5S6XiN/5i3Gic7cSMe7Vev3yT6YeUQhA0CNVSBWZQpjVTLCv0s3Qab44hsPseUXrtKlNo06IptuP30+tR/e7FxPwz2EaZAhZmi6BY8/UVjAMgniaMS0N7lY3esaXqAfDoPdeqlgRDhww6ll29mYadvrI5NKSKjEZMG47kWBSPB3b74sv1HwzpJz797YerzI2SW5sTMyBuP1ytzmDOKg/2Y5cdg5fugFPpQUbLjHYh0w6Fww2/U026wFpi7QKOu3hx/7W5k2qy7N4Im5VaqhbpTjm3+OWLyQq/QdAmhk9hEtFjCNUv0l2vemYhfpGuXGXS15lHv/34B3jX2YDdMAAA" /></Footer>{/* END_ATS_ATTACHMENT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_attachments
+      parameters:
+      - name: candidate_id
+        in: query
+        description: If provided, will only return attachments for this candidate.
+        required: false
+        schema:
+          type: string
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/AttachmentsGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_fields
+        in: query
+        description: Deprecated. Use show_enum_origins.
+        required: false
+        schema:
+          $ref: '#/components/schemas/AttachmentsGetParametersRemoteFields'
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: show_enum_origins
+        in: query
+        description: A comma separated list of enum field names for which you'd like the original values to be returned, instead of Merge's normalized enum values. [Learn more](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+        required: false
+        schema:
+          $ref: '#/components/schemas/AttachmentsGetParametersShowEnumOrigins'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAttachmentList'
+    post:
+      operationId: create
+      summary: Create
+      description: Creates an `Attachment` object with the given values.{/* BEGIN_ATS_ATTACHMENT_CREATE_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST" data="H4sIAAAAAAAAA92Ya2/iOBSG/wryRwRkWtqdKdJqxaVl6JTQKXQ71aiKDs4hGJw4tR0ojPrfR4bQwpYiOjK97LfE2G/s57w+x+YXoaAxEHJCSgS0IjkSCh85KZGy1kD7IUaa5AjEzIUQ55280T7JEZXEsZAa/ROG3FdfJfZIiTghygDzScR6DH0HtHJYpDGQoJmIlPMwKt+bDSM5wlk0RL9MqUgivUFn3i8P847/eTU/KzPTGJTSfSmSoH+BtwmqTZJmNhzNGoHnfdDgLA3Py/n4dW1m3j5y1OjXQEMNNVKzwPRTfa1jVXKcPvK4MPtswceRg5EDUjPKUTmHxaP9z0eH+VRl9vV/vID/vZcd3HZF93PWCyj3IMk2O/TO7TTG7iA4cKsHd+708tCdDqfuYPgp6wWQbXaah63OdbFVK++11nTw2n/9OPq3Uquculk6PS66g+ux26F7zQ4ddqeN4mmdjk+/fr9zp9f7zdpl0e0cH57WxV6reqGa1QvRLBcKJEeW40hKP38tN6TmKKt+d7LatRFCgEtI5kGAmOXjpMsZLahiAUKYigjGqkBF6IToM3BmUl77NgGJ3pkIhFdMvl/BaFyIo2BBn4noAT0pkWP3a9mtHtdWbVAeAePQ5UhKWib4xLmk9JPAg9k9PYmR5AiFyGc+aPPcYxy9yCwxfU4kJzkiMRQaPeaTG/NymzCJ/jlICFGjnOk+UTEjb+5z6+FNwi63Rc9oLfCNusN6r6d2Qs4Op6XeS6v3YtNJrW0sxKD73pjpvod3GiNlFvIc2RHoRKIdtOccdE/IMBV9x1BfYr6KRJxa2rpzreW9WxjE72LPvgzV9l6kIowhmphorPeqUGz2bsL1TAASzvtCRpZMKkWMUk+8vcbSbB5a9+sYoWT0saWYRuuh4WAxoY9k8Cfx3sw6c4FUJkwbD2WqXCS+HfrdVN+Tj/oeNfqemmNuV2pxYzh641q2BeI/Kow7SOEn5pAHzNL2WKit5KgPfa7YMgipdKJQbshFdYkY9UWiLJXMR733WBRsAd+OLas2mm27J5GGkUwzy1u5eGN13Xb8emJnOEJph9hMauVSIa6DL5PK1U68uMNT3LZua0mgHDMnicmtmfyi4LEosFnv5l/xHsXf2IyvephIEXeAo7CDcyb1UTPlM5Ta5fNMO6EUlToBqoVUdlitaq5s7Qr9IYKTT+8FnnXjtUOQOt1zaI3nqugK0MGX0Vnv+Opj7+qXnVAHouvN0G3IsR2EUAPjwlKRetTbeQ54/f8ZOsi5uW0tLGbphKnnsosLF+IuK9DrU7v8Vs+cS7FUvu1gu/xWX9xI9yu3/l2LfajN/SdZeD3gKyGHs0VYwbpQW8merRHnLj96q3K0E1+ahfowsXuduZqL/i+deHN/c/8bakgbv3QbAAA=" /></Footer>{/* END_ATS_ATTACHMENT_CREATE_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_attachments
+      parameters:
+      - name: is_debug_mode
+        in: query
+        description: Whether to include debug fields (such as log file links) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: run_async
+        in: query
+        description: Whether or not third-party updates should be run asynchronously.
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttachmentResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AttachmentEndpointRequest'
+  /ats/v1/attachments/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns an `Attachment` object with the given `id`.{/* BEGIN_ATS_ATTACHMENT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+WabW/aOhTHvwryy4qHtbTbinR1xWOBldABXddNk2WcQ2Jw7NRxoDDtu1+FhIfcO023qxm0vAOT/O38/D8+xw7fESUaHKnmqISIDlAWedIGjkqorDWhrgdCoywiPrOIB/FFeHqGsigIfV8qDXaDAbeDpoIRKqGCB8qBXCjYiIFdIDooMKHBUUQzKYLC+q7caHkbyiLOxATsMqUyFPoXOvF1ORJf+K+v0c9BNFKfBIF2lQwdtwcPIQS/koxGwyF6RsJzNtGksHV7TsX3/6wtGrcNHDTYNaJJDTTQ6AGTrlyt/aBUKLjA/fyy27wN0wKIAlGaUQ5B4aJ4efbu8iKXqCx7/xs7/K/Tk/HDUA7fnWCHckzCk86APlqD1swaO+dW9fzRWtxeWIvJwhpP3pxgh5x0Bp2L7uC+2K2VT7s/uQD3336+/FSpVdrWCV3Ui9b4fmYN6GlnQCfDRavYvqKzdvPjo7W4P+vUbovWoH7RvpKn3Wov6FR7slPO51EWbc8jKn39vt2QmKPs+5xRInRfEzpJ39PyiANbbOLZID7L+eGQM5oPinnikYUUZBbkqfQKHtiMFNKauP8QEgX4WjoSzyrN+0+96/zYd1bzwaRYTwYqobrVLFvVei1tjPKUME6GHFBJqxD+42VU+orI2v5Yz31AWUSJsJlNdPR5xDhgET108jlUHGWRAk9qwNFcpr9hn2gXfYvaHkKmwL4hinigQUWdffuR/SnNwB3ODUGMpFLsiuHHOzKd5X3xMtitm5j9dI5zb8hNgYy0ViSnw8nVaBTsBOJekVWIN5Sy2TMDbaW2bcB9BW2K3G+AUQALQ0EZax0ClF2vZJWQc1cqYYbbjZI+KD3Hp62NGF63nl2BAMXopqWYIF43nK8GtOfI/Q3/JQPP9ICqkOloWjNVLkPbDNthoo/VRh/TSB8HMcR+pea3JtM9J47dLX3V8qBvhmWklMq57XNr8iDre47yHaKTHoA2Ay/xN25RKXBX8PmhVCpPZqIEqEBLAZkB4SD0NROGSuMt7QPKIjv0lwIe92cii3CiR1J5iWiyvL2+Us7Of2KCMrPQatNIE7/tknvqjHYC7c9YqhEdHhBmqDJZqaWi8dU56koBCFeGgaFI3OgdQy3clB6o0JDh3FjsADz2bFc1eybr2GYPL9VepKOeQZFVW52+2bW+FUnuMj3+z137E0m05bDGpsQsi0T0UGrRZxilLYdTZqqWSsR2nvaMFaFPhmWqQtgYiYnVjnpun9ZJ+OHgTGUI3jVMQZmht5RKbanlvfN+Xrk7hqW9QwTRhJv1YSJ6AAWEYVrRkcFobhbWUpO9qpWtqwjlkGmEAZMik1sdKzLhmKzG4l7wRnzP5cQfNWJMODr7kWZoLqWOrbC9YcKXbPlnBBMRnai9NB8+EVoScKBGXM6MnsuCanA5S6XiN/5i3Gic7cSMe7Vev3yT6YeUQhA0CNVSBWZQpjVTLCv0s3Qab44hsPseUXrtKlNo06IptuP30+tR/e7FxPwz2EaZAhZmi6BY8/UVjAMgniaMS0N7lY3esaXqAfDoPdeqlgRDhww6ll29mYadvrI5NKSKjEZMG47kWBSPB3b74sv1HwzpJz797YerzI2SW5sTMyBuP1ytzmDOKg/2Y5cdg5fugFPpQUbLjHYh0w6Fww2/U026wFpi7QKOu3hx/7W5k2qy7N4Im5VaqhbpTjm3+OWLyQq/QdAmhk9hEtFjCNUv0l2vemYhfpGuXGXS15lHv/34B3jX2YDdMAAA" /></Footer>{/* END_ATS_ATTACHMENT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_attachments
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/AttachmentsIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: remote_fields
+        in: query
+        description: Deprecated. Use show_enum_origins.
+        required: false
+        schema:
+          $ref: '#/components/schemas/AttachmentsIdGetParametersRemoteFields'
+      - name: show_enum_origins
+        in: query
+        description: A comma separated list of enum field names for which you'd like the original values to be returned, instead of Merge's normalized enum values. [Learn more](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+        required: false
+        schema:
+          $ref: '#/components/schemas/AttachmentsIdGetParametersShowEnumOrigins'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attachment'
+  /ats/v1/attachments/meta/post:
+    get:
+      operationId: meta-post-retrieve
+      summary: Meta Post Retrieve
+      description: Returns metadata for `Attachment` POSTs.{/* BEGIN_ATS_ATTACHMENT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+WabW/aOhTHvwryy4qHtbTbinR1xWOBldABXddNk2WcQ2Jw7NRxoDDtu1+FhIfcO023qxm0vAOT/O38/D8+xw7fESUaHKnmqISIDlAWedIGjkqorDWhrgdCoywiPrOIB/FFeHqGsigIfV8qDXaDAbeDpoIRKqGCB8qBXCjYiIFdIDooMKHBUUQzKYLC+q7caHkbyiLOxATsMqUyFPoXOvF1ORJf+K+v0c9BNFKfBIF2lQwdtwcPIQS/koxGwyF6RsJzNtGksHV7TsX3/6wtGrcNHDTYNaJJDTTQ6AGTrlyt/aBUKLjA/fyy27wN0wKIAlGaUQ5B4aJ4efbu8iKXqCx7/xs7/K/Tk/HDUA7fnWCHckzCk86APlqD1swaO+dW9fzRWtxeWIvJwhpP3pxgh5x0Bp2L7uC+2K2VT7s/uQD3336+/FSpVdrWCV3Ui9b4fmYN6GlnQCfDRavYvqKzdvPjo7W4P+vUbovWoH7RvpKn3Wov6FR7slPO51EWbc8jKn39vt2QmKPs+5xRInRfEzpJ39PyiANbbOLZID7L+eGQM5oPinnikYUUZBbkqfQKHtiMFNKauP8QEgX4WjoSzyrN+0+96/zYd1bzwaRYTwYqobrVLFvVei1tjPKUME6GHFBJqxD+42VU+orI2v5Yz31AWUSJsJlNdPR5xDhgET108jlUHGWRAk9qwNFcpr9hn2gXfYvaHkKmwL4hinigQUWdffuR/SnNwB3ODUGMpFLsiuHHOzKd5X3xMtitm5j9dI5zb8hNgYy0ViSnw8nVaBTsBOJekVWIN5Sy2TMDbaW2bcB9BW2K3G+AUQALQ0EZax0ClF2vZJWQc1cqYYbbjZI+KD3Hp62NGF63nl2BAMXopqWYIF43nK8GtOfI/Q3/JQPP9ICqkOloWjNVLkPbDNthoo/VRh/TSB8HMcR+pea3JtM9J47dLX3V8qBvhmWklMq57XNr8iDre47yHaKTHoA2Ay/xN25RKXBX8PmhVCpPZqIEqEBLAZkB4SD0NROGSuMt7QPKIjv0lwIe92cii3CiR1J5iWiyvL2+Us7Of2KCMrPQatNIE7/tknvqjHYC7c9YqhEdHhBmqDJZqaWi8dU56koBCFeGgaFI3OgdQy3clB6o0JDh3FjsADz2bFc1eybr2GYPL9VepKOeQZFVW52+2bW+FUnuMj3+z137E0m05bDGpsQsi0T0UGrRZxilLYdTZqqWSsR2nvaMFaFPhmWqQtgYiYnVjnpun9ZJ+OHgTGUI3jVMQZmht5RKbanlvfN+Xrk7hqW9QwTRhJv1YSJ6AAWEYVrRkcFobhbWUpO9qpWtqwjlkGmEAZMik1sdKzLhmKzG4l7wRnzP5cQfNWJMODr7kWZoLqWOrbC9YcKXbPlnBBMRnai9NB8+EVoScKBGXM6MnsuCanA5S6XiN/5i3Gic7cSMe7Vev3yT6YeUQhA0CNVSBWZQpjVTLCv0s3Qab44hsPseUXrtKlNo06IptuP30+tR/e7FxPwz2EaZAhZmi6BY8/UVjAMgniaMS0N7lY3esaXqAfDoPdeqlgRDhww6ll29mYadvrI5NKSKjEZMG47kWBSPB3b74sv1HwzpJz797YerzI2SW5sTMyBuP1ytzmDOKg/2Y5cdg5fugFPpQUbLjHYh0w6Fww2/U026wFpi7QKOu3hx/7W5k2qy7N4Im5VaqhbpTjm3+OWLyQq/QdAmhk9hEtFjCNUv0l2vemYhfpGuXGXS15lHv/34B3jX2YDdMAAA" /></Footer>{/* END_ATS_ATTACHMENT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_attachments
+      parameters:
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaResponse'
+  /knowledgebase/v1/attachments:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Attachment` objects.
+      tags:
+      - subpackage_attachments
+      parameters:
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAttachmentList'
+  /knowledgebase/v1/attachments/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns an `Attachment` object with the given `id`.
+      tags:
+      - subpackage_attachments
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attachment_2'
+  /ticketing/v1/attachments:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Attachment` objects.{/* BEGIN_TICKETING_ATTACHMENT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+2Z/2/iNhTA/xXmHxGQtVx3KtI0UdIvdCXttWnveqcqejiPxODEwXag5XT/++QQCt2q3W41a9fyG1jOJ/Enz+/ZzldCQWMk5B1pEc3oCDVLI1IjiQiRkxZpaw00TjDVpEYgYx4kuNo1mGyTGlF5lgmpMTxgyEN1JHFAWsRJUEZYz1M2YBg699c4LNUYSdBMpMq5v7Y+KC4mNcJZOsKwTanIU/1d2rx3Hebd//RXOZwp8+wZKKVjKfIoPsdxjur7YPNkHM3YgddD0OCsQOpyTnmszYwhRI4aQxc0uKiRmsGWN4y1zlTLcWLkWaO4eSPEiYOpA1IzylE5O83d7fe7O/WSUtz9tyDiv25Vh+O+6L+vBhHlAeTVnk9vPb879YbRO6/z7tabXe54s9HMG45+rgYRVHt+b+fUv26euu2t00c6BBe/fNq92nP3jr0qne03veH11PPpVs+no/6s2zw+pNPjow+33ux6u+deNj1/f+f4UGydds5Vr3Mueu1Gg9TI6jslrS9fVxvKoGnH8NPDnt0EIlwxMn8TkLF6lvc5ow3VbEACM5HCVDWoSJwEQwZOO4ZAjXOQ2MiKcC08MZHeqyYtsu8dtb3Ovvvw5bcnwDj0OZKWljn+JXZJ6wuhItWY6kDfZUhqZMA4BqkZQ/k7l5zUiMREaAyoRNAYBqCXbeZ1PfwXZKDjZRMLSa2cROTGtI5zJjE8AwkJapTmMW6+1R61qCAFOxrBoOpzkXUuIrHdGGZo3+cLEzjLJVZcnJxmylI4GmIwJwYXhc7gRERiLcH5smTuMd3PiwutmDzjoAdCJv0Fdp3T/O9NrtNahzM6uszsOCthaw+8/zYr1kiecQEhhkH/7kf9HkhUcYhqZMfwPe6B47WkyhddegoPCuWEUbQ73wcr5Ddb2Q+kKJbZFr0WyNcj9ElJ4VDIiIGyK7iEbhQXio+QZ5ULKnLLYWy4ymA3nuee2cRSAjak//uS9UlZoZtqlFQkdnQuaKtKg6tdd/uk03/G/Pvv6lFXipRyCC2pkSLtcAhLNc9fjdZZyo+ZtLRHN6QXo+x5p6pRUTEHapUOmnlmt8YY+sawhMrFfBle6UEKUXH8aTOSyzX+Et4YZm86qn/PlRaJrWhe0F7bTvVJik9YimBJMC9Yaz+WetaN6BmbCA284kugI2t5dg4tmZuFfGH6HDi/s1vHCuRGb6G3rDaemNpxvOS9stPWH0wQF7GQmtra5S9om5q1qjgT2pUwsHySojKhQ4N9vg8rT4g7HyGZCmnpWH9Be9PnH75EzoUloQXrwdnHR3XrTg9vX0GKfJLlj5KNLJ3YFah/GLJe2+9e7b9qs58xtfehb5ElS2iwO+7ln9jBGzcsYlHZyyOruwEDXTI3y9WladdaNH8WsQgM7q0UuJtvfwAAjSiv0CgAAA==" /></Footer>{/* END_TICKETING_ATTACHMENT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_attachments
+      parameters:
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/AttachmentsGetParametersExpandSchemaItems_2'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_created_after
+        in: query
+        description: If provided, will only return attachments created in the third party platform after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: ticket_id
+        in: query
+        description: If provided, will only return comments for this ticket.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAttachmentList'
+    post:
+      operationId: create
+      summary: Create
+      description: Creates an `Attachment` object with the given values.{/* BEGIN_TICKETING_ATTACHMENT_CREATE_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST" data="H4sIAAAAAAAAA+WXb2/aOBzH3wryQ5Q/Vxg3gXSaKGEtaAm7Nu3aTZNlnB/B4NjBdoAy7b2fDLSlWzuYlN3t2mdg+fex/fE3sfMFUWIgleoGtZBhdAqGiRQ5KJMJcNRCbWMIHWcgDHIQyVlEMtjtiuc15CBd5LlUBpK3DHiiTxWMUAv5GagU3EKwEYPEv6vxmTCQKmKYFNq/q3VH62LkIM7EFJI2pbIQZi9t09slm+7f/NU+Z9rOPSdam7GSRTo+g1kBej/YzoyDXTvhbkIM8XcgrtpQHmuza0iAg4EkIIYEYIDaxW4HHBuT65bvj4Hn3npwL4G5D8InyjDKQfuNerP2utlwt5T16G9wyv86qk5mQzl8XcUp5ZgU1TCmyyjuLaJJ+irqvFpGq4tGtJquosn0jypOSTWMw8Ygvq4PgvbR4JEO+PzPq+blcXDcj6p01a1Hk+tFFNOjMKbT4apX75/QRf/072W0uq6FwUU9iruN/ok8GnTOdNg5k2Hb85CDdvcUtT592W3YhqatiSAPu/YyksKOks1WkJy5eTHkjHq67pGMrKQgC+1RmfkZJIz4xKJcPSuIApfLVNa8SQ42uGtjTIo76aiFutFpO+p0g4cxaM8J42TIAbWMKuC7FKPWJzRiHLCw03c2vwvFkYMUZNIApgqIgQQTc9/GEuRsHw/02bbOCqYgeU8UycCA+hH2tuyr86i+VaGgEsB8kOtyLK6JeEPE52uZ+J1MpZeL8lVSKQwIg81NfrfsJ83uWnRQkXNJEkjw8GaP00M8djij04u8HIVb2O9lb18uf8boz6b0lM2hHLWW9Mu9/hsinzDVEwYUlVk5tm5pu8bwZTOovesMf7NE3ssTbFZYoyCMPXzVock8bOwdqzi39dpjt5YKDeq2/MeB7jNV0qFlSdvtednvCCuiYm9GlQ7YDSlH73tOzEiqzNKfl9+DnZ6DmjMKlZAIkq5vrmUmdwPH93Bvkr/gFG99RHJRjuR73v/rNlGu1VgB57IcoxvWgxPxg14Gi5Ply3s/fFBsWtLFbI06MKNRO+5ddp+Zy48gEtDTco+tLRQ3Z2Fxxd7+104PesIPIT7lUI5lJSjN4kc5ltjinsUXw95X5+ev/wAgS+5ouhMAAA==" /></Footer>{/* END_TICKETING_ATTACHMENT_CREATE_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_attachments
+      parameters:
+      - name: is_debug_mode
+        in: query
+        description: Whether to include debug fields (such as log file links) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: run_async
+        in: query
+        description: Whether or not third-party updates should be run asynchronously.
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TicketingAttachmentResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TicketingAttachmentEndpointRequest'
+  /ticketing/v1/attachments/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns an `Attachment` object with the given `id`.{/* BEGIN_TICKETING_ATTACHMENT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+2Z/2/iNhTA/xXmHxGQtVx3KtI0UdIvdCXttWnveqcqejiPxODEwXag5XT/++QQCt2q3W41a9fyG1jOJ/Enz+/ZzldCQWMk5B1pEc3oCDVLI1IjiQiRkxZpaw00TjDVpEYgYx4kuNo1mGyTGlF5lgmpMTxgyEN1JHFAWsRJUEZYz1M2YBg699c4LNUYSdBMpMq5v7Y+KC4mNcJZOsKwTanIU/1d2rx3Hebd//RXOZwp8+wZKKVjKfIoPsdxjur7YPNkHM3YgddD0OCsQOpyTnmszYwhRI4aQxc0uKiRmsGWN4y1zlTLcWLkWaO4eSPEiYOpA1IzylE5O83d7fe7O/WSUtz9tyDiv25Vh+O+6L+vBhHlAeTVnk9vPb879YbRO6/z7tabXe54s9HMG45+rgYRVHt+b+fUv26euu2t00c6BBe/fNq92nP3jr0qne03veH11PPpVs+no/6s2zw+pNPjow+33ux6u+deNj1/f+f4UGydds5Vr3Mueu1Gg9TI6jslrS9fVxvKoGnH8NPDnt0EIlwxMn8TkLF6lvc5ow3VbEACM5HCVDWoSJwEQwZOO4ZAjXOQ2MiKcC08MZHeqyYtsu8dtb3Ovvvw5bcnwDj0OZKWljn+JXZJ6wuhItWY6kDfZUhqZMA4BqkZQ/k7l5zUiMREaAyoRNAYBqCXbeZ1PfwXZKDjZRMLSa2cROTGtI5zJjE8AwkJapTmMW6+1R61qCAFOxrBoOpzkXUuIrHdGGZo3+cLEzjLJVZcnJxmylI4GmIwJwYXhc7gRERiLcH5smTuMd3PiwutmDzjoAdCJv0Fdp3T/O9NrtNahzM6uszsOCthaw+8/zYr1kiecQEhhkH/7kf9HkhUcYhqZMfwPe6B47WkyhddegoPCuWEUbQ73wcr5Ddb2Q+kKJbZFr0WyNcj9ElJ4VDIiIGyK7iEbhQXio+QZ5ULKnLLYWy4ymA3nuee2cRSAjak//uS9UlZoZtqlFQkdnQuaKtKg6tdd/uk03/G/Pvv6lFXipRyCC2pkSLtcAhLNc9fjdZZyo+ZtLRHN6QXo+x5p6pRUTEHapUOmnlmt8YY+sawhMrFfBle6UEKUXH8aTOSyzX+Et4YZm86qn/PlRaJrWhe0F7bTvVJik9YimBJMC9Yaz+WetaN6BmbCA284kugI2t5dg4tmZuFfGH6HDi/s1vHCuRGb6G3rDaemNpxvOS9stPWH0wQF7GQmtra5S9om5q1qjgT2pUwsHySojKhQ4N9vg8rT4g7HyGZCmnpWH9Be9PnH75EzoUloQXrwdnHR3XrTg9vX0GKfJLlj5KNLJ3YFah/GLJe2+9e7b9qs58xtfehb5ElS2iwO+7ln9jBGzcsYlHZyyOruwEDXTI3y9WladdaNH8WsQgM7q0UuJtvfwAAjSiv0CgAAA==" /></Footer>{/* END_TICKETING_ATTACHMENT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_attachments
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/AttachmentsIdGetParametersExpandSchemaItems_2'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attachment_3'
+  /ticketing/v1/attachments/{id}/download:
+    get:
+      operationId: download-retrieve
+      summary: Download Retrieve
+      description: Returns the `File` content with the given `id` as a stream of bytes.{/* BEGIN_TICKETING_ATTACHMENT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+2Z/2/iNhTA/xXmHxGQtVx3KtI0UdIvdCXttWnveqcqejiPxODEwXag5XT/++QQCt2q3W41a9fyG1jOJ/Enz+/ZzldCQWMk5B1pEc3oCDVLI1IjiQiRkxZpaw00TjDVpEYgYx4kuNo1mGyTGlF5lgmpMTxgyEN1JHFAWsRJUEZYz1M2YBg699c4LNUYSdBMpMq5v7Y+KC4mNcJZOsKwTanIU/1d2rx3Hebd//RXOZwp8+wZKKVjKfIoPsdxjur7YPNkHM3YgddD0OCsQOpyTnmszYwhRI4aQxc0uKiRmsGWN4y1zlTLcWLkWaO4eSPEiYOpA1IzylE5O83d7fe7O/WSUtz9tyDiv25Vh+O+6L+vBhHlAeTVnk9vPb879YbRO6/z7tabXe54s9HMG45+rgYRVHt+b+fUv26euu2t00c6BBe/fNq92nP3jr0qne03veH11PPpVs+no/6s2zw+pNPjow+33ux6u+deNj1/f+f4UGydds5Vr3Mueu1Gg9TI6jslrS9fVxvKoGnH8NPDnt0EIlwxMn8TkLF6lvc5ow3VbEACM5HCVDWoSJwEQwZOO4ZAjXOQ2MiKcC08MZHeqyYtsu8dtb3Ovvvw5bcnwDj0OZKWljn+JXZJ6wuhItWY6kDfZUhqZMA4BqkZQ/k7l5zUiMREaAyoRNAYBqCXbeZ1PfwXZKDjZRMLSa2cROTGtI5zJjE8AwkJapTmMW6+1R61qCAFOxrBoOpzkXUuIrHdGGZo3+cLEzjLJVZcnJxmylI4GmIwJwYXhc7gRERiLcH5smTuMd3PiwutmDzjoAdCJv0Fdp3T/O9NrtNahzM6uszsOCthaw+8/zYr1kiecQEhhkH/7kf9HkhUcYhqZMfwPe6B47WkyhddegoPCuWEUbQ73wcr5Ddb2Q+kKJbZFr0WyNcj9ElJ4VDIiIGyK7iEbhQXio+QZ5ULKnLLYWy4ymA3nuee2cRSAjak//uS9UlZoZtqlFQkdnQuaKtKg6tdd/uk03/G/Pvv6lFXipRyCC2pkSLtcAhLNc9fjdZZyo+ZtLRHN6QXo+x5p6pRUTEHapUOmnlmt8YY+sawhMrFfBle6UEKUXH8aTOSyzX+Et4YZm86qn/PlRaJrWhe0F7bTvVJik9YimBJMC9Yaz+WetaN6BmbCA284kugI2t5dg4tmZuFfGH6HDi/s1vHCuRGb6G3rDaemNpxvOS9stPWH0wQF7GQmtra5S9om5q1qjgT2pUwsHySojKhQ4N9vg8rT4g7HyGZCmnpWH9Be9PnH75EzoUloQXrwdnHR3XrTg9vX0GKfJLlj5KNLJ3YFah/GLJe2+9e7b9qs58xtfehb5ElS2iwO+7ln9jBGzcsYlHZyyOruwEDXTI3y9WladdaNH8WsQgM7q0UuJtvfwAAjSiv0CgAAA==" /></Footer>{/* END_TICKETING_ATTACHMENT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_attachments
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: mime_type
+        in: query
+        description: If provided, specifies the export format of the file to be downloaded. For information on supported export formats, please refer to our <a href='https://help.merge.dev/en/articles/8615316-file-export-and-download-specification' target='_blank'>export format help center article</a>.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+  /ticketing/v1/attachments/meta/post:
+    get:
+      operationId: meta-post-retrieve
+      summary: Meta Post Retrieve
+      description: Returns metadata for `TicketingAttachment` POSTs.{/* BEGIN_TICKETING_ATTACHMENT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+2Z/2/iNhTA/xXmHxGQtVx3KtI0UdIvdCXttWnveqcqejiPxODEwXag5XT/++QQCt2q3W41a9fyG1jOJ/Enz+/ZzldCQWMk5B1pEc3oCDVLI1IjiQiRkxZpaw00TjDVpEYgYx4kuNo1mGyTGlF5lgmpMTxgyEN1JHFAWsRJUEZYz1M2YBg699c4LNUYSdBMpMq5v7Y+KC4mNcJZOsKwTanIU/1d2rx3Hebd//RXOZwp8+wZKKVjKfIoPsdxjur7YPNkHM3YgddD0OCsQOpyTnmszYwhRI4aQxc0uKiRmsGWN4y1zlTLcWLkWaO4eSPEiYOpA1IzylE5O83d7fe7O/WSUtz9tyDiv25Vh+O+6L+vBhHlAeTVnk9vPb879YbRO6/z7tabXe54s9HMG45+rgYRVHt+b+fUv26euu2t00c6BBe/fNq92nP3jr0qne03veH11PPpVs+no/6s2zw+pNPjow+33ux6u+deNj1/f+f4UGydds5Vr3Mueu1Gg9TI6jslrS9fVxvKoGnH8NPDnt0EIlwxMn8TkLF6lvc5ow3VbEACM5HCVDWoSJwEQwZOO4ZAjXOQ2MiKcC08MZHeqyYtsu8dtb3Ovvvw5bcnwDj0OZKWljn+JXZJ6wuhItWY6kDfZUhqZMA4BqkZQ/k7l5zUiMREaAyoRNAYBqCXbeZ1PfwXZKDjZRMLSa2cROTGtI5zJjE8AwkJapTmMW6+1R61qCAFOxrBoOpzkXUuIrHdGGZo3+cLEzjLJVZcnJxmylI4GmIwJwYXhc7gRERiLcH5smTuMd3PiwutmDzjoAdCJv0Fdp3T/O9NrtNahzM6uszsOCthaw+8/zYr1kiecQEhhkH/7kf9HkhUcYhqZMfwPe6B47WkyhddegoPCuWEUbQ73wcr5Ddb2Q+kKJbZFr0WyNcj9ElJ4VDIiIGyK7iEbhQXio+QZ5ULKnLLYWy4ymA3nuee2cRSAjak//uS9UlZoZtqlFQkdnQuaKtKg6tdd/uk03/G/Pvv6lFXipRyCC2pkSLtcAhLNc9fjdZZyo+ZtLRHN6QXo+x5p6pRUTEHapUOmnlmt8YY+sawhMrFfBle6UEKUXH8aTOSyzX+Et4YZm86qn/PlRaJrWhe0F7bTvVJik9YimBJMC9Yaz+WetaN6BmbCA284kugI2t5dg4tmZuFfGH6HDi/s1vHCuRGb6G3rDaemNpxvOS9stPWH0wQF7GQmtra5S9om5q1qjgT2pUwsHySojKhQ4N9vg8rT4g7HyGZCmnpWH9Be9PnH75EzoUloQXrwdnHR3XrTg9vX0GKfJLlj5KNLJ3YFah/GLJe2+9e7b9qs58xtfehb5ElS2iwO+7ln9jBGzcsYlHZyyOruwEDXTI3y9WladdaNH8WsQgM7q0UuJtvfwAAjSiv0CgAAA==" /></Footer>{/* END_TICKETING_ATTACHMENT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_attachments
+      parameters:
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaResponse'
+components:
+  schemas:
+    AttachmentFieldMappings_2:
+      type: object
+      properties: {}
+      title: AttachmentFieldMappings
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    Attachment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        file_name:
+          type:
+          - string
+          - 'null'
+          description: The attachment's name.
+        file_url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The attachment's url.
+        candidate:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        attachment_type:
+          oneOf:
+          - $ref: '#/components/schemas/AttachmentTypeEnum'
+          - type: 'null'
+          description: The attachment's type.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/AttachmentFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The Attachment Object
+
+        ### Description
+
+        The `Attachment` object is used to represent a file attached to a candidate.
+
+        ### Usage Example
+
+        Fetch from the `LIST Attachments` endpoint and view attachments accessible by a company.'
+      title: Attachment
+    AccountingAttachmentEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/AccountingAttachmentRequest'
+      required:
+      - model
+      title: AccountingAttachmentEndpointRequest
+    AttachmentsGetParametersRemoteFields:
+      type: string
+      enum:
+      - attachment_type
+      title: AttachmentsGetParametersRemoteFields
+    TicketingAttachmentResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/Attachment_3'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: TicketingAttachmentResponse
+    AttachmentRequest_2:
+      type: object
+      properties:
+        file_name:
+          type:
+          - string
+          - 'null'
+          description: The attachment's name. It is required to include the file extension in the attachment's name.
+        ticket:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The ticket associated with the attachment.
+        file_url:
+          type:
+          - string
+          - 'null'
+          description: The attachment's url. It is required to include the file extension in the file's URL.
+        content_type:
+          type:
+          - string
+          - 'null'
+          description: The attachment's file format.
+        uploaded_by:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The user who uploaded the attachment.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The Attachment Object
+
+        ### Description
+
+        The `Attachment` object is used to represent an attachment for a ticket.
+
+
+        ### Usage Example
+
+        TODO'
+      title: AttachmentRequest
+    AttachmentEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/AttachmentRequest'
+        remote_user_id:
+          type: string
+      required:
+      - model
+      - remote_user_id
+      title: AttachmentEndpointRequest
+    AttachmentsIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - attachment_type
+      title: AttachmentsIdGetParametersRemoteFields
+    AccountingAttachmentRequest:
+      type: object
+      properties:
+        file_name:
+          type:
+          - string
+          - 'null'
+          description: The attachment's name.
+        file_url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The attachment's url.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the accounting attachment belongs to.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The Accounting Attachment Object
+
+        ### Description
+
+        The `AccountingAttachment` object is used to represent a company''s attachments.
+
+
+        ### Usage Example
+
+        Fetch from the `LIST AccountingAttachments` endpoint and view a company''s attachments.'
+      title: AccountingAttachmentRequest
+    Attachment_3:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        file_name:
+          type:
+          - string
+          - 'null'
+          description: The attachment's name. It is required to include the file extension in the attachment's name.
+        ticket:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The ticket associated with the attachment.
+        file_url:
+          type:
+          - string
+          - 'null'
+          description: The attachment's url. It is required to include the file extension in the file's URL.
+        content_type:
+          type:
+          - string
+          - 'null'
+          description: The attachment's file format.
+        uploaded_by:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The user who uploaded the attachment.
+        remote_created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's attachment was created.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/AttachmentFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The Attachment Object
+
+        ### Description
+
+        The `Attachment` object is used to represent an attachment for a ticket.
+
+
+        ### Usage Example
+
+        TODO'
+      title: Attachment
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    AccountingAttachmentFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: AccountingAttachmentFieldMappings
+    AttachmentResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/Attachment'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: AttachmentResponse
+    AttachmentsIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - attachment_type
+      title: AttachmentsIdGetParametersShowEnumOrigins
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    AccountingAttachment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        file_name:
+          type:
+          - string
+          - 'null'
+          description: The attachment's name.
+        file_url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The attachment's url.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the accounting attachment belongs to.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/AccountingAttachmentFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The Accounting Attachment Object
+
+        ### Description
+
+        The `AccountingAttachment` object is used to represent a company''s attachments.
+
+
+        ### Usage Example
+
+        Fetch from the `LIST AccountingAttachments` endpoint and view a company''s attachments.'
+      title: AccountingAttachment
+    AttachmentsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - candidate
+      title: AttachmentsGetParametersExpandSchemaItems
+    AccountingAttachmentResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/AccountingAttachment'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: AccountingAttachmentResponse
+    PaginatedAccountingAttachmentList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountingAttachment'
+      title: PaginatedAccountingAttachmentList
+    AttachmentRequest:
+      type: object
+      properties:
+        file_name:
+          type:
+          - string
+          - 'null'
+          description: The attachment's name.
+        file_url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The attachment's url.
+        candidate:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        attachment_type:
+          oneOf:
+          - $ref: '#/components/schemas/AttachmentTypeEnum'
+          - type: 'null'
+          description: The attachment's type.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The Attachment Object
+
+        ### Description
+
+        The `Attachment` object is used to represent a file attached to a candidate.
+
+        ### Usage Example
+
+        Fetch from the `LIST Attachments` endpoint and view attachments accessible by a company.'
+      title: AttachmentRequest
+    AttachmentFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: AttachmentFieldMappings
+    AttachmentsIdGetParametersExpandSchemaItems_2:
+      type: string
+      enum:
+      - ticket
+      title: AttachmentsIdGetParametersExpandSchemaItems
+    AttachmentsGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - attachment_type
+      title: AttachmentsGetParametersShowEnumOrigins
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    AttachmentsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - candidate
+      title: AttachmentsIdGetParametersExpandSchemaItems
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    TicketingAttachmentEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/AttachmentRequest_2'
+      required:
+      - model
+      title: TicketingAttachmentEndpointRequest
+    Attachment_2:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The attachment's name.
+        description:
+          type:
+          - string
+          - 'null'
+          description: The attachment's description.
+        attachment_url:
+          type:
+          - string
+          - 'null'
+          description: The attachment's url.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/AttachmentFieldMappings_2'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The Attachment Object
+
+        ### Description
+
+        The `Attachment` object is used to represent an attachment to an article or container.
+
+        ### Usage Example
+
+        Fetch from the `GET /api/knowledgebase/attachments` endpoint and view their attachments.'
+      title: Attachment
+    AttachmentTypeEnum:
+      type: string
+      enum:
+      - RESUME
+      - COVER_LETTER
+      - OFFER_LETTER
+      - OTHER
+      title: AttachmentTypeEnum
+    PaginatedAttachmentList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Attachment'
+      title: PaginatedAttachmentList
+    AttachmentsGetParametersExpandSchemaItems_2:
+      type: string
+      enum:
+      - ticket
+      title: AttachmentsGetParametersExpandSchemaItems
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

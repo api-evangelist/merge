@@ -1,0 +1,676 @@
+openapi: 3.1.0
+info:
+  title: Accounting  API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: ''
+paths:
+  /hris/v1/field-mappings:
+    post:
+      operationId: field-mappings-create
+      summary: Field Mappings Create
+      description: Create new Field Mappings that will be available after the next scheduled sync. This will cause the next sync for this Linked Account to sync **ALL** data from start.
+      tags:
+      - ''
+      parameters:
+      - name: exclude_remote_field_metadata
+        in: query
+        description: If `true`, remote fields metadata is excluded from each field mapping instance (i.e. `remote_fields.remote_key_name` and `remote_fields.schema` will be null). This will increase the speed of the request since these fields require some calculations.
+        required: false
+        schema:
+          type: boolean
+      - name: remote_data_iteration_count
+        in: query
+        description: Number of common model instances to iterate through when fetching remote data for field mappings. Defaults to 250 if not provided.
+        required: false
+        schema:
+          type: integer
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FieldMappingInstanceResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateFieldMappingRequest'
+  /hris/v1/field-mappings/{field_mapping_id}:
+    delete:
+      operationId: field-mappings-destroy
+      summary: Field Mappings Destroy
+      description: Deletes Field Mappings for a Linked Account. All data related to this Field Mapping will be deleted and these changes will be reflected after the next scheduled sync. This will cause the next sync for this Linked Account to sync **ALL** data from start.
+      tags:
+      - ''
+      parameters:
+      - name: field_mapping_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FieldMappingInstanceResponse'
+    patch:
+      operationId: field-mappings-partial-update
+      summary: Field Mappings Partial Update
+      description: Create or update existing Field Mappings for a Linked Account. Changes will be reflected after the next scheduled sync. This will cause the next sync for this Linked Account to sync **ALL** data from start.
+      tags:
+      - ''
+      parameters:
+      - name: field_mapping_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: remote_data_iteration_count
+        in: query
+        description: Number of common model instances to iterate through when fetching remote data for field mappings. Defaults to 250 if not provided.
+        required: false
+        schema:
+          type: integer
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FieldMappingInstanceResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedEditFieldMappingRequest'
+  /hris/v1/remote-fields:
+    get:
+      operationId: remote-fields-retrieve
+      summary: Remote Fields Retrieve
+      description: Get all remote fields for a Linked Account. Remote fields are third-party fields that are accessible after initial sync if remote_data is enabled. You can use remote fields to override existing Merge fields or map a new Merge field. [Learn more](https://docs.merge.dev/supplemental-data/field-mappings/overview/).
+      tags:
+      - ''
+      parameters:
+      - name: common_models
+        in: query
+        description: A comma seperated list of Common Model names. If included, will only return Remote Fields for those Common Models.
+        required: false
+        schema:
+          type: string
+      - name: include_example_values
+        in: query
+        description: If true, will include example values, where available, for remote fields in the 3rd party platform. These examples come from active data from your customers.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RemoteFieldAPIResponse'
+  /hris/v1/target-fields:
+    get:
+      operationId: target-fields-retrieve
+      summary: Target Fields Retrieve
+      description: Get all organization-wide Target Fields, this will not include any Linked Account specific Target Fields. Organization-wide Target Fields are additional fields appended to the Merge Common Model for all Linked Accounts in a category. [Learn more](https://docs.merge.dev/supplemental-data/field-mappings/target-fields/).
+      tags:
+      - ''
+      parameters:
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExternalTargetFieldAPIResponse'
+components:
+  schemas:
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    RemoteFieldAPI:
+      type: object
+      properties:
+        schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        remote_key_name:
+          type: string
+        remote_endpoint_info:
+          $ref: '#/components/schemas/RemoteEndpointInfo'
+        example_values:
+          type:
+          - array
+          - 'null'
+          items:
+            description: Any type
+        advanced_metadata:
+          oneOf:
+          - $ref: '#/components/schemas/AdvancedMetadata'
+          - type: 'null'
+        coverage:
+          oneOf:
+          - $ref: '#/components/schemas/RemoteFieldApiCoverage'
+          - type: 'null'
+      required:
+      - schema
+      - remote_key_name
+      - remote_endpoint_info
+      - advanced_metadata
+      title: RemoteFieldAPI
+    PatchedEditFieldMappingRequest:
+      type: object
+      properties:
+        remote_field_traversal_path:
+          type: array
+          items:
+            description: Any type
+          description: The field traversal path of the remote field listed when you hit the GET /remote-fields endpoint.
+        remote_method:
+          type: string
+          description: The method of the remote endpoint where the remote field is coming from.
+        remote_url_path:
+          type: string
+          description: The path of the remote endpoint where the remote field is coming from.
+        jmes_path:
+          type: string
+          description: 'DEPRECATED: Use ''advanced_mapping_expression'' instead.'
+        advanced_mapping_expression:
+          type: string
+          description: A JSONata expression used to transform the remote field data.
+      title: PatchedEditFieldMappingRequest
+    FieldMappingApiInstanceRemoteField:
+      type: object
+      properties:
+        remote_key_name:
+          type:
+          - string
+          - 'null'
+        schema:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        remote_endpoint_info:
+          $ref: '#/components/schemas/FieldMappingApiInstanceRemoteFieldRemoteEndpointInfo'
+      required:
+      - remote_key_name
+      - schema
+      - remote_endpoint_info
+      title: FieldMappingApiInstanceRemoteField
+    CreateFieldMappingRequest:
+      type: object
+      properties:
+        target_field_name:
+          type: string
+          description: The name of the target field you want this remote field to map to. Required if organization_wide_target_field is not provided.
+        target_field_description:
+          type: string
+          description: The description of the target field you want this remote field to map to. Required if organization_wide_target_field is not provided.
+        organization_wide_target_field:
+          type: string
+          description: The name or key of an existing Organization-wide target field to map to. When provided, target_field_name and target_field_description are optional.
+        is_integration_wide:
+          type: boolean
+          default: false
+          description: If true, creates an integration-wide field mapping that applies to all Linked Accounts for the integration. Requires organization_wide_target_field.
+        remote_field_traversal_path:
+          type: array
+          items:
+            description: Any type
+          description: The field traversal path of the remote field listed when you hit the GET /remote-fields endpoint.
+        remote_method:
+          type: string
+          description: The method of the remote endpoint where the remote field is coming from.
+        remote_url_path:
+          type: string
+          description: The path of the remote endpoint where the remote field is coming from.
+        common_model_name:
+          type: string
+          description: The name of the Common Model that the remote field corresponds to in a given category.
+        jmes_path:
+          type: string
+          description: 'DEPRECATED: Use ''advanced_mapping_expression'' instead.'
+        advanced_mapping_expression:
+          type: string
+          description: A JSONata expression used to transform the remote field data.
+      required:
+      - remote_field_traversal_path
+      - remote_method
+      - remote_url_path
+      - common_model_name
+      title: CreateFieldMappingRequest
+    RemoteFieldApiCoverage:
+      oneOf:
+      - type: integer
+      - type: number
+        format: double
+      title: RemoteFieldApiCoverage
+    FieldMappingApiInstanceRemoteFieldRemoteEndpointInfo:
+      type: object
+      properties:
+        method:
+          type:
+          - string
+          - 'null'
+        url_path:
+          type:
+          - string
+          - 'null'
+        field_traversal_path:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+      required:
+      - method
+      - url_path
+      - field_traversal_path
+      title: FieldMappingApiInstanceRemoteFieldRemoteEndpointInfo
+    FieldMappingApiInstanceTargetField:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        is_organization_wide:
+          type: boolean
+      required:
+      - name
+      - description
+      - is_organization_wide
+      title: FieldMappingApiInstanceTargetField
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    ExternalTargetFieldAPI:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+        description:
+          type:
+          - string
+          - 'null'
+        is_mapped:
+          type:
+          - string
+          - 'null'
+      title: ExternalTargetFieldAPI
+    RemoteEndpointInfo:
+      type: object
+      properties:
+        method:
+          type: string
+        url_path:
+          type: string
+        field_traversal_path:
+          type: array
+          items:
+            description: Any type
+      required:
+      - method
+      - url_path
+      - field_traversal_path
+      title: RemoteEndpointInfo
+    ExternalTargetFieldAPIResponse:
+      type: object
+      properties:
+        Benefit:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalTargetFieldAPI'
+        EmployerBenefit:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalTargetFieldAPI'
+        Company:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalTargetFieldAPI'
+        EmployeePayrollRun:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalTargetFieldAPI'
+        Employee:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalTargetFieldAPI'
+        Employment:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalTargetFieldAPI'
+        Location:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalTargetFieldAPI'
+        PayrollRun:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalTargetFieldAPI'
+        Team:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalTargetFieldAPI'
+        TimeOff:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalTargetFieldAPI'
+        TimeOffBalance:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalTargetFieldAPI'
+        BankInfo:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalTargetFieldAPI'
+        PayGroup:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalTargetFieldAPI'
+        Group:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalTargetFieldAPI'
+        Dependent:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalTargetFieldAPI'
+        TimesheetEntry:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalTargetFieldAPI'
+      title: ExternalTargetFieldAPIResponse
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    AdvancedMetadata:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        display_name:
+          type: string
+        description:
+          type: string
+        is_required:
+          type: boolean
+        is_custom:
+          type: boolean
+        field_choices:
+          type: array
+          items:
+            description: Any type
+      required:
+      - id
+      title: AdvancedMetadata
+    FieldMappingApiInstance:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        is_integration_wide:
+          type: boolean
+        target_field:
+          oneOf:
+          - $ref: '#/components/schemas/FieldMappingApiInstanceTargetField'
+          - type: 'null'
+        remote_field:
+          oneOf:
+          - $ref: '#/components/schemas/FieldMappingApiInstanceRemoteField'
+          - type: 'null'
+        jmes_path:
+          type:
+          - string
+          - 'null'
+        advanced_mapping_expression:
+          type:
+          - string
+          - 'null'
+      title: FieldMappingApiInstance
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    RemoteFieldAPIResponse:
+      type: object
+      properties:
+        Benefit:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldAPI'
+        EmployerBenefit:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldAPI'
+        Company:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldAPI'
+        EmployeePayrollRun:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldAPI'
+        Employee:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldAPI'
+        Employment:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldAPI'
+        Location:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldAPI'
+        PayrollRun:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldAPI'
+        Team:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldAPI'
+        TimeOff:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldAPI'
+        TimeOffBalance:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldAPI'
+        BankInfo:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldAPI'
+        PayGroup:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldAPI'
+        Group:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldAPI'
+        Dependent:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldAPI'
+        TimesheetEntry:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldAPI'
+      title: RemoteFieldAPIResponse
+    FieldMappingInstanceResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/FieldMappingApiInstance'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: FieldMappingInstanceResponse
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

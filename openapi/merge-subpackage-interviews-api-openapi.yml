@@ -1,0 +1,699 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_interviews API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_interviews
+paths:
+  /ats/v1/interviews:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `ScheduledInterview` objects.{/* BEGIN_ATS_SCHEDULEDINTERVIEW_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+VXa0/jOBT9K8gfq7QZ6HRniLRaFVqgiKYMzQzDIhTdOrepW8dO/Wiho/nvq6QP2h2WhSUUpP2W2Pce2+fch/2DUDAYS3VHPAJGE4ckMkJOPNKlA4wsx6glDKoJwylxCKTMhwTnxuFkjzhE2zSVymB0xJBH+kRhn3jETVDFWLaC9RlGLhjtMmEwVmCYFNpdeZX7uRtxCGdihFGdUmmFeQRnbleGueHffrNpbYhDUtDaDJS08eACxxb1Y5DZbjgmKAzwcgQG3DX3spr7PzSW7TtCjgajBhhooEGaHXCx1MCYVHuuO0CeVvJlKxFOXBQuKMMoR+3Wqvt7n/Zr5QVKvvofYcx/3y0Nxz3Z+1QKY8pDsKV2QG/9oDX1h/FH//DjrT/7WvNno5k/HH0ohTGU2kG71gmuqp1GfbfzgEHY/e37/reDxsGpX6KzZtUfXk39gO62AzrqzVrV02M6PT35cuvPrvbaja9VP2jWTo/lbufwQrcPL2S7XqkQh6zrSLzrH+sDi+Co60HvbtO0lUCMa5TMRYCUlVPb44xWdLUCCcykgKmuUJm4CUYM3Bwq7I4tKAzPZCzDqv1yCZNpJRXxkn0mxYp64pGmf1L3D5uNzTCoT4Bx6HEknlEWf4lc4l0TSFPOaL5h4hAUUQhmcY48BVBlig9lL1wNhdpkJ3OIwkQaDKlCMLhwXIxlom7+hSmYwf0Qi7JMMqDM3E8bMFaTm8xgbJnC6BwUJGiyDXjXNz+dh2g/yjIAmCiG+SXaOvnvjnQuV47b5fpYIYqBtBqLYfseb4PvYfpPfPv1oPWtWTzboaZSIQWVF+XniiBVDILNUBWREItvm0b3AC8W7gwn+e4K0CyH2qhN8ir+fHdw+f+WbSXRM5XpKKAcdwLgKIsRKId6Yj69ef3aXuo8U5dzJlLJhClGkyVaqHNZttlRXqlvv0qZ6tbPd7qWUtT6CKiReQwVQP8m5kbxOqDfZXz04U1y5D+Urxf2e4dYwcY2m0dhsreAerZGCShzgVRZlhsWI9Am6IZCw8+Ts37z8j3fwp5YxV7UKALkHIXZWbJU0BXMzGFDtYR9gxL1JLrfbae4lGoUQUEvv3MOpi9VsgB9ExUeLUtbuRT9KQdyGejF8pohL2M9fMVI/5f2++sLbuuxfPPzLwvHUeMIEwAA" /></Footer>{/* END_ATS_SCHEDULEDINTERVIEW_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_interviews
+      parameters:
+      - name: application_id
+        in: query
+        description: If provided, will only return interviews for this application.
+        required: false
+        schema:
+          type: string
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/InterviewsGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: job_id
+        in: query
+        description: If provided, wll only return interviews organized for this job.
+        required: false
+        schema:
+          type: string
+      - name: job_interview_stage_id
+        in: query
+        description: If provided, will only return interviews at this stage.
+        required: false
+        schema:
+          type: string
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: organizer_id
+        in: query
+        description: If provided, will only return interviews organized by this user.
+        required: false
+        schema:
+          type: string
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_fields
+        in: query
+        description: Deprecated. Use show_enum_origins.
+        required: false
+        schema:
+          $ref: '#/components/schemas/InterviewsGetParametersRemoteFields'
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: show_enum_origins
+        in: query
+        description: A comma separated list of enum field names for which you'd like the original values to be returned, instead of Merge's normalized enum values. [Learn more](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+        required: false
+        schema:
+          $ref: '#/components/schemas/InterviewsGetParametersShowEnumOrigins'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedScheduledInterviewList'
+    post:
+      operationId: create
+      summary: Create
+      description: Creates a `ScheduledInterview` object with the given values.{/* BEGIN_ATS_SCHEDULEDINTERVIEW_CREATE_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST" data="H4sIAAAAAAAAA8WTa2/aMBSG/8rkjygko5R1RZomCqylKmGjaTdUVZaxT4PBsYMv0Kbqf58SKNCWMq2rtG+Jfd73XJ7je0SJhVjpO1RHxBrkoUQxEKiOzukImBPAOtKCnnGYIw+RlIckgUUwnu0hDxmXpkpbYN84CGZONNygOgoS0DGUneQ3HFhArAm4tBBrYrmSJlipyjeFDHlIcDkB1qBUOWl3+CziymQR+Ow3vzYWeSglxtiRVi4e9WHqwOyyzKsRkIC0RJQZsSTYkJf1Qr/tLK+bgQALrEUsaYEFmje4TDWyNjX1IBiBSP0irc9gFoAMiLacCjBBrXq4d3BYKy9diuxfcSy+VErj6VAND0o4pgITV+pG9DaMOvNwHO+Hzf3bMLuohdkkC8eTjyUck1I36tZ60aDaazUqvS0B+PzTr8PLo9bRaViiWbsajgfzMKKVbkQnw6xTPT2m89OTH7dhNtjrti6qYdSunR6rSq/ZN91mX3Ubvo88tMkR1a/uNw+Wy3GsAeRIOQNP4zsJiWFjLgsSJOXl1A0Fp76p+iQhmZJkbnyqkiABxkmw9sPnU0c04DMVK3+cxo/z50quho/qKGxEncv20zVozAgXZCgA1a128GJzUf0KkTQVnBa1Ig+BZJjYZQvFEwBdbKpahSgdE8kz0MhDGhJlAVMNxMJSuTzjbP3tUra+N5Zou/q0Lrd3kk9drgFp8x3V6DoXTx3XwL4TTRKweSG7612OHKe5wLxsYpX5+sHbxvAMZkVX74CvsNokh9Ug/nx39PO/ERyrIV4dYWPzvt7MdT3J1zDtAONbnkCmJLws8nFfDOjnibYji0AIkPZDH6h23MI7vT67sMX60RabAqWfytfotcOTRthst/6e32pUf0T0T8/tTagmXObGuyFuQLp++A38OyvfYAcAAA==" /></Footer>{/* END_ATS_SCHEDULEDINTERVIEW_CREATE_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_interviews
+      parameters:
+      - name: is_debug_mode
+        in: query
+        description: Whether to include debug fields (such as log file links) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: run_async
+        in: query
+        description: Whether or not third-party updates should be run asynchronously.
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduledInterviewResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduledInterviewEndpointRequest'
+  /ats/v1/interviews/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `ScheduledInterview` object with the given `id`.{/* BEGIN_ATS_SCHEDULEDINTERVIEW_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+VXa0/jOBT9K8gfq7QZ6HRniLRaFVqgiKYMzQzDIhTdOrepW8dO/Wiho/nvq6QP2h2WhSUUpP2W2Pce2+fch/2DUDAYS3VHPAJGE4ckMkJOPNKlA4wsx6glDKoJwylxCKTMhwTnxuFkjzhE2zSVymB0xJBH+kRhn3jETVDFWLaC9RlGLhjtMmEwVmCYFNpdeZX7uRtxCGdihFGdUmmFeQRnbleGueHffrNpbYhDUtDaDJS08eACxxb1Y5DZbjgmKAzwcgQG3DX3spr7PzSW7TtCjgajBhhooEGaHXCx1MCYVHuuO0CeVvJlKxFOXBQuKMMoR+3Wqvt7n/Zr5QVKvvofYcx/3y0Nxz3Z+1QKY8pDsKV2QG/9oDX1h/FH//DjrT/7WvNno5k/HH0ohTGU2kG71gmuqp1GfbfzgEHY/e37/reDxsGpX6KzZtUfXk39gO62AzrqzVrV02M6PT35cuvPrvbaja9VP2jWTo/lbufwQrcPL2S7XqkQh6zrSLzrH+sDi+Co60HvbtO0lUCMa5TMRYCUlVPb44xWdLUCCcykgKmuUJm4CUYM3Bwq7I4tKAzPZCzDqv1yCZNpJRXxkn0mxYp64pGmf1L3D5uNzTCoT4Bx6HEknlEWf4lc4l0TSFPOaL5h4hAUUQhmcY48BVBlig9lL1wNhdpkJ3OIwkQaDKlCMLhwXIxlom7+hSmYwf0Qi7JMMqDM3E8bMFaTm8xgbJnC6BwUJGiyDXjXNz+dh2g/yjIAmCiG+SXaOvnvjnQuV47b5fpYIYqBtBqLYfseb4PvYfpPfPv1oPWtWTzboaZSIQWVF+XniiBVDILNUBWREItvm0b3AC8W7gwn+e4K0CyH2qhN8ir+fHdw+f+WbSXRM5XpKKAcdwLgKIsRKId6Yj69ef3aXuo8U5dzJlLJhClGkyVaqHNZttlRXqlvv0qZ6tbPd7qWUtT6CKiReQwVQP8m5kbxOqDfZXz04U1y5D+Urxf2e4dYwcY2m0dhsreAerZGCShzgVRZlhsWI9Am6IZCw8+Ts37z8j3fwp5YxV7UKALkHIXZWbJU0BXMzGFDtYR9gxL1JLrfbae4lGoUQUEvv3MOpi9VsgB9ExUeLUtbuRT9KQdyGejF8pohL2M9fMVI/5f2++sLbuuxfPPzLwvHUeMIEwAA" /></Footer>{/* END_ATS_SCHEDULEDINTERVIEW_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_interviews
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/InterviewsIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: remote_fields
+        in: query
+        description: Deprecated. Use show_enum_origins.
+        required: false
+        schema:
+          $ref: '#/components/schemas/InterviewsIdGetParametersRemoteFields'
+      - name: show_enum_origins
+        in: query
+        description: A comma separated list of enum field names for which you'd like the original values to be returned, instead of Merge's normalized enum values. [Learn more](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+        required: false
+        schema:
+          $ref: '#/components/schemas/InterviewsIdGetParametersShowEnumOrigins'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScheduledInterview'
+  /ats/v1/interviews/meta/post:
+    get:
+      operationId: meta-post-retrieve
+      summary: Meta Post Retrieve
+      description: Returns metadata for `ScheduledInterview` POSTs.{/* BEGIN_ATS_SCHEDULEDINTERVIEW_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+VXa0/jOBT9K8gfq7QZ6HRniLRaFVqgiKYMzQzDIhTdOrepW8dO/Wiho/nvq6QP2h2WhSUUpP2W2Pce2+fch/2DUDAYS3VHPAJGE4ckMkJOPNKlA4wsx6glDKoJwylxCKTMhwTnxuFkjzhE2zSVymB0xJBH+kRhn3jETVDFWLaC9RlGLhjtMmEwVmCYFNpdeZX7uRtxCGdihFGdUmmFeQRnbleGueHffrNpbYhDUtDaDJS08eACxxb1Y5DZbjgmKAzwcgQG3DX3spr7PzSW7TtCjgajBhhooEGaHXCx1MCYVHuuO0CeVvJlKxFOXBQuKMMoR+3Wqvt7n/Zr5QVKvvofYcx/3y0Nxz3Z+1QKY8pDsKV2QG/9oDX1h/FH//DjrT/7WvNno5k/HH0ohTGU2kG71gmuqp1GfbfzgEHY/e37/reDxsGpX6KzZtUfXk39gO62AzrqzVrV02M6PT35cuvPrvbaja9VP2jWTo/lbufwQrcPL2S7XqkQh6zrSLzrH+sDi+Co60HvbtO0lUCMa5TMRYCUlVPb44xWdLUCCcykgKmuUJm4CUYM3Bwq7I4tKAzPZCzDqv1yCZNpJRXxkn0mxYp64pGmf1L3D5uNzTCoT4Bx6HEknlEWf4lc4l0TSFPOaL5h4hAUUQhmcY48BVBlig9lL1wNhdpkJ3OIwkQaDKlCMLhwXIxlom7+hSmYwf0Qi7JMMqDM3E8bMFaTm8xgbJnC6BwUJGiyDXjXNz+dh2g/yjIAmCiG+SXaOvnvjnQuV47b5fpYIYqBtBqLYfseb4PvYfpPfPv1oPWtWTzboaZSIQWVF+XniiBVDILNUBWREItvm0b3AC8W7gwn+e4K0CyH2qhN8ir+fHdw+f+WbSXRM5XpKKAcdwLgKIsRKId6Yj69ef3aXuo8U5dzJlLJhClGkyVaqHNZttlRXqlvv0qZ6tbPd7qWUtT6CKiReQwVQP8m5kbxOqDfZXz04U1y5D+Urxf2e4dYwcY2m0dhsreAerZGCShzgVRZlhsWI9Am6IZCw8+Ts37z8j3fwp5YxV7UKALkHIXZWbJU0BXMzGFDtYR9gxL1JLrfbae4lGoUQUEvv3MOpi9VsgB9ExUeLUtbuRT9KQdyGejF8pohL2M9fMVI/5f2++sLbuuxfPPzLwvHUeMIEwAA" /></Footer>{/* END_ATS_SCHEDULEDINTERVIEW_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_interviews
+      parameters:
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaResponse'
+components:
+  schemas:
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    ScheduledInterviewRequest:
+      type: object
+      properties:
+        application:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The application being interviewed.
+        job_interview_stage:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The stage of the interview.
+        organizer:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The user organizing the interview.
+        interviewers:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Array of `RemoteUser` IDs.
+        location:
+          type:
+          - string
+          - 'null'
+          description: The interview's location.
+        start_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the interview was started.
+        end_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the interview was ended.
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/ScheduledInterviewStatusEnum'
+          - type: 'null'
+          description: The interview's status.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The ScheduledInterview Object
+
+        ### Description
+
+        The `ScheduledInterview` object is used to represent a scheduled interview for a given candidate’s application to a job. An `Application` can have multiple `ScheduledInterview`s depending on the particular hiring process.
+
+        ### Usage Example
+
+        Fetch from the `LIST ScheduledInterviews` endpoint and filter by `interviewers` to show all office locations.'
+      title: ScheduledInterviewRequest
+    InterviewsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - application
+      - interviewers
+      - job_interview_stage
+      - organizer
+      title: InterviewsIdGetParametersExpandSchemaItems
+    ScheduledInterviewEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/ScheduledInterviewRequest'
+        remote_user_id:
+          type: string
+      required:
+      - model
+      - remote_user_id
+      title: ScheduledInterviewEndpointRequest
+    InterviewsIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - status
+      title: InterviewsIdGetParametersRemoteFields
+    InterviewsIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - status
+      title: InterviewsIdGetParametersShowEnumOrigins
+    PaginatedScheduledInterviewList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScheduledInterview'
+      title: PaginatedScheduledInterviewList
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    ScheduledInterviewFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: ScheduledInterviewFieldMappings
+    InterviewsGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - status
+      title: InterviewsGetParametersShowEnumOrigins
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    InterviewsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - application
+      - interviewers
+      - job_interview_stage
+      - organizer
+      title: InterviewsGetParametersExpandSchemaItems
+    ScheduledInterviewResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/ScheduledInterview'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: ScheduledInterviewResponse
+    ScheduledInterviewStatusEnum:
+      type: string
+      enum:
+      - SCHEDULED
+      - AWAITING_FEEDBACK
+      - COMPLETE
+      title: ScheduledInterviewStatusEnum
+    ScheduledInterview:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        application:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The application being interviewed.
+        job_interview_stage:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The stage of the interview.
+        organizer:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The user organizing the interview.
+        interviewers:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Array of `RemoteUser` IDs.
+        location:
+          type:
+          - string
+          - 'null'
+          description: The interview's location.
+        start_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the interview was started.
+        end_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the interview was ended.
+        remote_created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's interview was created.
+        remote_updated_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's interview was updated.
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/ScheduledInterviewStatusEnum'
+          - type: 'null'
+          description: The interview's status.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/ScheduledInterviewFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The ScheduledInterview Object
+
+        ### Description
+
+        The `ScheduledInterview` object is used to represent a scheduled interview for a given candidate’s application to a job. An `Application` can have multiple `ScheduledInterview`s depending on the particular hiring process.
+
+        ### Usage Example
+
+        Fetch from the `LIST ScheduledInterviews` endpoint and filter by `interviewers` to show all office locations.'
+      title: ScheduledInterview
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    InterviewsGetParametersRemoteFields:
+      type: string
+      enum:
+      - status
+      title: InterviewsGetParametersRemoteFields
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

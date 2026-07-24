@@ -1,0 +1,251 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_payGroups API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_payGroups
+paths:
+  /hris/v1/pay-groups:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `PayGroup` objects.{/* BEGIN_HRIS_PAYGROUP_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA92XbW/aOhTHvwrySxSSUsa2Ik0TJeWpI80g3K2aqujgHILBiYPttA3TvvsUHjp6bzXdboFVe2nn+G+fn/8+dr4SChpDITPSIDPJFDFIJALkpEFcyDpSpAkxCCTMgQi3Mf7tKTGISpNESI1BmyEPVFfilDSIFaEMsZLGbMowsPJwi8UaQwmaiVhZD8Mq0/U4YhDO4gUGTUpFGuufCW0CK7CJ/Fcz/6w0MUgCSumZFGk4G+IyRfVTzXw9HCOMNfBKABqsvfEVuRF4qi9feYAcNQY2aLBRI81T3M410zpRDcuaIU/M9bxmgLcWxhZIzShHZdVrZ6dvzuqVrcp69vd+yN9Vy/PlREzelP2Qch/S8sCj947Xu3Pm4Sun9ereWY3rzmqxcuaLk7IfQnngDepX3nXtym5Wr54I8EevP5/9c26f950yXV3UnPn1nePR6sCji8mqV+t36F2/+/HeWV2fDuxxzfEu6v2OqF61hmrQGopB0zSJQfZ3kjS+fN3v2Bqkabul4dh5HNyLIMQ9KJt9gIRVknTCGTVVzYQIViKGO2VSEVkRBgyspu36w7Hjj5YpSDSTONxBZyJ+IE4a5MLpNp3Whf14+5u3wDhMOJKGlin+x7Ok8YVIjIRGP2dPjP2Wn4Ce/ehiAbnJG8uUSQxckBChRplr3HwzniTBOYOYYrc1KIaGy0FPhYy6w520rw4HBqOEiyw/GLnTE8j8MK8Gfpxn90wULVxBHGOpOyyGxFavcvD0EZ9I3jigaWzIpkJSLNYxO9XjG+WQrNoS1UwjRMXAepA7ZLnZ2eq4pDoYo2S0NGp7bjGwwo2ir6Y62VYhP+rX7k9644Mfx/9nuF+glCotij14a8kdH5aL/U3FqjcS/BaDYpExtRY9CKcjsrnEBRQDZoELOPxFf+yS5ELWgkQDiwuyD2R0o3ckVj+q0C+kzgVlOiss843c9t7yP4hQ+B86UbUdxC+u3DyT1ajplkYppahUG6gWUhUD7bHmI3Ln9LMI2yfmPPlTb6XnnyZPMgd1MWg8yWLUL844v0FnfNkpubKgq3182TlGhSnWHzmBIUKQFc3ADxG6b5fu3/Vn8UnIRQBZsQ+bTxvRF/I8/j1qN9++Ax3JQaA6FAAA" /></Footer>{/* END_HRIS_PAYGROUP_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_payGroups
+      parameters:
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPayGroupList'
+  /hris/v1/pay-groups/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `PayGroup` object with the given `id`.{/* BEGIN_HRIS_PAYGROUP_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA92XbW/aOhTHvwrySxSSUsa2Ik0TJeWpI80g3K2aqujgHILBiYPttA3TvvsUHjp6bzXdboFVe2nn+G+fn/8+dr4SChpDITPSIDPJFDFIJALkpEFcyDpSpAkxCCTMgQi3Mf7tKTGISpNESI1BmyEPVFfilDSIFaEMsZLGbMowsPJwi8UaQwmaiVhZD8Mq0/U4YhDO4gUGTUpFGuufCW0CK7CJ/Fcz/6w0MUgCSumZFGk4G+IyRfVTzXw9HCOMNfBKABqsvfEVuRF4qi9feYAcNQY2aLBRI81T3M410zpRDcuaIU/M9bxmgLcWxhZIzShHZdVrZ6dvzuqVrcp69vd+yN9Vy/PlREzelP2Qch/S8sCj947Xu3Pm4Sun9ereWY3rzmqxcuaLk7IfQnngDepX3nXtym5Wr54I8EevP5/9c26f950yXV3UnPn1nePR6sCji8mqV+t36F2/+/HeWV2fDuxxzfEu6v2OqF61hmrQGopB0zSJQfZ3kjS+fN3v2Bqkabul4dh5HNyLIMQ9KJt9gIRVknTCGTVVzYQIViKGO2VSEVkRBgyspu36w7Hjj5YpSDSTONxBZyJ+IE4a5MLpNp3Whf14+5u3wDhMOJKGlin+x7Ok8YVIjIRGP2dPjP2Wn4Ce/ehiAbnJG8uUSQxckBChRplr3HwzniTBOYOYYrc1KIaGy0FPhYy6w520rw4HBqOEiyw/GLnTE8j8MK8Gfpxn90wULVxBHGOpOyyGxFavcvD0EZ9I3jigaWzIpkJSLNYxO9XjG+WQrNoS1UwjRMXAepA7ZLnZ2eq4pDoYo2S0NGp7bjGwwo2ir6Y62VYhP+rX7k9644Mfx/9nuF+glCotij14a8kdH5aL/U3FqjcS/BaDYpExtRY9CKcjsrnEBRQDZoELOPxFf+yS5ELWgkQDiwuyD2R0o3ckVj+q0C+kzgVlOiss843c9t7yP4hQ+B86UbUdxC+u3DyT1ajplkYppahUG6gWUhUD7bHmI3Ln9LMI2yfmPPlTb6XnnyZPMgd1MWg8yWLUL844v0FnfNkpubKgq3182TlGhSnWHzmBIUKQFc3ADxG6b5fu3/Vn8UnIRQBZsQ+bTxvRF/I8/j1qN9++Ax3JQaA6FAAA" /></Footer>{/* END_HRIS_PAYGROUP_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_payGroups
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayGroup'
+components:
+  schemas:
+    PaginatedPayGroupList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PayGroup'
+      title: PaginatedPayGroupList
+    PayGroupFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: PayGroupFieldMappings
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    PayGroup:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        pay_group_name:
+          type:
+          - string
+          - 'null'
+          description: The pay group name.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/PayGroupFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The PayGroup Object
+
+        ### Description
+
+        The `PayGroup` object is used to represent a subset of employees that are put together for payroll processing purposes.
+
+
+        ### Usage Example
+
+        Fetch from the `LIST PayGroup` endpoint and filter by `ID` to show all pay group information.'
+      title: PayGroup
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

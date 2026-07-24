@@ -1,0 +1,839 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_notes API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_notes
+paths:
+  /crm/v1/notes:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Note` objects.{/* BEGIN_CRM_NOTE_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+2Y8W/aOBTH/xXkH1Eg1zK6a6RpYsANekrag2x33VRFD+cRDE7s2k5pmfa/nxIItF1VbTp3Rbf+Fjv214+Pv3l+5guhYDAR6oZ4hKqUOCQVMXLikUAYJA4ByQJIcf06ujokDtG5lEIZjP9gyGM9UDglHnFTVAk28oxNGcYuVanLMoOJAsNEpt3trMa0nEYcwlm2wLhDqcgz84jOelwD1gPvNbXLmTbEIRK0NjMl8mQ2wssc9WOSRTQcU8wM8EYMBtxb0xtqPf+hviLuGDkajHtgoIcGafEDN0vNjJHac90Zctksl23GeOVi5oIyjHLUbrt1fPj6uN3YqJSrv40S/uagPr+ciMnrepRQHkFe90N6HYTDZTBPXgXdV9fB6kM7WC1WwXzxWz1KoO6Hfvs0PG+d9joHpw8MiMZH/xx/fNd7dxLU6arfCubnyyCkB35IF5PVsHXyni5PBn9dB6vzQ7/3oRWE/fbJe3Fw2h1pvzsSfqfZJA65vY/E+/zldsfGHB1KkYu7Y4cpJHiLyXoXQLKGzCec0aZuNSGFlchgqZtUpG6KMQP3jIOZCpVCqRnpyxwUNmWWVOiZyLbciUf6waATdPu9ux7oXAHjMOFIPKNy/Ma2xPtMqMgMZoV5RPkuz5i5KVrLDBVxiMJUGIyoQjAYR2B2fcWu3W1FEsxs18Xi3XMu40rgoui8zJnC+AwUpGhQFbFcfHUe5Dqdsk1QFshWak/JdPNZEqekC7R6eojzf+T7gyy7IHXO0a5JN6LPjnJ/LNvlQtuGXEg25/KnI94fqELKMhSbVEvNJ8G6jwgH+WQshbHDcJBPtBSmSqTPYE3rX/+2LLNKfZhplswMt3SCbeWe8QjbG0f/iSDtpoQFgnwh6xGfUSW0mJpa7yaDlFFdax21a2PgqO0Sr/RbR+1S/fnoZ6UZFd/j0iLIjZ4h53a2oFJ7sqvFfcI/t9w9YxJjxa4s12Jb2UcOvaATDj/2f9UjryDE2To6G+AruX25te1PPigz5lQoatnjO91HYP/aJh/nCajuyLcLXheqxR+NL1a/xztESJdCLWrWmVfKUXfk/5/uM3Z8/gmzGPWiNrZWdlTcN8rR70tzGIZ/v6T1HXMxE/Z9vhIz8V2pJXiSxL5f5fXF138BX3TJEPsZAAA=" /></Footer>{/* END_CRM_NOTE_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_notes
+      parameters:
+      - name: account_id
+        in: query
+        description: If provided, will only return notes with this account.
+        required: false
+        schema:
+          type: string
+      - name: contact_id
+        in: query
+        description: If provided, will only return notes with this contact.
+        required: false
+        schema:
+          type: string
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/NotesGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_fields
+        in: query
+        description: Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: opportunity_id
+        in: query
+        description: If provided, will only return notes with this opportunity.
+        required: false
+        schema:
+          type: string
+      - name: owner_id
+        in: query
+        description: If provided, will only return notes with this owner.
+        required: false
+        schema:
+          type: string
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedNoteList'
+    post:
+      operationId: create
+      summary: Create
+      description: Creates a `Note` object with the given values.{/* BEGIN_CRM_NOTE_CREATE_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST" data="H4sIAAAAAAAAA92UbW/aMBDHv4tfopCMUjY10jRRYAUkTNem1aqqig77CAYnNn6AlqrffQpQYGvXF1OnSXvne/qfc79zHgkDh5kyDyQmzOQkILniKElMqHJIAgJaUMhxE04XRyQg1mutjEP+VaDktmtwTGIS5WgyrPpCjAXyiJk8EoXDzIATqrDRrqo6XpeRgEhRzJA3GVO+cG/obPKqsEn8xbSRFNaRgGiw1k2M8tnkAuce7VuS5W0k5lg4kFUODqKD8qrZ1L/mK+/NUaJD3gYHbXTIyg/ctpo4p20cRROUOly3DTkuIiwiME4wiTZq1E+OPp00qluVdfcvaSY/1yrT+UiNPlXSjMkUfGWQsHua9JZ0mh3T1vE9XV016Gq2otPZh0qaQWWQDBrD5KY+bDdrw1cS0suP30+uT9unfVphq06dTm+WNGG1QcJmo1Wv3j9jy3732z1d3RwN2ld1mnQa/TNVG7Yu7KB1oQbNMCQBOeRI4tvHQ8d2Obp+dKlVieEg1sshw4OhbDCAFlXtR1Kw0NZDyGGlCljakKk8ypELiLp+ZLVyqZ17MBhOdfY8dKGK3cRJTDq026StTvtn+s0FCAkjiSR2xuOLhSXxLdkuDwkIU4UD9nzCtU+t830h3ENpLQs0JCAGc+UwZQbBIU/B7X2C789e8+f4Xemce2GQn4OBHB2adft9q23R5k2Eh1bKJFj7ImUB0iO5ewpew3AuNHIjFvg+IM4luLEy+U72DRa0mfSuO/+cxO7n8vfJ/IbBJUi0Y2XYO0PY64a6+M8piP3YUl1GSq2XztAJJ8sx//Erunv6AZjUiHcDBwAA" /></Footer>{/* END_CRM_NOTE_CREATE_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_notes
+      parameters:
+      - name: is_debug_mode
+        in: query
+        description: Whether to include debug fields (such as log file links) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: run_async
+        in: query
+        description: Whether or not third-party updates should be run asynchronously.
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NoteResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NoteEndpointRequest'
+  /crm/v1/notes/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `Note` object with the given `id`.{/* BEGIN_CRM_NOTE_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+2Y8W/aOBTH/xXkH1Eg1zK6a6RpYsANekrag2x33VRFD+cRDE7s2k5pmfa/nxIItF1VbTp3Rbf+Fjv214+Pv3l+5guhYDAR6oZ4hKqUOCQVMXLikUAYJA4ByQJIcf06ujokDtG5lEIZjP9gyGM9UDglHnFTVAk28oxNGcYuVanLMoOJAsNEpt3trMa0nEYcwlm2wLhDqcgz84jOelwD1gPvNbXLmTbEIRK0NjMl8mQ2wssc9WOSRTQcU8wM8EYMBtxb0xtqPf+hviLuGDkajHtgoIcGafEDN0vNjJHac90Zctksl23GeOVi5oIyjHLUbrt1fPj6uN3YqJSrv40S/uagPr+ciMnrepRQHkFe90N6HYTDZTBPXgXdV9fB6kM7WC1WwXzxWz1KoO6Hfvs0PG+d9joHpw8MiMZH/xx/fNd7dxLU6arfCubnyyCkB35IF5PVsHXyni5PBn9dB6vzQ7/3oRWE/fbJe3Fw2h1pvzsSfqfZJA65vY/E+/zldsfGHB1KkYu7Y4cpJHiLyXoXQLKGzCec0aZuNSGFlchgqZtUpG6KMQP3jIOZCpVCqRnpyxwUNmWWVOiZyLbciUf6waATdPu9ux7oXAHjMOFIPKNy/Ma2xPtMqMgMZoV5RPkuz5i5KVrLDBVxiMJUGIyoQjAYR2B2fcWu3W1FEsxs18Xi3XMu40rgoui8zJnC+AwUpGhQFbFcfHUe5Dqdsk1QFshWak/JdPNZEqekC7R6eojzf+T7gyy7IHXO0a5JN6LPjnJ/LNvlQtuGXEg25/KnI94fqELKMhSbVEvNJ8G6jwgH+WQshbHDcJBPtBSmSqTPYE3rX/+2LLNKfZhplswMt3SCbeWe8QjbG0f/iSDtpoQFgnwh6xGfUSW0mJpa7yaDlFFdax21a2PgqO0Sr/RbR+1S/fnoZ6UZFd/j0iLIjZ4h53a2oFJ7sqvFfcI/t9w9YxJjxa4s12Jb2UcOvaATDj/2f9UjryDE2To6G+AruX25te1PPigz5lQoatnjO91HYP/aJh/nCajuyLcLXheqxR+NL1a/xztESJdCLWrWmVfKUXfk/5/uM3Z8/gmzGPWiNrZWdlTcN8rR70tzGIZ/v6T1HXMxE/Z9vhIz8V2pJXiSxL5f5fXF138BX3TJEPsZAAA=" /></Footer>{/* END_CRM_NOTE_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_notes
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/NotesIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_fields
+        in: query
+        description: Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+  /crm/v1/notes/meta/post:
+    get:
+      operationId: meta-post-retrieve
+      summary: Meta Post Retrieve
+      description: Returns metadata for `Note` POSTs.{/* BEGIN_CRM_NOTE_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+2Y8W/aOBTH/xXkH1Eg1zK6a6RpYsANekrag2x33VRFD+cRDE7s2k5pmfa/nxIItF1VbTp3Rbf+Fjv214+Pv3l+5guhYDAR6oZ4hKqUOCQVMXLikUAYJA4ByQJIcf06ujokDtG5lEIZjP9gyGM9UDglHnFTVAk28oxNGcYuVanLMoOJAsNEpt3trMa0nEYcwlm2wLhDqcgz84jOelwD1gPvNbXLmTbEIRK0NjMl8mQ2wssc9WOSRTQcU8wM8EYMBtxb0xtqPf+hviLuGDkajHtgoIcGafEDN0vNjJHac90Zctksl23GeOVi5oIyjHLUbrt1fPj6uN3YqJSrv40S/uagPr+ciMnrepRQHkFe90N6HYTDZTBPXgXdV9fB6kM7WC1WwXzxWz1KoO6Hfvs0PG+d9joHpw8MiMZH/xx/fNd7dxLU6arfCubnyyCkB35IF5PVsHXyni5PBn9dB6vzQ7/3oRWE/fbJe3Fw2h1pvzsSfqfZJA65vY/E+/zldsfGHB1KkYu7Y4cpJHiLyXoXQLKGzCec0aZuNSGFlchgqZtUpG6KMQP3jIOZCpVCqRnpyxwUNmWWVOiZyLbciUf6waATdPu9ux7oXAHjMOFIPKNy/Ma2xPtMqMgMZoV5RPkuz5i5KVrLDBVxiMJUGIyoQjAYR2B2fcWu3W1FEsxs18Xi3XMu40rgoui8zJnC+AwUpGhQFbFcfHUe5Dqdsk1QFshWak/JdPNZEqekC7R6eojzf+T7gyy7IHXO0a5JN6LPjnJ/LNvlQtuGXEg25/KnI94fqELKMhSbVEvNJ8G6jwgH+WQshbHDcJBPtBSmSqTPYE3rX/+2LLNKfZhplswMt3SCbeWe8QjbG0f/iSDtpoQFgnwh6xGfUSW0mJpa7yaDlFFdax21a2PgqO0Sr/RbR+1S/fnoZ6UZFd/j0iLIjZ4h53a2oFJ7sqvFfcI/t9w9YxJjxa4s12Jb2UcOvaATDj/2f9UjryDE2To6G+AruX25te1PPigz5lQoatnjO91HYP/aJh/nCajuyLcLXheqxR+NL1a/xztESJdCLWrWmVfKUXfk/5/uM3Z8/gmzGPWiNrZWdlTcN8rR70tzGIZ/v6T1HXMxE/Z9vhIz8V2pJXiSxL5f5fXF138BX3TJEPsZAAA=" /></Footer>{/* END_CRM_NOTE_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_notes
+      parameters:
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaResponse'
+  /crm/v1/notes/remote-field-classes:
+    get:
+      operationId: remote-field-classes-list
+      summary: Remote Field Classes List
+      description: Returns a list of `RemoteFieldClass` objects.{/* BEGIN_CRM_NOTE_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+2Y8W/aOBTH/xXkH1Eg1zK6a6RpYsANekrag2x33VRFD+cRDE7s2k5pmfa/nxIItF1VbTp3Rbf+Fjv214+Pv3l+5guhYDAR6oZ4hKqUOCQVMXLikUAYJA4ByQJIcf06ujokDtG5lEIZjP9gyGM9UDglHnFTVAk28oxNGcYuVanLMoOJAsNEpt3trMa0nEYcwlm2wLhDqcgz84jOelwD1gPvNbXLmTbEIRK0NjMl8mQ2wssc9WOSRTQcU8wM8EYMBtxb0xtqPf+hviLuGDkajHtgoIcGafEDN0vNjJHac90Zctksl23GeOVi5oIyjHLUbrt1fPj6uN3YqJSrv40S/uagPr+ciMnrepRQHkFe90N6HYTDZTBPXgXdV9fB6kM7WC1WwXzxWz1KoO6Hfvs0PG+d9joHpw8MiMZH/xx/fNd7dxLU6arfCubnyyCkB35IF5PVsHXyni5PBn9dB6vzQ7/3oRWE/fbJe3Fw2h1pvzsSfqfZJA65vY/E+/zldsfGHB1KkYu7Y4cpJHiLyXoXQLKGzCec0aZuNSGFlchgqZtUpG6KMQP3jIOZCpVCqRnpyxwUNmWWVOiZyLbciUf6waATdPu9ux7oXAHjMOFIPKNy/Ma2xPtMqMgMZoV5RPkuz5i5KVrLDBVxiMJUGIyoQjAYR2B2fcWu3W1FEsxs18Xi3XMu40rgoui8zJnC+AwUpGhQFbFcfHUe5Dqdsk1QFshWak/JdPNZEqekC7R6eojzf+T7gyy7IHXO0a5JN6LPjnJ/LNvlQtuGXEg25/KnI94fqELKMhSbVEvNJ8G6jwgH+WQshbHDcJBPtBSmSqTPYE3rX/+2LLNKfZhplswMt3SCbeWe8QjbG0f/iSDtpoQFgnwh6xGfUSW0mJpa7yaDlFFdax21a2PgqO0Sr/RbR+1S/fnoZ6UZFd/j0iLIjZ4h53a2oFJ7sqvFfcI/t9w9YxJjxa4s12Jb2UcOvaATDj/2f9UjryDE2To6G+AruX25te1PPigz5lQoatnjO91HYP/aJh/nCajuyLcLXheqxR+NL1a/xztESJdCLWrWmVfKUXfk/5/uM3Z8/gmzGPWiNrZWdlTcN8rR70tzGIZ/v6T1HXMxE/Z9vhIz8V2pJXiSxL5f5fXF138BX3TJEPsZAAA=" /></Footer>{/* END_CRM_NOTE_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_notes
+      parameters:
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_fields
+        in: query
+        description: Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: is_common_model_field
+        in: query
+        description: If provided, will only return remote field classes with this is_common_model_field value
+        required: false
+        schema:
+          type: boolean
+      - name: is_custom
+        in: query
+        description: If provided, will only return remote fields classes with this is_custom value
+        required: false
+        schema:
+          type: boolean
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRemoteFieldClassList'
+components:
+  schemas:
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    Note:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        owner:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The note's owner.
+        content:
+          type:
+          - string
+          - 'null'
+          description: The note's content.
+        contact:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The note's contact.
+        account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The note's account.
+        opportunity:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The note's opportunity.
+        note_url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The note's URL in the remote system.
+        remote_updated_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's lead was updated.
+        remote_created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's lead was created.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/NoteFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteField'
+      description: '# The Note Object
+
+        ### Description
+
+        The `Note` object is used to represent a note on another object.
+
+        ### Usage Example
+
+        TODO'
+      title: Note
+    RemoteFieldRequest:
+      type: object
+      properties:
+        remote_field_class:
+          type: string
+          format: uuid
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteFieldRequest
+    ItemTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemTypeEnum
+    ItemFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemFormatEnum
+    NoteFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: NoteFieldMappings
+    NotesGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - account
+      - contact
+      - opportunity
+      - owner
+      title: NotesGetParametersExpandSchemaItems
+    NoteEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/NoteRequest'
+      required:
+      - model
+      title: NoteEndpointRequest
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    NoteResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/Note'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: NoteResponse
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    PaginatedRemoteFieldClassList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldClass'
+      title: PaginatedRemoteFieldClassList
+    NotesIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - account
+      - contact
+      - opportunity
+      - owner
+      title: NotesIdGetParametersExpandSchemaItems
+    ItemSchema:
+      type: object
+      properties:
+        item_type:
+          $ref: '#/components/schemas/ItemTypeEnum'
+        item_format:
+          $ref: '#/components/schemas/ItemFormatEnum'
+        item_choices:
+          type: array
+          items:
+            type: string
+      title: ItemSchema
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    RemoteField:
+      type: object
+      properties:
+        remote_field_class:
+          $ref: '#/components/schemas/RemoteFieldClass'
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteField
+    RemoteFieldClass:
+      type: object
+      properties:
+        id:
+          type: string
+        display_name:
+          type: string
+        remote_key_name:
+          type: string
+        description:
+          type: string
+        is_custom:
+          type: boolean
+        is_common_model_field:
+          type: boolean
+        is_required:
+          type: boolean
+        field_type:
+          $ref: '#/components/schemas/FieldTypeEnum'
+        field_format:
+          $ref: '#/components/schemas/FieldFormatEnum'
+        field_choices:
+          type: array
+          items:
+            type: string
+        item_schema:
+          $ref: '#/components/schemas/ItemSchema'
+      title: RemoteFieldClass
+    FieldFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldFormatEnum
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    PaginatedNoteList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Note'
+      title: PaginatedNoteList
+    NoteRequest:
+      type: object
+      properties:
+        owner:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The note's owner.
+        content:
+          type:
+          - string
+          - 'null'
+          description: The note's content.
+        contact:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The note's contact.
+        account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The note's account.
+        opportunity:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The note's opportunity.
+        note_url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The note's URL in the remote system.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldRequest'
+      description: '# The Note Object
+
+        ### Description
+
+        The `Note` object is used to represent a note on another object.
+
+        ### Usage Example
+
+        TODO'
+      title: NoteRequest
+    FieldTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldTypeEnum
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

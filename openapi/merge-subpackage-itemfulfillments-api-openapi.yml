@@ -1,0 +1,1166 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_itemFulfillments API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_itemFulfillments
+paths:
+  /accounting/v1/item-fulfillments:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `ItemFulfillment` objects.{/* BEGIN_ACCOUNTING_ITEMFULFILLMENT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA41UbU8aQRD+L/uRHHdFpMZLmgYBFVOWVrGpMeYy7A3Hwr4c+yKK8b83CxcLFmq/3c0+88w8z87sC2HgsNDmmaQEGNNeOa4KEhGpcxQkJX2H8tyLCRdConIkIlByChJ3ErLHIxIR68tSG4f5OUeR20uDE5KSRKIpsO4Vn3DMkz9JCVcOCwOOa2WTt+T6ZJ1NIiK4mmPe3iR8TLeB16vIu1+bCG5D+yVY66ZG+2J6jQuP9j+YQ28Cg34Q9RwcJFssdbOh2RcLKnIU6DDvgoMuOmRBblVx6lxp0ySZoijjdfU4x8cEVQLGcSbQJq3m6dHJaatesayrf80K8aVRmy3GenxSywomMvC1wYg90VF/SWfFMe0cP9HVbYuu5is6m3+qZQXUBqNBazi6aw677cZwDyC7+fzr9OdZ9+yK1tiq16SzuyUdscZgxObjVb95dcGWV5c/nujq7mjQvW3SUa91daEbw861HXSu9aAdxyQi27dK0vuX7UA1OBTdjecOd9F9CQVuubK5Dih5vfRjwVlsmzFIWGkFSxszLROJOYeEorOBLbMLDwbjcj3Aa8O4Vm+ek5T06GWbdnrd3TFoPwIXMBZIUmc8/jXHJL1/vwbfuMKYO5QkOniUTXbWZh9svWSZ9zw/AFh4UI675wPHBqV2mIWZ+BiRleCm/4Yd7MOCQJtpk6PJBFd4AOYMsHl4DqpXhWNYgH1Ir/jCh4KoXFg3QyLCtCxBBa3MW6flOrhlYlARKocGAq9EqUlEqt6ZQXCYZxDM3jVmjwnbgqtvXwb+imBLMHkIkIXnBvPvYECiQxOG4uH14fU3Pi8E0EEFAAA=" /></Footer>{/* END_ACCOUNTING_ITEMFULFILLMENT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_itemFulfillments
+      parameters:
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemFulfillmentsGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_fields
+        in: query
+        description: Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_fields
+        in: query
+        description: Deprecated. Use show_enum_origins.
+        required: false
+        schema:
+          $ref: '#/components/schemas/ItemFulfillmentsGetParametersRemoteFields'
+      - name: show_enum_origins
+        in: query
+        description: A comma separated list of enum field names for which you'd like the original values to be returned, instead of Merge's normalized enum values. [Learn more](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+        required: false
+        schema:
+          $ref: '#/components/schemas/ItemFulfillmentsGetParametersShowEnumOrigins'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedItemFulfillmentList'
+    post:
+      operationId: create
+      summary: Create
+      description: Creates an `ItemFulfillment` object with the given values.{/* BEGIN_ACCOUNTING_ITEMFULFILLMENT_CREATE_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST" data="H4sIAAAAAAAAA41TbW/aMBD+L/cRhWSUsqqRpokCbUHCbC2dVlVVdNhHMNhxsJ3Spup/nwJRC1un9pvv/DzPvT8DR0+psU8QA3JuiszLLIUAtBGkIIahJ31eqLlUSlPmIQDMJUNNB4Tk4QgCcEWeG+tJnEtSwl1amkMMkSabUrPI5FySiN5Ikcw8pRa9NJmLXsnN+ZYNASiZrUh0d4SP5XbwZu35y3SRkq5KP0fn/MKaIl1c0bog9wnlKjdFVf2omgI9RnsqTbuTec9XVSFIkSfRR4998sSrcuuIC+9zF0fRglQebqOHgh4iyiK0XnJFLuq0T49OTjvNWmUb/XuSqm+txnI9M7OTRpJylWDRGE/5I5sON2yZHrPe8SMrbzqsXJVsufrSSFJsjKfjzmR62570u63JO4Dk+uvv019n/bMRa/By0GbL2w2b8tZ4ylezctgeXfDN6PLnIytvj8b9mzabDjqjC9Oa9K7cuHdlxt0whAD2pwrx3fO+o14cRv66kJ4O0UONKe11ZTcOzGUzL2ZK8tC1Q9RYmgw3LuRGR5qExIiRd5Va4tYFWgrz7QJvGyZN9tpziGHALrusN+gfrkH3AaXCmSKIvS3onz2G+A640TlmTxAAL5w3miwEMH+7i0TgthwlM6qGrkkbCMCSNp4Sbgk9iQSrBax9Ury9i7yi1/8OFbnEWEEW7ivIupCWxA+0qMmT3eVTZxHWCrubObASrtDVZ0SHX/8BfgKyn9yB9bH+/cv9yx99CBpicAQAAA==" /></Footer>{/* END_ACCOUNTING_ITEMFULFILLMENT_CREATE_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_itemFulfillments
+      parameters:
+      - name: is_debug_mode
+        in: query
+        description: Whether to include debug fields (such as log file links) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: run_async
+        in: query
+        description: Whether or not third-party updates should be run asynchronously.
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ItemFulfillmentResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ItemFulfillmentEndpointRequest'
+  /accounting/v1/item-fulfillments/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns an `ItemFulfillment` object with the given `id`.{/* BEGIN_ACCOUNTING_ITEMFULFILLMENT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA41UbU8aQRD+L/uRHHdFpMZLmgYBFVOWVrGpMeYy7A3Hwr4c+yKK8b83CxcLFmq/3c0+88w8z87sC2HgsNDmmaQEGNNeOa4KEhGpcxQkJX2H8tyLCRdConIkIlByChJ3ErLHIxIR68tSG4f5OUeR20uDE5KSRKIpsO4Vn3DMkz9JCVcOCwOOa2WTt+T6ZJ1NIiK4mmPe3iR8TLeB16vIu1+bCG5D+yVY66ZG+2J6jQuP9j+YQ28Cg34Q9RwcJFssdbOh2RcLKnIU6DDvgoMuOmRBblVx6lxp0ySZoijjdfU4x8cEVQLGcSbQJq3m6dHJaatesayrf80K8aVRmy3GenxSywomMvC1wYg90VF/SWfFMe0cP9HVbYuu5is6m3+qZQXUBqNBazi6aw677cZwDyC7+fzr9OdZ9+yK1tiq16SzuyUdscZgxObjVb95dcGWV5c/nujq7mjQvW3SUa91daEbw861HXSu9aAdxyQi27dK0vuX7UA1OBTdjecOd9F9CQVuubK5Dih5vfRjwVlsmzFIWGkFSxszLROJOYeEorOBLbMLDwbjcj3Aa8O4Vm+ek5T06GWbdnrd3TFoPwIXMBZIUmc8/jXHJL1/vwbfuMKYO5QkOniUTXbWZh9svWSZ9zw/AFh4UI675wPHBqV2mIWZ+BiRleCm/4Yd7MOCQJtpk6PJBFd4AOYMsHl4DqpXhWNYgH1Ir/jCh4KoXFg3QyLCtCxBBa3MW6flOrhlYlARKocGAq9EqUlEqt6ZQXCYZxDM3jVmjwnbgqtvXwb+imBLMHkIkIXnBvPvYECiQxOG4uH14fU3Pi8E0EEFAAA=" /></Footer>{/* END_ACCOUNTING_ITEMFULFILLMENT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_itemFulfillments
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemFulfillmentsIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_fields
+        in: query
+        description: Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: remote_fields
+        in: query
+        description: Deprecated. Use show_enum_origins.
+        required: false
+        schema:
+          $ref: '#/components/schemas/ItemFulfillmentsIdGetParametersRemoteFields'
+      - name: show_enum_origins
+        in: query
+        description: A comma separated list of enum field names for which you'd like the original values to be returned, instead of Merge's normalized enum values. [Learn more](https://help.merge.dev/en/articles/8950958-show_enum_origins-query-parameter)
+        required: false
+        schema:
+          $ref: '#/components/schemas/ItemFulfillmentsIdGetParametersShowEnumOrigins'
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ItemFulfillment'
+  /accounting/v1/item-fulfillments/lines/remote-field-classes:
+    get:
+      operationId: lines-remote-field-classes-list
+      summary: Lines Remote Field Classes List
+      description: Returns a list of `RemoteFieldClass` objects.{/* BEGIN_ACCOUNTING_ITEMFULFILLMENT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA41UbU8aQRD+L/uRHHdFpMZLmgYBFVOWVrGpMeYy7A3Hwr4c+yKK8b83CxcLFmq/3c0+88w8z87sC2HgsNDmmaQEGNNeOa4KEhGpcxQkJX2H8tyLCRdConIkIlByChJ3ErLHIxIR68tSG4f5OUeR20uDE5KSRKIpsO4Vn3DMkz9JCVcOCwOOa2WTt+T6ZJ1NIiK4mmPe3iR8TLeB16vIu1+bCG5D+yVY66ZG+2J6jQuP9j+YQ28Cg34Q9RwcJFssdbOh2RcLKnIU6DDvgoMuOmRBblVx6lxp0ySZoijjdfU4x8cEVQLGcSbQJq3m6dHJaatesayrf80K8aVRmy3GenxSywomMvC1wYg90VF/SWfFMe0cP9HVbYuu5is6m3+qZQXUBqNBazi6aw677cZwDyC7+fzr9OdZ9+yK1tiq16SzuyUdscZgxObjVb95dcGWV5c/nujq7mjQvW3SUa91daEbw861HXSu9aAdxyQi27dK0vuX7UA1OBTdjecOd9F9CQVuubK5Dih5vfRjwVlsmzFIWGkFSxszLROJOYeEorOBLbMLDwbjcj3Aa8O4Vm+ek5T06GWbdnrd3TFoPwIXMBZIUmc8/jXHJL1/vwbfuMKYO5QkOniUTXbWZh9svWSZ9zw/AFh4UI675wPHBqV2mIWZ+BiRleCm/4Yd7MOCQJtpk6PJBFd4AOYMsHl4DqpXhWNYgH1Ir/jCh4KoXFg3QyLCtCxBBa3MW6flOrhlYlARKocGAq9EqUlEqt6ZQXCYZxDM3jVmjwnbgqtvXwb+imBLMHkIkIXnBvPvYECiQxOG4uH14fU3Pi8E0EEFAAA=" /></Footer>{/* END_ACCOUNTING_ITEMFULFILLMENT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_itemFulfillments
+      parameters:
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: is_common_model_field
+        in: query
+        description: If provided, will only return remote field classes with this is_common_model_field value
+        required: false
+        schema:
+          type: boolean
+      - name: is_custom
+        in: query
+        description: If provided, will only return remote fields classes with this is_custom value
+        required: false
+        schema:
+          type: boolean
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRemoteFieldClassList'
+  /accounting/v1/item-fulfillments/remote-field-classes:
+    get:
+      operationId: remote-field-classes-list
+      summary: Remote Field Classes List
+      description: Returns a list of `RemoteFieldClass` objects.{/* BEGIN_ACCOUNTING_ITEMFULFILLMENT_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA41UbU8aQRD+L/uRHHdFpMZLmgYBFVOWVrGpMeYy7A3Hwr4c+yKK8b83CxcLFmq/3c0+88w8z87sC2HgsNDmmaQEGNNeOa4KEhGpcxQkJX2H8tyLCRdConIkIlByChJ3ErLHIxIR68tSG4f5OUeR20uDE5KSRKIpsO4Vn3DMkz9JCVcOCwOOa2WTt+T6ZJ1NIiK4mmPe3iR8TLeB16vIu1+bCG5D+yVY66ZG+2J6jQuP9j+YQ28Cg34Q9RwcJFssdbOh2RcLKnIU6DDvgoMuOmRBblVx6lxp0ySZoijjdfU4x8cEVQLGcSbQJq3m6dHJaatesayrf80K8aVRmy3GenxSywomMvC1wYg90VF/SWfFMe0cP9HVbYuu5is6m3+qZQXUBqNBazi6aw677cZwDyC7+fzr9OdZ9+yK1tiq16SzuyUdscZgxObjVb95dcGWV5c/nujq7mjQvW3SUa91daEbw861HXSu9aAdxyQi27dK0vuX7UA1OBTdjecOd9F9CQVuubK5Dih5vfRjwVlsmzFIWGkFSxszLROJOYeEorOBLbMLDwbjcj3Aa8O4Vm+ek5T06GWbdnrd3TFoPwIXMBZIUmc8/jXHJL1/vwbfuMKYO5QkOniUTXbWZh9svWSZ9zw/AFh4UI675wPHBqV2mIWZ+BiRleCm/4Yd7MOCQJtpk6PJBFd4AOYMsHl4DqpXhWNYgH1Ir/jCh4KoXFg3QyLCtCxBBa3MW6flOrhlYlARKocGAq9EqUlEqt6ZQXCYZxDM3jVmjwnbgqtvXwb+imBLMHkIkIXnBvPvYECiQxOG4uH14fU3Pi8E0EEFAAA=" /></Footer>{/* END_ACCOUNTING_ITEMFULFILLMENT_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_itemFulfillments
+      parameters:
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: is_common_model_field
+        in: query
+        description: If provided, will only return remote field classes with this is_common_model_field value
+        required: false
+        schema:
+          type: boolean
+      - name: is_custom
+        in: query
+        description: If provided, will only return remote fields classes with this is_custom value
+        required: false
+        schema:
+          type: boolean
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRemoteFieldClassList'
+  /accounting/v1/item-fulfillments/bulk:
+    post:
+      operationId: async-bulk-create
+      summary: Async Bulk Create
+      description: Creates multiple `ItemFulfillment` objects with the given values.{/* BEGIN_ACCOUNTING_ITEMFULFILLMENT_BULK_CREATE_SUPPORTED_FIELDS */}{/* END_ACCOUNTING_ITEMFULFILLMENT_BULK_CREATE_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_itemFulfillments
+      parameters:
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '202':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncBulkCreateResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ItemFulfillmentBulkRequest'
+  /accounting/v1/item-fulfillments/bulk/{batch_id}:
+    get:
+      operationId: batch-objects-list
+      summary: Batch Objects List
+      description: Returns the status and results of an `ItemFulfillment` bulk create batch.{/* BEGIN_ACCOUNTING_ITEMFULFILLMENT_BULK_FETCH_SUPPORTED_FIELDS */}{/* END_ACCOUNTING_ITEMFULFILLMENT_BULK_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_itemFulfillments
+      parameters:
+      - name: batch_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchObjectsResponse'
+components:
+  schemas:
+    ItemFulfillmentLineRequest:
+      type: object
+      properties:
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        item:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        sales_order_line:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        quantity:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The amount of item being delivered.
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: The dimensions or classification tags.
+        remote_created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's item fulfillment line item was created.
+        remote_updated_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's item fulfillment line item was updated.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldRequest'
+      description: '# The ItemFulfillmentLine Object
+
+        ### Description
+
+        The `ItemFulfillmentLine` object represents the specific quantity of a particular product or service that has actually been shipped or delivered against its corresponding order line.
+
+
+        ### Usage Example
+
+        Fetch from the `GET ItemFulfillment` endpoint and view a company''s item fulfillment lines.'
+      title: ItemFulfillmentLineRequest
+    ItemFulfillmentResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/ItemFulfillment'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: ItemFulfillmentResponse
+    ItemFulfillmentBulkRequest:
+      type: object
+      properties:
+        batch_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemFulfillmentBatchItemRequest'
+      required:
+      - batch_items
+      title: ItemFulfillmentBulkRequest
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    RemoteFieldRequest:
+      type: object
+      properties:
+        remote_field_class:
+          type: string
+          format: uuid
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteFieldRequest
+    PaginatedItemFulfillmentList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemFulfillment'
+      title: PaginatedItemFulfillmentList
+    BatchObjectsResponse:
+      type: object
+      properties:
+        batch_id:
+          type: string
+          format: uuid
+          description: The ID of the batch.
+        status:
+          $ref: '#/components/schemas/BatchObjectsResponseStatusEnum'
+          description: 'Possible overall statuses:
+
+
+            * `ENQUEUED` - The request has been received and a task has been enqueued for processing
+
+            * `IN_PROGRESS` - The enqueued task is being processed
+
+            * `PARTIAL_SUCCESS` - The task has been processed, but not all objects were written successfully
+
+            * `SUCCESS` - The task has been processed, and all objects were written successfully
+
+            * `FAILED` - The task has been processed, but ran into an error while processing
+
+            * `RATE_LIMITED` - The request was received but ran into rate limits while processing. The rate limited objects are being retried.'
+        total_count:
+          type: integer
+          description: The total number of objects in the batch.
+        objects:
+          type: array
+          items:
+            $ref: '#/components/schemas/BatchObject'
+      required:
+      - batch_id
+      - status
+      - total_count
+      - objects
+      description: Response serializer for GET bulk/{batch_id} - returns batch status and objects
+      title: BatchObjectsResponse
+    ItemTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemTypeEnum
+    ItemFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemFormatEnum
+    ItemFulfillmentsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - company
+      - customer
+      - lines
+      - sales_order
+      title: ItemFulfillmentsIdGetParametersExpandSchemaItems
+    ItemFulfillmentsIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - status
+      title: ItemFulfillmentsIdGetParametersRemoteFields
+    ItemFulfillmentBatchItemRequest:
+      type: object
+      properties:
+        item_id:
+          type: string
+          description: The third-party item ID for this model in the bulk create request
+        payload:
+          $ref: '#/components/schemas/ItemFulfillmentRequestRequest'
+      required:
+      - item_id
+      - payload
+      title: ItemFulfillmentBatchItemRequest
+    BatchObjectItemResponse:
+      type: object
+      properties:
+        merge_common_model_id:
+          type: string
+          format: uuid
+        error_message:
+          type: string
+      description: Response for individual items within a batch
+      title: BatchObjectItemResponse
+    ItemFulfillmentFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: ItemFulfillmentFieldMappings
+    ItemFulfillmentsGetParametersRemoteFields:
+      type: string
+      enum:
+      - status
+      title: ItemFulfillmentsGetParametersRemoteFields
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    AsyncBulkCreateResponse:
+      type: object
+      properties:
+        batch_id:
+          type: string
+          format: uuid
+          description: The ID of the batch.
+      required:
+      - batch_id
+      description: Response serializer for POST bulk create - returns only batch_id
+      title: AsyncBulkCreateResponse
+    ItemFulfillmentStatusEnum:
+      type: string
+      enum:
+      - DRAFT
+      - IN_PROGRESS
+      - SHIPPED
+      - CANCELLED
+      title: ItemFulfillmentStatusEnum
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    BatchObject:
+      type: object
+      properties:
+        item_id:
+          type: string
+        status:
+          $ref: '#/components/schemas/BatchObjectStatusEnum'
+          description: 'Possible per-object statuses:
+
+
+            * `PENDING` - This object has not been processed yet
+
+            * `SUCCESS` - This object was successfully POSTed
+
+            * `FAILURE` - This object was not successfully POSTed'
+        response:
+          $ref: '#/components/schemas/BatchObjectItemResponse'
+      required:
+      - item_id
+      - status
+      description: Individual batch object with status
+      title: BatchObject
+    ItemFulfillment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        sales_order:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The ID of the sales order that the item fulfillment originated from.
+        fulfillment_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date the fulfillment was created.
+        customer:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The customer associated with the item fulfillment.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The subsidiary associated with the fulfillment.
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/ItemFulfillmentStatusEnum'
+          - type: 'null'
+          description: The status of the item fulfillment.
+        memo:
+          type:
+          - string
+          - 'null'
+          description: Comment attached to the fulfillment.
+        lines:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemFulfillmentLine'
+        remote_created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's item fulfillment was created.
+        remote_updated_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's item fulfillment was updated.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/ItemFulfillmentFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteField'
+      description: '# The ItemFulfillment Object
+
+        ### Description
+
+        The `ItemFulfillment` object represents the recorded shipment or delivery of some or all items on an associated sales order.
+
+
+        ### Usage Example
+
+        Fetch from the `LIST ItemFulfillments` endpoint and view a company''s item fulfillments.'
+      title: ItemFulfillment
+    PaginatedRemoteFieldClassList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldClass'
+      title: PaginatedRemoteFieldClassList
+    BatchObjectStatusEnum:
+      type: string
+      enum:
+      - PENDING
+      - SUCCESS
+      - FAILURE
+      title: BatchObjectStatusEnum
+    ItemSchema:
+      type: object
+      properties:
+        item_type:
+          $ref: '#/components/schemas/ItemTypeEnum'
+        item_format:
+          $ref: '#/components/schemas/ItemFormatEnum'
+        item_choices:
+          type: array
+          items:
+            type: string
+      title: ItemSchema
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    RemoteFieldClass:
+      type: object
+      properties:
+        id:
+          type: string
+        display_name:
+          type: string
+        remote_key_name:
+          type: string
+        description:
+          type: string
+        is_custom:
+          type: boolean
+        is_common_model_field:
+          type: boolean
+        is_required:
+          type: boolean
+        field_type:
+          $ref: '#/components/schemas/FieldTypeEnum'
+        field_format:
+          $ref: '#/components/schemas/FieldFormatEnum'
+        field_choices:
+          type: array
+          items:
+            type: string
+        item_schema:
+          $ref: '#/components/schemas/ItemSchema'
+      title: RemoteFieldClass
+    RemoteField:
+      type: object
+      properties:
+        remote_field_class:
+          $ref: '#/components/schemas/RemoteFieldClass'
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteField
+    ItemFulfillmentEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/ItemFulfillmentRequestRequest'
+      required:
+      - model
+      title: ItemFulfillmentEndpointRequest
+    BatchObjectsResponseStatusEnum:
+      type: string
+      enum:
+      - ENQUEUED
+      - IN_PROGRESS
+      - PARTIAL_SUCCESS
+      - SUCCESS
+      - FAILED
+      - RATE_LIMITED
+      title: BatchObjectsResponseStatusEnum
+    ItemFulfillmentLine:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        item:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        sales_order_line:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        quantity:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The amount of item being delivered.
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: The dimensions or classification tags.
+        remote_created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's item fulfillment line item was created.
+        remote_updated_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's item fulfillment line item was updated.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteField'
+      description: '# The ItemFulfillmentLine Object
+
+        ### Description
+
+        The `ItemFulfillmentLine` object represents the specific quantity of a particular product or service that has actually been shipped or delivered against its corresponding order line.
+
+
+        ### Usage Example
+
+        Fetch from the `GET ItemFulfillment` endpoint and view a company''s item fulfillment lines.'
+      title: ItemFulfillmentLine
+    FieldFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldFormatEnum
+    ItemFulfillmentsGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - status
+      title: ItemFulfillmentsGetParametersShowEnumOrigins
+    ItemFulfillmentRequestRequest:
+      type: object
+      properties:
+        sales_order:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The ID of the sales order that the item fulfillment originated from.
+        fulfillment_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date the fulfillment was created.
+        customer:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The customer associated with the item fulfillment.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The subsidiary associated with the fulfillment.
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/ItemFulfillmentStatusEnum'
+          - type: 'null'
+          description: The status of the item fulfillment.
+        memo:
+          type:
+          - string
+          - 'null'
+          description: Comment attached to the fulfillment.
+        lines:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemFulfillmentLineRequest'
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldRequest'
+      description: '# The ItemFulfillment Object
+
+        ### Description
+
+        The `ItemFulfillment` object represents the recorded shipment or delivery of some or all items on an associated sales order.
+
+
+        ### Usage Example
+
+        Fetch from the `LIST ItemFulfillments` endpoint and view a company''s item fulfillments.'
+      title: ItemFulfillmentRequestRequest
+    ItemFulfillmentsIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - status
+      title: ItemFulfillmentsIdGetParametersShowEnumOrigins
+    ItemFulfillmentsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - company
+      - customer
+      - lines
+      - sales_order
+      title: ItemFulfillmentsGetParametersExpandSchemaItems
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    FieldTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldTypeEnum
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

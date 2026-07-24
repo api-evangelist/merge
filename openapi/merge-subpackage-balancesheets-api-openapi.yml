@@ -1,0 +1,686 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_balanceSheets API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_balanceSheets
+paths:
+  /accounting/v1/balance-sheets:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `BalanceSheet` objects.{/* BEGIN_ACCOUNTING_BALANCESHEET_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA81T708iMRD9Vy79SGD3ANFIcrnwS4Ucywl40RjTDN1hKXTbpe2CYvzfL7sQZT2MmkPvPvbNzJvpmzf3hIHFQOk7UiXAmIql5TIgeRIqHwWpkjoIkAwHE0RL8gQi7kGImWy6KJE8MXEUKW3RP+EofHOmcUyqxA1RB1iIJR9z9N2nIpdLi4EGy5U07mNxYZxWkzwRXM7Qr60LXqdbpxc2yLOncQU3yfgRGGMnWsXBpI/zGM0bmJPZBIYoLYiCDxbcLZaCXtPswpJf+CjQot8EC020yJLvbjpOrI1M1XUnKCIn7e74uHBRuqAtZwKNWykfl46OK4UNS9r9Ow3Et2JuOh+p0VGOBkxQiHPdIbv1hu2lNw0OvMbBrbe6qHir2cqbzr7maAC57rBb6Q2vyr1mrdjbkUAHh5fHv+rNesfLsVWr7E2vlt6QFbtDNhut2uXOKVt2zs5vvdVVqdu8KHvDVqVzqoq9Rt90G33VrTkOyZPtrZLq9f02sDHOiUYzqSs1S/TZCrdDCHBLl/VCIOKFKB4JzhxTdiCElZKwNA5ToRuiz8F94qODeQwa6Q8VKGcaJTZOleNKPopPqqTlndW8RquZ9UNtAVzASCCpWh3jH4Ym1WvSxwRpWwyd0fouqNkcxlaIgZnQsVBLaizY1DnZBC6ZCvGlqExkyiBK+6izUAQapaXcYpgNaAyVRZo45cUAjcBOslETj1Iyk4XtXfRslgWIOIFYrDVKdpdoDDZBJFoKxmDq++wYO3rrlHLT8yZ5z2Ou0f8JGkK0qBPBbx7yuxzkoR3EPG26B/94aE3CRk3qHieSH2qc9y5/ox3337aZd0p5HnM2S4/nS08KLvek6RNtYa0qvRiXDutHxY9W9zPP8rUbfL6yfdzYeog3XFcKBShRg0Wfgv3Lm7tErfbjjYRp44p/6Ab+vy37Mzd88/AbfmwN9/kJAAA=" /></Footer>{/* END_ACCOUNTING_BALANCESHEET_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_balanceSheets
+      parameters:
+      - name: company_id
+        in: query
+        description: If provided, will only return balance sheets for this company.
+        required: false
+        schema:
+          type: string
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/BalanceSheetsGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBalanceSheetList'
+  /accounting/v1/balance-sheets/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `BalanceSheet` object with the given `id`.{/* BEGIN_ACCOUNTING_BALANCESHEET_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA81T708iMRD9Vy79SGD3ANFIcrnwS4Ucywl40RjTDN1hKXTbpe2CYvzfL7sQZT2MmkPvPvbNzJvpmzf3hIHFQOk7UiXAmIql5TIgeRIqHwWpkjoIkAwHE0RL8gQi7kGImWy6KJE8MXEUKW3RP+EofHOmcUyqxA1RB1iIJR9z9N2nIpdLi4EGy5U07mNxYZxWkzwRXM7Qr60LXqdbpxc2yLOncQU3yfgRGGMnWsXBpI/zGM0bmJPZBIYoLYiCDxbcLZaCXtPswpJf+CjQot8EC020yJLvbjpOrI1M1XUnKCIn7e74uHBRuqAtZwKNWykfl46OK4UNS9r9Ow3Et2JuOh+p0VGOBkxQiHPdIbv1hu2lNw0OvMbBrbe6qHir2cqbzr7maAC57rBb6Q2vyr1mrdjbkUAHh5fHv+rNesfLsVWr7E2vlt6QFbtDNhut2uXOKVt2zs5vvdVVqdu8KHvDVqVzqoq9Rt90G33VrTkOyZPtrZLq9f02sDHOiUYzqSs1S/TZCrdDCHBLl/VCIOKFKB4JzhxTdiCElZKwNA5ToRuiz8F94qODeQwa6Q8VKGcaJTZOleNKPopPqqTlndW8RquZ9UNtAVzASCCpWh3jH4Ym1WvSxwRpWwyd0fouqNkcxlaIgZnQsVBLaizY1DnZBC6ZCvGlqExkyiBK+6izUAQapaXcYpgNaAyVRZo45cUAjcBOslETj1Iyk4XtXfRslgWIOIFYrDVKdpdoDDZBJFoKxmDq++wYO3rrlHLT8yZ5z2Ou0f8JGkK0qBPBbx7yuxzkoR3EPG26B/94aE3CRk3qHieSH2qc9y5/ox3337aZd0p5HnM2S4/nS08KLvek6RNtYa0qvRiXDutHxY9W9zPP8rUbfL6yfdzYeog3XFcKBShRg0Wfgv3Lm7tErfbjjYRp44p/6Ab+vy37Mzd88/AbfmwN9/kJAAA=" /></Footer>{/* END_ACCOUNTING_BALANCESHEET_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_balanceSheets
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/BalanceSheetsIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BalanceSheet'
+components:
+  schemas:
+    PaginatedBalanceSheetList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BalanceSheet'
+      title: PaginatedBalanceSheetList
+    TransactionCurrencyEnum:
+      type: string
+      enum:
+      - XUA
+      - AFN
+      - AFA
+      - ALL
+      - ALK
+      - DZD
+      - ADP
+      - AOA
+      - AOK
+      - AON
+      - AOR
+      - ARA
+      - ARS
+      - ARM
+      - ARP
+      - ARL
+      - AMD
+      - AWG
+      - AUD
+      - ATS
+      - AZN
+      - AZM
+      - BSD
+      - BHD
+      - BDT
+      - BBD
+      - BYN
+      - BYB
+      - BYR
+      - BEF
+      - BEC
+      - BEL
+      - BZD
+      - BMD
+      - BTN
+      - BOB
+      - BOL
+      - BOV
+      - BOP
+      - BAM
+      - BAD
+      - BAN
+      - BWP
+      - BRC
+      - BRZ
+      - BRE
+      - BRR
+      - BRN
+      - BRB
+      - BRL
+      - GBP
+      - BND
+      - BGL
+      - BGN
+      - BGO
+      - BGM
+      - BUK
+      - BIF
+      - XPF
+      - KHR
+      - CAD
+      - CVE
+      - KYD
+      - XAF
+      - CLE
+      - CLP
+      - CLF
+      - CNX
+      - CNY
+      - CNH
+      - COP
+      - COU
+      - KMF
+      - CDF
+      - CRC
+      - HRD
+      - HRK
+      - CUC
+      - CUP
+      - CYP
+      - CZK
+      - CSK
+      - DKK
+      - DJF
+      - DOP
+      - NLG
+      - XCD
+      - DDM
+      - ECS
+      - ECV
+      - EGP
+      - GQE
+      - ERN
+      - EEK
+      - ETB
+      - EUR
+      - XBA
+      - XEU
+      - XBB
+      - XBC
+      - XBD
+      - FKP
+      - FJD
+      - FIM
+      - FRF
+      - XFO
+      - XFU
+      - GMD
+      - GEK
+      - GEL
+      - DEM
+      - GHS
+      - GHC
+      - GIP
+      - XAU
+      - GRD
+      - GTQ
+      - GWP
+      - GNF
+      - GNS
+      - GYD
+      - HTG
+      - HNL
+      - HKD
+      - HUF
+      - IMP
+      - ISK
+      - ISJ
+      - INR
+      - IDR
+      - IRR
+      - IQD
+      - IEP
+      - ILS
+      - ILP
+      - ILR
+      - ITL
+      - JMD
+      - JPY
+      - JOD
+      - KZT
+      - KES
+      - KWD
+      - KGS
+      - LAK
+      - LVL
+      - LVR
+      - LBP
+      - LSL
+      - LRD
+      - LYD
+      - LTL
+      - LTT
+      - LUL
+      - LUC
+      - LUF
+      - MOP
+      - MKD
+      - MKN
+      - MGA
+      - MGF
+      - MWK
+      - MYR
+      - MVR
+      - MVP
+      - MLF
+      - MTL
+      - MTP
+      - MRU
+      - MRO
+      - MUR
+      - MXV
+      - MXN
+      - MXP
+      - MDC
+      - MDL
+      - MCF
+      - MNT
+      - MAD
+      - MAF
+      - MZE
+      - MZN
+      - MZM
+      - MMK
+      - NAD
+      - NPR
+      - ANG
+      - TWD
+      - NZD
+      - NIO
+      - NIC
+      - NGN
+      - KPW
+      - NOK
+      - OMR
+      - PKR
+      - XPD
+      - PAB
+      - PGK
+      - PYG
+      - PEI
+      - PEN
+      - PES
+      - PHP
+      - XPT
+      - PLN
+      - PLZ
+      - PTE
+      - GWE
+      - QAR
+      - XRE
+      - RHD
+      - RON
+      - ROL
+      - RUB
+      - RUR
+      - RWF
+      - SVC
+      - WST
+      - SAR
+      - RSD
+      - CSD
+      - SCR
+      - SLL
+      - XAG
+      - SGD
+      - SKK
+      - SIT
+      - SBD
+      - SOS
+      - ZAR
+      - ZAL
+      - KRH
+      - KRW
+      - KRO
+      - SSP
+      - SUR
+      - ESP
+      - ESA
+      - ESB
+      - XDR
+      - LKR
+      - SHP
+      - XSU
+      - SDD
+      - SDG
+      - SDP
+      - SRD
+      - SRG
+      - SZL
+      - SEK
+      - CHF
+      - SYP
+      - STN
+      - STD
+      - TVD
+      - TJR
+      - TJS
+      - TZS
+      - XTS
+      - THB
+      - XXX
+      - TPE
+      - TOP
+      - TTD
+      - TND
+      - TRY
+      - TRL
+      - TMT
+      - TMM
+      - USD
+      - USN
+      - USS
+      - UGX
+      - UGS
+      - UAH
+      - UAK
+      - AED
+      - UYW
+      - UYU
+      - UYP
+      - UYI
+      - UZS
+      - VUV
+      - VES
+      - VEB
+      - VEF
+      - VND
+      - VNN
+      - CHE
+      - CHW
+      - XOF
+      - YDD
+      - YER
+      - YUN
+      - YUD
+      - YUM
+      - YUR
+      - ZWN
+      - ZRN
+      - ZRZ
+      - ZMW
+      - ZMK
+      - ZWD
+      - ZWR
+      - ZWL
+      description: The currency code in ISO 4217 format.
+      title: TransactionCurrencyEnum
+    BalanceSheet:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The balance sheet's name.
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: The balance sheet's currency. The currency code in ISO 4217 format.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: '`Company` object for the given `BalanceSheet` object.'
+        date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The balance sheet's date. The balance sheet data will reflect the company's financial position this point in time.
+        net_assets:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The balance sheet's net assets.
+        assets:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportItem'
+        liabilities:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportItem'
+        equity:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportItem'
+        remote_generated_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The time that balance sheet was generated by the accounting system.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/BalanceSheetFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The BalanceSheet Object
+
+        ### Description
+
+        The `BalanceSheet` object shows a company’s assets, liabilities, and equity. Assets should be equal to liability and equity combined. This shows the company’s financial health at a specific point in time.
+
+
+        ### Usage Example
+
+        Fetch from the `LIST BalanceSheets` endpoint and view a company''s balance sheets.'
+      title: BalanceSheet
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    BalanceSheetsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - company
+      title: BalanceSheetsIdGetParametersExpandSchemaItems
+    ReportItem:
+      type: object
+      properties:
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The report item's name.
+        value:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The report item's value.
+        sub_items:
+          type: object
+          additionalProperties:
+            description: Any type
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the report item belongs to.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+      description: '# The ReportItem Object
+
+        ### Description
+
+        The `ReportItem` object is used to represent a report item for a Balance Sheet, Cash Flow Statement or Profit and Loss Report.
+
+
+        ### Usage Example
+
+        Fetch from the `GET BalanceSheet` endpoint and view the balance sheet''s report items.'
+      title: ReportItem
+    BalanceSheetFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: BalanceSheetFieldMappings
+    BalanceSheetsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - company
+      title: BalanceSheetsGetParametersExpandSchemaItems
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

@@ -1,0 +1,1192 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_candidates API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_candidates
+paths:
+  /ats/v1/candidates:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Candidate` objects.{/* BEGIN_ATS_CANDIDATE_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+1dbVPiOhv+K0w/OgirrrtnnXnmGd5UWEFXUY+7s9NJ0xuIpElNUxDOnP/+TGgr9Kz6UEihZc83GsuVkvvq/Z74l4GRhD4XE+PEQNIziobDbaDGiVFDzCY2kmAUDeSSDnIguMccHRpFw/NdlwsJ9ikBanvnAnrGiVF2QPRh32ekR8AuI+mVCZPQF0gSzrzyy7f2e7OvGUWDEjYEu4Ix95l8Bye4bx8FN/7jUv3Zk0bRcJHnyYHgfn9wDU8+eO9Bqqeh4ACTiO7bSKLywtf3RfD918bUc9tAQYJdRxLVQQJWPzCcaiCl652UywOgbmk2bcmGURlYGQlJMAWvfHz05fDzl+P9EGU2+3/NPv3Pwd7jk8Wtz3tmH1MT+XvtLn7udJvjzmP/Y6f28bkzvT3uTIfTzuPww57ZR3vtbvv4svtwdFmvHFy+coN58+nPL3fVerXV2cPTxlHn8WHc6eKDdhcPrWnzqHWGx63zb8+d6cNhu3571Ok2jltn/OCydu21a9e8XSmVjKKxKEfj5MdfiwMhOSquSwlGTN5IhIfx7zQd1IeFtQmkgVyy7/oWJbjkHZWQg6acobFXwtwpO2ATVI5jmjdPPhJgXvA+N8fV84e764vSo9uP5EE4exGGcWI0OueVTq1RjxOjMkKEIouCcSKFD79w2Tj5YTQcRGjFtgV4XgkvvAqxP4wQ9dXg1YAz6PiOBSJ28+J4dC8KflCwjkUDSYnwQHFQXYFCN1EAD2qkR4QnTaYWuGhQtPCZz0FcNY/JZhOpawEOl2BiAUiCbSI5H1NEi1+ZLpKD+RCxjZ/q4sknAuwrJJADUsGe/Pj5d/FVsXsDa6JJ2goqJuQj/9s9Go1LLntLyJ1Kt3nXSEvEMYmYcuKuRYJFQUVgr5HkVtAYhrp+5Nb8k+lyTxLW98IhX9AIT10uRTbMHRexSTLavUG1ZWhVNCSaPbAkkiosX1AvOdkmjkV1sU1hRXQbWcOzXs97h2lZUifrMOktsmBJRkSSGQHeZw5i5owzS3JHyUooeM4CZbQhRfby2XftOcBa9Bsh6QvQw78rimSPCycEzQnzFpk110nLKaCVVM6WCJKQGVXkWJyfX+uhRoS2aAtz5ui8b8NWMVh6ObMcP1ZRElUBMNXkEQVYO0aDlIW/GSUR+DIr8cOndMAF02RFBHdByIl50JyDmS+jh2fAQBA8HzkKyfQy8DF6oB3zffR7vzkxRaE4C9eAhU+k+smFGuW+rYdxVohvijm+iRW+6QXUuqnW3eZwlBM+adM/7/q52vmyEjdqle6NHhYopFio3vrYGT7xxhbtk8/Ik69WB5hUaT6RppZ5bbI0DWBOFNb6IX6NookuPzoKsQLMSD19OB+z4/pFKurpHzJ8UzLp5eNqlOPhmAtNGdgXuB1zQt8KURPmNvL8onEHQOphSehqmE3MmXnJ6CRntv/3jVZrXDAQnuQMCl1EgckLwnTpjjl2RrTHdvL56XqW29E9SWkmgAYLqNOsB6ChXd+iyvn/tMqkb6rR4cwgQxes4y/rkZC9dumOMEz0src+Upjmp0v0gPu9VNj7SrnwzZT8UuYp/Qi1jiY9LrBmTRGhprnKCcuzCdelgbzJzMfSuzAKtqZgc+awreinJ3avtKmQBuujPmhLv7zAbd/4vWFNEkhlsw0rDZdyTeWZGVR2JJCiz5qT9NMqFueUIokHQq9eDUHNoVOrDZpPOSHHMr0g26vEJZWrag1FRFOdLUKLBbL5kuqrqehXQoWVU9SLNhk4zk5Lo/Ya7hk4evXFGTjm8+gOfz04znQcu+0mtRWtEvFMV5BRgL+FYp3uRrQzAcAG3Pc0xUlzvCUTdb9L2+26enCBoctpxIRM3XpqZS3yFlrcKlQ5EnahctVMmcqQ08j/HAmL+6KgLXaMbE4IHJVF7Yez2v339i5EkqvSO6lkuAPC1+RgDgKwDCz/Rotfm40Jzq91dkKdX5sztIwUtzbl52/ufVzNvpBas61ZVTYV5G4melLZXLT56ndCjjRZjzAioVAVyPOuyUykGggT4UZGlfNPt7h1tNOcWY4g22iIWNvCt9B0qqsZLcCK9Uzef8PtetvOgM3YdLNM1vJDa+SCWtyq2PbMomq0OI/cQgp1N43OO113O1xpaHGrTkZIL1FC0N0mSBb3yeswL9y6wVzXhtIIbX/rKiM7+bt8lzPXz7W1uOXx2QR6CKbAYi7MxeEtttm3VFyYJRyL5MsxIrraEEOwHFYE0/Tz3+wiTMXjS7ETrcV11Y7nppqwKDCc2AcN5H/NCWEyFfRHvvq6LVkXiHE9AlZIGVMD6STpkq4wjHTFRTOomOXhD/0/JtX7rRUps3HyT8K87vKHvKRUWs9Tl0cbMSQR1WsEQtBcd4Rl+GiGhCK+xNh3uatHxCHYrsVfG0nobpMDjE56E71v+QyT5OQl38KJGllpv0pKFYEwhcKp7xHOCvvRERuE9XXWlYNZzDm4mSONkpHGAB16IRC22hWrKU6YQWWsWyDrHXQ5dz9X8TuvCHM5Ybq2eoVo21ciudiZ/yuhUqZOnC6vxHOrUCi0HSB6lI+1nvEA4pTycSwS/+BOH09PD3OizDbU7pv7TdOrs46MQK83PcfNlxJLwW5u4djmNQhxg/pQ0NVAo8DMhQ6aI2v88XMW+pU3E0RvdzfdTeWqcONjDJ53irDks0fQIdQYZsysVPGfvH/64d/jYtYqqG3cn1nOwCSln4OEfPFAdHEvDhoj3+Mfo4te4z5n2iW7/zkgj+6MCtdhqteVCTB3gFYpx/Wp5gNXJQOTF5Oe5hNY5rhbJIXW46mSHI2a7r8QyHCAtRL7rgF6+jKRAV7qfQv6u7i6gByJCOWaegvmeDnMzW7W9OfreNSV9DxQ9WpEpR3QlMqQAWx0aDrkLJOx2b2hGagOrnDGZVegXk/3AW0hqPnYtVvH3y/y4COs3LS01d2nq0mcWOAiW7fIA9ScqAY9vW3aNxFu/CTl269nhSvBF3oC9NDi9utZ1DR8WH2yny93ra1kOSLo71zMbTBwDxRzBwqSF+QACi2f9Wc5Do06KJzClNyUAzCDKXLRf6K14Slfm9rvuRjOVlsLFSK0WFr0ckRph375NzbK065ELclQRQcbaW6TDEF/O8WSenD+m5aJvvPBiwOml6kKOQre8xW6Z+T4OyfD2nE5tfjz7/8Brs9I1DGBAAA=" /></Footer>{/* END_ATS_CANDIDATE_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_candidates
+      parameters:
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: email_addresses
+        in: query
+        description: If provided, will only return candidates with these email addresses; multiple addresses can be separated by commas.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/CandidatesGetParametersExpandSchemaItems'
+      - name: first_name
+        in: query
+        description: If provided, will only return candidates with this first name.
+        required: false
+        schema:
+          type: string
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: last_name
+        in: query
+        description: If provided, will only return candidates with this last name.
+        required: false
+        schema:
+          type: string
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: tags
+        in: query
+        description: If provided, will only return candidates with these tags; multiple tags can be separated by commas.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCandidateList'
+    post:
+      operationId: create
+      summary: Create
+      description: Creates a `Candidate` object with the given values.{/* BEGIN_ATS_CANDIDATE_CREATE_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST" data="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" /></Footer>{/* END_ATS_CANDIDATE_CREATE_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_candidates
+      parameters:
+      - name: is_debug_mode
+        in: query
+        description: Whether to include debug fields (such as log file links) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: run_async
+        in: query
+        description: Whether or not third-party updates should be run asynchronously.
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CandidateResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CandidateEndpointRequest'
+  /ats/v1/candidates/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `Candidate` object with the given `id`.{/* BEGIN_ATS_CANDIDATE_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="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" /></Footer>{/* END_ATS_CANDIDATE_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_candidates
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/CandidatesIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Candidate'
+    patch:
+      operationId: partial-update
+      summary: Partial Update
+      description: Updates a `Candidate` object with the given `id`.{/* BEGIN_ATS_CANDIDATE_EDIT_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="PATCH" data="H4sIAAAAAAAAA82UUW/aMBSF/4sfESSjlLWNNE0UWAsqoYW0Haoq68a+BIMTp7YDLVX/+xRgLWyoHRLT9mY75x473z26z4SBxUjpJ+IRsIYUSaw4SuKROiRccLBIigRS4UOMSw2dHpAiMVmaKm2RfxMouTnXOCQecWPUEZayRAwFchescUViMdJghUqM+1pVGi7KSJFIkUyQ1xhTWWLf8VnqSrAU/rLNPxtLiiQFY+xIqywa9fAhQ/OeZf4aiTEmFmSJgwV3rbykl/XbzvJ3c5RokTfAQgMtsvwHV1eNrE2N57ojlKmzuNbhOHUxcUFbwSQat1o5OTg6qZZWLovbv9JIfikXxg+hCo8KNGKSQlboBOzRD1ozfxwd+vXDR39+XfXnk7k/nnwq0AgKnaBT7QaDSrdRK3e3CGj/8/eTm9PGadsvsHmz4o8HMz9g5U7AJuG8VWmfsVn7/OrRnw8OOo3rih80q+0zVe7We6ZT76lOzXFIkaz3kXh3z+sHq3DUzCh82pS2YohwDcmyCZCKUpqFUjDHVByIYa4SmBmHqdiNkQtwF1a0/5CBRnqhIkUr2dUtTGdOmkQ/6QuVvKInHvFrQeumuRmC2hSEhFAi8azO8LfcEu+OYAxCUuBcozGY93YotLE0yf+qSCS8rdORSpAmWRyizoUaY2WRCk7u881DJjTyS9AQo80V3t39S3EbqjONmIxUZnA/vN781qE543TfsJiKU0jyLn+ATRiaajFdDpA/YMg0gkVOwW5wfV1nKX/7biHKS62wEndF31ZhjXPU+wF/KcEOlY7HKoTclZoF/ndi2vTPa3692fgXQd0GOR89mzuagh192IUdsV/gdF/MF1Ybw0ENouOn09u/kPcdmEvFVuNxj4OiH4O2PWQ6EwvhXgD2N003UI6PpxfD5u1/GuCds3j/8gODVBx25AgAAA==" /></Footer>{/* END_ATS_CANDIDATE_EDIT_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_candidates
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: is_debug_mode
+        in: query
+        description: Whether to include debug fields (such as log file links) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: run_async
+        in: query
+        description: Whether or not third-party updates should be run asynchronously.
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CandidateResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCandidateEndpointRequest'
+  /ats/v1/candidates/ignore/{model_id}:
+    post:
+      operationId: ignore-create
+      summary: Ignore Create
+      description: Ignores a specific row based on the `model_id` in the url. These records will have their properties set to null, and will not be updated in future syncs. The "reason" and "message" fields in the request body will be stored for audit purposes.{/* BEGIN_ATS_CANDIDATE_CREATE_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST" data="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" /></Footer>{/* END_ATS_CANDIDATE_CREATE_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_candidates
+      parameters:
+      - name: model_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: No response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/candidates_ignoreCreate_Response_200'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IgnoreCommonModelRequest'
+  /ats/v1/candidates/meta/patch/{id}:
+    get:
+      operationId: meta-patch-retrieve
+      summary: Meta Patch Retrieve
+      description: Returns metadata for `Candidate` PATCHs.{/* BEGIN_ATS_CANDIDATE_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="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" /></Footer>{/* END_ATS_CANDIDATE_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_candidates
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaResponse'
+  /ats/v1/candidates/meta/post:
+    get:
+      operationId: meta-post-retrieve
+      summary: Meta Post Retrieve
+      description: Returns metadata for `Candidate` POSTs.{/* BEGIN_ATS_CANDIDATE_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="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" /></Footer>{/* END_ATS_CANDIDATE_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_candidates
+      parameters:
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaResponse'
+components:
+  schemas:
+    UrlTypeEnum:
+      type: string
+      enum:
+      - PERSONAL
+      - COMPANY
+      - PORTFOLIO
+      - BLOG
+      - SOCIAL_MEDIA
+      - OTHER
+      - JOB_POSTING
+      title: UrlTypeEnum
+    candidates_ignoreCreate_Response_200:
+      type: object
+      properties: {}
+      description: Empty response body
+      title: candidates_ignoreCreate_Response_200
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    CandidateEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/CandidateRequest'
+        remote_user_id:
+          type: string
+      required:
+      - model
+      - remote_user_id
+      title: CandidateEndpointRequest
+    UrlRequest:
+      type: object
+      properties:
+        value:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The site's url.
+        url_type:
+          oneOf:
+          - $ref: '#/components/schemas/UrlTypeEnum'
+          - type: 'null'
+          description: The type of site.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The Url Object
+
+        ### Description
+
+        The `Url` object is used to represent hyperlinks associated with the parent model.
+
+        ### Usage Example
+
+        Fetch from the `GET Candidate` endpoint and view their website urls.'
+      title: UrlRequest
+    EmailAddress:
+      type: object
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        value:
+          type:
+          - string
+          - 'null'
+          format: email
+          description: The email address.
+        email_address_type:
+          oneOf:
+          - $ref: '#/components/schemas/EmailAddressTypeEnum'
+          - type: 'null'
+          description: The type of email address.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+      description: '# The EmailAddress Object
+
+        ### Description
+
+        The `EmailAddress` object is used to represent a candidate''s email address.
+
+        ### Usage Example
+
+        Fetch from the `GET Candidate` endpoint and view their email addresses.'
+      title: EmailAddress
+    CandidatesGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - applications
+      - attachments
+      title: CandidatesGetParametersExpandSchemaItems
+    PatchedCandidateRequest:
+      type: object
+      properties:
+        first_name:
+          type:
+          - string
+          - 'null'
+          description: The candidate's first name.
+        last_name:
+          type:
+          - string
+          - 'null'
+          description: The candidate's last name.
+        company:
+          type:
+          - string
+          - 'null'
+          description: The candidate's current company.
+        title:
+          type:
+          - string
+          - 'null'
+          description: The candidate's current title.
+        last_interaction_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the most recent interaction with the candidate occurred.
+        is_private:
+          type:
+          - boolean
+          - 'null'
+          description: Whether or not the candidate is private.
+        can_email:
+          type:
+          - boolean
+          - 'null'
+          description: Whether or not the candidate can be emailed.
+        locations:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: The candidate's locations.
+        phone_numbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneNumberRequest'
+        email_addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailAddressRequest'
+        urls:
+          type: array
+          items:
+            $ref: '#/components/schemas/UrlRequest'
+        tags:
+          type: array
+          items:
+            type: string
+          description: Array of `Tag` names as strings.
+        applications:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Array of `Application` object IDs.
+        attachments:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Array of `Attachment` object IDs.
+        remote_template_id:
+          type:
+          - string
+          - 'null'
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The Candidate Object
+
+        ### Description
+
+        The `Candidate` object is used to represent profile information about a given Candidate. Because it is specific to a Candidate, this information stays constant across applications.
+
+        ### Usage Example
+
+        Fetch from the `LIST Candidates` endpoint and filter by `ID` to show all candidates.'
+      title: PatchedCandidateRequest
+    Candidate:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        first_name:
+          type:
+          - string
+          - 'null'
+          description: The candidate's first name.
+        last_name:
+          type:
+          - string
+          - 'null'
+          description: The candidate's last name.
+        company:
+          type:
+          - string
+          - 'null'
+          description: The candidate's current company.
+        title:
+          type:
+          - string
+          - 'null'
+          description: The candidate's current title.
+        remote_created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's candidate was created.
+        remote_updated_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's candidate was updated.
+        last_interaction_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the most recent interaction with the candidate occurred.
+        is_private:
+          type:
+          - boolean
+          - 'null'
+          description: Whether or not the candidate is private.
+        can_email:
+          type:
+          - boolean
+          - 'null'
+          description: Whether or not the candidate can be emailed.
+        locations:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: The candidate's locations.
+        phone_numbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneNumber'
+        email_addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailAddress'
+        urls:
+          type: array
+          items:
+            $ref: '#/components/schemas/Url'
+        tags:
+          type: array
+          items:
+            type: string
+          description: Array of `Tag` names as strings.
+        applications:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Array of `Application` object IDs.
+        attachments:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Array of `Attachment` object IDs.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/CandidateFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The Candidate Object
+
+        ### Description
+
+        The `Candidate` object is used to represent profile information about a given Candidate. Because it is specific to a Candidate, this information stays constant across applications.
+
+        ### Usage Example
+
+        Fetch from the `LIST Candidates` endpoint and filter by `ID` to show all candidates.'
+      title: Candidate
+    CandidateRequest:
+      type: object
+      properties:
+        first_name:
+          type:
+          - string
+          - 'null'
+          description: The candidate's first name.
+        last_name:
+          type:
+          - string
+          - 'null'
+          description: The candidate's last name.
+        company:
+          type:
+          - string
+          - 'null'
+          description: The candidate's current company.
+        title:
+          type:
+          - string
+          - 'null'
+          description: The candidate's current title.
+        last_interaction_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the most recent interaction with the candidate occurred.
+        is_private:
+          type:
+          - boolean
+          - 'null'
+          description: Whether or not the candidate is private.
+        can_email:
+          type:
+          - boolean
+          - 'null'
+          description: Whether or not the candidate can be emailed.
+        locations:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: The candidate's locations.
+        phone_numbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneNumberRequest'
+        email_addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailAddressRequest'
+        urls:
+          type: array
+          items:
+            $ref: '#/components/schemas/UrlRequest'
+        tags:
+          type: array
+          items:
+            type: string
+          description: Array of `Tag` names as strings.
+        applications:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Array of `Application` object IDs.
+        attachments:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Array of `Attachment` object IDs.
+        remote_template_id:
+          type:
+          - string
+          - 'null'
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The Candidate Object
+
+        ### Description
+
+        The `Candidate` object is used to represent profile information about a given Candidate. Because it is specific to a Candidate, this information stays constant across applications.
+
+        ### Usage Example
+
+        Fetch from the `LIST Candidates` endpoint and filter by `ID` to show all candidates.'
+      title: CandidateRequest
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    PhoneNumberRequest:
+      type: object
+      properties:
+        value:
+          type:
+          - string
+          - 'null'
+          description: The phone number.
+        phone_number_type:
+          oneOf:
+          - $ref: '#/components/schemas/PhoneNumberTypeEnum'
+          - type: 'null'
+          description: The type of phone number.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The PhoneNumber Object
+
+        ### Description
+
+        The `PhoneNumber` object is used to represent a candidate''s phone number.
+
+        ### Usage Example
+
+        Fetch from the `GET Candidate` endpoint and view their phone numbers.'
+      title: PhoneNumberRequest
+    PhoneNumber:
+      type: object
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        value:
+          type:
+          - string
+          - 'null'
+          description: The phone number.
+        phone_number_type:
+          oneOf:
+          - $ref: '#/components/schemas/PhoneNumberTypeEnum'
+          - type: 'null'
+          description: The type of phone number.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+      description: '# The PhoneNumber Object
+
+        ### Description
+
+        The `PhoneNumber` object is used to represent a candidate''s phone number.
+
+        ### Usage Example
+
+        Fetch from the `GET Candidate` endpoint and view their phone numbers.'
+      title: PhoneNumber
+    CandidateFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: CandidateFieldMappings
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    ReasonEnum:
+      type: string
+      enum:
+      - GENERAL_CUSTOMER_REQUEST
+      - GDPR
+      - OTHER
+      title: ReasonEnum
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    Url:
+      type: object
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        value:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The site's url.
+        url_type:
+          oneOf:
+          - $ref: '#/components/schemas/UrlTypeEnum'
+          - type: 'null'
+          description: The type of site.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+      description: '# The Url Object
+
+        ### Description
+
+        The `Url` object is used to represent hyperlinks associated with the parent model.
+
+        ### Usage Example
+
+        Fetch from the `GET Candidate` endpoint and view their website urls.'
+      title: Url
+    IgnoreCommonModelRequest:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/ReasonEnum'
+        message:
+          type: string
+      required:
+      - reason
+      title: IgnoreCommonModelRequest
+    EmailAddressTypeEnum:
+      type: string
+      enum:
+      - PERSONAL
+      - WORK
+      - OTHER
+      title: EmailAddressTypeEnum
+    PatchedCandidateEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/PatchedCandidateRequest'
+        remote_user_id:
+          type: string
+      required:
+      - model
+      - remote_user_id
+      title: PatchedCandidateEndpointRequest
+    PhoneNumberTypeEnum:
+      type: string
+      enum:
+      - HOME
+      - WORK
+      - MOBILE
+      - SKYPE
+      - OTHER
+      title: PhoneNumberTypeEnum
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    CandidatesIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - applications
+      - attachments
+      title: CandidatesIdGetParametersExpandSchemaItems
+    CandidateResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/Candidate'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: CandidateResponse
+    PaginatedCandidateList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Candidate'
+      title: PaginatedCandidateList
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    EmailAddressRequest:
+      type: object
+      properties:
+        value:
+          type:
+          - string
+          - 'null'
+          format: email
+          description: The email address.
+        email_address_type:
+          oneOf:
+          - $ref: '#/components/schemas/EmailAddressTypeEnum'
+          - type: 'null'
+          description: The type of email address.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The EmailAddress Object
+
+        ### Description
+
+        The `EmailAddress` object is used to represent a candidate''s email address.
+
+        ### Usage Example
+
+        Fetch from the `GET Candidate` endpoint and view their email addresses.'
+      title: EmailAddressRequest
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

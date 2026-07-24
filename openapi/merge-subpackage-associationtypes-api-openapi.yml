@@ -1,0 +1,556 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_associationTypes API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_associationTypes
+paths:
+  /crm/v1/custom-object-classes/{custom_object_class_id}/association-types:
+    get:
+      operationId: custom-object-classes-association-types-list
+      summary: Custom Object Classes Association Types List
+      description: Returns a list of `AssociationType` objects.{/* BEGIN_CRM_CUSTOMOBJECTCLASS_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA9VS207bQBT8l/MY+dIQ0gpLVRWSlBDJDgVTFSFkHa9PnE12vc5eCDXi3ys7lKYt4qkvfTy7M+cyM4/A0FKp9HeIgGkJHkhVkIAIxs5YJRf5mpgdCzQGPMCaJyhpj83uj8AD4+paaUvFZ06iMDNNS4gglKRL8l3Fl5yKkGkZ8spSqdFyVZnwheUvOxp4IHi1oWLEmHKVfaPPHufjHvhHaULBjQUPajTGrrRy5eqSto7MWy3bbQRJqiwKv0CL4QHd13v+a2/t3gUJslRM0OKELLH2wOdRK2trE4XhikQddGODgu5DqkLUljNBJhwOTo4+nAz95y7d9E9ZKT72e+ttrvIPvaxkIkPXi1P2kKTnu2RdHifj44ekuR4mzaZJ1pt3vazEXpzGw0V6M1hMRv3FK4Ds6v23k6+nk9N50mPNdJCsb3ZJyvpxyjZ5cz6Yn7HdfPblIWlujuLJ9SBJp8P5meovxpcmHl+qeBQE4MGhjxDdPh4+PIdj5vKrWrU2HPydSyzpQJS9DVhzv3a54CwwgwAlNqrCnQmYkqGkgmM4c7mplc3M1qGmYF2XP0XnqnpRHCKYJrNRMp5Ofnd/dI9cYC4IIqsd/RVYiG6BdVHPVJf11tMulJlhK5LYZRNzElktnEbxUhpelU6gBg+q9m4PNEllKeMF3LXF1nFNxQVqlGRJt6PunrzXBLtCQWapNKN/o9mFQLtUWv7qG9TV/63b3dMPLg4DQ6wEAAA=" /></Footer>{/* END_CRM_CUSTOMOBJECTCLASS_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_associationTypes
+      parameters:
+      - name: custom_object_class_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomObjectClassesCustomObjectClassIdAssociationTypesGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAssociationTypeList'
+    post:
+      operationId: custom-object-classes-association-types-create
+      summary: Custom Object Classes Association Types Create
+      description: Creates an `AssociationType` object with the given values.{/* BEGIN_CRM_CUSTOMOBJECTCLASS_CREATE_SUPPORTED_FIELDS */}{/* END_CRM_CUSTOMOBJECTCLASS_CREATE_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_associationTypes
+      parameters:
+      - name: custom_object_class_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: is_debug_mode
+        in: query
+        description: Whether to include debug fields (such as log file links) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: run_async
+        in: query
+        description: Whether or not third-party updates should be run asynchronously.
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CRMAssociationTypeResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CRMAssociationTypeEndpointRequest'
+  /crm/v1/custom-object-classes/{custom_object_class_id}/association-types/{id}:
+    get:
+      operationId: custom-object-classes-association-types-retrieve
+      summary: Custom Object Classes Association Types Retrieve
+      description: Returns an `AssociationType` object with the given `id`.{/* BEGIN_CRM_CUSTOMOBJECTCLASS_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA9VS207bQBT8l/MY+dIQ0gpLVRWSlBDJDgVTFSFkHa9PnE12vc5eCDXi3ys7lKYt4qkvfTy7M+cyM4/A0FKp9HeIgGkJHkhVkIAIxs5YJRf5mpgdCzQGPMCaJyhpj83uj8AD4+paaUvFZ06iMDNNS4gglKRL8l3Fl5yKkGkZ8spSqdFyVZnwheUvOxp4IHi1oWLEmHKVfaPPHufjHvhHaULBjQUPajTGrrRy5eqSto7MWy3bbQRJqiwKv0CL4QHd13v+a2/t3gUJslRM0OKELLH2wOdRK2trE4XhikQddGODgu5DqkLUljNBJhwOTo4+nAz95y7d9E9ZKT72e+ttrvIPvaxkIkPXi1P2kKTnu2RdHifj44ekuR4mzaZJ1pt3vazEXpzGw0V6M1hMRv3FK4Ds6v23k6+nk9N50mPNdJCsb3ZJyvpxyjZ5cz6Yn7HdfPblIWlujuLJ9SBJp8P5meovxpcmHl+qeBQE4MGhjxDdPh4+PIdj5vKrWrU2HPydSyzpQJS9DVhzv3a54CwwgwAlNqrCnQmYkqGkgmM4c7mplc3M1qGmYF2XP0XnqnpRHCKYJrNRMp5Ofnd/dI9cYC4IIqsd/RVYiG6BdVHPVJf11tMulJlhK5LYZRNzElktnEbxUhpelU6gBg+q9m4PNEllKeMF3LXF1nFNxQVqlGRJt6PunrzXBLtCQWapNKN/o9mFQLtUWv7qG9TV/63b3dMPLg4DQ6wEAAA=" /></Footer>{/* END_CRM_CUSTOMOBJECTCLASS_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_associationTypes
+      parameters:
+      - name: custom_object_class_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomObjectClassesCustomObjectClassIdAssociationTypesIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssociationType'
+  /crm/v1/custom-object-classes/{custom_object_class_id}/association-types/meta/post:
+    get:
+      operationId: custom-object-classes-association-types-meta-post-retrieve
+      summary: Custom Object Classes Association Types Meta Post Retrieve
+      description: Returns metadata for `CRMAssociationType` POSTs.{/* BEGIN_CRM_CUSTOMOBJECTCLASS_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA9VS207bQBT8l/MY+dIQ0gpLVRWSlBDJDgVTFSFkHa9PnE12vc5eCDXi3ys7lKYt4qkvfTy7M+cyM4/A0FKp9HeIgGkJHkhVkIAIxs5YJRf5mpgdCzQGPMCaJyhpj83uj8AD4+paaUvFZ06iMDNNS4gglKRL8l3Fl5yKkGkZ8spSqdFyVZnwheUvOxp4IHi1oWLEmHKVfaPPHufjHvhHaULBjQUPajTGrrRy5eqSto7MWy3bbQRJqiwKv0CL4QHd13v+a2/t3gUJslRM0OKELLH2wOdRK2trE4XhikQddGODgu5DqkLUljNBJhwOTo4+nAz95y7d9E9ZKT72e+ttrvIPvaxkIkPXi1P2kKTnu2RdHifj44ekuR4mzaZJ1pt3vazEXpzGw0V6M1hMRv3FK4Ds6v23k6+nk9N50mPNdJCsb3ZJyvpxyjZ5cz6Yn7HdfPblIWlujuLJ9SBJp8P5meovxpcmHl+qeBQE4MGhjxDdPh4+PIdj5vKrWrU2HPydSyzpQJS9DVhzv3a54CwwgwAlNqrCnQmYkqGkgmM4c7mplc3M1qGmYF2XP0XnqnpRHCKYJrNRMp5Ofnd/dI9cYC4IIqsd/RVYiG6BdVHPVJf11tMulJlhK5LYZRNzElktnEbxUhpelU6gBg+q9m4PNEllKeMF3LXF1nFNxQVqlGRJt6PunrzXBLtCQWapNKN/o9mFQLtUWv7qG9TV/63b3dMPLg4DQ6wEAAA=" /></Footer>{/* END_CRM_CUSTOMOBJECTCLASS_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_associationTypes
+      parameters:
+      - name: custom_object_class_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetaResponse'
+components:
+  schemas:
+    CRMAssociationTypeResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/AssociationType'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: CRMAssociationTypeResponse
+    OriginTypeEnum:
+      type: string
+      enum:
+      - CUSTOM_OBJECT
+      - COMMON_MODEL
+      - REMOTE_ONLY_MODEL
+      title: OriginTypeEnum
+    AssociationSubType:
+      type: object
+      properties:
+        id:
+          type:
+          - string
+          - 'null'
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        origin_type:
+          type:
+          - string
+          - 'null'
+      title: AssociationSubType
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    CardinalityEnum:
+      type: string
+      enum:
+      - ONE_TO_ONE
+      - MANY_TO_ONE
+      - MANY_TO_MANY
+      - ONE_TO_MANY
+      title: CardinalityEnum
+    ObjectClassDescriptionRequest:
+      type: object
+      properties:
+        id:
+          type: string
+        origin_type:
+          $ref: '#/components/schemas/OriginTypeEnum'
+      required:
+      - id
+      - origin_type
+      title: ObjectClassDescriptionRequest
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    CustomObjectClassesCustomObjectClassIdAssociationTypesGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - target_object_classes
+      title: CustomObjectClassesCustomObjectClassIdAssociationTypesGetParametersExpandSchemaItems
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    CRMAssociationTypeEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/AssociationTypeRequestRequest'
+      required:
+      - model
+      title: CRMAssociationTypeEndpointRequest
+    AssociationType:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        source_object_class:
+          type: object
+          additionalProperties:
+            description: Any type
+          description: The class of the source object (Custom Object or Common Model) for the association type.
+        target_object_classes:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssociationSubType'
+        remote_key_name:
+          type:
+          - string
+          - 'null'
+        display_name:
+          type:
+          - string
+          - 'null'
+        cardinality:
+          oneOf:
+          - $ref: '#/components/schemas/CardinalityEnum'
+          - type: 'null'
+        is_required:
+          type: boolean
+      description: '# The AssociationType Object
+
+        ### Description
+
+        The `Association Type` object represents the relationship between two objects.
+
+        ### Usage Example
+
+        TODO'
+      title: AssociationType
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    AssociationTypeRequestRequest:
+      type: object
+      properties:
+        source_object_class:
+          $ref: '#/components/schemas/ObjectClassDescriptionRequest'
+        target_object_classes:
+          type: array
+          items:
+            $ref: '#/components/schemas/ObjectClassDescriptionRequest'
+        remote_key_name:
+          type: string
+        display_name:
+          type: string
+        cardinality:
+          $ref: '#/components/schemas/CardinalityEnum'
+        is_required:
+          type: boolean
+          default: false
+      required:
+      - source_object_class
+      - target_object_classes
+      - remote_key_name
+      title: AssociationTypeRequestRequest
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    CustomObjectClassesCustomObjectClassIdAssociationTypesIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - target_object_classes
+      title: CustomObjectClassesCustomObjectClassIdAssociationTypesIdGetParametersExpandSchemaItems
+    PaginatedAssociationTypeList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssociationType'
+      title: PaginatedAssociationTypeList
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

@@ -1,0 +1,757 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_responses API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_responses
+paths:
+  /responses:
+    post:
+      operationId: create
+      summary: Create Response
+      description: 'Create an LLM response.
+
+
+        Supports both streaming and non-streaming modes via the `stream` parameter.'
+      tags:
+      - subpackage_responses
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResponseRequest'
+components:
+  schemas:
+    FunctionTool:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - function
+        name:
+          type: string
+        description:
+          type: string
+        parameters:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - name
+      - description
+      - parameters
+      description: A function tool that the model can call.
+      title: FunctionTool
+    DocumentContentSourceType:
+      type: string
+      enum:
+      - base64
+      - url
+      default: base64
+      title: DocumentContentSourceType
+    ValidationErrorLocItems:
+      oneOf:
+      - type: string
+      - type: integer
+      title: ValidationErrorLocItems
+    ResponseRequestInputItems:
+      oneOf:
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - message
+            description: 'Discriminator value: message'
+          role:
+            $ref: '#/components/schemas/ResponseRequestInputItemsDiscriminatorMappingMessageRole'
+          content:
+            $ref: '#/components/schemas/ResponseRequestInputItemsDiscriminatorMappingMessageContent'
+        required:
+        - type
+        - role
+        - content
+        description: A message in the conversation.
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - tool_result
+          tool_use_id:
+            type: string
+          content:
+            $ref: '#/components/schemas/ToolResultInputContent'
+        required:
+        - type
+        - tool_use_id
+        - content
+        description: Result from a tool call, sent back to continue the conversation.
+      discriminator:
+        propertyName: type
+      title: ResponseRequestInputItems
+    ResponseFormatJson:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - json_object
+      description: JSON response format configuration.
+      title: ResponseFormatJson
+    ResponseRequestInputItemsDiscriminatorMappingMessageContent:
+      oneOf:
+      - type: string
+      - $ref: '#/components/schemas/ResponseRequestInputItemsDiscriminatorMappingMessageContent1'
+      title: ResponseRequestInputItemsDiscriminatorMappingMessageContent
+    ToolResultInputContentOneOf1Items:
+      oneOf:
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - text
+            description: 'Discriminator value: text'
+          text:
+            type: string
+        required:
+        - type
+        - text
+        description: Text content block.
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - image_url
+            description: 'Discriminator value: image_url'
+          url:
+            type: string
+        required:
+        - type
+        - url
+        description: Image URL content block for vision models.
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - image
+          source_type:
+            $ref: '#/components/schemas/ImageContentSourceType'
+          media_type:
+            type: string
+            description: e.g. 'image/png', 'image/jpeg'
+          data:
+            type: string
+            description: Base64-encoded image data or URL
+        required:
+        - type
+        - media_type
+        - data
+        description: Image content block with explicit source type.
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - document
+          source_type:
+            $ref: '#/components/schemas/DocumentContentSourceType'
+          media_type:
+            type: string
+            description: e.g. 'application/pdf'
+          data:
+            type: string
+            description: Base64-encoded content or URL
+        required:
+        - type
+        - media_type
+        - data
+        description: Document content block (PDF, etc.) for document-understanding models.
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - tool_use
+            description: 'Discriminator value: tool_use'
+          id:
+            type: string
+          name:
+            type: string
+          input:
+            type: object
+            additionalProperties:
+              description: Any type
+        required:
+        - type
+        - id
+        - name
+        - input
+        description: Tool use content block (in assistant output).
+      discriminator:
+        propertyName: type
+      title: ToolResultInputContentOneOf1Items
+    HTTPValidationError:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+      description: Standard FastAPI validation error wrapper. Returned with HTTP 422 when the request body or query parameters fail Pydantic validation.
+      title: HTTPValidationError
+    ResponseRequestInputItemsDiscriminatorMappingMessageContent1:
+      type: array
+      items:
+        $ref: '#/components/schemas/ResponseRequestInputItemsDiscriminatorMappingMessageContentOneOf1Items'
+      title: ResponseRequestInputItemsDiscriminatorMappingMessageContent1
+    OutputMessage:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - message
+        role:
+          type: string
+          enum:
+          - assistant
+        finish_reason:
+          oneOf:
+          - $ref: '#/components/schemas/OutputMessageFinishReason'
+          - type: 'null'
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/OutputMessageContentItems'
+      required:
+      - id
+      - content
+      description: An output message from the assistant.
+      title: OutputMessage
+    OutputMessageContentItems:
+      oneOf:
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - text
+            description: 'Discriminator value: text'
+          text:
+            type: string
+        required:
+        - type
+        - text
+        description: Text content block.
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - image_url
+            description: 'Discriminator value: image_url'
+          url:
+            type: string
+        required:
+        - type
+        - url
+        description: Image URL content block for vision models.
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - image
+          source_type:
+            $ref: '#/components/schemas/ImageContentSourceType'
+          media_type:
+            type: string
+            description: e.g. 'image/png', 'image/jpeg'
+          data:
+            type: string
+            description: Base64-encoded image data or URL
+        required:
+        - type
+        - media_type
+        - data
+        description: Image content block with explicit source type.
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - document
+          source_type:
+            $ref: '#/components/schemas/DocumentContentSourceType'
+          media_type:
+            type: string
+            description: e.g. 'application/pdf'
+          data:
+            type: string
+            description: Base64-encoded content or URL
+        required:
+        - type
+        - media_type
+        - data
+        description: Document content block (PDF, etc.) for document-understanding models.
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - tool_use
+            description: 'Discriminator value: tool_use'
+          id:
+            type: string
+          name:
+            type: string
+          input:
+            type: object
+            additionalProperties:
+              description: Any type
+        required:
+        - type
+        - id
+        - name
+        - input
+        description: Tool use content block (in assistant output).
+      discriminator:
+        propertyName: type
+      title: OutputMessageContentItems
+    OutputMessageFinishReason:
+      type: string
+      enum:
+      - stop
+      - max_tokens
+      - tool_use
+      - content_filter
+      title: OutputMessageFinishReason
+    ResponseRequestInputItemsDiscriminatorMappingMessageRole:
+      type: string
+      enum:
+      - system
+      - user
+      - assistant
+      title: ResponseRequestInputItemsDiscriminatorMappingMessageRole
+    ResponseRequestToolChoice:
+      oneOf:
+      - type: string
+      - type: object
+        additionalProperties:
+          description: Any type
+      description: 'Tool choice policy: ''auto'', ''none'', ''required'', or {''type'': ''function'', ''function'': {''name'': ''...''}}'
+      title: ResponseRequestToolChoice
+    ResponseRequest:
+      type: object
+      properties:
+        model:
+          type:
+          - string
+          - 'null'
+          description: Model ID in format 'provider/model-name'. Optional if a routing policy is configured.
+        input:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResponseRequestInputItems'
+          description: Conversation history
+        tools:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/FunctionTool'
+          description: Available tools
+        tool_choice:
+          oneOf:
+          - $ref: '#/components/schemas/ResponseRequestToolChoice'
+          - type: 'null'
+          description: 'Tool choice policy: ''auto'', ''none'', ''required'', or {''type'': ''function'', ''function'': {''name'': ''...''}}'
+        max_tokens:
+          type:
+          - integer
+          - 'null'
+          description: Maximum tokens to generate
+        temperature:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: Sampling temperature
+        top_p:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: Nucleus sampling parameter
+        stop:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: Stop sequences
+        response_format:
+          oneOf:
+          - $ref: '#/components/schemas/ResponseFormatJson'
+          - type: 'null'
+          description: Response format
+        stream:
+          type: boolean
+          default: false
+          description: Whether to stream the response
+        tags:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/TagInput'
+          description: Tags to attach to this request for categorization (key-value pairs)
+        project_id:
+          type:
+          - string
+          - 'null'
+          description: Optional project ID (UUID) to associate with this request
+        routing_policy_id:
+          type:
+          - string
+          - 'null'
+          description: Override the default routing policy (for testing)
+        include_routing_metadata:
+          type: boolean
+          default: false
+          description: Include detailed routing metadata in response
+        vendor:
+          type:
+          - string
+          - 'null'
+          description: Restrict routing to a specific vendor (hosting platform)
+        vendors:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: Ordered list of acceptable vendors. First available wins.
+      required:
+      - input
+      description: Request body for POST /v1/responses.
+      title: ResponseRequest
+    ResponseRequestInputItemsDiscriminatorMappingMessageContentOneOf1Items:
+      oneOf:
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - text
+            description: 'Discriminator value: text'
+          text:
+            type: string
+        required:
+        - type
+        - text
+        description: Text content block.
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - image_url
+            description: 'Discriminator value: image_url'
+          url:
+            type: string
+        required:
+        - type
+        - url
+        description: Image URL content block for vision models.
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - image
+          source_type:
+            $ref: '#/components/schemas/ImageContentSourceType'
+          media_type:
+            type: string
+            description: e.g. 'image/png', 'image/jpeg'
+          data:
+            type: string
+            description: Base64-encoded image data or URL
+        required:
+        - type
+        - media_type
+        - data
+        description: Image content block with explicit source type.
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - document
+          source_type:
+            $ref: '#/components/schemas/DocumentContentSourceType'
+          media_type:
+            type: string
+            description: e.g. 'application/pdf'
+          data:
+            type: string
+            description: Base64-encoded content or URL
+        required:
+        - type
+        - media_type
+        - data
+        description: Document content block (PDF, etc.) for document-understanding models.
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - tool_use
+            description: 'Discriminator value: tool_use'
+          id:
+            type: string
+          name:
+            type: string
+          input:
+            type: object
+            additionalProperties:
+              description: Any type
+        required:
+        - type
+        - id
+        - name
+        - input
+        description: Tool use content block (in assistant output).
+      discriminator:
+        propertyName: type
+      title: ResponseRequestInputItemsDiscriminatorMappingMessageContentOneOf1Items
+    TagInput:
+      type: object
+      properties:
+        key:
+          type: string
+          description: Tag key
+        value:
+          type: string
+          description: Tag value
+      required:
+      - key
+      - value
+      description: Tag key-value pair for use in requests.
+      title: TagInput
+    ValidationError:
+      type: object
+      properties:
+        loc:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationErrorLocItems'
+        msg:
+          type: string
+        type:
+          type: string
+        input:
+          description: Any type
+        ctx:
+          $ref: '#/components/schemas/ValidationErrorCtx'
+      required:
+      - loc
+      - msg
+      - type
+      description: Single field-level validation error. `loc` is the JSON path to the offending field, `msg` is a human-readable explanation, and `type` is a stable machine-readable error code.
+      title: ValidationError
+    ValidationErrorCtx:
+      type: object
+      properties: {}
+      title: ValidationErrorCtx
+    Usage:
+      type: object
+      properties:
+        input_tokens:
+          type: integer
+        output_tokens:
+          type: integer
+        total_tokens:
+          type: integer
+      required:
+      - input_tokens
+      - output_tokens
+      - total_tokens
+      description: Token usage statistics.
+      title: Usage
+    RoutingLatency:
+      type: object
+      properties:
+        policy_lookup_ms:
+          type: number
+          format: double
+          default: 0
+        routing_decision_ms:
+          type: number
+          format: double
+          default: 0
+        llm_call_ms:
+          type: number
+          format: double
+          default: 0
+        total_ms:
+          type: number
+          format: double
+          default: 0
+      description: Latency breakdown for routing steps.
+      title: RoutingLatency
+    ImageContentSourceType:
+      type: string
+      enum:
+      - base64
+      - url
+      default: base64
+      title: ImageContentSourceType
+    ToolResultInputContent1:
+      type: array
+      items:
+        $ref: '#/components/schemas/ToolResultInputContentOneOf1Items'
+      title: ToolResultInputContent1
+    ToolResultInputContent:
+      oneOf:
+      - type: string
+      - $ref: '#/components/schemas/ToolResultInputContent1'
+      title: ToolResultInputContent
+    ResponseResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+          enum:
+          - response
+        created_at:
+          type: string
+          format: date-time
+        model:
+          type: string
+          description: The model that generated the response, in 'provider/model-name' format
+        vendor:
+          type:
+          - string
+          - 'null'
+          description: The execution vendor that served the request
+        provider_request_id:
+          type:
+          - string
+          - 'null'
+          description: The upstream provider's request ID
+        output:
+          type: array
+          items:
+            $ref: '#/components/schemas/OutputMessage'
+        usage:
+          $ref: '#/components/schemas/Usage'
+        routing:
+          oneOf:
+          - $ref: '#/components/schemas/RoutingMetadata'
+          - type: 'null'
+          description: Routing metadata (only present when include_routing_metadata=true)
+      required:
+      - id
+      - created_at
+      - model
+      - output
+      - usage
+      description: Response body for POST /v1/responses.
+      title: ResponseResponse
+    RoutingMetadata:
+      type: object
+      properties:
+        policy_id:
+          type:
+          - string
+          - 'null'
+        policy_name:
+          type:
+          - string
+          - 'null'
+        strategy:
+          type:
+          - string
+          - 'null'
+        intelligent_routing_used:
+          type: boolean
+          default: false
+        complexity_score:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: ML-computed prompt complexity score (0-1)
+        adjusted_score:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: Strategy-adjusted complexity score
+        selected_tier:
+          type:
+          - integer
+          - 'null'
+        total_tiers:
+          type:
+          - integer
+          - 'null'
+        routing_reason:
+          type:
+          - string
+          - 'null'
+          description: Human-readable explanation of the routing decision
+        model_requested:
+          type:
+          - string
+          - 'null'
+        model_used:
+          type:
+          - string
+          - 'null'
+          description: The actual model selected by routing
+        cost_usd:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: Estimated cost in USD computed from token usage and pricing data
+        latency:
+          oneOf:
+          - $ref: '#/components/schemas/RoutingLatency'
+          - type: 'null'
+      description: Metadata about how the request was routed.
+      title: RoutingMetadata
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

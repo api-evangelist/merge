@@ -1,0 +1,111 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_toolSearch API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_toolSearch
+paths:
+  /api/v1/tool-packs/{tool_pack_id}/registered-users/{registered_user_id}/search/:
+    post:
+      operationId: search-tools
+      summary: Search tools
+      description: Search for tools based on user intent
+      tags:
+      - subpackage_toolSearch
+      parameters:
+      - name: registered_user_id
+        in: path
+        description: Agent Handler ID of the Registered User
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: tool_pack_id
+        in: path
+        description: Agent Handler ID of the Tool Pack
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successfully found tools matching the intent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/toolSearch_searchTools_Response_200'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ToolSearchRequest'
+components:
+  schemas:
+    ? ApiV1ToolPacksToolPackIdRegisteredUsersRegisteredUserIdSearchPostResponsesContentApplicationJsonSchemaToolsItemsInputSchema
+    : type: object
+      properties: {}
+      title: ApiV1ToolPacksToolPackIdRegisteredUsersRegisteredUserIdSearchPostResponsesContentApplicationJsonSchemaToolsItemsInputSchema
+    ApiV1ToolPacksToolPackIdRegisteredUsersRegisteredUserIdSearchPostResponsesContentApplicationJsonSchemaToolsItems:
+      type: object
+      properties:
+        name:
+          type: string
+        fully_qualified_name:
+          type: string
+        human_name:
+          type: string
+        description:
+          type: string
+        input_schema:
+          $ref: '#/components/schemas/ApiV1ToolPacksToolPackIdRegisteredUsersRegisteredUserIdSearchPostResponsesContentApplicationJsonSchemaToolsItemsInputSchema'
+        relevance_score:
+          type: number
+          format: double
+        reasoning:
+          type: string
+      title: ApiV1ToolPacksToolPackIdRegisteredUsersRegisteredUserIdSearchPostResponsesContentApplicationJsonSchemaToolsItems
+    toolSearch_searchTools_Response_200:
+      type: object
+      properties:
+        tools:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiV1ToolPacksToolPackIdRegisteredUsersRegisteredUserIdSearchPostResponsesContentApplicationJsonSchemaToolsItems'
+        total_results:
+          type: integer
+        intent:
+          type: string
+      title: toolSearch_searchTools_Response_200
+    ToolSearchRequest:
+      type: object
+      properties:
+        intent:
+          type: string
+          description: User's intent or what they want to accomplish
+        connector_slugs:
+          type: array
+          items:
+            type: string
+          description: Optional list of connector slugs to filter the search
+        max_results:
+          type: integer
+          default: 10
+          description: Maximum number of results to return
+      required:
+      - intent
+      title: ToolSearchRequest
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

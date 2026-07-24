@@ -1,0 +1,250 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_rejectReasons API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_rejectReasons
+paths:
+  /ats/v1/reject-reasons:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `RejectReason` objects.{/* BEGIN_ATS_REJECTREASON_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA92XYU/bMBCG/8rkj1WaULpuo9I0lRZKO5pCyWAdQtHFuaRunTjYTkqL9t+nNIW1G5rEFibgox3fa99zr8/KLaGgMRRyQZoEtCIGiYSPnDTJCKdI9QhBiZgYBBJmQ4TFMjfbJQZRaZIIqdE/ZMh9dSQxIE1iRShDrKYxCxj6FmhlsVhjKEEzESvrPqoarMKIQTiLZ+i3KBVprP+gU6yrQrHwl2H+WWlikASU0hMp0nAywusU1Z8k89NwjDDWwKs+aLA2wquyiH9oLj+3jxw1+h3Q0EGNNE9wvdVE60Q1LWuCPDFX25o+ZhbGFkjNKEdlNep7u+/3GtW1ymr3T27IP9Yq02tPeO8rbki5C2ll4NAb2+nN7Wn41m6/vbGXXxr2cra0p7OdihtCZeAMGkNnXB92WrXhAwvcs3df9873O/t9u0KXB3V7Op7bDq0NHDrzlr16v0vn/aPTG3s53h10vtRt56DR74rasD1Sg/ZIDFqmSQyyWUfSvLzdnFibo5UknFGI9ZkGOtuO6UUQ4gabohqQsGqSepxRU9VNiGApYpgrk4rIitBnYG1rumfXKUh0j0Uo3Pn+0fh8dGxOk/CuHkzE98UgTXJgH7Xs9kFn2xitDBgHjyNpapnib14mzUsCxbZFtgaJ8wQNIjESGt28WNsjNwE9IVf53HXKJPonICFCjTJXu/puPIhLTbxFSZRyqS049fT0ArK5mcTPBM79FPMfD2oRebwsUrnWHarMm3WDQP03So9MvItROVmfcNCBkFEXI/cmO6efa41X4YyuRIwnIlVYDqefepuX6fl0mH9Axdq9wVm5burlkq5agXoSOz05lL7wOiyDcrGsRZ9rUznGDGU5Ga+ktp4dMQ4/LPYvXsWNGUqgHN84wFGUw2sl9eo6ywipTJlGGXAxLwfUveQhF/Mtg+0ky+nh4e7zAfdIWA5CpIFxUdIV/Kn36nzlSAgCpsttzmtRd+r4/ca345f5bDmSeZiAXzaaQvVlMrkQcrY6QylM7tS2es8w49zme//tcv0FAR8W5ZriohB9aX8LV99/AEo+fwveEgAA" /></Footer>{/* END_ATS_REJECTREASON_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_rejectReasons
+      parameters:
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRejectReasonList'
+  /ats/v1/reject-reasons/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `RejectReason` object with the given `id`.{/* BEGIN_ATS_REJECTREASON_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA92XYU/bMBCG/8rkj1WaULpuo9I0lRZKO5pCyWAdQtHFuaRunTjYTkqL9t+nNIW1G5rEFibgox3fa99zr8/KLaGgMRRyQZoEtCIGiYSPnDTJCKdI9QhBiZgYBBJmQ4TFMjfbJQZRaZIIqdE/ZMh9dSQxIE1iRShDrKYxCxj6FmhlsVhjKEEzESvrPqoarMKIQTiLZ+i3KBVprP+gU6yrQrHwl2H+WWlikASU0hMp0nAywusU1Z8k89NwjDDWwKs+aLA2wquyiH9oLj+3jxw1+h3Q0EGNNE9wvdVE60Q1LWuCPDFX25o+ZhbGFkjNKEdlNep7u+/3GtW1ymr3T27IP9Yq02tPeO8rbki5C2ll4NAb2+nN7Wn41m6/vbGXXxr2cra0p7OdihtCZeAMGkNnXB92WrXhAwvcs3df9873O/t9u0KXB3V7Op7bDq0NHDrzlr16v0vn/aPTG3s53h10vtRt56DR74rasD1Sg/ZIDFqmSQyyWUfSvLzdnFibo5UknFGI9ZkGOtuO6UUQ4gabohqQsGqSepxRU9VNiGApYpgrk4rIitBnYG1rumfXKUh0j0Uo3Pn+0fh8dGxOk/CuHkzE98UgTXJgH7Xs9kFn2xitDBgHjyNpapnib14mzUsCxbZFtgaJ8wQNIjESGt28WNsjNwE9IVf53HXKJPonICFCjTJXu/puPIhLTbxFSZRyqS049fT0ArK5mcTPBM79FPMfD2oRebwsUrnWHarMm3WDQP03So9MvItROVmfcNCBkFEXI/cmO6efa41X4YyuRIwnIlVYDqefepuX6fl0mH9Axdq9wVm5burlkq5agXoSOz05lL7wOiyDcrGsRZ9rUznGDGU5Ga+ktp4dMQ4/LPYvXsWNGUqgHN84wFGUw2sl9eo6ywipTJlGGXAxLwfUveQhF/Mtg+0ky+nh4e7zAfdIWA5CpIFxUdIV/Kn36nzlSAgCpsttzmtRd+r4/ca345f5bDmSeZiAXzaaQvVlMrkQcrY6QylM7tS2es8w49zme//tcv0FAR8W5ZriohB9aX8LV99/AEo+fwveEgAA" /></Footer>{/* END_ATS_REJECTREASON_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_rejectReasons
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RejectReason'
+components:
+  schemas:
+    RejectReasonFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: RejectReasonFieldMappings
+    RejectReason:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The rejection reason’s name.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/RejectReasonFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The RejectReason Object
+
+        ### Description
+
+        The `RejectReason` object is used to represent a reason for rejecting an application. These can typically be configured within an ATS system.
+
+        ### Usage Example
+
+        Fetch from the `LIST RejectReasons` endpoint and filter by `ID` to show all reasons.'
+      title: RejectReason
+    PaginatedRejectReasonList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RejectReason'
+      title: PaginatedRejectReasonList
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

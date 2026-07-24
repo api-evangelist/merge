@@ -1,0 +1,128 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_routing API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_routing
+paths:
+  /routing/policies:
+    get:
+      operationId: list-policies
+      summary: List Routing Policies
+      description: 'List routing policies available to the current user.
+
+
+        Returns both org-specific policies and the managed (simulator) policy.'
+      tags:
+      - subpackage_routing
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Routing_listPolicies_Response_200'
+  /routing/strategies:
+    get:
+      operationId: list-strategies
+      summary: List Routing Strategies
+      description: List all available routing strategies with descriptions.
+      tags:
+      - subpackage_routing
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Routing_listStrategies_Response_200'
+components:
+  schemas:
+    RoutingStrategiesGetResponsesContentApplicationJsonSchemaDataItemsMlRouting:
+      type: object
+      properties:
+        score_exponent:
+          type: number
+          format: double
+        behavior:
+          type: string
+      title: RoutingStrategiesGetResponsesContentApplicationJsonSchemaDataItemsMlRouting
+    RoutingStrategiesGetResponsesContentApplicationJsonSchemaDataItems:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        is_intelligent:
+          type: boolean
+        description:
+          type: string
+        ml_routing:
+          oneOf:
+          - $ref: '#/components/schemas/RoutingStrategiesGetResponsesContentApplicationJsonSchemaDataItemsMlRouting'
+          - type: 'null'
+      title: RoutingStrategiesGetResponsesContentApplicationJsonSchemaDataItems
+    RoutingPoliciesGetResponsesContentApplicationJsonSchemaDataItems:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        strategy:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        is_intelligent:
+          type: boolean
+        providers:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoutingPoliciesGetResponsesContentApplicationJsonSchemaDataItemsProvidersItems'
+        is_active:
+          type: boolean
+      title: RoutingPoliciesGetResponsesContentApplicationJsonSchemaDataItems
+    Routing_listStrategies_Response_200:
+      type: object
+      properties:
+        object:
+          type: string
+          enum:
+          - list
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoutingStrategiesGetResponsesContentApplicationJsonSchemaDataItems'
+      title: Routing_listStrategies_Response_200
+    RoutingPoliciesGetResponsesContentApplicationJsonSchemaDataItemsProvidersItems:
+      type: object
+      properties:
+        provider:
+          type: string
+        model:
+          type: string
+      title: RoutingPoliciesGetResponsesContentApplicationJsonSchemaDataItemsProvidersItems
+    Routing_listPolicies_Response_200:
+      type: object
+      properties:
+        object:
+          type: string
+          enum:
+          - list
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoutingPoliciesGetResponsesContentApplicationJsonSchemaDataItems'
+      title: Routing_listPolicies_Response_200
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

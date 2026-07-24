@@ -1,0 +1,237 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_paymentMethods API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_paymentMethods
+paths:
+  /accounting/v1/payment-methods:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `PaymentMethod` objects.{/* BEGIN_ACCOUNTING_PAYMENTMETHOD_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA9WTbWsiMRDHv4rkpezDqfVKhePwqa3CRqv2uFJKGJNxjWY36yarraXf/dhVWr2We4Ae5d5lhpnfZP7555FwsBjq9IE0CHCus9jKOCQOibRARRpkCA8RxjZAO9eCOAQSSSHCo3K2rhKHmCxJdGpRnEtUwlymOCMN4keYhuhmsZxJFP5Lky9ji2EKVurY+M/N7qzoJg5RMl6iaO4afo/blbv7zE+h8ZU0ljgkAWPsPNVZOB/hKkPzB+T8bgpzFUC5Aiz4BxQ33WHeyuVbCFRoUXTAQgct8nzd/cS5tYlp+P4cVeIV0z2Bax9jH1IruULj12tn1dOzurunFNO/slB9qZQXq6menpZZyBWDrBxM+D2d9DZ0EZ7Q9sk93V7X6Xa5pYvlpzILoRxMgvpgclMbdJqVwRsFbPz5+9m3VqfVp2W+7dbo4mZDJ7wSTPhyuu3V+hd807+8uqfbm2rQua7RSbfev9CVQXtkgvZIB03PIw45fFXSuH08TOyNQ9GOM2nxuLoXQYgHquyeAxLpJtlUSe6ZmgcRbHUMG+NxHfkRCgk+RWtyGjOrDFL0ksK+hWBSx8+akwbp0ssmbXc7xzZorkEqmCokDZtm+MrHpHFLpGHArVznV46Kn8DsQ5JHcb5Szit+CXFIipG2yPKHOo5YAnb+kpKC3OXBKpMpiiGkEKHFNB939+S8JdsgBa6wdJ4ZqeNSW+lMlLqj4fuouIOzHZwVcNYdDZnLxh8vq/mnul5lki9bWi9NaRArGb+TL1+w7s6Z7HpW/dw6rfxHDn0+Z4kAi4KB/Vt1xxBiqRdb4Ny+j7BjCJHtiXt3svVaUnMKHy3ta7/+0o53Tz8Arz6MXoAHAAA=" /></Footer>{/* END_ACCOUNTING_PAYMENTMETHOD_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_paymentMethods
+      parameters:
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPaymentMethodList'
+  /accounting/v1/payment-methods/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `PaymentMethod` object with the given `id`.{/* BEGIN_ACCOUNTING_PAYMENTMETHOD_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA9WTbWsiMRDHv4rkpezDqfVKhePwqa3CRqv2uFJKGJNxjWY36yarraXf/dhVWr2We4Ae5d5lhpnfZP7555FwsBjq9IE0CHCus9jKOCQOibRARRpkCA8RxjZAO9eCOAQSSSHCo3K2rhKHmCxJdGpRnEtUwlymOCMN4keYhuhmsZxJFP5Lky9ji2EKVurY+M/N7qzoJg5RMl6iaO4afo/blbv7zE+h8ZU0ljgkAWPsPNVZOB/hKkPzB+T8bgpzFUC5Aiz4BxQ33WHeyuVbCFRoUXTAQgct8nzd/cS5tYlp+P4cVeIV0z2Bax9jH1IruULj12tn1dOzurunFNO/slB9qZQXq6menpZZyBWDrBxM+D2d9DZ0EZ7Q9sk93V7X6Xa5pYvlpzILoRxMgvpgclMbdJqVwRsFbPz5+9m3VqfVp2W+7dbo4mZDJ7wSTPhyuu3V+hd807+8uqfbm2rQua7RSbfev9CVQXtkgvZIB03PIw45fFXSuH08TOyNQ9GOM2nxuLoXQYgHquyeAxLpJtlUSe6ZmgcRbHUMG+NxHfkRCgk+RWtyGjOrDFL0ksK+hWBSx8+akwbp0ssmbXc7xzZorkEqmCokDZtm+MrHpHFLpGHArVznV46Kn8DsQ5JHcb5Szit+CXFIipG2yPKHOo5YAnb+kpKC3OXBKpMpiiGkEKHFNB939+S8JdsgBa6wdJ4ZqeNSW+lMlLqj4fuouIOzHZwVcNYdDZnLxh8vq/mnul5lki9bWi9NaRArGb+TL1+w7s6Z7HpW/dw6rfxHDn0+Z4kAi4KB/Vt1xxBiqRdb4Ny+j7BjCJHtiXt3svVaUnMKHy3ta7/+0o53Tz8Arz6MXoAHAAA=" /></Footer>{/* END_ACCOUNTING_PAYMENTMETHOD_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_paymentMethods
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentMethod'
+components:
+  schemas:
+    PaymentMethodFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: PaymentMethodFieldMappings
+    PaginatedPaymentMethodList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentMethod'
+      title: PaginatedPaymentMethodList
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    PaymentMethod:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        method_type:
+          oneOf:
+          - $ref: '#/components/schemas/MethodTypeEnum'
+          - type: 'null'
+          description: The type of the payment method.
+        name:
+          type: string
+          description: The payment method’s name
+        is_active:
+          type: boolean
+          description: '`True` if the payment method is active, `False` if not.'
+        remote_updated_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's payment method was updated.
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/PaymentMethodFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      required:
+      - name
+      description: '# The PaymentMethod Object
+
+        ### Description
+
+        The `PaymentMethod` object defines how a payment against an invoice is made.
+
+
+        ### Usage Example
+
+        Fetch from the `GET PaymentMethod` endpoint and view payment method information.'
+      title: PaymentMethod
+    MethodTypeEnum:
+      type: string
+      enum:
+      - CREDIT_CARD
+      - DEBIT_CARD
+      - ACH
+      - CASH
+      - CHECK
+      title: MethodTypeEnum
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

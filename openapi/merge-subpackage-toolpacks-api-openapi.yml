@@ -1,0 +1,611 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_toolPacks API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_toolPacks
+paths:
+  /api/v1/tool-packs/:
+    get:
+      operationId: list
+      summary: List Tool Packs
+      description: Retrieves a list of Tool Packs
+      tags:
+      - subpackage_toolPacks
+      parameters:
+      - name: page
+        in: query
+        description: A page number within the paginated result set.
+        required: false
+        schema:
+          type: integer
+      - name: page_size
+        in: query
+        description: Number of results to return per page.
+        required: false
+        schema:
+          type: integer
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedToolPackPublicList'
+    post:
+      operationId: create
+      summary: Create Tool Pack
+      description: Creates a Tool Pack with connectors
+      tags:
+      - subpackage_toolPacks
+      parameters:
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ToolPackPublic'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ToolPackPublicWrite'
+  /api/v1/tool-packs/{id}/:
+    get:
+      operationId: retrieve
+      summary: Get Tool Pack
+      description: Retrieves a Tool Pack by ID
+      tags:
+      - subpackage_toolPacks
+      parameters:
+      - name: id
+        in: path
+        description: Agent Handler ID of the Tool Pack
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ToolPackPublic'
+    delete:
+      operationId: destroy
+      summary: Delete Tool Pack
+      description: Deletes a Tool Pack by ID
+      tags:
+      - subpackage_toolPacks
+      parameters:
+      - name: id
+        in: path
+        description: Agent Handler ID of the Tool Pack
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+    patch:
+      operationId: partial-update
+      summary: Update Tool Pack
+      description: Updates a Tool Pack by ID
+      tags:
+      - subpackage_toolPacks
+      parameters:
+      - name: id
+        in: path
+        description: Agent Handler ID of the Tool Pack
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ToolPackPublic'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedToolPackPublicWrite'
+  /api/v1/tool-packs/{tool_pack_id}/connectors/:
+    get:
+      operationId: list-connectors
+      summary: List connectors in a Tool Pack
+      description: List the connectors attached to a tool pack, with the tools enabled on each connector.
+      tags:
+      - subpackage_toolPacks
+      parameters:
+      - name: tool_pack_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ConnectorPublic'
+    put:
+      operationId: replace-connectors
+      summary: Update connectors in a Tool Pack
+      description: 'Replace a tool pack''s connector list declaratively. Any connector not in the request body is removed from the tool pack.
+
+
+        `tool_names` behavior per item:
+
+        - Omitted: all tools are enabled on the connector.
+
+        - `[]` (empty list): the connector is removed from the tool pack.
+
+        - Otherwise: exactly these tools are enabled.
+
+
+        Returns the updated list of connectors on the tool pack.'
+      tags:
+      - subpackage_toolPacks
+      parameters:
+      - name: tool_pack_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ConnectorPublic'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/ToolPackConnectorBulkInput'
+    patch:
+      operationId: bulk-upsert-delete-connectors
+      summary: Update connectors in a Tool Pack (partial)
+      description: 'Partially update a tool pack''s connectors. Connectors not listed in the request body are left untouched.
+
+
+        `tool_names` behavior per item:
+
+        - Omitted (new connector): all tools are enabled.
+
+        - Omitted (existing connector): the connector''s tools are left unchanged.
+
+        - `[]` (empty list): the connector is removed from the tool pack.
+
+        - Otherwise: exactly these tools are enabled.
+
+
+        Returns the updated list of connectors on the tool pack.'
+      tags:
+      - subpackage_toolPacks
+      parameters:
+      - name: tool_pack_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ConnectorPublic'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/ToolPackConnectorBulkInput'
+  /api/v1/tool-packs/{tool_pack_id}/connectors/{slug}/:
+    delete:
+      operationId: delete-connector
+      summary: Remove a connector from a Tool Pack
+      description: Remove a single connector from a tool pack by slug. Returns 204 No Content.
+      tags:
+      - subpackage_toolPacks
+      parameters:
+      - name: slug
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: tool_pack_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response
+components:
+  schemas:
+    ToolPackConnectorBulkInput:
+      type: object
+      properties:
+        slug:
+          type: string
+          description: Connector slug — primary identifier.
+        connector_id:
+          type: string
+          format: uuid
+          description: DEPRECATED — prefer `slug`. Retained for backward compatibility.
+        auth_scope:
+          $ref: '#/components/schemas/ToolPackConnectorBulkInputAuthScope'
+          description: 'Authentication scope. INDIVIDUAL: each user authenticates separately. SHARED: users in the same registered_company share one credential. Defaults to INDIVIDUAL when creating a new connector.
+
+
+            * `INDIVIDUAL` - INDIVIDUAL
+
+            * `SHARED` - SHARED
+
+            * `ORGANIZATION` - ORGANIZATION'
+        tool_names:
+          type: array
+          items:
+            type: string
+          description: 'Tool names to enable on this connector.
+
+            - Omitted (new connector): all tools are enabled.
+
+            - Omitted (existing connector, PATCH): the connector''s tools are left unchanged.
+
+            - `[]` (empty list): the connector is removed from the tool pack.
+
+            - Otherwise: exactly these tools are enabled.'
+      description: One item in a tool pack connector update request.
+      title: ToolPackConnectorBulkInput
+    PatchedToolPackPublicWrite:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        connectors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ToolPackConnectorInput'
+          description: Full-replace list of connectors. Any connector not in this array is detached from the tool pack. For incremental add/remove, use the `/tool-packs/{id}/connectors/` sub-resource endpoints.
+      title: PatchedToolPackPublicWrite
+    ToolPackPublicWrite:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        connectors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ToolPackConnectorInput'
+          description: Full-replace list of connectors. Any connector not in this array is detached from the tool pack. For incremental add/remove, use the `/tool-packs/{id}/connectors/` sub-resource endpoints.
+      required:
+      - id
+      - name
+      - description
+      title: ToolPackPublicWrite
+    ConnectorPublic:
+      type: object
+      properties:
+        slug:
+          type: string
+        name:
+          type: string
+        source_url:
+          type:
+          - string
+          - 'null'
+        logo_url:
+          type: string
+        categories:
+          type: array
+          items:
+            description: Any type
+        auth_scope:
+          $ref: '#/components/schemas/ConnectorPublicAuthScope'
+          description: 'How credentials are shared for this connector.
+
+
+            - `INDIVIDUAL`: each registered user authenticates with their own credential
+
+            - `SHARED`: users in the same registered_company share one credential
+
+            - `ORGANIZATION`: one credential is used for the whole organization
+
+
+            * `INDIVIDUAL` - INDIVIDUAL
+
+            * `SHARED` - SHARED
+
+            * `ORGANIZATION` - ORGANIZATION'
+        tools:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConnectorTool'
+        connector_id:
+          type: string
+          format: uuid
+          description: DEPRECATED — alias for the connector UUID. Prefer `slug` as the primary identifier. Retained for backward compatibility.
+      required:
+      - slug
+      - name
+      - source_url
+      - logo_url
+      - categories
+      - auth_scope
+      - tools
+      - connector_id
+      description: 'Public tool-pack-scoped connector shape.
+
+
+        Used across public endpoints that return a connector attached to a tool
+
+        pack: both the nested `connectors[]` in `GET /api/v1/tool-packs/{id}/`
+
+        and the items in `/api/v1/tool-packs/{id}/connectors/` (GET/PATCH/PUT).
+
+        See the "Consolidating connector response" tech-debt spec (column E).'
+      title: ConnectorPublic
+    ConnectorTool:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        input_schema:
+          description: Any type
+        credit_type:
+          type: string
+      required:
+      - name
+      - description
+      - input_schema
+      - credit_type
+      description: Full version of ConnectorTool serializer that includes input_schema details.
+      title: ConnectorTool
+    PaginatedToolPackPublicList:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ToolPackPublic'
+      required:
+      - count
+      - results
+      title: PaginatedToolPackPublicList
+    ToolPackPublic:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: ID of the Tool Pack
+        name:
+          type: string
+          description: Name of the Tool Pack
+        description:
+          type: string
+          description: Description of the Tool Pack
+        connectors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConnectorPublic'
+          description: Connectors enabled with the Tool Pack
+      required:
+      - id
+      - name
+      - description
+      - connectors
+      title: ToolPackPublic
+    ToolPackConnectorBulkInputAuthScope:
+      type: string
+      enum:
+      - INDIVIDUAL
+      - SHARED
+      - ORGANIZATION
+      description: 'Authentication scope. INDIVIDUAL: each user authenticates separately. SHARED: users in the same registered_company share one credential. Defaults to INDIVIDUAL when creating a new connector.
+
+
+        * `INDIVIDUAL` - INDIVIDUAL
+
+        * `SHARED` - SHARED
+
+        * `ORGANIZATION` - ORGANIZATION'
+      title: ToolPackConnectorBulkInputAuthScope
+    ToolPackConnectorInputAuthScope:
+      type: string
+      enum:
+      - INDIVIDUAL
+      - SHARED
+      - ORGANIZATION
+      default: INDIVIDUAL
+      description: 'How credentials are shared for this connector.
+
+
+        - `INDIVIDUAL`: each registered user authenticates with their own credential
+
+        - `SHARED`: users in the same registered_company share one credential
+
+        - `ORGANIZATION`: one credential is used for the whole organization
+
+
+        * `INDIVIDUAL` - INDIVIDUAL
+
+        * `SHARED` - SHARED
+
+        * `ORGANIZATION` - ORGANIZATION'
+      title: ToolPackConnectorInputAuthScope
+    ConnectorPublicAuthScope:
+      type: string
+      enum:
+      - INDIVIDUAL
+      - SHARED
+      - ORGANIZATION
+      description: 'How credentials are shared for this connector.
+
+
+        - `INDIVIDUAL`: each registered user authenticates with their own credential
+
+        - `SHARED`: users in the same registered_company share one credential
+
+        - `ORGANIZATION`: one credential is used for the whole organization
+
+
+        * `INDIVIDUAL` - INDIVIDUAL
+
+        * `SHARED` - SHARED
+
+        * `ORGANIZATION` - ORGANIZATION'
+      title: ConnectorPublicAuthScope
+    ToolPackConnectorInput:
+      type: object
+      properties:
+        slug:
+          type: string
+          description: Connector slug — primary identifier.
+        connector_id:
+          type: string
+          format: uuid
+          description: DEPRECATED — prefer `slug`. Retained for backward compatibility.
+        auth_scope:
+          $ref: '#/components/schemas/ToolPackConnectorInputAuthScope'
+          description: 'How credentials are shared for this connector.
+
+
+            - `INDIVIDUAL`: each registered user authenticates with their own credential
+
+            - `SHARED`: users in the same registered_company share one credential
+
+            - `ORGANIZATION`: one credential is used for the whole organization
+
+
+            * `INDIVIDUAL` - INDIVIDUAL
+
+            * `SHARED` - SHARED
+
+            * `ORGANIZATION` - ORGANIZATION'
+        tool_names:
+          type: array
+          items:
+            type: string
+          description: Tool names to enable for this connector. Omit to enable all tools.
+      description: 'Shared validation for connector identifier inputs.
+
+
+        At least one identifier must be provided. When both are set, `slug` wins
+
+        and the deprecated `connector_id` is discarded.'
+      title: ToolPackConnectorInput
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

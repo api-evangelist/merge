@@ -1,0 +1,333 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_customObjectClasses API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_customObjectClasses
+paths:
+  /crm/v1/custom-object-classes:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `CustomObjectClass` objects.{/* BEGIN_CRM_CUSTOMOBJECTCLASS_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA9VS207bQBT8l/MY+dIQ0gpLVRWSlBDJDgVTFSFkHa9PnE12vc5eCDXi3ys7lKYt4qkvfTy7M+cyM4/A0FKp9HeIgGkJHkhVkIAIxs5YJRf5mpgdCzQGPMCaJyhpj83uj8AD4+paaUvFZ06iMDNNS4gglKRL8l3Fl5yKkGkZ8spSqdFyVZnwheUvOxp4IHi1oWLEmHKVfaPPHufjHvhHaULBjQUPajTGrrRy5eqSto7MWy3bbQRJqiwKv0CL4QHd13v+a2/t3gUJslRM0OKELLH2wOdRK2trE4XhikQddGODgu5DqkLUljNBJhwOTo4+nAz95y7d9E9ZKT72e+ttrvIPvaxkIkPXi1P2kKTnu2RdHifj44ekuR4mzaZJ1pt3vazEXpzGw0V6M1hMRv3FK4Ds6v23k6+nk9N50mPNdJCsb3ZJyvpxyjZ5cz6Yn7HdfPblIWlujuLJ9SBJp8P5meovxpcmHl+qeBQE4MGhjxDdPh4+PIdj5vKrWrU2HPydSyzpQJS9DVhzv3a54CwwgwAlNqrCnQmYkqGkgmM4c7mplc3M1qGmYF2XP0XnqnpRHCKYJrNRMp5Ofnd/dI9cYC4IIqsd/RVYiG6BdVHPVJf11tMulJlhK5LYZRNzElktnEbxUhpelU6gBg+q9m4PNEllKeMF3LXF1nFNxQVqlGRJt6PunrzXBLtCQWapNKN/o9mFQLtUWv7qG9TV/63b3dMPLg4DQ6wEAAA=" /></Footer>{/* END_CRM_CUSTOMOBJECTCLASS_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_customObjectClasses
+      parameters:
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomObjectClassesGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCustomObjectClassList'
+  /crm/v1/custom-object-classes/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `CustomObjectClass` object with the given `id`.{/* BEGIN_CRM_CUSTOMOBJECTCLASS_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA9VS207bQBT8l/MY+dIQ0gpLVRWSlBDJDgVTFSFkHa9PnE12vc5eCDXi3ys7lKYt4qkvfTy7M+cyM4/A0FKp9HeIgGkJHkhVkIAIxs5YJRf5mpgdCzQGPMCaJyhpj83uj8AD4+paaUvFZ06iMDNNS4gglKRL8l3Fl5yKkGkZ8spSqdFyVZnwheUvOxp4IHi1oWLEmHKVfaPPHufjHvhHaULBjQUPajTGrrRy5eqSto7MWy3bbQRJqiwKv0CL4QHd13v+a2/t3gUJslRM0OKELLH2wOdRK2trE4XhikQddGODgu5DqkLUljNBJhwOTo4+nAz95y7d9E9ZKT72e+ttrvIPvaxkIkPXi1P2kKTnu2RdHifj44ekuR4mzaZJ1pt3vazEXpzGw0V6M1hMRv3FK4Ds6v23k6+nk9N50mPNdJCsb3ZJyvpxyjZ5cz6Yn7HdfPblIWlujuLJ9SBJp8P5meovxpcmHl+qeBQE4MGhjxDdPh4+PIdj5vKrWrU2HPydSyzpQJS9DVhzv3a54CwwgwAlNqrCnQmYkqGkgmM4c7mplc3M1qGmYF2XP0XnqnpRHCKYJrNRMp5Ofnd/dI9cYC4IIqsd/RVYiG6BdVHPVJf11tMulJlhK5LYZRNzElktnEbxUhpelU6gBg+q9m4PNEllKeMF3LXF1nFNxQVqlGRJt6PunrzXBLtCQWapNKN/o9mFQLtUWv7qG9TV/63b3dMPLg4DQ6wEAAA=" /></Footer>{/* END_CRM_CUSTOMOBJECTCLASS_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_customObjectClasses
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomObjectClassesIdGetParametersExpandSchemaItems'
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomObjectClass'
+components:
+  schemas:
+    RemoteFieldClassForCustomObjectClassItemSchema:
+      type: object
+      properties:
+        item_type:
+          type:
+          - string
+          - 'null'
+        item_format:
+          type:
+          - string
+          - 'null'
+        item_choices:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+      required:
+      - item_type
+      - item_format
+      - item_choices
+      title: RemoteFieldClassForCustomObjectClassItemSchema
+    CustomObjectClass:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+        modified_at:
+          type: string
+          format: date-time
+        name:
+          type:
+          - string
+          - 'null'
+          description: The custom object class's name.
+        description:
+          type:
+          - string
+          - 'null'
+          description: The custom object class's description.
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+          description: The custom object class's singular and plural labels.
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldClassForCustomObjectClass'
+        association_types:
+          type:
+          - array
+          - 'null'
+          items:
+            type: object
+            additionalProperties:
+              description: Any type
+          description: The types of associations with other models that the custom object class can have.
+      description: '# The Custom Object Class Object
+
+        ### Description
+
+        The `Custom Object Class` object is used to represent a Custom Object Schema in the remote system.
+
+        ### Usage Example
+
+        TODO'
+      title: CustomObjectClass
+    RemoteFieldClassForCustomObjectClass:
+      type: object
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        display_name:
+          type:
+          - string
+          - 'null'
+        remote_key_name:
+          type:
+          - string
+          - 'null'
+        description:
+          type:
+          - string
+          - 'null'
+        is_required:
+          type: boolean
+        field_type:
+          $ref: '#/components/schemas/FieldTypeEnum'
+        field_format:
+          $ref: '#/components/schemas/FieldFormatEnum'
+        field_choices:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        item_schema:
+          oneOf:
+          - $ref: '#/components/schemas/RemoteFieldClassForCustomObjectClassItemSchema'
+          - type: 'null'
+      title: RemoteFieldClassForCustomObjectClass
+    FieldFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldFormatEnum
+    PaginatedCustomObjectClassList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomObjectClass'
+      title: PaginatedCustomObjectClassList
+    CustomObjectClassesGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - fields
+      title: CustomObjectClassesGetParametersExpandSchemaItems
+    CustomObjectClassesIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - fields
+      title: CustomObjectClassesIdGetParametersExpandSchemaItems
+    FieldTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldTypeEnum
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

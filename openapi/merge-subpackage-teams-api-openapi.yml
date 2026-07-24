@@ -1,0 +1,256 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_teams API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_teams
+paths:
+  /ticketing/v1/teams:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Team` objects.{/* BEGIN_TICKETING_TEAM_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA92Z/2/aOBTA/xXOPyIg17LeVKTTiUG/XglbS7d1VRU9nEdicOLgL9Ax7X8/OQFK7ypNo4Yb/BjL+ST++Nnxe/lGKGiMhPxKGkQzOkLN0ohUSCJC5KRBeggJqRDImA8JrnYKJoekQpTJMiE1hqcMeajOJQ5Ig3gJygirJmUDhqG3vMdjqcZIgmYiVd7y3uogv5lUCGfpCMMmpcKk+oe0oncViu7/ulQeZ0qTCslAKR1LYaL4GscG1Y/B9s04Jphq4NUQNHgrkKosKC+12TGEyFFj2AYNbdRI7WDnD4y1zlTD82LkWS1/eC3EiYepB1IzylF5R/Xjw7fHR9U5JX/6X0HE/zwoD8d90X9bDiLKAzDlTo8++r2LqT+M3vitN4/+7PbIn41m/nD0ezmIoNzpdY66vbt6t9086L7QIbj54/Pxx3ftd5d+mc5O6v7wbur36EGnR0f92UX98oxOL88/PPqzu8NO+7bu906OLs/EQbd1rTqta9Fp1mqkQlbnlDTuv602zIOmGcNvz3teJBDhipFiJiBj1cz0OaM1Va9BAjORwlTVqEi8BEMGXjOGQI0NSKxleaDmnphIl6pJg5z4502/ddJ+PvnNCTAOfY6koaXB/8QuadyTEBWVLMs5FZLat68QiYnQGNiZeH4VZKDjpyYWkgoxCqUiD7ZxbJjE8D1ISFDb1sb9w/fKi34UpOBGEFhUtVBU5SISh7VhhlsylaFMmFJ5JPykt2LxqaXBCpkwnK7jcmYklto46WbKUcxZYlAQg5vcbHAlIrFPEdjijI5uMzfC5rAdcOUs6k4lqjhENXJjcIl75nB7C3nzAZePUKGcMIpunL3noAdCJoMV8va+FfmBKTAmN/LKUEzZ2NhWTLU9mcj1HYtUu5WbIzdpdWsBeMb0uemXLpQy6OhDccZ0bPpBgdyB3W9db1fQdyaMQ39vTXEI+Ve3669g7pUlISMGyrGmArqHqcI58qx0Q4VxvLFbrrLYTTpz+ZFcSx6bODpsWNLG962tBdVFqlFSkbhxs6Ct+gk+HrcPr1r9HfckRUo5hI48SZG2OIRzT1tQs/7IL5l0VKCwpC2M+BWliFemgnaAJVv9K7XQrgS3+7Sl/6+LaO3wKd0UOVmpAylEeXXVZUTNE74neG2Y7fBW87dRWiSuomdB23w5YWuCrliK4EgPz1lbPy3+CuXSG+CoBkJSXK7PFhfG0SfuiR4sKjLU0n/RE/nyD1Ah06nnYvi+mDoyu+TtQPq8Sa+xkJq6yoYWtL0tu9r/uVMhHZWpF7QdCMH1bEnkXDhylbOe5USf1GN7eva4T8Y+STZylGLnqP3Jsb9g6u7/0CIbmEOD43HHfGanO3l0+VmPIhaltjOTX0QsAovbgz3s4fs/pZjwOdAjAAA=" /></Footer>{/* END_TICKETING_TEAM_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_teams
+      parameters:
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTeamList'
+  /ticketing/v1/teams/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `Team` object with the given `id`.{/* BEGIN_TICKETING_TEAM_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA92Z/2/aOBTA/xXOPyIg17LeVKTTiUG/XglbS7d1VRU9nEdicOLgL9Ax7X8/OQFK7ypNo4Yb/BjL+ST++Nnxe/lGKGiMhPxKGkQzOkLN0ohUSCJC5KRBeggJqRDImA8JrnYKJoekQpTJMiE1hqcMeajOJQ5Ig3gJygirJmUDhqG3vMdjqcZIgmYiVd7y3uogv5lUCGfpCMMmpcKk+oe0oncViu7/ulQeZ0qTCslAKR1LYaL4GscG1Y/B9s04Jphq4NUQNHgrkKosKC+12TGEyFFj2AYNbdRI7WDnD4y1zlTD82LkWS1/eC3EiYepB1IzylF5R/Xjw7fHR9U5JX/6X0HE/zwoD8d90X9bDiLKAzDlTo8++r2LqT+M3vitN4/+7PbIn41m/nD0ezmIoNzpdY66vbt6t9086L7QIbj54/Pxx3ftd5d+mc5O6v7wbur36EGnR0f92UX98oxOL88/PPqzu8NO+7bu906OLs/EQbd1rTqta9Fp1mqkQlbnlDTuv602zIOmGcNvz3teJBDhipFiJiBj1cz0OaM1Va9BAjORwlTVqEi8BEMGXjOGQI0NSKxleaDmnphIl6pJg5z4502/ddJ+PvnNCTAOfY6koaXB/8QuadyTEBWVLMs5FZLat68QiYnQGNiZeH4VZKDjpyYWkgoxCqUiD7ZxbJjE8D1ISFDb1sb9w/fKi34UpOBGEFhUtVBU5SISh7VhhlsylaFMmFJ5JPykt2LxqaXBCpkwnK7jcmYklto46WbKUcxZYlAQg5vcbHAlIrFPEdjijI5uMzfC5rAdcOUs6k4lqjhENXJjcIl75nB7C3nzAZePUKGcMIpunL3noAdCJoMV8va+FfmBKTAmN/LKUEzZ2NhWTLU9mcj1HYtUu5WbIzdpdWsBeMb0uemXLpQy6OhDccZ0bPpBgdyB3W9db1fQdyaMQ39vTXEI+Ve3669g7pUlISMGyrGmArqHqcI58qx0Q4VxvLFbrrLYTTpz+ZFcSx6bODpsWNLG962tBdVFqlFSkbhxs6Ct+gk+HrcPr1r9HfckRUo5hI48SZG2OIRzT1tQs/7IL5l0VKCwpC2M+BWliFemgnaAJVv9K7XQrgS3+7Sl/6+LaO3wKd0UOVmpAylEeXXVZUTNE74neG2Y7fBW87dRWiSuomdB23w5YWuCrliK4EgPz1lbPy3+CuXSG+CoBkJSXK7PFhfG0SfuiR4sKjLU0n/RE/nyD1Ah06nnYvi+mDoyu+TtQPq8Sa+xkJq6yoYWtL0tu9r/uVMhHZWpF7QdCMH1bEnkXDhylbOe5USf1GN7eva4T8Y+STZylGLnqP3Jsb9g6u7/0CIbmEOD43HHfGanO3l0+VmPIhaltjOTX0QsAovbgz3s4fs/pZjwOdAjAAA=" /></Footer>{/* END_TICKETING_TEAM_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_teams
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+components:
+  schemas:
+    TeamFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: TeamFieldMappings
+    PaginatedTeamList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Team'
+      title: PaginatedTeamList
+    Team:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The team's name.
+        description:
+          type:
+          - string
+          - 'null'
+          description: The team's description.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/TeamFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The Team Object
+
+        ### Description
+
+        The `Team` object is used to represent one or more `Users` within the company receiving the ticket.
+
+
+        ### Usage Example
+
+        TODO'
+      title: Team
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

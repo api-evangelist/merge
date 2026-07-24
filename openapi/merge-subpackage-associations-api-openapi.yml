@@ -1,0 +1,257 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_associations API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_associations
+paths:
+  /crm/v1/custom-object-classes/{custom_object_class_id}/custom-objects/{object_id}/associations:
+    get:
+      operationId: custom-object-classes-custom-objects-associations-list
+      summary: Custom Object Classes Custom Objects Associations List
+      description: Returns a list of `Association` objects.{/* BEGIN_CRM_CUSTOMOBJECTCLASS_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA9VS207bQBT8l/MY+dIQ0gpLVRWSlBDJDgVTFSFkHa9PnE12vc5eCDXi3ys7lKYt4qkvfTy7M+cyM4/A0FKp9HeIgGkJHkhVkIAIxs5YJRf5mpgdCzQGPMCaJyhpj83uj8AD4+paaUvFZ06iMDNNS4gglKRL8l3Fl5yKkGkZ8spSqdFyVZnwheUvOxp4IHi1oWLEmHKVfaPPHufjHvhHaULBjQUPajTGrrRy5eqSto7MWy3bbQRJqiwKv0CL4QHd13v+a2/t3gUJslRM0OKELLH2wOdRK2trE4XhikQddGODgu5DqkLUljNBJhwOTo4+nAz95y7d9E9ZKT72e+ttrvIPvaxkIkPXi1P2kKTnu2RdHifj44ekuR4mzaZJ1pt3vazEXpzGw0V6M1hMRv3FK4Ds6v23k6+nk9N50mPNdJCsb3ZJyvpxyjZ5cz6Yn7HdfPblIWlujuLJ9SBJp8P5meovxpcmHl+qeBQE4MGhjxDdPh4+PIdj5vKrWrU2HPydSyzpQJS9DVhzv3a54CwwgwAlNqrCnQmYkqGkgmM4c7mplc3M1qGmYF2XP0XnqnpRHCKYJrNRMp5Ofnd/dI9cYC4IIqsd/RVYiG6BdVHPVJf11tMulJlhK5LYZRNzElktnEbxUhpelU6gBg+q9m4PNEllKeMF3LXF1nFNxQVqlGRJt6PunrzXBLtCQWapNKN/o9mFQLtUWv7qG9TV/63b3dMPLg4DQ6wEAAA=" /></Footer>{/* END_CRM_CUSTOMOBJECTCLASS_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_associations
+      parameters:
+      - name: custom_object_class_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: object_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: association_type_id
+        in: query
+        description: If provided, will only return opportunities with this association_type.
+        required: false
+        schema:
+          type: string
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces.
+        required: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomObjectClassesCustomObjectClassIdCustomObjectsObjectIdAssociationsGetParametersExpandSchemaItems'
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAssociationList'
+  ? /crm/v1/custom-object-classes/{source_class_id}/custom-objects/{source_object_id}/associations/{target_class_id}/{target_object_id}/{association_type_id}
+  : put:
+      operationId: custom-object-classes-custom-objects-associations-update
+      summary: Custom Object Classes Custom Objects Associations Update
+      description: Creates an Association between `source_object_id` and `target_object_id` of type `association_type_id`.
+      tags:
+      - subpackage_associations
+      parameters:
+      - name: association_type_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: source_class_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: source_object_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: target_class_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: target_object_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: is_debug_mode
+        in: query
+        description: Whether to include debug fields (such as log file links) in the response.
+        required: false
+        schema:
+          type: boolean
+      - name: run_async
+        in: query
+        description: Whether or not third-party updates should be run asynchronously.
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Association'
+components:
+  schemas:
+    PaginatedAssociationList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Association'
+      title: PaginatedAssociationList
+    Association:
+      type: object
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        source_object:
+          type: string
+          format: uuid
+        target_object:
+          type: string
+          format: uuid
+        association_type:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The association type the association belongs to.
+      description: '# The Association Object
+
+        ### Description
+
+        The `Association` record refers to an instance of an Association Type.
+
+        ### Usage Example
+
+        TODO'
+      title: Association
+    CustomObjectClassesCustomObjectClassIdCustomObjectsObjectIdAssociationsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - association_type
+      title: CustomObjectClassesCustomObjectClassIdCustomObjectsObjectIdAssociationsGetParametersExpandSchemaItems
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

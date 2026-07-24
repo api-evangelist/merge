@@ -1,0 +1,255 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_offices API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_offices
+paths:
+  /ats/v1/offices:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Office` objects.{/* BEGIN_ATS_OFFICE_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA92aa2/iOBSG/wryR8SlQJlOkVYr7peWQIG2U42qyHFOgsGJU8eBwmj++yqEtM1uNRJbF9F8TIhf24/fc3Ls8AsRLMHmYoNqCEsf5ZDDTWCohkaWRQmgHMIe1bAD0QP6qoxyyA88jwsJZocCM/2eAAvVUNEBYUM+cKlFwSxi6RepK8EWWFLu+sWXVnlr1wzlEKPuEsw6ITxw5R90oufyOHrwX5fhz75EOeRh35dzwQN7PoGnAPw/SYajYeCAKzHLm1ji4pvmeRG1f+9eOG4TGEgwW1jiFkgg4QT3Xc2l9PxasTgH5hV23RZMWBXBLWIhKWHgF6uVy/LFZTW/V9n1/rdus79K2cWTwY2LrG4TpuMgO5yRZ23WX2sL+1xrnj9r29uqtl1utcXyLKvbODucDauj2UNl1KqXRu88oE+//bi8a7QaAy1Ltu2KtnhYazNSGs7I0tj2K4MuWQ96N8/a9qE8bN1WtFm7Oujy0qg58YfNCR/WCwWUQ2/XEdV+/np7Y2+OuucxSrArpxKTZbJN38E2vGETrQb2aN4LDEZJwa8UsIO33MVrv0C4U3TApLiY1NSnTwEWoF9zm+vrRu/hbnJdWHh2vB6Uuy+LgWqorfXqWrPdShqjvsKUYYMBqkkRwH+8jGo/0YIbO3Nyshs9yiE3nGMOCXC4BD1cr+SV7mE5R4/hvaeACjDHWGAHJIhQ8PF37l1i/tzYKAIVSiX4VIKbe7xaFzz3dPi83KLm4aw2jsFUwQq1YlorY9m1LD8toBrYMTjvTdSgitXeWuukQu4jpATAVlH8RVonS+lQMgFjcy7czASICKgMX5KZJuOBqYaWsdfXxau+TkJ93Y8IThstr79cHSko1dJr1mdTNZxCpURSH5xryyfe/sreanIHQKrhs7en3ifc1Ucu26QliTcFMCxBDaUxw9LiwtmL7kPsNELrA4zMwh11CVXLqLUKNfVvI/xAbOtTGB3TR51we4SpqwZSrJZ4zaUk4joC/LkE7ChCFcvtWaUFUxcctQHXBUd/Xt2Rq1I1NYwEgDvnga8of7/qnWx9qYRWZsCNTINjYWbq4/4ns4NUwOtNVJblvYm+UzuWzT4dD232h1O1+aofSh6hhEqyOXzqA7zdqjoEiLQSG5H7GzJsDc2TSkKHEuLGlHChKEnHavmjVtefHkEDbvicKsove7GEka7Lt8R0b07KSB/jtaKqNm57sTSW2wOualMSJ+ZQMT492pilNg6u0gLrGlYg1NDaSSUCkD/Y3zeN+yMFoNoUPhKYMMjMMAOuhs9OKo1l9hiEz13K4yNdugsNBcTKxymmD5zufpYgLMbXSg8bQXQYXydC6MzbLjqdclqsMsU2ZFTVjqGY/qZ4rBjr84thWjLztD7OTANCwPc7mEgufEXUEpoJszXID253zlJjNgcL+RJaqvAlRRP8Ft9X11b7/qQceCCz8CUFW7XlU6T52Qfe6jm48npjSfUsIt2TcskHoiya0QTAUlcmRXonuzk5lBBgR2LKuKJC+1UvjdXkDFhogLiYBEUbXhnJxn8LgCN/q/wUY91edTNjob7uvr3qxtvdcuPJfB7Rk6L0AXPdAyPcgYzkGTmHzCBwbab4U/i+C11yXc5Bj7r48l9777lY7oajhFWslqieRivGNHZ5zDz2PyCYeKPYL3wn+gUj7PH3P6so8YbjLQAA" /></Footer>{/* END_ATS_OFFICE_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_offices
+      parameters:
+      - name: created_after
+        in: query
+        description: If provided, will only return objects created after this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: created_before
+        in: query
+        description: If provided, will only return objects created before this datetime.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: cursor
+        in: query
+        description: The pagination cursor value.
+        required: false
+        schema:
+          type: string
+      - name: include_deleted_data
+        in: query
+        description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        required: false
+        schema:
+          type: boolean
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: modified_after
+        in: query
+        description: If provided, only objects synced by Merge after this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: modified_before
+        in: query
+        description: If provided, only objects synced by Merge before this date time will be returned.
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: page_size
+        in: query
+        description: Number of results to return per page. The maximum limit is 100.
+        required: false
+        schema:
+          type: integer
+      - name: remote_id
+        in: query
+        description: The API provider's ID for the given object.
+        required: false
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedOfficeList'
+  /ats/v1/offices/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns an `Office` object with the given `id`.{/* BEGIN_ATS_OFFICE_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA92aa2/iOBSG/wryR8SlQJlOkVYr7peWQIG2U42qyHFOgsGJU8eBwmj++yqEtM1uNRJbF9F8TIhf24/fc3Ls8AsRLMHmYoNqCEsf5ZDDTWCohkaWRQmgHMIe1bAD0QP6qoxyyA88jwsJZocCM/2eAAvVUNEBYUM+cKlFwSxi6RepK8EWWFLu+sWXVnlr1wzlEKPuEsw6ITxw5R90oufyOHrwX5fhz75EOeRh35dzwQN7PoGnAPw/SYajYeCAKzHLm1ji4pvmeRG1f+9eOG4TGEgwW1jiFkgg4QT3Xc2l9PxasTgH5hV23RZMWBXBLWIhKWHgF6uVy/LFZTW/V9n1/rdus79K2cWTwY2LrG4TpuMgO5yRZ23WX2sL+1xrnj9r29uqtl1utcXyLKvbODucDauj2UNl1KqXRu88oE+//bi8a7QaAy1Ltu2KtnhYazNSGs7I0tj2K4MuWQ96N8/a9qE8bN1WtFm7Oujy0qg58YfNCR/WCwWUQ2/XEdV+/np7Y2+OuucxSrArpxKTZbJN38E2vGETrQb2aN4LDEZJwa8UsIO33MVrv0C4U3TApLiY1NSnTwEWoF9zm+vrRu/hbnJdWHh2vB6Uuy+LgWqorfXqWrPdShqjvsKUYYMBqkkRwH+8jGo/0YIbO3Nyshs9yiE3nGMOCXC4BD1cr+SV7mE5R4/hvaeACjDHWGAHJIhQ8PF37l1i/tzYKAIVSiX4VIKbe7xaFzz3dPi83KLm4aw2jsFUwQq1YlorY9m1LD8toBrYMTjvTdSgitXeWuukQu4jpATAVlH8RVonS+lQMgFjcy7czASICKgMX5KZJuOBqYaWsdfXxau+TkJ93Y8IThstr79cHSko1dJr1mdTNZxCpURSH5xryyfe/sreanIHQKrhs7en3ifc1Ucu26QliTcFMCxBDaUxw9LiwtmL7kPsNELrA4zMwh11CVXLqLUKNfVvI/xAbOtTGB3TR51we4SpqwZSrJZ4zaUk4joC/LkE7ChCFcvtWaUFUxcctQHXBUd/Xt2Rq1I1NYwEgDvnga8of7/qnWx9qYRWZsCNTINjYWbq4/4ns4NUwOtNVJblvYm+UzuWzT4dD232h1O1+aofSh6hhEqyOXzqA7zdqjoEiLQSG5H7GzJsDc2TSkKHEuLGlHChKEnHavmjVtefHkEDbvicKsove7GEka7Lt8R0b07KSB/jtaKqNm57sTSW2wOualMSJ+ZQMT492pilNg6u0gLrGlYg1NDaSSUCkD/Y3zeN+yMFoNoUPhKYMMjMMAOuhs9OKo1l9hiEz13K4yNdugsNBcTKxymmD5zufpYgLMbXSg8bQXQYXydC6MzbLjqdclqsMsU2ZFTVjqGY/qZ4rBjr84thWjLztD7OTANCwPc7mEgufEXUEpoJszXID253zlJjNgcL+RJaqvAlRRP8Ft9X11b7/qQceCCz8CUFW7XlU6T52Qfe6jm48npjSfUsIt2TcskHoiya0QTAUlcmRXonuzk5lBBgR2LKuKJC+1UvjdXkDFhogLiYBEUbXhnJxn8LgCN/q/wUY91edTNjob7uvr3qxtvdcuPJfB7Rk6L0AXPdAyPcgYzkGTmHzCBwbab4U/i+C11yXc5Bj7r48l9777lY7oajhFWslqieRivGNHZ5zDz2PyCYeKPYL3wn+gUj7PH3P6so8YbjLQAA" /></Footer>{/* END_ATS_OFFICE_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_offices
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Office'
+components:
+  schemas:
+    PaginatedOfficeList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Office'
+      title: PaginatedOfficeList
+    Office:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The office's name.
+        location:
+          type:
+          - string
+          - 'null'
+          description: The office's location.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/OfficeFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The Office Object
+
+        ### Description
+
+        The `Office` object is used to represent an office within a company. A given `Job` has the `Office` ID in its offices field.
+
+        ### Usage Example
+
+        Fetch from the `LIST Offices` endpoint and view the offices within a company.'
+      title: Office
+    OfficeFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: OfficeFieldMappings
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

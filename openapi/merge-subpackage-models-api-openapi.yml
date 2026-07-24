@@ -1,0 +1,269 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_models API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_models
+paths:
+  /models:
+    get:
+      operationId: list
+      summary: List public models or fetch a single model
+      description: List all available public models. Supports filtering by provider or vendor, or fetching a single model by query parameter with ?model=<provider/model-name>.
+      tags:
+      - subpackage_models
+      parameters:
+      - name: model
+        in: query
+        description: Fetch a single model by ID in format 'provider/model-name'
+        required: false
+        schema:
+          type: string
+      - name: provider
+        in: query
+        description: Filter by provider
+        required: false
+        schema:
+          type: string
+      - name: vendor
+        in: query
+        description: Filter by vendor
+        required: false
+        schema:
+          type: string
+      - name: cursor
+        in: query
+        description: Pagination cursor
+        required: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: Page size
+        required: false
+        schema:
+          type: integer
+          default: 50
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Models_list_Response_200'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    PublicVendorModelCapabilitiesOutputItems:
+      type: string
+      enum:
+      - text
+      - tool_use
+      - embedding
+      title: PublicVendorModelCapabilitiesOutputItems
+    PublicVendorModelInfo:
+      type: object
+      properties:
+        launch_date:
+          type:
+          - string
+          - 'null'
+        context_window:
+          type: integer
+        max_output_tokens:
+          type: integer
+        availability_status:
+          $ref: '#/components/schemas/PublicVendorModelInfoAvailabilityStatus'
+        capabilities:
+          $ref: '#/components/schemas/PublicVendorModelCapabilities'
+        pricing:
+          $ref: '#/components/schemas/ModelPricing'
+      required:
+      - context_window
+      - max_output_tokens
+      - availability_status
+      - capabilities
+      - pricing
+      description: Per-vendor execution metadata for a model - context window, max output tokens, capabilities, pricing, and availability. A single `PublicModel` carries one of these for each vendor that can execute it.
+      title: PublicVendorModelInfo
+    PublicModelAvailabilityStatus:
+      type: string
+      enum:
+      - available
+      - deprecated
+      title: PublicModelAvailabilityStatus
+    PublicModelsListResponse:
+      type: object
+      properties:
+        object:
+          type: string
+          enum:
+          - list
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicModel'
+        has_more:
+          type: boolean
+          default: false
+        next_cursor:
+          type:
+          - string
+          - 'null'
+      required:
+      - data
+      description: Paginated response wrapper for `GET /v1/models`. Use the `next_cursor` field to page through results when `has_more` is true.
+      title: PublicModelsListResponse
+    ValidationErrorLocItems:
+      oneOf:
+      - type: string
+      - type: integer
+      title: ValidationErrorLocItems
+    PublicVendorModelInfoAvailabilityStatus:
+      type: string
+      enum:
+      - available
+      - deprecated
+      title: PublicVendorModelInfoAvailabilityStatus
+    HTTPValidationError:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+      description: Standard FastAPI validation error wrapper. Returned with HTTP 422 when the request body or query parameters fail Pydantic validation.
+      title: HTTPValidationError
+    ValidationError:
+      type: object
+      properties:
+        loc:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationErrorLocItems'
+        msg:
+          type: string
+        type:
+          type: string
+        input:
+          description: Any type
+        ctx:
+          $ref: '#/components/schemas/ValidationErrorCtx'
+      required:
+      - loc
+      - msg
+      - type
+      description: Single field-level validation error. `loc` is the JSON path to the offending field, `msg` is a human-readable explanation, and `type` is a stable machine-readable error code.
+      title: ValidationError
+    ValidationErrorCtx:
+      type: object
+      properties: {}
+      title: ValidationErrorCtx
+    PublicVendorModelCapabilitiesInputItems:
+      type: string
+      enum:
+      - text
+      - image
+      - document
+      - embedding
+      title: PublicVendorModelCapabilitiesInputItems
+    PublicModel:
+      type: object
+      properties:
+        model:
+          type: string
+          description: Model ID in format 'provider/model-name'
+        provider:
+          type: string
+        display_name:
+          type: string
+        vendors:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/PublicVendorModelInfo'
+        availability_status:
+          $ref: '#/components/schemas/PublicModelAvailabilityStatus'
+        created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        updated_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+      required:
+      - model
+      - provider
+      - display_name
+      - vendors
+      - availability_status
+      description: A canonical model in Merge Gateway's catalog. Identified by `model` (fully-qualified provider/model ID) and exposes the set of `vendors` that can execute it, each with its own capabilities, context window, pricing, and ZDR flag.
+      title: PublicModel
+    PublicVendorModelCapabilities:
+      type: object
+      properties:
+        input:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicVendorModelCapabilitiesInputItems'
+        output:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicVendorModelCapabilitiesOutputItems'
+        supports_tool_calling:
+          type: boolean
+        supports_tool_choice:
+          type: boolean
+          default: false
+        supports_structured_outputs:
+          type: boolean
+        streaming:
+          type: boolean
+      required:
+      - input
+      - output
+      - supports_tool_calling
+      - supports_tool_choice
+      - supports_structured_outputs
+      - streaming
+      description: Per-route capability flags. Lists supported input/output content types (text, image, document, tool_use) and feature support (tool calling, tool choice, structured outputs, streaming).
+      title: PublicVendorModelCapabilities
+    ModelPricing:
+      type: object
+      properties:
+        currency:
+          type: string
+          enum:
+          - USD
+        input_per_million:
+          type: number
+          format: double
+        output_per_million:
+          type: number
+          format: double
+      required:
+      - input_per_million
+      - output_per_million
+      description: Pricing information for a model.
+      title: ModelPricing
+    Models_list_Response_200:
+      oneOf:
+      - $ref: '#/components/schemas/PublicModelsListResponse'
+      - $ref: '#/components/schemas/PublicModel'
+      title: Models_list_Response_200
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

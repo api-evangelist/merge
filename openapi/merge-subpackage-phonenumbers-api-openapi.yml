@@ -1,0 +1,95 @@
+openapi: 3.1.0
+info:
+  title: Accounting subpackage_phoneNumbers API
+  version: 1.0.0
+servers:
+- url: https://api.merge.dev/api
+- url: https://api-eu.merge.dev/api
+- url: https://api-ap.merge.dev/api
+tags:
+- name: subpackage_phoneNumbers
+paths:
+  /accounting/v1/phone-numbers/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns an `AccountingPhoneNumber` object with the given `id`.{/* BEGIN_ACCOUNTING_PHONENUMBER_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA92XbW/iOBSF/0rkjwjIAANVkVYjXqftLoEBOtvuqLIuziUYHDu1Hd5G899XgVDotlJ3t9nZqh9zE5+TPD7Xsb8TBhYDpTekToAxFUvLZUDyJFQ+ClInjYfiYKYkenE4QU3yBCLuQYiPhtFlmeSJiaNIaYt+l6PwzYXGKakTN0QdYCGWfMrRd4+DXC4tBhosV9K4D4ML091okieCywX66Xu8LLd/vJBW/nJpXMGNJXkSgTF2plUczIZ4H6P5G8rJuwkMUVoQBR8suCcqBb2Xea6WfIWPAi36bbDQRoss+dzUcWZtZOquO0MRFXfuRR+XLkoXtOVMoHGrlfPy2Xm1kKrs3D/RQPxSys3vJ2pylqMBExTiXG/M1t74cuXNg49e6+Pa215Xve1i680XH3I0gFxv3Kv2x7eVfrtR6j/zAB3Vbs6/NtvNKy/Htp2KN79deWNW6o3ZYrK9rFx9Zquriy9rb3tb7rWvK964U736rEr91tD0WkPVaxSLJE9OZ5XUv30/LaTB6Wo0s6ZSi4TPye3LEAI84bKfEIh4IYongrOiqRQhhK2SsDJFpkI3RJ+De9Sjo/sYNNLfVKCK8yjJ844cV/IBPqmTjnfR8Fqd9uM8NJbABUwEkrrVMT4JNKl/I0yFEcgN5XKqSJ4wJS2wJFfy0B8aQ2WRJhP1+IpGYGfHEvdJnthNhOQuqd3HXKM/AA0hWtSJ2d2P/HP0epxpZdTUOu2NhJAz41RqVacZGy7RGKeF0moQ2aB9MKMHM1qpVenBjKZmtKWE0vR83enWamfFSP588q+n2OUSJEMHpO/0IzxkOBOOAwF2qnT4DM/UltKj538E8ElW/1X8lMTNhGs/YzAH2f8lPC+27T+E5KEdxdxiNow8tCZRo2a3ur3ldPQ1MIFONzZcSaclVOw7neEgGw57cboXpztx2hkOaCFd9t9mdF6/4n+JOVvs/m9OG83Cqijb3jvqU2zO5XW8eqskX0mvLwWXGTXlUbawb0t6PS3Xmmel98RuBAGe7Cx27Xw8GGQDMvGgzVbjsHf7dXmzrIzm7w7jZeK1M8sKWqp4ALdccs+cwVv+PfwOS0z3WTyrLephFUu06cXUX5c/2PcUnhvUKhtSiVK6WL0nQH+omXIyPE4mek9Pkz8B2IsnmbsffwLQuRKYuBEAAA==" /></Footer>{/* END_ACCOUNTING_PHONENUMBER_FETCH_SUPPORTED_FIELDS */}
+      tags:
+      - subpackage_phoneNumbers
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: include_remote_data
+        in: query
+        description: Whether to include the original data Merge fetched from the third-party to produce these models.
+        required: false
+        schema:
+          type: boolean
+      - name: include_shell_data
+        in: query
+        description: Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null).
+        required: false
+        schema:
+          type: boolean
+      - name: Authorization
+        in: header
+        description: Token-based authentication with required prefix "Bearer"
+        required: true
+        schema:
+          type: string
+      - name: X-Account-Token
+        in: header
+        description: Token identifying the end user.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountingPhoneNumber'
+components:
+  schemas:
+    AccountingPhoneNumber:
+      type: object
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        number:
+          type:
+          - string
+          - 'null'
+          description: The phone number.
+        type:
+          type:
+          - string
+          - 'null'
+          description: The phone number's type.
+      description: '# The AccountingPhoneNumber Object
+
+        ### Description
+
+        The `AccountingPhoneNumber` object is used to represent a contact''s or company''s phone number.
+
+
+        ### Usage Example
+
+        Fetch from the `GET CompanyInfo` endpoint and view the company''s phone numbers.'
+      title: AccountingPhoneNumber
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"
