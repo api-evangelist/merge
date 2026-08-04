@@ -1,0 +1,1396 @@
+openapi: 3.1.0
+info:
+  title: API Overview
+  version: 1.0.0
+paths:
+  /models:
+    get:
+      operationId: list
+      summary: List public models or fetch a single model
+      description: >-
+        List all available public models. Supports filtering by provider or vendor, or fetching a single model by query
+        parameter with ?model=<provider/model-name>.
+      tags:
+        - subpackage_models
+      parameters:
+        - name: model
+          in: query
+          description: Fetch a single model by ID in format 'provider/model-name'
+          required: false
+          schema:
+            type: string
+        - name: provider
+          in: query
+          description: Filter by provider
+          required: false
+          schema:
+            type: string
+        - name: vendor
+          in: query
+          description: Filter by vendor
+          required: false
+          schema:
+            type: string
+        - name: cursor
+          in: query
+          description: Pagination cursor
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: Page size
+          required: false
+          schema:
+            type: integer
+            default: 50
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Models_list_Response_200'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /vendors:
+    get:
+      operationId: list
+      summary: List vendors
+      description: List execution vendors and the models they currently serve.
+      tags:
+        - subpackage_vendors
+      parameters:
+        - name: cursor
+          in: query
+          description: Pagination cursor
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: Page size
+          required: false
+          schema:
+            type: integer
+            default: 50
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicVendorsListResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /vendors/{vendor_id}:
+    get:
+      operationId: retrieve
+      summary: Fetch a single vendor by ID
+      description: Fetch a single execution vendor by ID.
+      tags:
+        - subpackage_vendors
+      parameters:
+        - name: vendor_id
+          in: path
+          description: >-
+            Vendor slug (e.g. `openai`, `anthropic`, `bedrock`, `azure`). Call `GET /v1/vendors` to list available
+            slugs.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicVendor'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /responses:
+    post:
+      operationId: create
+      summary: Create Response
+      description: |-
+        Create an LLM response.
+
+        Supports both streaming and non-streaming modes via the `stream` parameter.
+      tags:
+        - subpackage_responses
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResponseRequest'
+  /embeddings:
+    post:
+      operationId: create
+      summary: Create Embedding
+      description: |-
+        Create text embeddings.
+
+        Returns vector representations of the input text.
+      tags:
+        - subpackage_embeddings
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmbeddingResponseSchema'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmbeddingRequestSchema'
+  /routing/policies:
+    get:
+      operationId: list-policies
+      summary: List Routing Policies
+      description: |-
+        List routing policies available to the current user.
+
+        Returns both org-specific policies and the managed (simulator) policy.
+      tags:
+        - subpackage_routing
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Routing_listPolicies_Response_200'
+  /routing/strategies:
+    get:
+      operationId: list-strategies
+      summary: List Routing Strategies
+      description: List all available routing strategies with descriptions.
+      tags:
+        - subpackage_routing
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Routing_listStrategies_Response_200'
+  /tags:
+    get:
+      operationId: list
+      summary: List Tags
+      description: |-
+        List all available tags.
+
+        Returns tags available for the authenticated organization,
+        including both global and org-scoped tags.
+      tags:
+        - subpackage_tags
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagsListResponse'
+servers:
+  - url: https://api-gateway.merge.dev
+components:
+  schemas:
+    PublicVendorModelInfoAvailabilityStatus:
+      type: string
+      enum:
+        - available
+        - deprecated
+      title: PublicVendorModelInfoAvailabilityStatus
+    PublicVendorModelCapabilitiesInputItems:
+      type: string
+      enum:
+        - text
+        - image
+        - document
+        - embedding
+      title: PublicVendorModelCapabilitiesInputItems
+    PublicVendorModelCapabilitiesOutputItems:
+      type: string
+      enum:
+        - text
+        - tool_use
+        - embedding
+      title: PublicVendorModelCapabilitiesOutputItems
+    PublicVendorModelCapabilities:
+      type: object
+      properties:
+        input:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicVendorModelCapabilitiesInputItems'
+        output:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicVendorModelCapabilitiesOutputItems'
+        supports_tool_calling:
+          type: boolean
+        supports_tool_choice:
+          type: boolean
+          default: false
+        supports_structured_outputs:
+          type: boolean
+        streaming:
+          type: boolean
+      required:
+        - input
+        - output
+        - supports_tool_calling
+        - supports_tool_choice
+        - supports_structured_outputs
+        - streaming
+      description: >-
+        Per-route capability flags. Lists supported input/output content types (text, image, document, tool_use) and
+        feature support (tool calling, tool choice, structured outputs, streaming).
+      title: PublicVendorModelCapabilities
+    ModelPricing:
+      type: object
+      properties:
+        currency:
+          type: string
+          enum:
+            - USD
+        input_per_million:
+          type: number
+          format: double
+        output_per_million:
+          type: number
+          format: double
+      required:
+        - input_per_million
+        - output_per_million
+      description: Pricing information for a model.
+      title: ModelPricing
+    PublicVendorModelInfo:
+      type: object
+      properties:
+        launch_date:
+          type:
+            - string
+            - 'null'
+        context_window:
+          type: integer
+        max_output_tokens:
+          type: integer
+        availability_status:
+          $ref: '#/components/schemas/PublicVendorModelInfoAvailabilityStatus'
+        capabilities:
+          $ref: '#/components/schemas/PublicVendorModelCapabilities'
+        pricing:
+          $ref: '#/components/schemas/ModelPricing'
+      required:
+        - context_window
+        - max_output_tokens
+        - availability_status
+        - capabilities
+        - pricing
+      description: >-
+        Per-vendor execution metadata for a model - context window, max output tokens, capabilities, pricing, and
+        availability. A single `PublicModel` carries one of these for each vendor that can execute it.
+      title: PublicVendorModelInfo
+    PublicModelAvailabilityStatus:
+      type: string
+      enum:
+        - available
+        - deprecated
+      title: PublicModelAvailabilityStatus
+    PublicModel:
+      type: object
+      properties:
+        model:
+          type: string
+          description: Model ID in format 'provider/model-name'
+        provider:
+          type: string
+        display_name:
+          type: string
+        vendors:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/PublicVendorModelInfo'
+        availability_status:
+          $ref: '#/components/schemas/PublicModelAvailabilityStatus'
+        created_at:
+          type:
+            - string
+            - 'null'
+          format: date-time
+        updated_at:
+          type:
+            - string
+            - 'null'
+          format: date-time
+      required:
+        - model
+        - provider
+        - display_name
+        - vendors
+        - availability_status
+      description: >-
+        A canonical model in Merge Gateway's catalog. Identified by `model` (fully-qualified provider/model ID) and
+        exposes the set of `vendors` that can execute it, each with its own capabilities, context window, pricing, and
+        ZDR flag.
+      title: PublicModel
+    PublicModelsListResponse:
+      type: object
+      properties:
+        object:
+          type: string
+          enum:
+            - list
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicModel'
+        has_more:
+          type: boolean
+          default: false
+        next_cursor:
+          type:
+            - string
+            - 'null'
+      required:
+        - data
+      description: >-
+        Paginated response wrapper for `GET /v1/models`. Use the `next_cursor` field to page through results when
+        `has_more` is true.
+      title: PublicModelsListResponse
+    Models_list_Response_200:
+      oneOf:
+        - $ref: '#/components/schemas/PublicModelsListResponse'
+        - $ref: '#/components/schemas/PublicModel'
+      title: Models_list_Response_200
+    ValidationErrorLocItems:
+      oneOf:
+        - type: string
+        - type: integer
+      title: ValidationErrorLocItems
+    ValidationErrorCtx:
+      type: object
+      properties: {}
+      title: ValidationErrorCtx
+    ValidationError:
+      type: object
+      properties:
+        loc:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationErrorLocItems'
+        msg:
+          type: string
+        type:
+          type: string
+        input:
+          description: Any type
+        ctx:
+          $ref: '#/components/schemas/ValidationErrorCtx'
+      required:
+        - loc
+        - msg
+        - type
+      description: >-
+        Single field-level validation error. `loc` is the JSON path to the offending field, `msg` is a human-readable
+        explanation, and `type` is a stable machine-readable error code.
+      title: ValidationError
+    HTTPValidationError:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+      description: >-
+        Standard FastAPI validation error wrapper. Returned with HTTP 422 when the request body or query parameters fail
+        Pydantic validation.
+      title: HTTPValidationError
+    PublicVendorAvailabilityStatus:
+      type: string
+      enum:
+        - active
+        - degraded
+        - unavailable
+      title: PublicVendorAvailabilityStatus
+    PublicVendor:
+      type: object
+      properties:
+        vendor:
+          type: string
+        name:
+          type: string
+        models:
+          type: array
+          items:
+            type: string
+        supports_zdr:
+          type: boolean
+        supports_byok:
+          type: boolean
+        availability_status:
+          $ref: '#/components/schemas/PublicVendorAvailabilityStatus'
+      required:
+        - vendor
+        - name
+        - models
+        - supports_zdr
+        - supports_byok
+        - availability_status
+      description: >-
+        An execution host that Merge Gateway can route to (e.g. `openai`, `bedrock`, `azure`). Lists the model IDs the
+        vendor can serve plus its ZDR and BYOK support.
+      title: PublicVendor
+    PublicVendorsListResponse:
+      type: object
+      properties:
+        object:
+          type: string
+          enum:
+            - list
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicVendor'
+        has_more:
+          type: boolean
+          default: false
+        next_cursor:
+          type:
+            - string
+            - 'null'
+      required:
+        - data
+      description: >-
+        Paginated response wrapper for `GET /v1/vendors`. Use the `next_cursor` field to page through results when
+        `has_more` is true.
+      title: PublicVendorsListResponse
+    ResponseRequestInputItemsDiscriminatorMappingMessageRole:
+      type: string
+      enum:
+        - system
+        - user
+        - assistant
+      title: ResponseRequestInputItemsDiscriminatorMappingMessageRole
+    ImageContentSourceType:
+      type: string
+      enum:
+        - base64
+        - url
+      default: base64
+      title: ImageContentSourceType
+    DocumentContentSourceType:
+      type: string
+      enum:
+        - base64
+        - url
+      default: base64
+      title: DocumentContentSourceType
+    ResponseRequestInputItemsDiscriminatorMappingMessageContentOneOf1Items:
+      oneOf:
+        - type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - text
+              description: 'Discriminator value: text'
+            text:
+              type: string
+          required:
+            - type
+            - text
+          description: Text content block.
+        - type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - image_url
+              description: 'Discriminator value: image_url'
+            url:
+              type: string
+          required:
+            - type
+            - url
+          description: Image URL content block for vision models.
+        - type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - image
+            source_type:
+              $ref: '#/components/schemas/ImageContentSourceType'
+            media_type:
+              type: string
+              description: e.g. 'image/png', 'image/jpeg'
+            data:
+              type: string
+              description: Base64-encoded image data or URL
+          required:
+            - type
+            - media_type
+            - data
+          description: Image content block with explicit source type.
+        - type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - document
+            source_type:
+              $ref: '#/components/schemas/DocumentContentSourceType'
+            media_type:
+              type: string
+              description: e.g. 'application/pdf'
+            data:
+              type: string
+              description: Base64-encoded content or URL
+          required:
+            - type
+            - media_type
+            - data
+          description: Document content block (PDF, etc.) for document-understanding models.
+        - type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - tool_use
+              description: 'Discriminator value: tool_use'
+            id:
+              type: string
+            name:
+              type: string
+            input:
+              type: object
+              additionalProperties:
+                description: Any type
+          required:
+            - type
+            - id
+            - name
+            - input
+          description: Tool use content block (in assistant output).
+      discriminator:
+        propertyName: type
+      title: ResponseRequestInputItemsDiscriminatorMappingMessageContentOneOf1Items
+    ResponseRequestInputItemsDiscriminatorMappingMessageContent1:
+      type: array
+      items:
+        $ref: '#/components/schemas/ResponseRequestInputItemsDiscriminatorMappingMessageContentOneOf1Items'
+      title: ResponseRequestInputItemsDiscriminatorMappingMessageContent1
+    ResponseRequestInputItemsDiscriminatorMappingMessageContent:
+      oneOf:
+        - type: string
+        - $ref: '#/components/schemas/ResponseRequestInputItemsDiscriminatorMappingMessageContent1'
+      title: ResponseRequestInputItemsDiscriminatorMappingMessageContent
+    ToolResultInputContentOneOf1Items:
+      oneOf:
+        - type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - text
+              description: 'Discriminator value: text'
+            text:
+              type: string
+          required:
+            - type
+            - text
+          description: Text content block.
+        - type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - image_url
+              description: 'Discriminator value: image_url'
+            url:
+              type: string
+          required:
+            - type
+            - url
+          description: Image URL content block for vision models.
+        - type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - image
+            source_type:
+              $ref: '#/components/schemas/ImageContentSourceType'
+            media_type:
+              type: string
+              description: e.g. 'image/png', 'image/jpeg'
+            data:
+              type: string
+              description: Base64-encoded image data or URL
+          required:
+            - type
+            - media_type
+            - data
+          description: Image content block with explicit source type.
+        - type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - document
+            source_type:
+              $ref: '#/components/schemas/DocumentContentSourceType'
+            media_type:
+              type: string
+              description: e.g. 'application/pdf'
+            data:
+              type: string
+              description: Base64-encoded content or URL
+          required:
+            - type
+            - media_type
+            - data
+          description: Document content block (PDF, etc.) for document-understanding models.
+        - type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - tool_use
+              description: 'Discriminator value: tool_use'
+            id:
+              type: string
+            name:
+              type: string
+            input:
+              type: object
+              additionalProperties:
+                description: Any type
+          required:
+            - type
+            - id
+            - name
+            - input
+          description: Tool use content block (in assistant output).
+      discriminator:
+        propertyName: type
+      title: ToolResultInputContentOneOf1Items
+    ToolResultInputContent1:
+      type: array
+      items:
+        $ref: '#/components/schemas/ToolResultInputContentOneOf1Items'
+      title: ToolResultInputContent1
+    ToolResultInputContent:
+      oneOf:
+        - type: string
+        - $ref: '#/components/schemas/ToolResultInputContent1'
+      title: ToolResultInputContent
+    ResponseRequestInputItems:
+      oneOf:
+        - type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - message
+              description: 'Discriminator value: message'
+            role:
+              $ref: '#/components/schemas/ResponseRequestInputItemsDiscriminatorMappingMessageRole'
+            content:
+              $ref: '#/components/schemas/ResponseRequestInputItemsDiscriminatorMappingMessageContent'
+          required:
+            - type
+            - role
+            - content
+          description: A message in the conversation.
+        - type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - tool_result
+            tool_use_id:
+              type: string
+            content:
+              $ref: '#/components/schemas/ToolResultInputContent'
+          required:
+            - type
+            - tool_use_id
+            - content
+          description: Result from a tool call, sent back to continue the conversation.
+      discriminator:
+        propertyName: type
+      title: ResponseRequestInputItems
+    FunctionTool:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - function
+        name:
+          type: string
+        description:
+          type: string
+        parameters:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+        - name
+        - description
+        - parameters
+      description: A function tool that the model can call.
+      title: FunctionTool
+    ResponseRequestToolChoice:
+      oneOf:
+        - type: string
+        - type: object
+          additionalProperties:
+            description: Any type
+      description: 'Tool choice policy: ''auto'', ''none'', ''required'', or {''type'': ''function'', ''function'': {''name'': ''...''}}'
+      title: ResponseRequestToolChoice
+    ResponseFormatJson:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - json_object
+      description: JSON response format configuration.
+      title: ResponseFormatJson
+    TagInput:
+      type: object
+      properties:
+        key:
+          type: string
+          description: Tag key
+        value:
+          type: string
+          description: Tag value
+      required:
+        - key
+        - value
+      description: Tag key-value pair for use in requests.
+      title: TagInput
+    ResponseRequest:
+      type: object
+      properties:
+        model:
+          type:
+            - string
+            - 'null'
+          description: Model ID in format 'provider/model-name'. Optional if a routing policy is configured.
+        input:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResponseRequestInputItems'
+          description: Conversation history
+        tools:
+          type:
+            - array
+            - 'null'
+          items:
+            $ref: '#/components/schemas/FunctionTool'
+          description: Available tools
+        tool_choice:
+          oneOf:
+            - $ref: '#/components/schemas/ResponseRequestToolChoice'
+            - type: 'null'
+          description: 'Tool choice policy: ''auto'', ''none'', ''required'', or {''type'': ''function'', ''function'': {''name'': ''...''}}'
+        max_tokens:
+          type:
+            - integer
+            - 'null'
+          description: Maximum tokens to generate
+        temperature:
+          type:
+            - number
+            - 'null'
+          format: double
+          description: Sampling temperature
+        top_p:
+          type:
+            - number
+            - 'null'
+          format: double
+          description: Nucleus sampling parameter
+        stop:
+          type:
+            - array
+            - 'null'
+          items:
+            type: string
+          description: Stop sequences
+        response_format:
+          oneOf:
+            - $ref: '#/components/schemas/ResponseFormatJson'
+            - type: 'null'
+          description: Response format
+        stream:
+          type: boolean
+          default: false
+          description: Whether to stream the response
+        tags:
+          type:
+            - array
+            - 'null'
+          items:
+            $ref: '#/components/schemas/TagInput'
+          description: Tags to attach to this request for categorization (key-value pairs)
+        project_id:
+          type:
+            - string
+            - 'null'
+          description: Optional project ID (UUID) to associate with this request
+        routing_policy_id:
+          type:
+            - string
+            - 'null'
+          description: Override the default routing policy (for testing)
+        include_routing_metadata:
+          type: boolean
+          default: false
+          description: Include detailed routing metadata in response
+        vendor:
+          type:
+            - string
+            - 'null'
+          description: Restrict routing to a specific vendor (hosting platform)
+        vendors:
+          type:
+            - array
+            - 'null'
+          items:
+            type: string
+          description: Ordered list of acceptable vendors. First available wins.
+      required:
+        - input
+      description: Request body for POST /v1/responses.
+      title: ResponseRequest
+    OutputMessageFinishReason:
+      type: string
+      enum:
+        - stop
+        - max_tokens
+        - tool_use
+        - content_filter
+      title: OutputMessageFinishReason
+    OutputMessageContentItems:
+      oneOf:
+        - type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - text
+              description: 'Discriminator value: text'
+            text:
+              type: string
+          required:
+            - type
+            - text
+          description: Text content block.
+        - type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - image_url
+              description: 'Discriminator value: image_url'
+            url:
+              type: string
+          required:
+            - type
+            - url
+          description: Image URL content block for vision models.
+        - type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - image
+            source_type:
+              $ref: '#/components/schemas/ImageContentSourceType'
+            media_type:
+              type: string
+              description: e.g. 'image/png', 'image/jpeg'
+            data:
+              type: string
+              description: Base64-encoded image data or URL
+          required:
+            - type
+            - media_type
+            - data
+          description: Image content block with explicit source type.
+        - type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - document
+            source_type:
+              $ref: '#/components/schemas/DocumentContentSourceType'
+            media_type:
+              type: string
+              description: e.g. 'application/pdf'
+            data:
+              type: string
+              description: Base64-encoded content or URL
+          required:
+            - type
+            - media_type
+            - data
+          description: Document content block (PDF, etc.) for document-understanding models.
+        - type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - tool_use
+              description: 'Discriminator value: tool_use'
+            id:
+              type: string
+            name:
+              type: string
+            input:
+              type: object
+              additionalProperties:
+                description: Any type
+          required:
+            - type
+            - id
+            - name
+            - input
+          description: Tool use content block (in assistant output).
+      discriminator:
+        propertyName: type
+      title: OutputMessageContentItems
+    OutputMessage:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+            - message
+        role:
+          type: string
+          enum:
+            - assistant
+        finish_reason:
+          oneOf:
+            - $ref: '#/components/schemas/OutputMessageFinishReason'
+            - type: 'null'
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/OutputMessageContentItems'
+      required:
+        - id
+        - content
+      description: An output message from the assistant.
+      title: OutputMessage
+    Usage:
+      type: object
+      properties:
+        input_tokens:
+          type: integer
+        output_tokens:
+          type: integer
+        total_tokens:
+          type: integer
+      required:
+        - input_tokens
+        - output_tokens
+        - total_tokens
+      description: Token usage statistics.
+      title: Usage
+    RoutingLatency:
+      type: object
+      properties:
+        policy_lookup_ms:
+          type: number
+          format: double
+          default: 0
+        routing_decision_ms:
+          type: number
+          format: double
+          default: 0
+        llm_call_ms:
+          type: number
+          format: double
+          default: 0
+        total_ms:
+          type: number
+          format: double
+          default: 0
+      description: Latency breakdown for routing steps.
+      title: RoutingLatency
+    RoutingMetadata:
+      type: object
+      properties:
+        policy_id:
+          type:
+            - string
+            - 'null'
+        policy_name:
+          type:
+            - string
+            - 'null'
+        strategy:
+          type:
+            - string
+            - 'null'
+        intelligent_routing_used:
+          type: boolean
+          default: false
+        complexity_score:
+          type:
+            - number
+            - 'null'
+          format: double
+          description: ML-computed prompt complexity score (0-1)
+        adjusted_score:
+          type:
+            - number
+            - 'null'
+          format: double
+          description: Strategy-adjusted complexity score
+        selected_tier:
+          type:
+            - integer
+            - 'null'
+        total_tiers:
+          type:
+            - integer
+            - 'null'
+        routing_reason:
+          type:
+            - string
+            - 'null'
+          description: Human-readable explanation of the routing decision
+        model_requested:
+          type:
+            - string
+            - 'null'
+        model_used:
+          type:
+            - string
+            - 'null'
+          description: The actual model selected by routing
+        cost_usd:
+          type:
+            - number
+            - 'null'
+          format: double
+          description: Estimated cost in USD computed from token usage and pricing data
+        latency:
+          oneOf:
+            - $ref: '#/components/schemas/RoutingLatency'
+            - type: 'null'
+      description: Metadata about how the request was routed.
+      title: RoutingMetadata
+    ResponseResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+          enum:
+            - response
+        created_at:
+          type: string
+          format: date-time
+        model:
+          type: string
+          description: The model that generated the response, in 'provider/model-name' format
+        vendor:
+          type:
+            - string
+            - 'null'
+          description: The execution vendor that served the request
+        provider_request_id:
+          type:
+            - string
+            - 'null'
+          description: The upstream provider's request ID
+        output:
+          type: array
+          items:
+            $ref: '#/components/schemas/OutputMessage'
+        usage:
+          $ref: '#/components/schemas/Usage'
+        routing:
+          oneOf:
+            - $ref: '#/components/schemas/RoutingMetadata'
+            - type: 'null'
+          description: Routing metadata (only present when include_routing_metadata=true)
+      required:
+        - id
+        - created_at
+        - model
+        - output
+        - usage
+      description: Response body for POST /v1/responses.
+      title: ResponseResponse
+    EmbeddingRequestSchemaInput:
+      oneOf:
+        - type: string
+        - type: array
+          items:
+            type: string
+      description: Text to embed
+      title: EmbeddingRequestSchemaInput
+    EmbeddingRequestSchema:
+      type: object
+      properties:
+        model:
+          type: string
+          description: Model ID in format 'provider/model-name'
+        input:
+          $ref: '#/components/schemas/EmbeddingRequestSchemaInput'
+          description: Text to embed
+        encoding_format:
+          type:
+            - string
+            - 'null'
+          description: Encoding format for embeddings
+        user:
+          type:
+            - string
+            - 'null'
+          description: End-user identifier
+      required:
+        - model
+        - input
+      description: Request body for POST /v1/embeddings.
+      title: EmbeddingRequestSchema
+    EmbeddingDataSchema:
+      type: object
+      properties:
+        object:
+          type: string
+          enum:
+            - embedding
+        embedding:
+          type: array
+          items:
+            type: number
+            format: double
+        index:
+          type: integer
+      required:
+        - embedding
+        - index
+      description: Single embedding result.
+      title: EmbeddingDataSchema
+    EmbeddingUsage:
+      type: object
+      properties:
+        prompt_tokens:
+          type: integer
+        total_tokens:
+          type: integer
+      required:
+        - prompt_tokens
+        - total_tokens
+      description: Token usage for embeddings.
+      title: EmbeddingUsage
+    EmbeddingResponseSchema:
+      type: object
+      properties:
+        object:
+          type: string
+          enum:
+            - list
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmbeddingDataSchema'
+        model:
+          type: string
+        usage:
+          $ref: '#/components/schemas/EmbeddingUsage'
+      required:
+        - data
+        - model
+        - usage
+      description: Response body for POST /v1/embeddings.
+      title: EmbeddingResponseSchema
+    RoutingPoliciesGetResponsesContentApplicationJsonSchemaDataItemsProvidersItems:
+      type: object
+      properties:
+        provider:
+          type: string
+        model:
+          type: string
+      title: RoutingPoliciesGetResponsesContentApplicationJsonSchemaDataItemsProvidersItems
+    RoutingPoliciesGetResponsesContentApplicationJsonSchemaDataItems:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        strategy:
+          type: string
+        description:
+          type:
+            - string
+            - 'null'
+        is_intelligent:
+          type: boolean
+        providers:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoutingPoliciesGetResponsesContentApplicationJsonSchemaDataItemsProvidersItems'
+        is_active:
+          type: boolean
+      title: RoutingPoliciesGetResponsesContentApplicationJsonSchemaDataItems
+    Routing_listPolicies_Response_200:
+      type: object
+      properties:
+        object:
+          type: string
+          enum:
+            - list
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoutingPoliciesGetResponsesContentApplicationJsonSchemaDataItems'
+      title: Routing_listPolicies_Response_200
+    RoutingStrategiesGetResponsesContentApplicationJsonSchemaDataItemsMlRouting:
+      type: object
+      properties:
+        score_exponent:
+          type: number
+          format: double
+        behavior:
+          type: string
+      title: RoutingStrategiesGetResponsesContentApplicationJsonSchemaDataItemsMlRouting
+    RoutingStrategiesGetResponsesContentApplicationJsonSchemaDataItems:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        is_intelligent:
+          type: boolean
+        description:
+          type: string
+        ml_routing:
+          oneOf:
+            - $ref: '#/components/schemas/RoutingStrategiesGetResponsesContentApplicationJsonSchemaDataItemsMlRouting'
+            - type: 'null'
+      title: RoutingStrategiesGetResponsesContentApplicationJsonSchemaDataItems
+    Routing_listStrategies_Response_200:
+      type: object
+      properties:
+        object:
+          type: string
+          enum:
+            - list
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoutingStrategiesGetResponsesContentApplicationJsonSchemaDataItems'
+      title: Routing_listStrategies_Response_200
+    TagSchema:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique tag identifier
+        object:
+          type: string
+          enum:
+            - tag
+        tag_key:
+          type: string
+          description: Tag key
+        tag_value:
+          type: string
+          description: Tag value
+        org_id:
+          type:
+            - string
+            - 'null'
+          description: Organization ID, null for global tags
+        is_global:
+          type: boolean
+          default: false
+          description: Whether this is a global tag
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - tag_key
+        - tag_value
+      description: A tag available through the gateway.
+      title: TagSchema
+    TagsListResponse:
+      type: object
+      properties:
+        object:
+          type: string
+          enum:
+            - list
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/TagSchema'
+        has_more:
+          type: boolean
+          default: false
+        next_cursor:
+          type:
+            - string
+            - 'null'
+      required:
+        - data
+      description: Response for GET /v1/tags.
+      title: TagsListResponse

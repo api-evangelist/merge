@@ -1,0 +1,3566 @@
+openapi: 3.1.0
+info:
+  title: Agent Handler
+  version: 1.0.0
+paths:
+  /api/v1/connectors/:
+    get:
+      operationId: list
+      summary: List connectors
+      description: Retrieves a list of Connectors
+      tags:
+        - subpackage_connectors
+      parameters:
+        - name: page
+          in: query
+          description: A page number within the paginated result set.
+          required: false
+          schema:
+            type: integer
+        - name: page_size
+          in: query
+          description: Number of results to return per page.
+          required: false
+          schema:
+            type: integer
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedConnectorDetailPublicResponseList'
+  /api/v1/connectors/{slug}/:
+    get:
+      operationId: retrieve
+      summary: Get connector
+      description: Retrieves a Connector by slug
+      tags:
+        - subpackage_connectors
+      parameters:
+        - name: slug
+          in: path
+          description: The slug of the Connector
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectorDetailPublicResponse'
+  /api/v1/application-credentials/:
+    get:
+      operationId: list
+      summary: List application credentials
+      description: Lists OAuth application credentials for the organization.
+      tags:
+        - subpackage_applicationCredentials
+      parameters:
+        - name: external_id
+          in: query
+          description: Filter by external_id
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: A page number within the paginated result set.
+          required: false
+          schema:
+            type: integer
+        - name: page_size
+          in: query
+          description: Number of results to return per page.
+          required: false
+          schema:
+            type: integer
+        - name: slug
+          in: query
+          description: Filter by connector slug
+          required: false
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedApplicationCredentialPublicResponseList'
+    post:
+      operationId: create
+      summary: Create application credential
+      description: >-
+        Creates an OAuth application credential for a connector. The `external_id` field is optional — omit it unless
+        you need multiple OAuth apps for the same connector (e.g. one per customer tenant).
+      tags:
+        - subpackage_applicationCredentials
+      parameters:
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationCredentialPublicResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicationCredentialPublicCreate'
+  /api/v1/application-credentials/{id}/:
+    get:
+      operationId: retrieve
+      summary: Get application credential
+      description: Retrieves an OAuth application credential by ID.
+      tags:
+        - subpackage_applicationCredentials
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationCredentialPublicResponse'
+    delete:
+      operationId: destroy
+      summary: Delete application credential
+      description: Deletes an OAuth application credential. This also deletes all associated user credentials.
+      tags:
+        - subpackage_applicationCredentials
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+    patch:
+      operationId: partial-update
+      summary: Update application credential
+      description: >-
+        Partially updates an OAuth application credential. Only fields included in the request body are updated; omitted
+        fields are left unchanged. Pass null to explicitly clear a field (e.g. client_secret or external_id).
+      tags:
+        - subpackage_applicationCredentials
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationCredentialPublicResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedApplicationCredentialUpdate'
+  /api/v1/credentials/registered-users/{registered_user_id}/connectors/{connector_slug}/:
+    delete:
+      operationId: registered-users-connectors-destroy
+      summary: Delete credentials
+      description: Deletes credentials for a Registered User's Connector
+      tags:
+        - subpackage_credentials
+      parameters:
+        - name: connector_slug
+          in: path
+          description: The slug of the Connector
+          required: true
+          schema:
+            type: string
+        - name: registered_user_id
+          in: path
+          description: Agent Handler ID of the Registered User
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+  /api/v1/access-keys/:
+    get:
+      operationId: list
+      summary: List access keys
+      description: Lists active access keys for the organization.
+      tags:
+        - subpackage_accessKeys
+      parameters:
+        - name: page
+          in: query
+          description: A page number within the paginated result set.
+          required: false
+          schema:
+            type: integer
+        - name: page_size
+          in: query
+          description: Number of results to return per page.
+          required: false
+          schema:
+            type: integer
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAccessKeyList'
+    post:
+      operationId: create
+      summary: Create access key
+      description: >-
+        Creates a new access key. Can be scoped to specific tool packs and registered users. The new key's scope must be
+        a subset of the parent key (the access key authenticating this request).
+      tags:
+        - subpackage_accessKeys
+      parameters:
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessKeyCreate'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccessKeyCreate'
+  /api/v1/access-keys/{key_id}/:
+    get:
+      operationId: retrieve
+      summary: Get access key
+      description: Retrieves an access key by id.
+      tags:
+        - subpackage_accessKeys
+      parameters:
+        - name: key_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessKey'
+  /api/v1/access-keys/{key_id}/regenerate/:
+    post:
+      operationId: regenerate
+      summary: Regenerate access key secret
+      description: Rotates the secret of an existing access key. Scope and expiration are preserved; only the secret value changes.
+      tags:
+        - subpackage_accessKeys
+      parameters:
+        - name: key_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessKeyCreate'
+  /api/v1/access-keys/{key_id}/revoke/:
+    post:
+      operationId: revoke
+      summary: Revoke access key
+      description: Revokes an access key. Revocation is permanent.
+      tags:
+        - subpackage_accessKeys
+      parameters:
+        - name: key_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+  /api/v1/audit-log/:
+    get:
+      operationId: list
+      summary: List audit log events
+      description: >-
+        Retrieves a paginated list of audit log events for the organization. Events are ordered by creation time, with
+        the most recent first.
+      tags:
+        - subpackage_auditLog
+      parameters:
+        - name: created_after
+          in: query
+          description: Filter events created on or after this date (ISO 8601)
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: created_before
+          in: query
+          description: Filter events created on or before this date (ISO 8601)
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: event_type
+          in: query
+          description: Filter by event type
+          required: false
+          schema:
+            $ref: '#/components/schemas/ApiV1AuditLogGetParametersEventType'
+        - name: page
+          in: query
+          description: A page number within the paginated result set.
+          required: false
+          schema:
+            type: integer
+        - name: page_size
+          in: query
+          description: Number of results to return per page.
+          required: false
+          schema:
+            type: integer
+        - name: user_id
+          in: query
+          description: Filter by user ID
+          required: false
+          schema:
+            type: string
+            format: uuid
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAuditLogEventPublicList'
+  /api/v1/registered-users/:
+    get:
+      operationId: list
+      summary: List Registered Users
+      description: Retrieves a list of Registered Users
+      tags:
+        - subpackage_registeredUsers
+      parameters:
+        - name: origin_user_id
+          in: query
+          description: Filter by the origin user ID of the Registered User
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: A page number within the paginated result set.
+          required: false
+          schema:
+            type: integer
+        - name: page_size
+          in: query
+          description: Number of results to return per page.
+          required: false
+          schema:
+            type: integer
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRegisteredUserPublicResponseList'
+    post:
+      operationId: create
+      summary: Create Registered User
+      description: Creates a Registered User with the given values
+      tags:
+        - subpackage_registeredUsers
+      parameters:
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisteredUserPublicResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisteredUserPublicRequest'
+  /api/v1/registered-users/{registered_user_id}/:
+    get:
+      operationId: retrieve
+      summary: Get Registered User
+      description: Retrieves a Registered User by ID
+      tags:
+        - subpackage_registeredUsers
+      parameters:
+        - name: registered_user_id
+          in: path
+          description: Agent Handler ID of the Registered User
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisteredUserPublicResponse'
+    delete:
+      operationId: destroy
+      summary: Delete Registered User
+      description: Deletes a Registered User by ID
+      tags:
+        - subpackage_registeredUsers
+      parameters:
+        - name: registered_user_id
+          in: path
+          description: Agent Handler ID of the Registered User
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+    patch:
+      operationId: partial-update
+      summary: Update Registered User
+      description: Updates fields on a Registered User by ID
+      tags:
+        - subpackage_registeredUsers
+      parameters:
+        - name: registered_user_id
+          in: path
+          description: Agent Handler ID of the Registered User
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisteredUserPublicResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedRegisteredUserPublicRequest'
+  /api/v1/registered-users/{registered_user_id}/link-token/:
+    post:
+      operationId: create-for-registered-user
+      summary: Create Link token
+      description: >-
+        Generates a Link Token for a Registered User to authenticate with Connectors. Also returns a magic link URL that
+        can be shared with the user to authenticate in a browser.
+      tags:
+        - subpackage_linkToken
+      parameters:
+        - name: registered_user_id
+          in: path
+          description: Agent Handler ID of the Registered User
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/linkToken_createForRegisteredUser_Response_201'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                connector:
+                  type: string
+                  description: Slug of the connector to generate a link token for
+                external_id:
+                  type:
+                    - string
+                    - 'null'
+                  description: >-
+                    Optional external ID to scope the link token to a specific application credential. Use this when you
+                    have multiple OAuth apps for the same connector.
+                callback_url:
+                  type:
+                    - string
+                    - 'null'
+                  description: >-
+                    Optional URL to redirect the user to after they complete the authentication flow. Must be added to
+                    your organization's allowed callback origins first.
+                state:
+                  type:
+                    - string
+                    - 'null'
+                  description: >-
+                    Optional CSRF protection token returned to your callback_url after authentication. Requires
+                    callback_url to be set. Do not include a 'state' query parameter in callback_url if using this
+                    field.
+              required:
+                - connector
+  /api/v1/tool-packs/:
+    get:
+      operationId: list
+      summary: List Tool Packs
+      description: Retrieves a list of Tool Packs
+      tags:
+        - subpackage_toolPacks
+      parameters:
+        - name: page
+          in: query
+          description: A page number within the paginated result set.
+          required: false
+          schema:
+            type: integer
+        - name: page_size
+          in: query
+          description: Number of results to return per page.
+          required: false
+          schema:
+            type: integer
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedToolPackPublicList'
+    post:
+      operationId: create
+      summary: Create Tool Pack
+      description: Creates a Tool Pack with connectors
+      tags:
+        - subpackage_toolPacks
+      parameters:
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ToolPackPublic'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ToolPackPublicWrite'
+  /api/v1/tool-packs/{id}/:
+    get:
+      operationId: retrieve
+      summary: Get Tool Pack
+      description: Retrieves a Tool Pack by ID
+      tags:
+        - subpackage_toolPacks
+      parameters:
+        - name: id
+          in: path
+          description: Agent Handler ID of the Tool Pack
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ToolPackPublic'
+    delete:
+      operationId: destroy
+      summary: Delete Tool Pack
+      description: Deletes a Tool Pack by ID
+      tags:
+        - subpackage_toolPacks
+      parameters:
+        - name: id
+          in: path
+          description: Agent Handler ID of the Tool Pack
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+    patch:
+      operationId: partial-update
+      summary: Update Tool Pack
+      description: Updates a Tool Pack by ID
+      tags:
+        - subpackage_toolPacks
+      parameters:
+        - name: id
+          in: path
+          description: Agent Handler ID of the Tool Pack
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ToolPackPublic'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedToolPackPublicWrite'
+  /api/v1/tool-packs/{tool_pack_id}/connectors/:
+    get:
+      operationId: list-connectors
+      summary: List connectors in a Tool Pack
+      description: List the connectors attached to a tool pack, with the tools enabled on each connector.
+      tags:
+        - subpackage_toolPacks
+      parameters:
+        - name: tool_pack_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ConnectorPublic'
+    put:
+      operationId: replace-connectors
+      summary: Update connectors in a Tool Pack
+      description: >-
+        Replace a tool pack's connector list declaratively. Any connector not in the request body is removed from the
+        tool pack.
+
+
+        `tool_names` behavior per item:
+
+        - Omitted: all tools are enabled on the connector.
+
+        - `[]` (empty list): the connector is removed from the tool pack.
+
+        - Otherwise: exactly these tools are enabled.
+
+
+        Returns the updated list of connectors on the tool pack.
+      tags:
+        - subpackage_toolPacks
+      parameters:
+        - name: tool_pack_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ConnectorPublic'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/ToolPackConnectorBulkInput'
+    patch:
+      operationId: bulk-upsert-delete-connectors
+      summary: Update connectors in a Tool Pack (partial)
+      description: |-
+        Partially update a tool pack's connectors. Connectors not listed in the request body are left untouched.
+
+        `tool_names` behavior per item:
+        - Omitted (new connector): all tools are enabled.
+        - Omitted (existing connector): the connector's tools are left unchanged.
+        - `[]` (empty list): the connector is removed from the tool pack.
+        - Otherwise: exactly these tools are enabled.
+
+        Returns the updated list of connectors on the tool pack.
+      tags:
+        - subpackage_toolPacks
+      parameters:
+        - name: tool_pack_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ConnectorPublic'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/ToolPackConnectorBulkInput'
+  /api/v1/tool-packs/{tool_pack_id}/connectors/{slug}/:
+    delete:
+      operationId: delete-connector
+      summary: Remove a connector from a Tool Pack
+      description: Remove a single connector from a tool pack by slug. Returns 204 No Content.
+      tags:
+        - subpackage_toolPacks
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: tool_pack_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+  /api/v1/connectors/tool-description-overrides/:
+    get:
+      operationId: list
+      summary: List tool description overrides (connector)
+      description: List tool description overrides, optionally filtered by connector slug. Returns paginated results.
+      tags:
+        - subpackage_toolDescriptionOverrides
+      parameters:
+        - name: page
+          in: query
+          description: A page number within the paginated result set.
+          required: false
+          schema:
+            type: integer
+        - name: page_size
+          in: query
+          description: Number of results to return per page.
+          required: false
+          schema:
+            type: integer
+        - name: slug
+          in: query
+          description: Filter by connector slug.
+          required: false
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedToolDescriptionOverrideList'
+    patch:
+      operationId: bulk-upsert-delete
+      summary: Bulk upsert/delete tool description overrides (connector)
+      description: >-
+        Bulk upsert or delete tool description overrides. Send a list of items with connector_slug, tool_name, and
+        description. Set description to null to delete an override.
+      tags:
+        - subpackage_toolDescriptionOverrides
+      parameters:
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ToolDescriptionOverride'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/BulkToolDescriptionOverrideInput'
+  /api/v1/tool-packs/{tool_pack_id}/tool-description-overrides/:
+    get:
+      operationId: list-tool-pack
+      summary: List tool description overrides (Tool Pack)
+      description: List tool-pack-level description overrides, optionally filtered by connector slug. Returns paginated results.
+      tags:
+        - subpackage_toolDescriptionOverrides
+      parameters:
+        - name: tool_pack_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: page
+          in: query
+          description: A page number within the paginated result set.
+          required: false
+          schema:
+            type: integer
+        - name: page_size
+          in: query
+          description: Number of results to return per page.
+          required: false
+          schema:
+            type: integer
+        - name: slug
+          in: query
+          description: Filter by connector slug.
+          required: false
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedToolPackToolDescriptionOverrideList'
+    patch:
+      operationId: bulk-upsert-delete-tool-pack
+      summary: Bulk upsert/delete tool description overrides (Tool Pack)
+      description: >-
+        Bulk upsert or delete tool-pack-level description overrides. Send a list of items with connector_slug,
+        tool_name, and description. Set description to null to delete an override.
+      tags:
+        - subpackage_toolDescriptionOverrides
+      parameters:
+        - name: tool_pack_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ToolDescriptionOverride'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/BulkToolDescriptionOverrideInput'
+  /api/v1/tool-packs/{tool_pack_id}/registered-users/{registered_user_id}/mcp/:
+    post:
+      operationId: endpoint-post
+      summary: MCP endpoint - list tools & call tool
+      description: >-
+        Endpoint to list tools and call a tool. Use the `tools/list` method to retrieve available tools, and the
+        `tools/call` method to execute a specific tool. Implements the JSON-RPC 2.0 MCP specification.
+      tags:
+        - subpackage_mcp
+      parameters:
+        - name: registered_user_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: tool_pack_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: authenticated_only
+          in: query
+          description: >-
+            When true, only return tools for connectors the registered user has already authenticated, and hide
+            per-connector `authenticate_*` tools.
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: format
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/ApiV1ToolPacksToolPackIdRegisteredUsersRegisteredUserIdMcpPostParametersFormat'
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: JSON-RPC 2.0 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/mcp_endpointPost_Response_200'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                jsonrpc:
+                  type: string
+                id:
+                  type: integer
+                method:
+                  $ref: >-
+                    #/components/schemas/ApiV1ToolPacksToolPackIdRegisteredUsersRegisteredUserIdMcpPostRequestBodyContentApplicationJsonSchemaMethod
+                params:
+                  $ref: >-
+                    #/components/schemas/ApiV1ToolPacksToolPackIdRegisteredUsersRegisteredUserIdMcpPostRequestBodyContentApplicationJsonSchemaParams
+              required:
+                - jsonrpc
+                - method
+  /api/v1/tool-packs/{tool_pack_id}/registered-users/{registered_user_id}/search/:
+    post:
+      operationId: search-tools
+      summary: Search tools
+      description: Search for tools based on user intent
+      tags:
+        - subpackage_toolSearch
+      parameters:
+        - name: registered_user_id
+          in: path
+          description: Agent Handler ID of the Registered User
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: tool_pack_id
+          in: path
+          description: Agent Handler ID of the Tool Pack
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully found tools matching the intent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/toolSearch_searchTools_Response_200'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ToolSearchRequest'
+  /api/v1/security/standard-entity-rules/:
+    get:
+      operationId: list-standard-entity-rules
+      summary: List standard entity rules
+      description: Returns all standard entity rules for the organization.
+      tags:
+        - subpackage_standardEntityRules
+      parameters:
+        - name: page
+          in: query
+          description: A page number within the paginated result set.
+          required: false
+          schema:
+            type: integer
+        - name: page_size
+          in: query
+          description: Number of results to return per page.
+          required: false
+          schema:
+            type: integer
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedStandardEntityRuleResponseList'
+  /api/v1/security/standard-entity-rules/{entity_type}/:
+    get:
+      operationId: get-standard-entity-rule
+      summary: Get standard entity rule
+      description: Retrieve a single standard entity rule by entity type.
+      tags:
+        - subpackage_standardEntityRules
+      parameters:
+        - name: entity_type
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardEntityRuleResponse'
+    put:
+      operationId: update-standard-entity-rule
+      summary: Update standard entity rule
+      description: Update a standard entity rule. All writable fields (is_active, inbound_action, outbound_action) are required.
+      tags:
+        - subpackage_standardEntityRules
+      parameters:
+        - name: entity_type
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardEntityRuleResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StandardEntityRulePutInput'
+  /api/v1/tool-packs/{tool_pack_id}/standard-entity-rules/:
+    get:
+      operationId: list-standard-entity-rules-tool-pack
+      summary: List standard entity rules (Tool Pack)
+      description: >-
+        Returns standard entity rules for a tool pack, including organization defaults. Tool-pack-level rules take
+        precedence where both exist.
+      tags:
+        - subpackage_standardEntityRules
+      parameters:
+        - name: tool_pack_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: defined_at
+          in: query
+          description: 'Filter by where the rule is defined. Values: ORGANIZATION, TOOL_PACK.'
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: A page number within the paginated result set.
+          required: false
+          schema:
+            type: integer
+        - name: page_size
+          in: query
+          description: Number of results to return per page.
+          required: false
+          schema:
+            type: integer
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPublicCombinedSecurityRuleList'
+  /api/v1/tool-packs/{tool_pack_id}/standard-entity-rules/{entity_type}/:
+    get:
+      operationId: get-standard-entity-rule-tool-pack
+      summary: Get standard entity rule (Tool Pack)
+      description: Retrieve a single standard entity rule for a tool pack by entity type.
+      tags:
+        - subpackage_standardEntityRules
+      parameters:
+        - name: entity_type
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: tool_pack_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicCombinedSecurityRule'
+    put:
+      operationId: upsert-standard-entity-rule-override-tool-pack
+      summary: Create or update standard entity rule override (Tool Pack)
+      description: Create or update a standard entity rule override for a tool pack. All fields required.
+      tags:
+        - subpackage_standardEntityRules
+      parameters:
+        - name: entity_type
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: tool_pack_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicCombinedSecurityRule'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StandardEntityOverridePutInput'
+    delete:
+      operationId: delete-standard-entity-rule-override-tool-pack
+      summary: Delete standard entity rule override (Tool Pack)
+      description: Delete a standard entity rule override, reverting to organization defaults.
+      tags:
+        - subpackage_standardEntityRules
+      parameters:
+        - name: entity_type
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: tool_pack_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+  /api/v1/security/custom-regex-rules/:
+    get:
+      operationId: list-custom-regex-rules
+      summary: List custom regex rules
+      description: Returns all custom regex rules for the organization.
+      tags:
+        - subpackage_customRegexRules
+      parameters:
+        - name: page
+          in: query
+          description: A page number within the paginated result set.
+          required: false
+          schema:
+            type: integer
+        - name: page_size
+          in: query
+          description: Number of results to return per page.
+          required: false
+          schema:
+            type: integer
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCustomRegexRuleResponseList'
+    post:
+      operationId: create-custom-regex-rule
+      summary: Create custom regex rule
+      description: Create a new custom regex rule for the organization.
+      tags:
+        - subpackage_customRegexRules
+      parameters:
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomRegexRuleResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomRegexRuleCreateInput'
+  /api/v1/security/custom-regex-rules/{rule_id}/:
+    get:
+      operationId: get-custom-regex-rule
+      summary: Get custom regex rule
+      description: Retrieve a single custom regex rule by ID.
+      tags:
+        - subpackage_customRegexRules
+      parameters:
+        - name: rule_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomRegexRuleResponse'
+    delete:
+      operationId: delete-custom-regex-rule
+      summary: Delete custom regex rule
+      description: Delete a custom regex rule.
+      tags:
+        - subpackage_customRegexRules
+      parameters:
+        - name: rule_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+    patch:
+      operationId: update-custom-regex-rule
+      summary: Update custom regex rule
+      description: Update a custom regex rule. Name cannot be changed after creation.
+      tags:
+        - subpackage_customRegexRules
+      parameters:
+        - name: rule_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomRegexRuleResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCustomRegexRuleUpdateInput'
+  /api/v1/tool-packs/{tool_pack_id}/custom-regex-rules/:
+    get:
+      operationId: list-custom-regex-rules-tool-pack
+      summary: List custom regex rules (Tool Pack)
+      description: >-
+        Returns custom regex rules for a tool pack, including organization defaults. Tool-pack-level rules take
+        precedence where both exist.
+      tags:
+        - subpackage_customRegexRules
+      parameters:
+        - name: tool_pack_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: defined_at
+          in: query
+          description: 'Filter by where the rule is defined. Values: ORGANIZATION, TOOL_PACK.'
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: A page number within the paginated result set.
+          required: false
+          schema:
+            type: integer
+        - name: page_size
+          in: query
+          description: Number of results to return per page.
+          required: false
+          schema:
+            type: integer
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPublicCombinedCustomRegexRuleList'
+    post:
+      operationId: create-custom-regex-rule-tool-pack
+      summary: Create custom regex rule (Tool Pack)
+      description: Create a custom regex rule for a tool pack. If name matches an org rule, creates an override.
+      tags:
+        - subpackage_customRegexRules
+      parameters:
+        - name: tool_pack_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicCombinedCustomRegexRule'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomRegexOverrideCreateInput'
+  /api/v1/tool-packs/{tool_pack_id}/custom-regex-rules/{rule_id}/:
+    get:
+      operationId: get-custom-regex-rule-tool-pack
+      summary: Get custom regex rule (Tool Pack)
+      description: Retrieve a single custom regex rule for a tool pack by ID.
+      tags:
+        - subpackage_customRegexRules
+      parameters:
+        - name: rule_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: tool_pack_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicCombinedCustomRegexRule'
+    delete:
+      operationId: delete-custom-regex-rule-tool-pack
+      summary: Delete custom regex rule (Tool Pack)
+      description: Delete a custom regex rule override (reverts to org default) or permanently delete a tool-pack-only rule.
+      tags:
+        - subpackage_customRegexRules
+      parameters:
+        - name: rule_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: tool_pack_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+    patch:
+      operationId: update-custom-regex-rule-tool-pack
+      summary: Update custom regex rule (Tool Pack)
+      description: Update a custom regex rule for a tool pack. Name cannot be changed after creation.
+      tags:
+        - subpackage_customRegexRules
+      parameters:
+        - name: rule_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: tool_pack_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicCombinedCustomRegexRule'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedToolPackCustomRegexOverride'
+servers:
+  - url: https://ah-api.merge.dev
+components:
+  schemas:
+    SecretOptionPublic:
+      type: object
+      properties:
+        option_label:
+          type: string
+        value:
+          type: string
+        option_default:
+          type: boolean
+      required:
+        - option_label
+        - value
+        - option_default
+      title: SecretOptionPublic
+    SecretSchemaPublic:
+      type: object
+      properties:
+        name:
+          type: string
+        human_readable_name:
+          type:
+            - string
+            - 'null'
+        prefix:
+          type:
+            - string
+            - 'null'
+        suffix:
+          type:
+            - string
+            - 'null'
+        field_type:
+          type: string
+        options:
+          type:
+            - array
+            - 'null'
+          items:
+            $ref: '#/components/schemas/SecretOptionPublic'
+      required:
+        - name
+        - human_readable_name
+        - prefix
+        - suffix
+        - field_type
+        - options
+      title: SecretSchemaPublic
+    AuthOptionPublic:
+      type: object
+      properties:
+        type:
+          type: string
+        secrets:
+          type: array
+          items:
+            $ref: '#/components/schemas/SecretSchemaPublic'
+      required:
+        - type
+        - secrets
+      title: AuthOptionPublic
+    ConnectorToolMini:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type:
+            - string
+            - 'null'
+        credit_type:
+          type: string
+      required:
+        - name
+        - description
+        - credit_type
+      description: Mini version of ConnectorTool serializer that excludes input_schema details.
+      title: ConnectorToolMini
+    ConnectorDetailPublicResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the Connector
+        name:
+          type: string
+          description: Name of the Connector
+        slug:
+          type: string
+          description: Slug identifier for the Connector
+        description:
+          type: string
+          description: Description of what the Connector does
+        source_url:
+          type:
+            - string
+            - 'null'
+          description: URL to the Connector's source website
+        logo_url:
+          type: string
+          description: URL to the Connector's logo image
+        categories:
+          type:
+            - array
+            - 'null'
+          items:
+            type: string
+          description: Categories this connector belongs to
+        auth_options:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuthOptionPublic'
+          description: Authentication options available for this connector
+        tools:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConnectorToolMini'
+          description: List of available tools for this connector
+      required:
+        - id
+        - name
+        - slug
+        - description
+        - source_url
+        - logo_url
+        - categories
+        - auth_options
+        - tools
+      title: ConnectorDetailPublicResponse
+    PaginatedConnectorDetailPublicResponseList:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type:
+            - string
+            - 'null'
+          format: uri
+        previous:
+          type:
+            - string
+            - 'null'
+          format: uri
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConnectorDetailPublicResponse'
+      required:
+        - count
+        - results
+      title: PaginatedConnectorDetailPublicResponseList
+    ApplicationCredentialPublicResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        connector_slug:
+          type: string
+        client_id:
+          type: string
+        external_id:
+          type:
+            - string
+            - 'null'
+        is_global_default:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        modified_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - connector_slug
+        - client_id
+        - external_id
+        - is_global_default
+        - created_at
+        - modified_at
+      description: Public API response — excludes scope override fields.
+      title: ApplicationCredentialPublicResponse
+    PaginatedApplicationCredentialPublicResponseList:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type:
+            - string
+            - 'null'
+        previous:
+          type:
+            - string
+            - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApplicationCredentialPublicResponse'
+      required:
+        - count
+        - next
+        - previous
+        - results
+      title: PaginatedApplicationCredentialPublicResponseList
+    ApplicationCredentialPublicCreate:
+      type: object
+      properties:
+        connector_slug:
+          type: string
+          description: Slug of the connector to create an OAuth app for.
+        client_id:
+          type: string
+        client_secret:
+          type:
+            - string
+            - 'null'
+        external_id:
+          type:
+            - string
+            - 'null'
+      required:
+        - connector_slug
+        - client_id
+      description: Public API request body for creating an application credential.
+      title: ApplicationCredentialPublicCreate
+    PatchedApplicationCredentialUpdate:
+      type: object
+      properties:
+        client_id:
+          type: string
+        client_secret:
+          type:
+            - string
+            - 'null'
+        external_id:
+          type:
+            - string
+            - 'null'
+      title: PatchedApplicationCredentialUpdate
+    AccessKey:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type:
+            - string
+            - 'null'
+          description: Human-readable label for the key.
+        key_masked:
+          type: string
+          description: Truncated form of the secret safe to display in UIs.
+        tool_pack_ids:
+          type:
+            - array
+            - 'null'
+          items:
+            type: string
+            format: uuid
+          description: Tool packs this key can access. `null` means unrestricted access.
+        registered_user_ids:
+          type:
+            - array
+            - 'null'
+          items:
+            type: string
+            format: uuid
+          description: Registered users this key can access. `null` means unrestricted access.
+        scopes:
+          type: array
+          items:
+            type: string
+          description: >-
+            Limits which actions this key can perform. Available scopes: `runtime:all` (MCP tool calls),
+            `management:all` (resource management endpoints).
+        is_test:
+          type: boolean
+          description: If true, the key can only authenticate test registered users.
+        expires_at:
+          type:
+            - string
+            - 'null'
+          format: date-time
+          description: Expiration timestamp. `null` means never expires.
+        created_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - name
+        - key_masked
+        - scopes
+        - is_test
+        - expires_at
+        - created_at
+      description: Access key shape returned by list and detail endpoints.
+      title: AccessKey
+    PaginatedAccessKeyList:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type:
+            - string
+            - 'null'
+        previous:
+          type:
+            - string
+            - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccessKey'
+      required:
+        - count
+        - next
+        - previous
+        - results
+      title: PaginatedAccessKeyList
+    AccessKeyCreate:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          description: Human-readable label for the key. Auto-generated if omitted.
+        key:
+          type:
+            - string
+            - 'null'
+          description: Raw secret value. Returned only on create or regenerate.
+        key_masked:
+          type: string
+          description: Truncated form of the secret safe to display in UIs.
+        tool_pack_ids:
+          type:
+            - array
+            - 'null'
+          items:
+            type: string
+            format: uuid
+          description: >-
+            Tool packs this key can access. Must be a subset of the parent key's `tool_pack_ids`. Pass `null` for
+            unrestricted access to all tool packs in the organization.
+        registered_user_ids:
+          type:
+            - array
+            - 'null'
+          items:
+            type: string
+            format: uuid
+          description: >-
+            Registered users this key can access. Must be a subset of the parent key's `registered_user_ids`. Pass
+            `null` for unrestricted access to all registered users in the organization.
+        scopes:
+          type: array
+          items:
+            type: string
+          description: >-
+            Limits which actions this key can perform. Available scopes: `runtime:all` (MCP tool calls),
+            `management:all` (resource management endpoints).
+        is_test:
+          type: boolean
+          default: false
+          description: If true, the key can only authenticate test registered users.
+        expires_at:
+          type:
+            - string
+            - 'null'
+          format: date-time
+          description: >-
+            Expiration timestamp. Must be before the parent key's `expires_at`. Defaults to 90 days from now if omitted.
+            Pass `null` explicitly for a key that never expires.
+        expires_in:
+          type: integer
+          description: Seconds until the key expires. Alternative to `expires_at`.
+        created_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - key
+        - key_masked
+        - created_at
+      description: Request and response shape for creating or regenerating an access key.
+      title: AccessKeyCreate
+    ApiV1AuditLogGetParametersEventType:
+      type: string
+      enum:
+        - ALLOWED_CALLBACK_ORIGIN_CREATED
+        - ALLOWED_CALLBACK_ORIGIN_DELETED
+        - API_LOGS_SEARCHED
+        - API_LOG_DETAIL_VIEWED
+        - APPLICATION_CREDENTIAL_CREATED
+        - APPLICATION_CREDENTIAL_DELETED
+        - APPLICATION_CREDENTIAL_UPDATED
+        - AUDIT_LOG_EXPORTED
+        - BILLING_PAYMENT_METHOD_ADDED
+        - BILLING_PAYMENT_METHOD_UPDATED
+        - BILLING_PLAN_CHANGED
+        - BILLING_SUBSCRIPTION_CANCELLED
+        - CHAT_SESSION_CREATED
+        - CHAT_SESSION_ENDED
+        - CONNECTOR_DELETED
+        - CONNECTOR_IMPORTED
+        - CONNECTOR_UPDATED
+        - CREDENTIAL_CREATED
+        - CREDENTIAL_DELETED
+        - CREDENTIAL_EXPORTED
+        - CREDENTIAL_EXPORT_FAILED
+        - CREDENTIAL_EXPORT_KEY_REGISTERED
+        - CREDENTIAL_EXPORT_KEY_REVOKED
+        - CREDENTIAL_UPDATED
+        - DEFAULT_RESOURCES_CREATED
+        - GIT_SETTINGS_CREATED
+        - GIT_SETTINGS_DELETED
+        - GIT_SETTINGS_UPDATED
+        - INBOUND_WEBHOOK_SETTINGS_UPDATED
+        - LINK_CONFIGURATION_UPDATED
+        - LOGIN_FAILED
+        - LOGIN_SUCCESS
+        - LOGOUT
+        - MFA_ADMIN_RESET
+        - MFA_DEVICE_CHANGED
+        - MFA_DISABLED
+        - MFA_ENABLED
+        - MFA_REQUIRED_DISABLED
+        - MFA_REQUIRED_ENABLED
+        - MFA_VERIFICATION_FAILED
+        - OUTBOUND_WEBHOOK_CREATED
+        - OUTBOUND_WEBHOOK_DELETED
+        - OUTBOUND_WEBHOOK_UPDATED
+        - OUTBOUND_WEBHOOK_VERIFICATION_KEY_REFRESHED
+        - PRODUCTION_API_KEY_REGENERATED
+        - REGISTERED_USER_CREATED
+        - REGISTERED_USER_DELETED
+        - ROLE_CREATED
+        - ROLE_DELETED
+        - ROLE_UPDATED
+        - SCIM_DEFAULT_ACCESS_UPDATED
+        - SCIM_GROUP_ACCESS_UPDATED
+        - SCIM_GROUP_CREATED
+        - SCIM_GROUP_DELETED
+        - SCIM_GROUP_UPDATED
+        - SCIM_TOKEN_CREATED
+        - SCIM_TOKEN_REVOKED
+        - SCIM_USER_ACCESS_UPDATED
+        - SCIM_USER_DEPROVISIONED
+        - SCIM_USER_PROVISIONED
+        - SCIM_USER_REACTIVATED
+        - SCIM_USER_UPDATED
+        - SECURITY_RULE_CREATED
+        - SECURITY_RULE_DELETED
+        - SECURITY_RULE_UPDATED
+        - SSO_LOGIN_NOT_REQUIRED
+        - SSO_LOGIN_REQUIRED
+        - SSO_LOGIN_REQUIRED_OFF
+        - SSO_LOGIN_REQUIRED_ON
+        - SSO_PROVIDER_CREATED
+        - SSO_PROVIDER_DELETED
+        - SSO_PROVIDER_UPDATED
+        - TEST_API_KEY_CREATED
+        - TEST_API_KEY_DELETED
+        - TOOL_CALL_LOGS_SEARCHED
+        - TOOL_CALL_LOG_DETAIL_VIEWED
+        - TOOL_PACK_CREATED
+        - TOOL_PACK_DELETED
+        - TOOL_PACK_UPDATED
+        - USER_CREATED
+        - USER_DISABLED
+        - USER_ENABLED
+        - USER_INVITATION_ACCEPTED
+        - USER_INVITATION_CANCELLED
+        - USER_INVITED
+        - USER_PASSWORD_RESET
+        - USER_UPDATED
+      title: ApiV1AuditLogGetParametersEventType
+    AuditLogEventPublic:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the audit log event
+        user_name:
+          type: string
+          description: Name of the user who performed the action
+        user_email:
+          type: string
+          description: Email of the user who performed the action
+        role:
+          type:
+            - string
+            - 'null'
+          description: Role of the user at the time of the action
+        ip_address:
+          type: string
+          description: IP address from which the action was performed
+        event_type:
+          type: string
+          description: Type of audit event (e.g., TOOL_PACK_CREATED, USER_UPDATED)
+        event_description:
+          type: string
+          description: Human-readable description of the event
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the event occurred
+      required:
+        - id
+        - user_name
+        - user_email
+        - role
+        - ip_address
+        - event_type
+        - event_description
+        - created_at
+      title: AuditLogEventPublic
+    PaginatedAuditLogEventPublicList:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type:
+            - string
+            - 'null'
+          format: uri
+        previous:
+          type:
+            - string
+            - 'null'
+          format: uri
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuditLogEventPublic'
+      required:
+        - count
+        - results
+      title: PaginatedAuditLogEventPublicList
+    SharedCredentialGroup:
+      type: object
+      properties:
+        origin_company_id:
+          type:
+            - string
+            - 'null'
+          description: Unique identifier for the company of the Registered User
+        origin_company_name:
+          type:
+            - string
+            - 'null'
+          description: The human readable name of the company of the Registered User
+        custom_groupings:
+          type: object
+          additionalProperties:
+            type: string
+          description: Optional identifier / grouping that you can provide to further segment Registered Users
+      title: SharedCredentialGroup
+    RegisteredUserPublicResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        origin_user_id:
+          type: string
+          description: Unique identifier for Registered User
+        origin_user_name:
+          type: string
+          default: Yash
+          description: The human readable name of Registered User
+        shared_credential_group:
+          oneOf:
+            - $ref: '#/components/schemas/SharedCredentialGroup'
+            - type: 'null'
+          description: Object used to identify which the groupings a Registered User is part of and can share credentials across.
+        user_type:
+          type: string
+          default: HUMAN
+          description: ENUM of `HUMAN` or `SYSTEM`
+        authenticated_connectors:
+          type: array
+          items:
+            type: string
+          description: List of connector slugs that the user has authenticated with
+        is_test:
+          type: boolean
+          default: false
+          description: Whether this is a test user or production user
+      required:
+        - id
+        - origin_user_id
+        - shared_credential_group
+        - authenticated_connectors
+      title: RegisteredUserPublicResponse
+    PaginatedRegisteredUserPublicResponseList:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type:
+            - string
+            - 'null'
+          format: uri
+        previous:
+          type:
+            - string
+            - 'null'
+          format: uri
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RegisteredUserPublicResponse'
+      required:
+        - count
+        - results
+      title: PaginatedRegisteredUserPublicResponseList
+    RegisteredUserPublicRequestUserType:
+      type: string
+      enum:
+        - HUMAN
+        - SYSTEM
+      default: HUMAN
+      description: |-
+        ENUM of `HUMAN` or `SYSTEM`
+
+        * `HUMAN` - HUMAN
+        * `SYSTEM` - SYSTEM
+      title: RegisteredUserPublicRequestUserType
+    RegisteredUserPublicRequest:
+      type: object
+      properties:
+        id:
+          type: string
+        origin_user_id:
+          type: string
+          description: Unique identifier for Registered User
+        origin_user_name:
+          type: string
+          description: The human readable name of Registered User
+        shared_credential_group:
+          $ref: '#/components/schemas/SharedCredentialGroup'
+          description: Object used to identify which the groupings a Registered User is part of and can share credentials across.
+        user_type:
+          oneOf:
+            - $ref: '#/components/schemas/RegisteredUserPublicRequestUserType'
+            - type: 'null'
+          description: |-
+            ENUM of `HUMAN` or `SYSTEM`
+
+            * `HUMAN` - HUMAN
+            * `SYSTEM` - SYSTEM
+      required:
+        - id
+        - origin_user_id
+        - origin_user_name
+      title: RegisteredUserPublicRequest
+    PatchedRegisteredUserPublicRequestUserType:
+      type: string
+      enum:
+        - HUMAN
+        - SYSTEM
+      default: HUMAN
+      description: |-
+        ENUM of `HUMAN` or `SYSTEM`
+
+        * `HUMAN` - HUMAN
+        * `SYSTEM` - SYSTEM
+      title: PatchedRegisteredUserPublicRequestUserType
+    PatchedRegisteredUserPublicRequest:
+      type: object
+      properties:
+        id:
+          type: string
+        origin_user_id:
+          type: string
+          description: Unique identifier for Registered User
+        origin_user_name:
+          type: string
+          description: The human readable name of Registered User
+        shared_credential_group:
+          $ref: '#/components/schemas/SharedCredentialGroup'
+          description: Object used to identify which the groupings a Registered User is part of and can share credentials across.
+        user_type:
+          oneOf:
+            - $ref: '#/components/schemas/PatchedRegisteredUserPublicRequestUserType'
+            - type: 'null'
+          description: |-
+            ENUM of `HUMAN` or `SYSTEM`
+
+            * `HUMAN` - HUMAN
+            * `SYSTEM` - SYSTEM
+      title: PatchedRegisteredUserPublicRequest
+    linkToken_createForRegisteredUser_Response_201:
+      type: object
+      properties:
+        link_token:
+          type: string
+        magic_link_url:
+          type: string
+          description: >-
+            URL that opens a hosted authentication page. Share this with the user so they can connect their account in a
+            browser.
+      title: linkToken_createForRegisteredUser_Response_201
+    ConnectorPublicAuthScope:
+      type: string
+      enum:
+        - INDIVIDUAL
+        - SHARED
+        - ORGANIZATION
+      description: |-
+        How credentials are shared for this connector.
+
+        - `INDIVIDUAL`: each registered user authenticates with their own credential
+        - `SHARED`: users in the same registered_company share one credential
+        - `ORGANIZATION`: one credential is used for the whole organization
+
+        * `INDIVIDUAL` - INDIVIDUAL
+        * `SHARED` - SHARED
+        * `ORGANIZATION` - ORGANIZATION
+      title: ConnectorPublicAuthScope
+    ConnectorTool:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type:
+            - string
+            - 'null'
+        input_schema:
+          description: Any type
+        credit_type:
+          type: string
+      required:
+        - name
+        - description
+        - input_schema
+        - credit_type
+      description: Full version of ConnectorTool serializer that includes input_schema details.
+      title: ConnectorTool
+    ConnectorPublic:
+      type: object
+      properties:
+        slug:
+          type: string
+        name:
+          type: string
+        source_url:
+          type:
+            - string
+            - 'null'
+        logo_url:
+          type: string
+        categories:
+          type: array
+          items:
+            description: Any type
+        auth_scope:
+          $ref: '#/components/schemas/ConnectorPublicAuthScope'
+          description: |-
+            How credentials are shared for this connector.
+
+            - `INDIVIDUAL`: each registered user authenticates with their own credential
+            - `SHARED`: users in the same registered_company share one credential
+            - `ORGANIZATION`: one credential is used for the whole organization
+
+            * `INDIVIDUAL` - INDIVIDUAL
+            * `SHARED` - SHARED
+            * `ORGANIZATION` - ORGANIZATION
+        tools:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConnectorTool'
+        connector_id:
+          type: string
+          format: uuid
+          description: >-
+            DEPRECATED — alias for the connector UUID. Prefer `slug` as the primary identifier. Retained for backward
+            compatibility.
+      required:
+        - slug
+        - name
+        - source_url
+        - logo_url
+        - categories
+        - auth_scope
+        - tools
+        - connector_id
+      description: |-
+        Public tool-pack-scoped connector shape.
+
+        Used across public endpoints that return a connector attached to a tool
+        pack: both the nested `connectors[]` in `GET /api/v1/tool-packs/{id}/`
+        and the items in `/api/v1/tool-packs/{id}/connectors/` (GET/PATCH/PUT).
+        See the "Consolidating connector response" tech-debt spec (column E).
+      title: ConnectorPublic
+    ToolPackPublic:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: ID of the Tool Pack
+        name:
+          type: string
+          description: Name of the Tool Pack
+        description:
+          type: string
+          description: Description of the Tool Pack
+        connectors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConnectorPublic'
+          description: Connectors enabled with the Tool Pack
+      required:
+        - id
+        - name
+        - description
+        - connectors
+      title: ToolPackPublic
+    PaginatedToolPackPublicList:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type:
+            - string
+            - 'null'
+          format: uri
+        previous:
+          type:
+            - string
+            - 'null'
+          format: uri
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ToolPackPublic'
+      required:
+        - count
+        - results
+      title: PaginatedToolPackPublicList
+    ToolPackConnectorInputAuthScope:
+      type: string
+      enum:
+        - INDIVIDUAL
+        - SHARED
+        - ORGANIZATION
+      default: INDIVIDUAL
+      description: |-
+        How credentials are shared for this connector.
+
+        - `INDIVIDUAL`: each registered user authenticates with their own credential
+        - `SHARED`: users in the same registered_company share one credential
+        - `ORGANIZATION`: one credential is used for the whole organization
+
+        * `INDIVIDUAL` - INDIVIDUAL
+        * `SHARED` - SHARED
+        * `ORGANIZATION` - ORGANIZATION
+      title: ToolPackConnectorInputAuthScope
+    ToolPackConnectorInput:
+      type: object
+      properties:
+        slug:
+          type: string
+          description: Connector slug — primary identifier.
+        connector_id:
+          type: string
+          format: uuid
+          description: DEPRECATED — prefer `slug`. Retained for backward compatibility.
+        auth_scope:
+          $ref: '#/components/schemas/ToolPackConnectorInputAuthScope'
+          description: |-
+            How credentials are shared for this connector.
+
+            - `INDIVIDUAL`: each registered user authenticates with their own credential
+            - `SHARED`: users in the same registered_company share one credential
+            - `ORGANIZATION`: one credential is used for the whole organization
+
+            * `INDIVIDUAL` - INDIVIDUAL
+            * `SHARED` - SHARED
+            * `ORGANIZATION` - ORGANIZATION
+        tool_names:
+          type: array
+          items:
+            type: string
+          description: Tool names to enable for this connector. Omit to enable all tools.
+      description: |-
+        Shared validation for connector identifier inputs.
+
+        At least one identifier must be provided. When both are set, `slug` wins
+        and the deprecated `connector_id` is discarded.
+      title: ToolPackConnectorInput
+    ToolPackPublicWrite:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        connectors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ToolPackConnectorInput'
+          description: >-
+            Full-replace list of connectors. Any connector not in this array is detached from the tool pack. For
+            incremental add/remove, use the `/tool-packs/{id}/connectors/` sub-resource endpoints.
+      required:
+        - id
+        - name
+        - description
+      title: ToolPackPublicWrite
+    PatchedToolPackPublicWrite:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        connectors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ToolPackConnectorInput'
+          description: >-
+            Full-replace list of connectors. Any connector not in this array is detached from the tool pack. For
+            incremental add/remove, use the `/tool-packs/{id}/connectors/` sub-resource endpoints.
+      title: PatchedToolPackPublicWrite
+    ToolPackConnectorBulkInputAuthScope:
+      type: string
+      enum:
+        - INDIVIDUAL
+        - SHARED
+        - ORGANIZATION
+      description: >-
+        Authentication scope. INDIVIDUAL: each user authenticates separately. SHARED: users in the same
+        registered_company share one credential. Defaults to INDIVIDUAL when creating a new connector.
+
+
+        * `INDIVIDUAL` - INDIVIDUAL
+
+        * `SHARED` - SHARED
+
+        * `ORGANIZATION` - ORGANIZATION
+      title: ToolPackConnectorBulkInputAuthScope
+    ToolPackConnectorBulkInput:
+      type: object
+      properties:
+        slug:
+          type: string
+          description: Connector slug — primary identifier.
+        connector_id:
+          type: string
+          format: uuid
+          description: DEPRECATED — prefer `slug`. Retained for backward compatibility.
+        auth_scope:
+          $ref: '#/components/schemas/ToolPackConnectorBulkInputAuthScope'
+          description: >-
+            Authentication scope. INDIVIDUAL: each user authenticates separately. SHARED: users in the same
+            registered_company share one credential. Defaults to INDIVIDUAL when creating a new connector.
+
+
+            * `INDIVIDUAL` - INDIVIDUAL
+
+            * `SHARED` - SHARED
+
+            * `ORGANIZATION` - ORGANIZATION
+        tool_names:
+          type: array
+          items:
+            type: string
+          description: |-
+            Tool names to enable on this connector.
+            - Omitted (new connector): all tools are enabled.
+            - Omitted (existing connector, PATCH): the connector's tools are left unchanged.
+            - `[]` (empty list): the connector is removed from the tool pack.
+            - Otherwise: exactly these tools are enabled.
+      description: One item in a tool pack connector update request.
+      title: ToolPackConnectorBulkInput
+    ToolDescriptionOverride:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        connector_slug:
+          type: string
+        tool_name:
+          type: string
+          description: Name of the tool being overridden
+        description:
+          type: string
+          description: Custom description for the tool
+        defined_at:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        modified_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - connector_slug
+        - tool_name
+        - description
+        - defined_at
+        - created_at
+        - modified_at
+      description: |-
+        Response serializer for tool-level description overrides.
+
+        Includes a computed `defined_at` field (CONNECTOR or TOOL_PACK) indicating
+        whether the override originates from the connector level or tool pack level.
+      title: ToolDescriptionOverride
+    PaginatedToolDescriptionOverrideList:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type:
+            - string
+            - 'null'
+        previous:
+          type:
+            - string
+            - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ToolDescriptionOverride'
+      required:
+        - count
+        - next
+        - previous
+        - results
+      title: PaginatedToolDescriptionOverrideList
+    BulkToolDescriptionOverrideInput:
+      type: object
+      properties:
+        connector_slug:
+          type: string
+        tool_name:
+          type: string
+        description:
+          type:
+            - string
+            - 'null'
+      required:
+        - connector_slug
+        - tool_name
+        - description
+      description: Input serializer for each item in a bulk PATCH request.
+      title: BulkToolDescriptionOverrideInput
+    PaginatedToolPackToolDescriptionOverrideList:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type:
+            - string
+            - 'null'
+        previous:
+          type:
+            - string
+            - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ToolDescriptionOverride'
+      required:
+        - count
+        - next
+        - previous
+        - results
+      title: PaginatedToolPackToolDescriptionOverrideList
+    ApiV1ToolPacksToolPackIdRegisteredUsersRegisteredUserIdMcpPostParametersFormat:
+      type: string
+      enum:
+        - event-stream
+        - json
+      title: ApiV1ToolPacksToolPackIdRegisteredUsersRegisteredUserIdMcpPostParametersFormat
+    ApiV1ToolPacksToolPackIdRegisteredUsersRegisteredUserIdMcpPostRequestBodyContentApplicationJsonSchemaMethod:
+      type: string
+      enum:
+        - initialize
+        - tools/list
+        - tools/call
+      title: ApiV1ToolPacksToolPackIdRegisteredUsersRegisteredUserIdMcpPostRequestBodyContentApplicationJsonSchemaMethod
+    ApiV1ToolPacksToolPackIdRegisteredUsersRegisteredUserIdMcpPostRequestBodyContentApplicationJsonSchemaParams:
+      type: object
+      properties: {}
+      title: ApiV1ToolPacksToolPackIdRegisteredUsersRegisteredUserIdMcpPostRequestBodyContentApplicationJsonSchemaParams
+    ApiV1ToolPacksToolPackIdRegisteredUsersRegisteredUserIdMcpPostResponsesContentApplicationJsonSchemaResult:
+      type: object
+      properties: {}
+      title: ApiV1ToolPacksToolPackIdRegisteredUsersRegisteredUserIdMcpPostResponsesContentApplicationJsonSchemaResult
+    mcp_endpointPost_Response_200:
+      type: object
+      properties:
+        jsonrpc:
+          type: string
+        id:
+          type: integer
+        result:
+          $ref: >-
+            #/components/schemas/ApiV1ToolPacksToolPackIdRegisteredUsersRegisteredUserIdMcpPostResponsesContentApplicationJsonSchemaResult
+      title: mcp_endpointPost_Response_200
+    ToolSearchRequest:
+      type: object
+      properties:
+        intent:
+          type: string
+          description: User's intent or what they want to accomplish
+        connector_slugs:
+          type: array
+          items:
+            type: string
+          description: Optional list of connector slugs to filter the search
+        max_results:
+          type: integer
+          default: 10
+          description: Maximum number of results to return
+      required:
+        - intent
+      title: ToolSearchRequest
+    ApiV1ToolPacksToolPackIdRegisteredUsersRegisteredUserIdSearchPostResponsesContentApplicationJsonSchemaToolsItemsInputSchema:
+      type: object
+      properties: {}
+      title: >-
+        ApiV1ToolPacksToolPackIdRegisteredUsersRegisteredUserIdSearchPostResponsesContentApplicationJsonSchemaToolsItemsInputSchema
+    ApiV1ToolPacksToolPackIdRegisteredUsersRegisteredUserIdSearchPostResponsesContentApplicationJsonSchemaToolsItems:
+      type: object
+      properties:
+        name:
+          type: string
+        fully_qualified_name:
+          type: string
+        human_name:
+          type: string
+        description:
+          type: string
+        input_schema:
+          $ref: >-
+            #/components/schemas/ApiV1ToolPacksToolPackIdRegisteredUsersRegisteredUserIdSearchPostResponsesContentApplicationJsonSchemaToolsItemsInputSchema
+        relevance_score:
+          type: number
+          format: double
+        reasoning:
+          type: string
+      title: ApiV1ToolPacksToolPackIdRegisteredUsersRegisteredUserIdSearchPostResponsesContentApplicationJsonSchemaToolsItems
+    toolSearch_searchTools_Response_200:
+      type: object
+      properties:
+        tools:
+          type: array
+          items:
+            $ref: >-
+              #/components/schemas/ApiV1ToolPacksToolPackIdRegisteredUsersRegisteredUserIdSearchPostResponsesContentApplicationJsonSchemaToolsItems
+        total_results:
+          type: integer
+        intent:
+          type: string
+      title: toolSearch_searchTools_Response_200
+    StandardEntityRuleResponseOutboundAction:
+      type: string
+      enum:
+        - BLOCK
+        - REDACT
+        - LOG
+        - NONE
+      description: |-
+        * `BLOCK` - BLOCK
+        * `REDACT` - REDACT
+        * `LOG` - LOG
+        * `NONE` - NONE
+      title: StandardEntityRuleResponseOutboundAction
+    StandardEntityRuleResponse:
+      type: object
+      properties:
+        entity_type:
+          type: string
+        region:
+          type: string
+        description:
+          type: string
+        detection_method:
+          type: string
+        is_active:
+          type: boolean
+        outbound_action:
+          oneOf:
+            - $ref: '#/components/schemas/StandardEntityRuleResponseOutboundAction'
+            - type: 'null'
+          description: |-
+            * `BLOCK` - BLOCK
+            * `REDACT` - REDACT
+            * `LOG` - LOG
+            * `NONE` - NONE
+        defined_at:
+          type: string
+      required:
+        - entity_type
+        - region
+        - description
+        - detection_method
+        - is_active
+        - outbound_action
+        - defined_at
+      description: Standard entity rule for an organization.
+      title: StandardEntityRuleResponse
+    PaginatedStandardEntityRuleResponseList:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type:
+            - string
+            - 'null'
+          format: uri
+        previous:
+          type:
+            - string
+            - 'null'
+          format: uri
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/StandardEntityRuleResponse'
+      required:
+        - count
+        - results
+      title: PaginatedStandardEntityRuleResponseList
+    StandardEntityRulePutInputInboundAction:
+      type: string
+      enum:
+        - BLOCK
+        - REDACT
+        - LOG
+        - NONE
+      description: |-
+        * `BLOCK` - BLOCK
+        * `REDACT` - REDACT
+        * `LOG` - LOG
+        * `NONE` - NONE
+      title: StandardEntityRulePutInputInboundAction
+    StandardEntityRulePutInputOutboundAction:
+      type: string
+      enum:
+        - BLOCK
+        - REDACT
+        - LOG
+        - NONE
+      description: |-
+        * `BLOCK` - BLOCK
+        * `REDACT` - REDACT
+        * `LOG` - LOG
+        * `NONE` - NONE
+      title: StandardEntityRulePutInputOutboundAction
+    StandardEntityRulePutInput:
+      type: object
+      properties:
+        is_active:
+          type: boolean
+        inbound_action:
+          $ref: '#/components/schemas/StandardEntityRulePutInputInboundAction'
+          description: |-
+            * `BLOCK` - BLOCK
+            * `REDACT` - REDACT
+            * `LOG` - LOG
+            * `NONE` - NONE
+        outbound_action:
+          $ref: '#/components/schemas/StandardEntityRulePutInputOutboundAction'
+          description: |-
+            * `BLOCK` - BLOCK
+            * `REDACT` - REDACT
+            * `LOG` - LOG
+            * `NONE` - NONE
+      required:
+        - is_active
+        - inbound_action
+        - outbound_action
+      description: Input serializer for PUT /standard-entity-rules/<entity_type>/. All fields required.
+      title: StandardEntityRulePutInput
+    PublicCombinedSecurityRule:
+      type: object
+      properties:
+        entity_type:
+          type: string
+        region:
+          type: string
+        description:
+          type: string
+        detection_method:
+          type: string
+        is_active:
+          type: boolean
+        outbound_action:
+          type: string
+        defined_at:
+          type: string
+        org_is_active:
+          type: boolean
+        org_outbound_action:
+          type: string
+      required:
+        - entity_type
+        - description
+        - detection_method
+        - is_active
+        - outbound_action
+        - defined_at
+      description: Standard entity rule with effective configuration for a tool pack.
+      title: PublicCombinedSecurityRule
+    PaginatedPublicCombinedSecurityRuleList:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type:
+            - string
+            - 'null'
+          format: uri
+        previous:
+          type:
+            - string
+            - 'null'
+          format: uri
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicCombinedSecurityRule'
+      required:
+        - count
+        - results
+      title: PaginatedPublicCombinedSecurityRuleList
+    StandardEntityOverridePutInputInboundAction:
+      type: string
+      enum:
+        - BLOCK
+        - REDACT
+        - LOG
+        - NONE
+      description: |-
+        * `BLOCK` - BLOCK
+        * `REDACT` - REDACT
+        * `LOG` - LOG
+        * `NONE` - NONE
+      title: StandardEntityOverridePutInputInboundAction
+    StandardEntityOverridePutInputOutboundAction:
+      type: string
+      enum:
+        - BLOCK
+        - REDACT
+        - LOG
+        - NONE
+      description: |-
+        * `BLOCK` - BLOCK
+        * `REDACT` - REDACT
+        * `LOG` - LOG
+        * `NONE` - NONE
+      title: StandardEntityOverridePutInputOutboundAction
+    StandardEntityOverridePutInput:
+      type: object
+      properties:
+        is_active:
+          type: boolean
+        inbound_action:
+          $ref: '#/components/schemas/StandardEntityOverridePutInputInboundAction'
+          description: |-
+            * `BLOCK` - BLOCK
+            * `REDACT` - REDACT
+            * `LOG` - LOG
+            * `NONE` - NONE
+        outbound_action:
+          $ref: '#/components/schemas/StandardEntityOverridePutInputOutboundAction'
+          description: |-
+            * `BLOCK` - BLOCK
+            * `REDACT` - REDACT
+            * `LOG` - LOG
+            * `NONE` - NONE
+      required:
+        - is_active
+        - inbound_action
+        - outbound_action
+      description: Input serializer for PUT /tool-packs/<id>/standard-entity-rules/<entity_type>/.
+      title: StandardEntityOverridePutInput
+    CustomRegexRuleResponseOutboundAction:
+      type: string
+      enum:
+        - BLOCK
+        - REDACT
+        - LOG
+        - NONE
+      description: |-
+        * `BLOCK` - BLOCK
+        * `REDACT` - REDACT
+        * `LOG` - LOG
+        * `NONE` - NONE
+      title: CustomRegexRuleResponseOutboundAction
+    CustomRegexRuleResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        regex:
+          type: string
+        score:
+          type: number
+          format: double
+        context_keywords:
+          type: array
+          items:
+            type: string
+        is_active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        modified_at:
+          type: string
+          format: date-time
+        outbound_action:
+          oneOf:
+            - $ref: '#/components/schemas/CustomRegexRuleResponseOutboundAction'
+            - type: 'null'
+          description: |-
+            * `BLOCK` - BLOCK
+            * `REDACT` - REDACT
+            * `LOG` - LOG
+            * `NONE` - NONE
+        defined_at:
+          type: string
+      required:
+        - id
+        - name
+        - regex
+        - score
+        - context_keywords
+        - is_active
+        - created_at
+        - modified_at
+        - outbound_action
+        - defined_at
+      description: Custom regex rule for an organization.
+      title: CustomRegexRuleResponse
+    PaginatedCustomRegexRuleResponseList:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type:
+            - string
+            - 'null'
+          format: uri
+        previous:
+          type:
+            - string
+            - 'null'
+          format: uri
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomRegexRuleResponse'
+      required:
+        - count
+        - results
+      title: PaginatedCustomRegexRuleResponseList
+    CustomRegexRuleCreateInputInboundAction:
+      type: string
+      enum:
+        - BLOCK
+        - REDACT
+        - LOG
+        - NONE
+      default: REDACT
+      description: |-
+        * `BLOCK` - BLOCK
+        * `REDACT` - REDACT
+        * `LOG` - LOG
+        * `NONE` - NONE
+      title: CustomRegexRuleCreateInputInboundAction
+    CustomRegexRuleCreateInputOutboundAction:
+      type: string
+      enum:
+        - BLOCK
+        - REDACT
+        - LOG
+        - NONE
+      default: REDACT
+      description: |-
+        * `BLOCK` - BLOCK
+        * `REDACT` - REDACT
+        * `LOG` - LOG
+        * `NONE` - NONE
+      title: CustomRegexRuleCreateInputOutboundAction
+    CustomRegexRuleCreateInput:
+      type: object
+      properties:
+        name:
+          type: string
+        regex:
+          type: string
+        score:
+          type: number
+          format: double
+          default: 0.5
+        inbound_action:
+          $ref: '#/components/schemas/CustomRegexRuleCreateInputInboundAction'
+          description: |-
+            * `BLOCK` - BLOCK
+            * `REDACT` - REDACT
+            * `LOG` - LOG
+            * `NONE` - NONE
+        outbound_action:
+          $ref: '#/components/schemas/CustomRegexRuleCreateInputOutboundAction'
+          description: |-
+            * `BLOCK` - BLOCK
+            * `REDACT` - REDACT
+            * `LOG` - LOG
+            * `NONE` - NONE
+        context_keywords:
+          type: array
+          items:
+            type: string
+      required:
+        - name
+        - regex
+      description: |-
+        Shared field validators for create and update input serializers.
+
+        The presidio validate_* functions raise RequestValidationError (a DRF APIException),
+        which bypasses the serializer's field error mapping. We catch and re-raise as
+        serializers.ValidationError so errors are attributed to the correct field.
+      title: CustomRegexRuleCreateInput
+    PatchedCustomRegexRuleUpdateInputInboundAction:
+      type: string
+      enum:
+        - BLOCK
+        - REDACT
+        - LOG
+        - NONE
+      description: |-
+        * `BLOCK` - BLOCK
+        * `REDACT` - REDACT
+        * `LOG` - LOG
+        * `NONE` - NONE
+      title: PatchedCustomRegexRuleUpdateInputInboundAction
+    PatchedCustomRegexRuleUpdateInputOutboundAction:
+      type: string
+      enum:
+        - BLOCK
+        - REDACT
+        - LOG
+        - NONE
+      description: |-
+        * `BLOCK` - BLOCK
+        * `REDACT` - REDACT
+        * `LOG` - LOG
+        * `NONE` - NONE
+      title: PatchedCustomRegexRuleUpdateInputOutboundAction
+    PatchedCustomRegexRuleUpdateInput:
+      type: object
+      properties:
+        name:
+          type: string
+        regex:
+          type: string
+        score:
+          type: number
+          format: double
+        inbound_action:
+          $ref: '#/components/schemas/PatchedCustomRegexRuleUpdateInputInboundAction'
+          description: |-
+            * `BLOCK` - BLOCK
+            * `REDACT` - REDACT
+            * `LOG` - LOG
+            * `NONE` - NONE
+        outbound_action:
+          $ref: '#/components/schemas/PatchedCustomRegexRuleUpdateInputOutboundAction'
+          description: |-
+            * `BLOCK` - BLOCK
+            * `REDACT` - REDACT
+            * `LOG` - LOG
+            * `NONE` - NONE
+        context_keywords:
+          type: array
+          items:
+            type: string
+        is_active:
+          type: boolean
+      description: |-
+        Shared field validators for create and update input serializers.
+
+        The presidio validate_* functions raise RequestValidationError (a DRF APIException),
+        which bypasses the serializer's field error mapping. We catch and re-raise as
+        serializers.ValidationError so errors are attributed to the correct field.
+      title: PatchedCustomRegexRuleUpdateInput
+    PublicCombinedCustomRegexRule:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        regex:
+          type: string
+        score:
+          type: number
+          format: double
+        context_keywords:
+          description: Any type
+        is_active:
+          type: boolean
+        outbound_action:
+          type: string
+        defined_at:
+          type: string
+      required:
+        - id
+        - name
+        - regex
+        - score
+        - context_keywords
+        - is_active
+        - outbound_action
+        - defined_at
+      description: Custom regex rule with effective configuration for a tool pack.
+      title: PublicCombinedCustomRegexRule
+    PaginatedPublicCombinedCustomRegexRuleList:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type:
+            - string
+            - 'null'
+          format: uri
+        previous:
+          type:
+            - string
+            - 'null'
+          format: uri
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicCombinedCustomRegexRule'
+      required:
+        - count
+        - results
+      title: PaginatedPublicCombinedCustomRegexRuleList
+    CustomRegexOverrideCreateInputInboundAction:
+      type: string
+      enum:
+        - BLOCK
+        - REDACT
+        - LOG
+        - NONE
+      description: |-
+        * `BLOCK` - BLOCK
+        * `REDACT` - REDACT
+        * `LOG` - LOG
+        * `NONE` - NONE
+      title: CustomRegexOverrideCreateInputInboundAction
+    CustomRegexOverrideCreateInputOutboundAction:
+      type: string
+      enum:
+        - BLOCK
+        - REDACT
+        - LOG
+        - NONE
+      description: |-
+        * `BLOCK` - BLOCK
+        * `REDACT` - REDACT
+        * `LOG` - LOG
+        * `NONE` - NONE
+      title: CustomRegexOverrideCreateInputOutboundAction
+    CustomRegexOverrideCreateInput:
+      type: object
+      properties:
+        name:
+          type: string
+        regex:
+          type: string
+        score:
+          type: number
+          format: double
+        context_keywords:
+          description: Any type
+        is_active:
+          type: boolean
+        inbound_action:
+          $ref: '#/components/schemas/CustomRegexOverrideCreateInputInboundAction'
+          description: |-
+            * `BLOCK` - BLOCK
+            * `REDACT` - REDACT
+            * `LOG` - LOG
+            * `NONE` - NONE
+        outbound_action:
+          $ref: '#/components/schemas/CustomRegexOverrideCreateInputOutboundAction'
+          description: |-
+            * `BLOCK` - BLOCK
+            * `REDACT` - REDACT
+            * `LOG` - LOG
+            * `NONE` - NONE
+      required:
+        - name
+        - regex
+        - score
+        - context_keywords
+        - is_active
+        - inbound_action
+        - outbound_action
+      description: Input serializer for POST /tool-packs/<id>/custom-regex-rules/.
+      title: CustomRegexOverrideCreateInput
+    PatchedToolPackCustomRegexOverrideInboundAction:
+      type: string
+      enum:
+        - BLOCK
+        - REDACT
+        - LOG
+        - NONE
+      description: |-
+        * `BLOCK` - BLOCK
+        * `REDACT` - REDACT
+        * `LOG` - LOG
+        * `NONE` - NONE
+      title: PatchedToolPackCustomRegexOverrideInboundAction
+    PatchedToolPackCustomRegexOverrideOutboundAction:
+      type: string
+      enum:
+        - BLOCK
+        - REDACT
+        - LOG
+        - NONE
+      description: |-
+        * `BLOCK` - BLOCK
+        * `REDACT` - REDACT
+        * `LOG` - LOG
+        * `NONE` - NONE
+      title: PatchedToolPackCustomRegexOverrideOutboundAction
+    PatchedToolPackCustomRegexOverride:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        is_active:
+          type: boolean
+        regex:
+          type: string
+        score:
+          type: number
+          format: double
+        context_keywords:
+          description: Any type
+        inbound_action:
+          $ref: '#/components/schemas/PatchedToolPackCustomRegexOverrideInboundAction'
+          description: |-
+            * `BLOCK` - BLOCK
+            * `REDACT` - REDACT
+            * `LOG` - LOG
+            * `NONE` - NONE
+        outbound_action:
+          $ref: '#/components/schemas/PatchedToolPackCustomRegexOverrideOutboundAction'
+          description: |-
+            * `BLOCK` - BLOCK
+            * `REDACT` - REDACT
+            * `LOG` - LOG
+            * `NONE` - NONE
+        created_at:
+          type: string
+          format: date-time
+        modified_at:
+          type: string
+          format: date-time
+      description: Rejects requests that explicitly set defined_at to ORGANIZATION in tool pack endpoints.
+      title: PatchedToolPackCustomRegexOverride
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"

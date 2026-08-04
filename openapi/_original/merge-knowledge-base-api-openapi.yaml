@@ -1,0 +1,4474 @@
+openapi: 3.1.0
+info:
+  title: Knowledge Base
+  version: 1.0.0
+paths:
+  /knowledgebase/v1/articles:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Article` objects.
+      tags:
+        - subpackage_articles
+      parameters:
+        - name: created_after
+          in: query
+          description: If provided, will only return objects created after this datetime.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: created_before
+          in: query
+          description: If provided, will only return objects created before this datetime.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: cursor
+          in: query
+          description: The pagination cursor value.
+          required: false
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: >-
+            Which relations should be returned in expanded form. Multiple relation names should be comma separated
+            without spaces.
+          required: false
+          schema:
+            $ref: '#/components/schemas/ArticlesGetParametersExpand'
+        - name: include_deleted_data
+          in: query
+          description: >-
+            Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion
+            detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn
+            more](https://docs.merge.dev/integrations/hris/supported-features/).
+          required: false
+          schema:
+            type: boolean
+        - name: include_remote_data
+          in: query
+          description: Whether to include the original data Merge fetched from the third-party to produce these models.
+          required: false
+          schema:
+            type: boolean
+        - name: include_shell_data
+          in: query
+          description: >-
+            Whether to include shell records. Shell records are empty records (they may contain some metadata but all
+            other fields are null).
+          required: false
+          schema:
+            type: boolean
+        - name: modified_after
+          in: query
+          description: If provided, only objects synced by Merge after this date time will be returned.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: modified_before
+          in: query
+          description: If provided, only objects synced by Merge before this date time will be returned.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: page_size
+          in: query
+          description: Number of results to return per page. The maximum limit is 100.
+          required: false
+          schema:
+            type: integer
+        - name: parent_article_id
+          in: query
+          description: If provided, will only return sub articles of the parent_article_id.
+          required: false
+          schema:
+            type: string
+        - name: parent_container_id
+          in: query
+          description: If provided, will only return sub articles of the parent_container_id.
+          required: false
+          schema:
+            type: string
+        - name: remote_id
+          in: query
+          description: The API provider's ID for the given object.
+          required: false
+          schema:
+            type: string
+        - name: root_container_id
+          in: query
+          description: If provided, will only return sub articles of the root_container_id.
+          required: false
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: If provided, will only return articles of the given status; multiple statuses can be separated by commas.
+          required: false
+          schema:
+            type: string
+        - name: type
+          in: query
+          description: If provided, will only return articles of the given type.
+          required: false
+          schema:
+            $ref: '#/components/schemas/ArticlesGetParametersType'
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+        - name: X-Account-Token
+          in: header
+          description: Token identifying the end user.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedArticleList'
+  /knowledgebase/v1/articles/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns an `Article` object with the given `id`.
+      tags:
+        - subpackage_articles
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: expand
+          in: query
+          description: >-
+            Which relations should be returned in expanded form. Multiple relation names should be comma separated
+            without spaces.
+          required: false
+          schema:
+            $ref: '#/components/schemas/ArticlesIdGetParametersExpand'
+        - name: include_remote_data
+          in: query
+          description: Whether to include the original data Merge fetched from the third-party to produce these models.
+          required: false
+          schema:
+            type: boolean
+        - name: include_shell_data
+          in: query
+          description: >-
+            Whether to include shell records. Shell records are empty records (they may contain some metadata but all
+            other fields are null).
+          required: false
+          schema:
+            type: boolean
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+        - name: X-Account-Token
+          in: header
+          description: Token identifying the end user.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Article'
+  /knowledgebase/v1/attachments:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Attachment` objects.
+      tags:
+        - subpackage_attachments
+      parameters:
+        - name: created_after
+          in: query
+          description: If provided, will only return objects created after this datetime.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: created_before
+          in: query
+          description: If provided, will only return objects created before this datetime.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: cursor
+          in: query
+          description: The pagination cursor value.
+          required: false
+          schema:
+            type: string
+        - name: include_deleted_data
+          in: query
+          description: >-
+            Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion
+            detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn
+            more](https://docs.merge.dev/integrations/hris/supported-features/).
+          required: false
+          schema:
+            type: boolean
+        - name: include_remote_data
+          in: query
+          description: Whether to include the original data Merge fetched from the third-party to produce these models.
+          required: false
+          schema:
+            type: boolean
+        - name: include_shell_data
+          in: query
+          description: >-
+            Whether to include shell records. Shell records are empty records (they may contain some metadata but all
+            other fields are null).
+          required: false
+          schema:
+            type: boolean
+        - name: modified_after
+          in: query
+          description: If provided, only objects synced by Merge after this date time will be returned.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: modified_before
+          in: query
+          description: If provided, only objects synced by Merge before this date time will be returned.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: page_size
+          in: query
+          description: Number of results to return per page. The maximum limit is 100.
+          required: false
+          schema:
+            type: integer
+        - name: remote_id
+          in: query
+          description: The API provider's ID for the given object.
+          required: false
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+        - name: X-Account-Token
+          in: header
+          description: Token identifying the end user.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAttachmentList'
+  /knowledgebase/v1/attachments/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns an `Attachment` object with the given `id`.
+      tags:
+        - subpackage_attachments
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: include_remote_data
+          in: query
+          description: Whether to include the original data Merge fetched from the third-party to produce these models.
+          required: false
+          schema:
+            type: boolean
+        - name: include_shell_data
+          in: query
+          description: >-
+            Whether to include shell records. Shell records are empty records (they may contain some metadata but all
+            other fields are null).
+          required: false
+          schema:
+            type: boolean
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+        - name: X-Account-Token
+          in: header
+          description: Token identifying the end user.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attachment'
+  /knowledgebase/v1/containers:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Container` objects.
+      tags:
+        - subpackage_containers
+      parameters:
+        - name: created_after
+          in: query
+          description: If provided, will only return objects created after this datetime.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: created_before
+          in: query
+          description: If provided, will only return objects created before this datetime.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: cursor
+          in: query
+          description: The pagination cursor value.
+          required: false
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: >-
+            Which relations should be returned in expanded form. Multiple relation names should be comma separated
+            without spaces.
+          required: false
+          schema:
+            $ref: '#/components/schemas/ContainersGetParametersExpand'
+        - name: include_deleted_data
+          in: query
+          description: >-
+            Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion
+            detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn
+            more](https://docs.merge.dev/integrations/hris/supported-features/).
+          required: false
+          schema:
+            type: boolean
+        - name: include_remote_data
+          in: query
+          description: Whether to include the original data Merge fetched from the third-party to produce these models.
+          required: false
+          schema:
+            type: boolean
+        - name: include_shell_data
+          in: query
+          description: >-
+            Whether to include shell records. Shell records are empty records (they may contain some metadata but all
+            other fields are null).
+          required: false
+          schema:
+            type: boolean
+        - name: modified_after
+          in: query
+          description: If provided, only objects synced by Merge after this date time will be returned.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: modified_before
+          in: query
+          description: If provided, only objects synced by Merge before this date time will be returned.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: page_size
+          in: query
+          description: Number of results to return per page. The maximum limit is 100.
+          required: false
+          schema:
+            type: integer
+        - name: parent_article_id
+          in: query
+          description: If provided, will only return sub containers of the parent_article_id.
+          required: false
+          schema:
+            type: string
+            format: uuid
+        - name: parent_container_id
+          in: query
+          description: If provided, will only return sub containers of the parent_container_id.
+          required: false
+          schema:
+            type: string
+            format: uuid
+        - name: remote_id
+          in: query
+          description: The API provider's ID for the given object.
+          required: false
+          schema:
+            type: string
+        - name: type
+          in: query
+          description: If provided, will only return containers of the given type.
+          required: false
+          schema:
+            $ref: '#/components/schemas/ContainersGetParametersType'
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+        - name: X-Account-Token
+          in: header
+          description: Token identifying the end user.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedContainerList'
+  /knowledgebase/v1/containers/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `Container` object with the given `id`.
+      tags:
+        - subpackage_containers
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: expand
+          in: query
+          description: >-
+            Which relations should be returned in expanded form. Multiple relation names should be comma separated
+            without spaces.
+          required: false
+          schema:
+            $ref: '#/components/schemas/ContainersIdGetParametersExpand'
+        - name: include_remote_data
+          in: query
+          description: Whether to include the original data Merge fetched from the third-party to produce these models.
+          required: false
+          schema:
+            type: boolean
+        - name: include_shell_data
+          in: query
+          description: >-
+            Whether to include shell records. Shell records are empty records (they may contain some metadata but all
+            other fields are null).
+          required: false
+          schema:
+            type: boolean
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+        - name: X-Account-Token
+          in: header
+          description: Token identifying the end user.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Container'
+  /knowledgebase/v1/groups:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `Group` objects.
+      tags:
+        - subpackage_groups
+      parameters:
+        - name: created_after
+          in: query
+          description: If provided, will only return objects created after this datetime.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: created_before
+          in: query
+          description: If provided, will only return objects created before this datetime.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: cursor
+          in: query
+          description: The pagination cursor value.
+          required: false
+          schema:
+            type: string
+        - name: expand
+          in: query
+          description: >-
+            Which relations should be returned in expanded form. Multiple relation names should be comma separated
+            without spaces.
+          required: false
+          schema:
+            $ref: '#/components/schemas/GroupsGetParametersExpand'
+        - name: include_deleted_data
+          in: query
+          description: >-
+            Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion
+            detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn
+            more](https://docs.merge.dev/integrations/hris/supported-features/).
+          required: false
+          schema:
+            type: boolean
+        - name: include_remote_data
+          in: query
+          description: Whether to include the original data Merge fetched from the third-party to produce these models.
+          required: false
+          schema:
+            type: boolean
+        - name: include_shell_data
+          in: query
+          description: >-
+            Whether to include shell records. Shell records are empty records (they may contain some metadata but all
+            other fields are null).
+          required: false
+          schema:
+            type: boolean
+        - name: modified_after
+          in: query
+          description: If provided, only objects synced by Merge after this date time will be returned.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: modified_before
+          in: query
+          description: If provided, only objects synced by Merge before this date time will be returned.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: page_size
+          in: query
+          description: Number of results to return per page. The maximum limit is 100.
+          required: false
+          schema:
+            type: integer
+        - name: remote_id
+          in: query
+          description: The API provider's ID for the given object.
+          required: false
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+        - name: X-Account-Token
+          in: header
+          description: Token identifying the end user.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGroupList'
+  /knowledgebase/v1/groups/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `Group` object with the given `id`.
+      tags:
+        - subpackage_groups
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: expand
+          in: query
+          description: >-
+            Which relations should be returned in expanded form. Multiple relation names should be comma separated
+            without spaces.
+          required: false
+          schema:
+            $ref: '#/components/schemas/GroupsIdGetParametersExpand'
+        - name: include_remote_data
+          in: query
+          description: Whether to include the original data Merge fetched from the third-party to produce these models.
+          required: false
+          schema:
+            type: boolean
+        - name: include_shell_data
+          in: query
+          description: >-
+            Whether to include shell records. Shell records are empty records (they may contain some metadata but all
+            other fields are null).
+          required: false
+          schema:
+            type: boolean
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+        - name: X-Account-Token
+          in: header
+          description: Token identifying the end user.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+  /knowledgebase/v1/users:
+    get:
+      operationId: list
+      summary: List
+      description: Returns a list of `User` objects.
+      tags:
+        - subpackage_users
+      parameters:
+        - name: created_after
+          in: query
+          description: If provided, will only return objects created after this datetime.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: created_before
+          in: query
+          description: If provided, will only return objects created before this datetime.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: cursor
+          in: query
+          description: The pagination cursor value.
+          required: false
+          schema:
+            type: string
+        - name: include_deleted_data
+          in: query
+          description: >-
+            Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion
+            detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn
+            more](https://docs.merge.dev/integrations/hris/supported-features/).
+          required: false
+          schema:
+            type: boolean
+        - name: include_remote_data
+          in: query
+          description: Whether to include the original data Merge fetched from the third-party to produce these models.
+          required: false
+          schema:
+            type: boolean
+        - name: include_shell_data
+          in: query
+          description: >-
+            Whether to include shell records. Shell records are empty records (they may contain some metadata but all
+            other fields are null).
+          required: false
+          schema:
+            type: boolean
+        - name: modified_after
+          in: query
+          description: If provided, only objects synced by Merge after this date time will be returned.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: modified_before
+          in: query
+          description: If provided, only objects synced by Merge before this date time will be returned.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: page_size
+          in: query
+          description: Number of results to return per page. The maximum limit is 100.
+          required: false
+          schema:
+            type: integer
+        - name: remote_id
+          in: query
+          description: The API provider's ID for the given object.
+          required: false
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+        - name: X-Account-Token
+          in: header
+          description: Token identifying the end user.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUserList'
+  /knowledgebase/v1/users/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns a `User` object with the given `id`.
+      tags:
+        - subpackage_users
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: include_remote_data
+          in: query
+          description: Whether to include the original data Merge fetched from the third-party to produce these models.
+          required: false
+          schema:
+            type: boolean
+        - name: include_shell_data
+          in: query
+          description: >-
+            Whether to include shell records. Shell records are empty records (they may contain some metadata but all
+            other fields are null).
+          required: false
+          schema:
+            type: boolean
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+        - name: X-Account-Token
+          in: header
+          description: Token identifying the end user.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /knowledgebase/v1/account-details:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Get details for a linked account.
+      tags:
+        - subpackage_accountDetails
+      parameters:
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+        - name: X-Account-Token
+          in: header
+          description: Token identifying the end user.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountDetails'
+  /knowledgebase/v1/account-token/{public_token}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Returns the account token for the end user with the provided public token.
+      tags:
+        - subpackage_accountToken
+      parameters:
+        - name: public_token
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountToken'
+  /knowledgebase/v1/account-token/regenerate:
+    post:
+      operationId: regenerate-create
+      summary: Regenerate Create
+      description: Exchange Linked Account account tokens.
+      tags:
+        - subpackage_accountToken
+      parameters:
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+        - name: X-Account-Token
+          in: header
+          description: Token identifying the end user.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegenerateAccountToken'
+  /knowledgebase/v1/delete-account:
+    post:
+      operationId: delete
+      summary: Delete
+      description: Delete a linked account.
+      tags:
+        - subpackage_deleteAccount
+      parameters:
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+        - name: X-Account-Token
+          in: header
+          description: Token identifying the end user.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: No response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deleteAccount_delete_Response_200'
+  /knowledgebase/v1/issues:
+    get:
+      operationId: list
+      summary: List
+      description: Gets all issues for Organization.
+      tags:
+        - subpackage_issues
+      parameters:
+        - name: account_token
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: cursor
+          in: query
+          description: The pagination cursor value.
+          required: false
+          schema:
+            type: string
+        - name: end_date
+          in: query
+          description: If included, will only include issues whose most recent action occurred before this time
+          required: false
+          schema:
+            type: string
+        - name: end_user_organization_name
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: first_incident_time_after
+          in: query
+          description: If provided, will only return issues whose first incident time was after this datetime.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: first_incident_time_before
+          in: query
+          description: If provided, will only return issues whose first incident time was before this datetime.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: include_muted
+          in: query
+          description: If true, will include muted issues
+          required: false
+          schema:
+            type: string
+        - name: integration_name
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: last_incident_time_after
+          in: query
+          description: If provided, will only return issues whose last incident time was after this datetime.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: last_incident_time_before
+          in: query
+          description: If provided, will only return issues whose last incident time was before this datetime.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: linked_account_id
+          in: query
+          description: If provided, will only include issues pertaining to the linked account passed in.
+          required: false
+          schema:
+            type: string
+        - name: page_size
+          in: query
+          description: Number of results to return per page. The maximum limit is 100.
+          required: false
+          schema:
+            type: integer
+        - name: start_date
+          in: query
+          description: If included, will only include issues whose most recent action occurred after this time
+          required: false
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: |-
+            Status of the issue. Options: ('ONGOING', 'RESOLVED')
+
+            * `ONGOING` - ONGOING
+            * `RESOLVED` - RESOLVED
+          required: false
+          schema:
+            $ref: '#/components/schemas/IssuesGetParametersStatus'
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedIssueList'
+  /knowledgebase/v1/issues/{id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Get a specific issue.
+      tags:
+        - subpackage_issues
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Issue'
+  /knowledgebase/v1/linked-accounts:
+    get:
+      operationId: list
+      summary: List
+      description: List linked accounts for your organization.
+      tags:
+        - subpackage_linkedAccounts
+      parameters:
+        - name: category
+          in: query
+          description: |-
+            Options: `accounting`, `ats`, `crm`, `filestorage`, `hris`, `knowledgebase`, `mktg`, `ticketing`
+
+            * `hris` - hris
+            * `ats` - ats
+            * `accounting` - accounting
+            * `ticketing` - ticketing
+            * `crm` - crm
+            * `mktg` - mktg
+            * `filestorage` - filestorage
+            * `datawarehouse` - datawarehouse
+            * `knowledgebase` - knowledgebase
+            * `communication` - communication
+            * `chat` - chat
+          required: false
+          schema:
+            $ref: '#/components/schemas/LinkedAccountsGetParametersCategory'
+        - name: cursor
+          in: query
+          description: The pagination cursor value.
+          required: false
+          schema:
+            type: string
+        - name: end_user_email_address
+          in: query
+          description: If provided, will only return linked accounts associated with the given email address.
+          required: false
+          schema:
+            type: string
+        - name: end_user_organization_name
+          in: query
+          description: If provided, will only return linked accounts associated with the given organization name.
+          required: false
+          schema:
+            type: string
+        - name: end_user_origin_id
+          in: query
+          description: If provided, will only return linked accounts associated with the given origin ID.
+          required: false
+          schema:
+            type: string
+        - name: end_user_origin_ids
+          in: query
+          description: Comma-separated list of EndUser origin IDs, making it possible to specify multiple EndUsers at once.
+          required: false
+          schema:
+            type: string
+        - name: id
+          in: query
+          required: false
+          schema:
+            type: string
+            format: uuid
+        - name: ids
+          in: query
+          description: Comma-separated list of LinkedAccount IDs, making it possible to specify multiple LinkedAccounts at once.
+          required: false
+          schema:
+            type: string
+        - name: include_duplicates
+          in: query
+          description: >-
+            If `true`, will include complete production duplicates of the account specified by the `id` query parameter
+            in the response. `id` must be for a complete production linked account.
+          required: false
+          schema:
+            type: boolean
+        - name: integration_name
+          in: query
+          description: If provided, will only return linked accounts associated with the given integration name.
+          required: false
+          schema:
+            type: string
+        - name: is_test_account
+          in: query
+          description: >-
+            If included, will only include test linked accounts. If not included, will only include non-test linked
+            accounts.
+          required: false
+          schema:
+            type: string
+        - name: page_size
+          in: query
+          description: Number of results to return per page. The maximum limit is 100.
+          required: false
+          schema:
+            type: integer
+        - name: status
+          in: query
+          description: 'Filter by status. Options: `COMPLETE`, `IDLE`, `INCOMPLETE`, `RELINK_NEEDED`'
+          required: false
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAccountDetailsAndActionsList'
+  /knowledgebase/v1/link-token:
+    post:
+      operationId: create
+      summary: Create
+      description: Creates a link token to be used when linking a new end user.
+      tags:
+        - subpackage_linkToken
+      parameters:
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LinkToken'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EndUserDetailsRequest'
+  /knowledgebase/v1/field-mappings:
+    get:
+      operationId: field-mappings-retrieve
+      summary: Field Mappings Retrieve
+      description: >-
+        Get all Field Mappings for this Linked Account. Field Mappings are mappings between third-party Remote Fields
+        and user defined Merge fields. [Learn more](https://docs.merge.dev/supplemental-data/field-mappings/overview/).
+      tags:
+        - subpackage_fieldMapping
+      parameters:
+        - name: exclude_remote_field_metadata
+          in: query
+          description: >-
+            If `true`, remote fields metadata is excluded from each field mapping instance (i.e.
+            `remote_fields.remote_key_name` and `remote_fields.schema` will be null). This will increase the speed of
+            the request since these fields require some calculations.
+          required: false
+          schema:
+            type: boolean
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+        - name: X-Account-Token
+          in: header
+          description: Token identifying the end user.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FieldMappingApiInstanceResponse'
+    post:
+      operationId: field-mappings-create
+      summary: Field Mappings Create
+      description: >-
+        Create new Field Mappings that will be available after the next scheduled sync. This will cause the next sync
+        for this Linked Account to sync **ALL** data from start.
+      tags:
+        - subpackage_fieldMapping
+      parameters:
+        - name: exclude_remote_field_metadata
+          in: query
+          description: >-
+            If `true`, remote fields metadata is excluded from each field mapping instance (i.e.
+            `remote_fields.remote_key_name` and `remote_fields.schema` will be null). This will increase the speed of
+            the request since these fields require some calculations.
+          required: false
+          schema:
+            type: boolean
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+        - name: X-Account-Token
+          in: header
+          description: Token identifying the end user.
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FieldMappingInstanceResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateFieldMappingRequest'
+  /knowledgebase/v1/field-mappings/{field_mapping_id}:
+    delete:
+      operationId: field-mappings-destroy
+      summary: Field Mappings Destroy
+      description: >-
+        Deletes Field Mappings for a Linked Account. All data related to this Field Mapping will be deleted and these
+        changes will be reflected after the next scheduled sync. This will cause the next sync for this Linked Account
+        to sync **ALL** data from start.
+      tags:
+        - subpackage_fieldMapping
+      parameters:
+        - name: field_mapping_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+        - name: X-Account-Token
+          in: header
+          description: Token identifying the end user.
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FieldMappingInstanceResponse'
+    patch:
+      operationId: field-mappings-partial-update
+      summary: Field Mappings Partial Update
+      description: >-
+        Create or update existing Field Mappings for a Linked Account. Changes will be reflected after the next
+        scheduled sync. This will cause the next sync for this Linked Account to sync **ALL** data from start.
+      tags:
+        - subpackage_fieldMapping
+      parameters:
+        - name: field_mapping_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+        - name: X-Account-Token
+          in: header
+          description: Token identifying the end user.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FieldMappingInstanceResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedEditFieldMappingRequest'
+  /knowledgebase/v1/remote-fields:
+    get:
+      operationId: remote-fields-retrieve
+      summary: Remote Fields Retrieve
+      description: >-
+        Get all remote fields for a Linked Account. Remote fields are third-party fields that are accessible after
+        initial sync if remote_data is enabled. You can use remote fields to override existing Merge fields or map a new
+        Merge field. [Learn more](https://docs.merge.dev/supplemental-data/field-mappings/overview/).
+      tags:
+        - subpackage_fieldMapping
+      parameters:
+        - name: common_models
+          in: query
+          description: >-
+            A comma seperated list of Common Model names. If included, will only return Remote Fields for those Common
+            Models.
+          required: false
+          schema:
+            type: string
+        - name: include_example_values
+          in: query
+          description: >-
+            If true, will include example values, where available, for remote fields in the 3rd party platform. These
+            examples come from active data from your customers.
+          required: false
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+        - name: X-Account-Token
+          in: header
+          description: Token identifying the end user.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RemoteFieldAPIResponse'
+  /knowledgebase/v1/target-fields:
+    get:
+      operationId: target-fields-retrieve
+      summary: Target Fields Retrieve
+      description: >-
+        Get all organization-wide Target Fields, this will not include any Linked Account specific Target Fields.
+        Organization-wide Target Fields are additional fields appended to the Merge Common Model for all Linked Accounts
+        in a category. [Learn more](https://docs.merge.dev/supplemental-data/field-mappings/target-fields/).
+      tags:
+        - subpackage_fieldMapping
+      parameters:
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+        - name: X-Account-Token
+          in: header
+          description: Token identifying the end user.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExternalTargetFieldAPIResponse'
+  /knowledgebase/v1/default-scopes:
+    get:
+      operationId: default-scopes-retrieve
+      summary: Default Scopes Retrieve
+      description: >-
+        Get the default permissions for Merge Common Models and fields across all Linked Accounts of a given category.
+        [Learn more](https://help.merge.dev/en/articles/5950052-common-model-and-field-scopes).
+      tags:
+        - subpackage_scopes
+      parameters:
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonModelScopeAPI'
+  /knowledgebase/v1/linked-account-scopes:
+    get:
+      operationId: linked-account-scopes-retrieve
+      summary: Linked Account Scopes Retrieve
+      description: >-
+        Get all available permissions for Merge Common Models and fields for a single Linked Account. [Learn
+        more](https://help.merge.dev/en/articles/5950052-common-model-and-field-scopes).
+      tags:
+        - subpackage_scopes
+      parameters:
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+        - name: X-Account-Token
+          in: header
+          description: Token identifying the end user.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonModelScopeAPI'
+    post:
+      operationId: linked-account-scopes-create
+      summary: Linked Account Scopes Create
+      description: >-
+        Update permissions for any Common Model or field for a single Linked Account. Any Scopes not set in this POST
+        request will inherit the default Scopes. [Learn
+        more](https://help.merge.dev/en/articles/5950052-common-model-and-field-scopes)
+      tags:
+        - subpackage_scopes
+      parameters:
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+        - name: X-Account-Token
+          in: header
+          description: Token identifying the end user.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommonModelScopeAPI'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LinkedAccountCommonModelScopeDeserializerRequest'
+  /knowledgebase/v1/sync-status/resync:
+    post:
+      operationId: sync-status-resync-create
+      summary: Sync Status Resync Create
+      description: >-
+        Force re-sync of all models. This endpoint is available for monthly, quarterly, and highest sync frequency
+        customers on the Professional or Enterprise plans. Doing so will consume a sync credit for the relevant linked
+        account. Force re-syncs can also be triggered manually in the Merge Dashboard and is available for all
+        customers.
+      tags:
+        - subpackage_forceResync
+      parameters:
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+        - name: X-Account-Token
+          in: header
+          description: Token identifying the end user.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SyncStatus'
+  /knowledgebase/v1/passthrough:
+    post:
+      operationId: create
+      summary: Create
+      description: Pull data from an endpoint not currently supported by Merge.
+      tags:
+        - subpackage_passthrough
+      parameters:
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+        - name: X-Account-Token
+          in: header
+          description: Token identifying the end user.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RemoteResponse'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DataPassthroughRequest'
+  /knowledgebase/v1/async-passthrough:
+    post:
+      operationId: create
+      summary: Create
+      description: Asynchronously pull data from an endpoint not currently supported by Merge.
+      tags:
+        - subpackage_asyncPassthrough
+      parameters:
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+        - name: X-Account-Token
+          in: header
+          description: Token identifying the end user.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncPassthroughReciept'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DataPassthroughRequest'
+  /knowledgebase/v1/async-passthrough/{async_passthrough_receipt_id}:
+    get:
+      operationId: retrieve
+      summary: Retrieve
+      description: Retrieves data from earlier async-passthrough POST request
+      tags:
+        - subpackage_asyncPassthrough
+      parameters:
+        - name: async_passthrough_receipt_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+        - name: X-Account-Token
+          in: header
+          description: Token identifying the end user.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RemoteResponse'
+  /knowledgebase/v1/sync-status:
+    get:
+      operationId: list
+      summary: List
+      description: >-
+        Get sync status for the current sync and the most recently finished sync. `last_sync_start` represents the most
+        recent time any sync began. `last_sync_finished` represents the most recent time any sync completed. These
+        timestamps may correspond to different sync instances which may result in a sync start time being later than a
+        separate sync completed time. To ensure you are retrieving the latest available data reference the
+        `last_sync_finished` timestamp where `last_sync_result` is `DONE`. Possible values for `status` and
+        `last_sync_result` are `DISABLED`, `DONE`, `FAILED`, `PARTIALLY_SYNCED`, `PAUSED`, `SYNCING`. Learn more about
+        sync status in our [Help Center](https://help.merge.dev/en/articles/8184193-merge-sync-statuses).
+      tags:
+        - subpackage_syncStatus
+      parameters:
+        - name: cursor
+          in: query
+          description: The pagination cursor value.
+          required: false
+          schema:
+            type: string
+        - name: page_size
+          in: query
+          description: Number of results to return per page. The maximum limit is 100.
+          required: false
+          schema:
+            type: integer
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+        - name: X-Account-Token
+          in: header
+          description: Token identifying the end user.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedSyncStatusList'
+  /knowledgebase/v1/generate-key:
+    post:
+      operationId: create
+      summary: Create
+      description: Create a remote key.
+      tags:
+        - subpackage_generateKey
+      parameters:
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RemoteKey'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenerateRemoteKeyRequest'
+  /knowledgebase/v1/regenerate-key:
+    post:
+      operationId: create
+      summary: Create
+      description: Exchange remote keys.
+      tags:
+        - subpackage_regenerateKey
+      parameters:
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RemoteKey'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RemoteKeyForRegenerationRequest'
+  /knowledgebase/v1/audit-trail:
+    get:
+      operationId: list
+      summary: List
+      description: Gets a list of audit trail events.
+      tags:
+        - subpackage_auditTrail
+      parameters:
+        - name: cursor
+          in: query
+          description: The pagination cursor value.
+          required: false
+          schema:
+            type: string
+        - name: end_date
+          in: query
+          description: If included, will only include audit trail events that occurred before this time
+          required: false
+          schema:
+            type: string
+        - name: event_type
+          in: query
+          description: >-
+            If included, will only include events with the given event type. Possible values include:
+            `CREATED_REMOTE_PRODUCTION_API_KEY`, `DELETED_REMOTE_PRODUCTION_API_KEY`, `CREATED_TEST_API_KEY`,
+            `DELETED_TEST_API_KEY`, `REGENERATED_PRODUCTION_API_KEY`, `REGENERATED_WEBHOOK_SIGNATURE`, `INVITED_USER`,
+            `TWO_FACTOR_AUTH_ENABLED`, `TWO_FACTOR_AUTH_DISABLED`, `DELETED_LINKED_ACCOUNT`,
+            `DELETED_ALL_COMMON_MODELS_FOR_LINKED_ACCOUNT`, `CREATED_DESTINATION`, `DELETED_DESTINATION`,
+            `CHANGED_DESTINATION`, `CHANGED_SCOPES`, `CHANGED_PERSONAL_INFORMATION`, `CHANGED_ORGANIZATION_SETTINGS`,
+            `ENABLED_INTEGRATION`, `DISABLED_INTEGRATION`, `ENABLED_CATEGORY`, `DISABLED_CATEGORY`, `CHANGED_PASSWORD`,
+            `RESET_PASSWORD`, `ENABLED_REDACT_UNMAPPED_DATA_FOR_ORGANIZATION`,
+            `ENABLED_REDACT_UNMAPPED_DATA_FOR_LINKED_ACCOUNT`, `DISABLED_REDACT_UNMAPPED_DATA_FOR_ORGANIZATION`,
+            `DISABLED_REDACT_UNMAPPED_DATA_FOR_LINKED_ACCOUNT`, `CREATED_INTEGRATION_WIDE_FIELD_MAPPING`,
+            `CREATED_LINKED_ACCOUNT_FIELD_MAPPING`, `CHANGED_INTEGRATION_WIDE_FIELD_MAPPING`,
+            `CHANGED_LINKED_ACCOUNT_FIELD_MAPPING`, `DELETED_INTEGRATION_WIDE_FIELD_MAPPING`,
+            `DELETED_LINKED_ACCOUNT_FIELD_MAPPING`, `CREATED_LINKED_ACCOUNT_COMMON_MODEL_OVERRIDE`,
+            `CHANGED_LINKED_ACCOUNT_COMMON_MODEL_OVERRIDE`, `DELETED_LINKED_ACCOUNT_COMMON_MODEL_OVERRIDE`,
+            `FORCED_LINKED_ACCOUNT_RESYNC`, `MUTED_ISSUE`, `GENERATED_MAGIC_LINK`, `ENABLED_MERGE_WEBHOOK`,
+            `DISABLED_MERGE_WEBHOOK`, `MERGE_WEBHOOK_TARGET_CHANGED`, `END_USER_CREDENTIALS_ACCESSED`
+          required: false
+          schema:
+            type: string
+        - name: page_size
+          in: query
+          description: Number of results to return per page. The maximum limit is 100.
+          required: false
+          schema:
+            type: integer
+        - name: start_date
+          in: query
+          description: If included, will only include audit trail events that occurred after this time
+          required: false
+          schema:
+            type: string
+        - name: user_email
+          in: query
+          description: >-
+            If provided, this will return events associated with the specified user email. Please note that the email
+            address reflects the user's email at the time of the event, and may not be their current email.
+          required: false
+          schema:
+            type: string
+        - name: Authorization
+          in: header
+          description: Token-based authentication with required prefix "Bearer"
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAuditLogEventList'
+servers:
+  - url: https://api.merge.dev/api
+  - url: https://api-eu.merge.dev/api
+  - url: https://api-ap.merge.dev/api
+  - url: https://api-ap.merge.dev/api/knowledgebase/v1
+components:
+  schemas:
+    ArticlesGetParametersExpand:
+      type: string
+      enum:
+        - attachments
+        - attachments,author
+        - attachments,author,last_edited_by
+        - attachments,author,last_edited_by,parent_article
+        - attachments,author,last_edited_by,parent_article,parent_container
+        - attachments,author,last_edited_by,parent_article,parent_container,root_container
+        - attachments,author,last_edited_by,parent_article,root_container
+        - attachments,author,last_edited_by,parent_container
+        - attachments,author,last_edited_by,parent_container,root_container
+        - attachments,author,last_edited_by,root_container
+        - attachments,author,parent_article
+        - attachments,author,parent_article,parent_container
+        - attachments,author,parent_article,parent_container,root_container
+        - attachments,author,parent_article,root_container
+        - attachments,author,parent_container
+        - attachments,author,parent_container,root_container
+        - attachments,author,root_container
+        - attachments,last_edited_by
+        - attachments,last_edited_by,parent_article
+        - attachments,last_edited_by,parent_article,parent_container
+        - attachments,last_edited_by,parent_article,parent_container,root_container
+        - attachments,last_edited_by,parent_article,root_container
+        - attachments,last_edited_by,parent_container
+        - attachments,last_edited_by,parent_container,root_container
+        - attachments,last_edited_by,root_container
+        - attachments,parent_article
+        - attachments,parent_article,parent_container
+        - attachments,parent_article,parent_container,root_container
+        - attachments,parent_article,root_container
+        - attachments,parent_container
+        - attachments,parent_container,root_container
+        - attachments,root_container
+        - author
+        - author,last_edited_by
+        - author,last_edited_by,parent_article
+        - author,last_edited_by,parent_article,parent_container
+        - author,last_edited_by,parent_article,parent_container,root_container
+        - author,last_edited_by,parent_article,root_container
+        - author,last_edited_by,parent_container
+        - author,last_edited_by,parent_container,root_container
+        - author,last_edited_by,root_container
+        - author,parent_article
+        - author,parent_article,parent_container
+        - author,parent_article,parent_container,root_container
+        - author,parent_article,root_container
+        - author,parent_container
+        - author,parent_container,root_container
+        - author,root_container
+        - last_edited_by
+        - last_edited_by,parent_article
+        - last_edited_by,parent_article,parent_container
+        - last_edited_by,parent_article,parent_container,root_container
+        - last_edited_by,parent_article,root_container
+        - last_edited_by,parent_container
+        - last_edited_by,parent_container,root_container
+        - last_edited_by,root_container
+        - parent_article
+        - parent_article,parent_container
+        - parent_article,parent_container,root_container
+        - parent_article,root_container
+        - parent_container
+        - parent_container,root_container
+        - permissions
+        - permissions,attachments
+        - permissions,attachments,author
+        - permissions,attachments,author,last_edited_by
+        - permissions,attachments,author,last_edited_by,parent_article
+        - permissions,attachments,author,last_edited_by,parent_article,parent_container
+        - permissions,attachments,author,last_edited_by,parent_article,parent_container,root_container
+        - permissions,attachments,author,last_edited_by,parent_article,root_container
+        - permissions,attachments,author,last_edited_by,parent_container
+        - permissions,attachments,author,last_edited_by,parent_container,root_container
+        - permissions,attachments,author,last_edited_by,root_container
+        - permissions,attachments,author,parent_article
+        - permissions,attachments,author,parent_article,parent_container
+        - permissions,attachments,author,parent_article,parent_container,root_container
+        - permissions,attachments,author,parent_article,root_container
+        - permissions,attachments,author,parent_container
+        - permissions,attachments,author,parent_container,root_container
+        - permissions,attachments,author,root_container
+        - permissions,attachments,last_edited_by
+        - permissions,attachments,last_edited_by,parent_article
+        - permissions,attachments,last_edited_by,parent_article,parent_container
+        - permissions,attachments,last_edited_by,parent_article,parent_container,root_container
+        - permissions,attachments,last_edited_by,parent_article,root_container
+        - permissions,attachments,last_edited_by,parent_container
+        - permissions,attachments,last_edited_by,parent_container,root_container
+        - permissions,attachments,last_edited_by,root_container
+        - permissions,attachments,parent_article
+        - permissions,attachments,parent_article,parent_container
+        - permissions,attachments,parent_article,parent_container,root_container
+        - permissions,attachments,parent_article,root_container
+        - permissions,attachments,parent_container
+        - permissions,attachments,parent_container,root_container
+        - permissions,attachments,root_container
+        - permissions,author
+        - permissions,author,last_edited_by
+        - permissions,author,last_edited_by,parent_article
+        - permissions,author,last_edited_by,parent_article,parent_container
+        - permissions,author,last_edited_by,parent_article,parent_container,root_container
+        - permissions,author,last_edited_by,parent_article,root_container
+        - permissions,author,last_edited_by,parent_container
+        - permissions,author,last_edited_by,parent_container,root_container
+        - permissions,author,last_edited_by,root_container
+        - permissions,author,parent_article
+        - permissions,author,parent_article,parent_container
+        - permissions,author,parent_article,parent_container,root_container
+        - permissions,author,parent_article,root_container
+        - permissions,author,parent_container
+        - permissions,author,parent_container,root_container
+        - permissions,author,root_container
+        - permissions,last_edited_by
+        - permissions,last_edited_by,parent_article
+        - permissions,last_edited_by,parent_article,parent_container
+        - permissions,last_edited_by,parent_article,parent_container,root_container
+        - permissions,last_edited_by,parent_article,root_container
+        - permissions,last_edited_by,parent_container
+        - permissions,last_edited_by,parent_container,root_container
+        - permissions,last_edited_by,root_container
+        - permissions,parent_article
+        - permissions,parent_article,parent_container
+        - permissions,parent_article,parent_container,root_container
+        - permissions,parent_article,root_container
+        - permissions,parent_container
+        - permissions,parent_container,root_container
+        - permissions,root_container
+        - root_container
+      title: ArticlesGetParametersExpand
+    ArticlesGetParametersType:
+      type: string
+      enum:
+        - ''
+        - BLOG_POST
+        - PAGE
+        - SMART_LINK
+      title: ArticlesGetParametersType
+    VisibilityEnum:
+      type: string
+      enum:
+        - PUBLIC
+        - INTERNAL
+        - RESTRICTED
+      description: |-
+        * `PUBLIC` - PUBLIC
+        * `INTERNAL` - INTERNAL
+        * `RESTRICTED` - RESTRICTED
+      title: VisibilityEnum
+    Status3c6Enum:
+      type: string
+      enum:
+        - DRAFT
+        - PUBLISHED
+        - ARCHIVED
+        - TRASH
+      description: |-
+        * `DRAFT` - DRAFT
+        * `PUBLISHED` - PUBLISHED
+        * `ARCHIVED` - ARCHIVED
+        * `TRASH` - TRASH
+      title: Status3c6Enum
+    ArticleTypeEnum:
+      type: string
+      enum:
+        - PAGE
+        - BLOG_POST
+        - SMART_LINK
+      description: |-
+        * `PAGE` - PAGE
+        * `BLOG_POST` - BLOG_POST
+        * `SMART_LINK` - SMART_LINK
+      title: ArticleTypeEnum
+    PermissionTypeEnum:
+      type: string
+      enum:
+        - USER
+        - GROUP
+        - COMPANY
+        - ANYONE
+      description: |-
+        * `USER` - USER
+        * `GROUP` - GROUP
+        * `COMPANY` - COMPANY
+        * `ANYONE` - ANYONE
+      title: PermissionTypeEnum
+    RolesEnum:
+      type: string
+      enum:
+        - READ
+        - WRITE
+        - OWNER
+      description: |-
+        * `READ` - READ
+        * `WRITE` - WRITE
+        * `OWNER` - OWNER
+      title: RolesEnum
+    PermissionFieldMappings:
+      type: object
+      properties: {}
+      title: PermissionFieldMappings
+    Permission:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+            - string
+            - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        user:
+          type:
+            - string
+            - 'null'
+          format: uuid
+        group:
+          type:
+            - string
+            - 'null'
+          format: uuid
+        type:
+          oneOf:
+            - $ref: '#/components/schemas/PermissionTypeEnum'
+            - type: 'null'
+          description: |-
+            Denotes what type of people have access to the Article or Container.
+
+            * `USER` - USER
+            * `GROUP` - GROUP
+            * `COMPANY` - COMPANY
+            * `ANYONE` - ANYONE
+        roles:
+          type:
+            - array
+            - 'null'
+          items:
+            $ref: '#/components/schemas/RolesEnum'
+          description: >-
+            The permissions that the user or group has for the Article or Container. It is possible for a user or group
+            to have multiple roles, such as viewing & uploading.
+        remote_was_deleted:
+          type: boolean
+          description: >-
+            Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion
+            detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn
+            more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+            - $ref: '#/components/schemas/PermissionFieldMappings'
+            - type: 'null'
+      description: >-
+        # The Permission Object
+
+        ### Description
+
+        The `Permission` object is used to represent a user's or group's access to an article or container. Permissions
+        are unexpanded by default.
+
+        ### Usage Example
+      title: Permission
+    ArticleFieldMappings:
+      type: object
+      properties: {}
+      title: ArticleFieldMappings
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+        - path
+      description: |-
+        # The RemoteData Object
+        ### Description
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+        ### Usage Example
+        TODO
+      title: RemoteData
+    Article:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+            - string
+            - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        title:
+          type:
+            - string
+            - 'null'
+          description: The title of the article.
+        description:
+          type:
+            - string
+            - 'null'
+          description: Description of the article.
+        author:
+          type:
+            - string
+            - 'null'
+          format: uuid
+          description: The user who created the article.
+        last_edited_by:
+          type:
+            - string
+            - 'null'
+          format: uuid
+          description: The user to last update the article.
+        visibility:
+          oneOf:
+            - $ref: '#/components/schemas/VisibilityEnum'
+            - type: 'null'
+          description: |-
+            The visibility of the article.
+
+            * `PUBLIC` - PUBLIC
+            * `INTERNAL` - INTERNAL
+            * `RESTRICTED` - RESTRICTED
+        article_content_download_url:
+          type:
+            - string
+            - 'null'
+          description: The presigned S3 URL to fetch article content.
+        checksum:
+          type:
+            - string
+            - 'null'
+          description: The SHA256 checksum of the article content.
+        article_url:
+          type:
+            - string
+            - 'null'
+          description: The URL to the webpage of the article.
+        status:
+          oneOf:
+            - $ref: '#/components/schemas/Status3c6Enum'
+            - type: 'null'
+          description: |-
+            The status of the article.
+
+            * `DRAFT` - DRAFT
+            * `PUBLISHED` - PUBLISHED
+            * `ARCHIVED` - ARCHIVED
+            * `TRASH` - TRASH
+        type:
+          oneOf:
+            - $ref: '#/components/schemas/ArticleTypeEnum'
+            - type: 'null'
+          description: |-
+            The type of the article.
+
+            * `PAGE` - PAGE
+            * `BLOG_POST` - BLOG_POST
+            * `SMART_LINK` - SMART_LINK
+        remote_created_at:
+          type:
+            - string
+            - 'null'
+          format: date-time
+          description: When the third party's article was created.
+        remote_updated_at:
+          type:
+            - string
+            - 'null'
+          format: date-time
+          description: When the third party's article was updated.
+        parent_article:
+          type:
+            - string
+            - 'null'
+          format: uuid
+          description: The parent article an article is nested within.
+        parent_container:
+          type:
+            - string
+            - 'null'
+          format: uuid
+          description: The parent container an article is nested within.
+        root_container:
+          type:
+            - string
+            - 'null'
+          format: uuid
+          description: >-
+            The top-level container in the hierarchy that holds this article. This will reference a container object
+            that will typically be a SPACE or WORKSPACE type.
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Permission'
+        attachments:
+          type: array
+          items:
+            type: string
+            format: uuid
+        remote_was_deleted:
+          type: boolean
+          description: >-
+            Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion
+            detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn
+            more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+            - $ref: '#/components/schemas/ArticleFieldMappings'
+            - type: 'null'
+        remote_data:
+          type:
+            - array
+            - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: |-
+        # The Article Object
+        ### Description
+        The `Article` object is used to represent a form of content in the knowledge base, such as an article or page.
+        ### Usage Example
+        Fetch from the `GET /api/knowledgebase/articles` endpoint and view their articles.
+      title: Article
+    PaginatedArticleList:
+      type: object
+      properties:
+        next:
+          type:
+            - string
+            - 'null'
+        previous:
+          type:
+            - string
+            - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Article'
+      title: PaginatedArticleList
+    ArticlesIdGetParametersExpand:
+      type: string
+      enum:
+        - attachments
+        - attachments,author
+        - attachments,author,last_edited_by
+        - attachments,author,last_edited_by,parent_article
+        - attachments,author,last_edited_by,parent_article,parent_container
+        - attachments,author,last_edited_by,parent_article,parent_container,root_container
+        - attachments,author,last_edited_by,parent_article,root_container
+        - attachments,author,last_edited_by,parent_container
+        - attachments,author,last_edited_by,parent_container,root_container
+        - attachments,author,last_edited_by,root_container
+        - attachments,author,parent_article
+        - attachments,author,parent_article,parent_container
+        - attachments,author,parent_article,parent_container,root_container
+        - attachments,author,parent_article,root_container
+        - attachments,author,parent_container
+        - attachments,author,parent_container,root_container
+        - attachments,author,root_container
+        - attachments,last_edited_by
+        - attachments,last_edited_by,parent_article
+        - attachments,last_edited_by,parent_article,parent_container
+        - attachments,last_edited_by,parent_article,parent_container,root_container
+        - attachments,last_edited_by,parent_article,root_container
+        - attachments,last_edited_by,parent_container
+        - attachments,last_edited_by,parent_container,root_container
+        - attachments,last_edited_by,root_container
+        - attachments,parent_article
+        - attachments,parent_article,parent_container
+        - attachments,parent_article,parent_container,root_container
+        - attachments,parent_article,root_container
+        - attachments,parent_container
+        - attachments,parent_container,root_container
+        - attachments,root_container
+        - author
+        - author,last_edited_by
+        - author,last_edited_by,parent_article
+        - author,last_edited_by,parent_article,parent_container
+        - author,last_edited_by,parent_article,parent_container,root_container
+        - author,last_edited_by,parent_article,root_container
+        - author,last_edited_by,parent_container
+        - author,last_edited_by,parent_container,root_container
+        - author,last_edited_by,root_container
+        - author,parent_article
+        - author,parent_article,parent_container
+        - author,parent_article,parent_container,root_container
+        - author,parent_article,root_container
+        - author,parent_container
+        - author,parent_container,root_container
+        - author,root_container
+        - last_edited_by
+        - last_edited_by,parent_article
+        - last_edited_by,parent_article,parent_container
+        - last_edited_by,parent_article,parent_container,root_container
+        - last_edited_by,parent_article,root_container
+        - last_edited_by,parent_container
+        - last_edited_by,parent_container,root_container
+        - last_edited_by,root_container
+        - parent_article
+        - parent_article,parent_container
+        - parent_article,parent_container,root_container
+        - parent_article,root_container
+        - parent_container
+        - parent_container,root_container
+        - permissions
+        - permissions,attachments
+        - permissions,attachments,author
+        - permissions,attachments,author,last_edited_by
+        - permissions,attachments,author,last_edited_by,parent_article
+        - permissions,attachments,author,last_edited_by,parent_article,parent_container
+        - permissions,attachments,author,last_edited_by,parent_article,parent_container,root_container
+        - permissions,attachments,author,last_edited_by,parent_article,root_container
+        - permissions,attachments,author,last_edited_by,parent_container
+        - permissions,attachments,author,last_edited_by,parent_container,root_container
+        - permissions,attachments,author,last_edited_by,root_container
+        - permissions,attachments,author,parent_article
+        - permissions,attachments,author,parent_article,parent_container
+        - permissions,attachments,author,parent_article,parent_container,root_container
+        - permissions,attachments,author,parent_article,root_container
+        - permissions,attachments,author,parent_container
+        - permissions,attachments,author,parent_container,root_container
+        - permissions,attachments,author,root_container
+        - permissions,attachments,last_edited_by
+        - permissions,attachments,last_edited_by,parent_article
+        - permissions,attachments,last_edited_by,parent_article,parent_container
+        - permissions,attachments,last_edited_by,parent_article,parent_container,root_container
+        - permissions,attachments,last_edited_by,parent_article,root_container
+        - permissions,attachments,last_edited_by,parent_container
+        - permissions,attachments,last_edited_by,parent_container,root_container
+        - permissions,attachments,last_edited_by,root_container
+        - permissions,attachments,parent_article
+        - permissions,attachments,parent_article,parent_container
+        - permissions,attachments,parent_article,parent_container,root_container
+        - permissions,attachments,parent_article,root_container
+        - permissions,attachments,parent_container
+        - permissions,attachments,parent_container,root_container
+        - permissions,attachments,root_container
+        - permissions,author
+        - permissions,author,last_edited_by
+        - permissions,author,last_edited_by,parent_article
+        - permissions,author,last_edited_by,parent_article,parent_container
+        - permissions,author,last_edited_by,parent_article,parent_container,root_container
+        - permissions,author,last_edited_by,parent_article,root_container
+        - permissions,author,last_edited_by,parent_container
+        - permissions,author,last_edited_by,parent_container,root_container
+        - permissions,author,last_edited_by,root_container
+        - permissions,author,parent_article
+        - permissions,author,parent_article,parent_container
+        - permissions,author,parent_article,parent_container,root_container
+        - permissions,author,parent_article,root_container
+        - permissions,author,parent_container
+        - permissions,author,parent_container,root_container
+        - permissions,author,root_container
+        - permissions,last_edited_by
+        - permissions,last_edited_by,parent_article
+        - permissions,last_edited_by,parent_article,parent_container
+        - permissions,last_edited_by,parent_article,parent_container,root_container
+        - permissions,last_edited_by,parent_article,root_container
+        - permissions,last_edited_by,parent_container
+        - permissions,last_edited_by,parent_container,root_container
+        - permissions,last_edited_by,root_container
+        - permissions,parent_article
+        - permissions,parent_article,parent_container
+        - permissions,parent_article,parent_container,root_container
+        - permissions,parent_article,root_container
+        - permissions,parent_container
+        - permissions,parent_container,root_container
+        - permissions,root_container
+        - root_container
+      title: ArticlesIdGetParametersExpand
+    AttachmentFieldMappings:
+      type: object
+      properties: {}
+      title: AttachmentFieldMappings
+    Attachment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+            - string
+            - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        name:
+          type:
+            - string
+            - 'null'
+          description: The attachment's name.
+        description:
+          type:
+            - string
+            - 'null'
+          description: The attachment's description.
+        attachment_url:
+          type:
+            - string
+            - 'null'
+          description: The attachment's url.
+        remote_was_deleted:
+          type: boolean
+          description: >-
+            Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion
+            detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn
+            more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+            - $ref: '#/components/schemas/AttachmentFieldMappings'
+            - type: 'null'
+        remote_data:
+          type:
+            - array
+            - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: |-
+        # The Attachment Object
+        ### Description
+        The `Attachment` object is used to represent an attachment to an article or container.
+        ### Usage Example
+        Fetch from the `GET /api/knowledgebase/attachments` endpoint and view their attachments.
+      title: Attachment
+    PaginatedAttachmentList:
+      type: object
+      properties:
+        next:
+          type:
+            - string
+            - 'null'
+        previous:
+          type:
+            - string
+            - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Attachment'
+      title: PaginatedAttachmentList
+    ContainersGetParametersExpand:
+      type: string
+      enum:
+        - parent_article
+        - parent_article,parent_container
+        - parent_container
+        - permissions
+        - permissions,parent_article
+        - permissions,parent_article,parent_container
+        - permissions,parent_container
+      title: ContainersGetParametersExpand
+    ContainersGetParametersType:
+      type: string
+      enum:
+        - ''
+        - CATEGORY
+        - COLLECTION
+        - DATABASE
+        - FOLDER
+        - SECTION
+        - SPACE
+      title: ContainersGetParametersType
+    ContainerTypeEnum:
+      type: string
+      enum:
+        - FOLDER
+        - SPACE
+        - COLLECTION
+        - SECTION
+        - CATEGORY
+        - DATABASE
+      description: |-
+        * `FOLDER` - FOLDER
+        * `SPACE` - SPACE
+        * `COLLECTION` - COLLECTION
+        * `SECTION` - SECTION
+        * `CATEGORY` - CATEGORY
+        * `DATABASE` - DATABASE
+      title: ContainerTypeEnum
+    ContainerFieldMappings:
+      type: object
+      properties: {}
+      title: ContainerFieldMappings
+    Container:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+            - string
+            - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        name:
+          type:
+            - string
+            - 'null'
+          description: Name of the container.
+        description:
+          type:
+            - string
+            - 'null'
+          description: Description of the container.
+        status:
+          oneOf:
+            - $ref: '#/components/schemas/Status3c6Enum'
+            - type: 'null'
+          description: |-
+            The container's status.
+
+            * `DRAFT` - DRAFT
+            * `PUBLISHED` - PUBLISHED
+            * `ARCHIVED` - ARCHIVED
+            * `TRASH` - TRASH
+        container_url:
+          type:
+            - string
+            - 'null'
+          description: The URL to the webpage of the container.
+        type:
+          oneOf:
+            - $ref: '#/components/schemas/ContainerTypeEnum'
+            - type: 'null'
+          description: |-
+            The container's type.
+
+            * `FOLDER` - FOLDER
+            * `SPACE` - SPACE
+            * `COLLECTION` - COLLECTION
+            * `SECTION` - SECTION
+            * `CATEGORY` - CATEGORY
+            * `DATABASE` - DATABASE
+        visibility:
+          oneOf:
+            - $ref: '#/components/schemas/VisibilityEnum'
+            - type: 'null'
+          description: |-
+            The container's visibility.
+
+            * `PUBLIC` - PUBLIC
+            * `INTERNAL` - INTERNAL
+            * `RESTRICTED` - RESTRICTED
+        remote_created_at:
+          type:
+            - string
+            - 'null'
+          format: date-time
+          description: When the third party's container was created.
+        remote_updated_at:
+          type:
+            - string
+            - 'null'
+          format: date-time
+          description: When the third party's container was updated.
+        parent_article:
+          type:
+            - string
+            - 'null'
+          format: uuid
+          description: The parent article a container is nested within.
+        parent_container:
+          type:
+            - string
+            - 'null'
+          format: uuid
+          description: The parent container a container is nested within.
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Permission'
+        remote_was_deleted:
+          type: boolean
+          description: >-
+            Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion
+            detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn
+            more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+            - $ref: '#/components/schemas/ContainerFieldMappings'
+            - type: 'null'
+        remote_data:
+          type:
+            - array
+            - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: >-
+        # The Container Object
+
+        ### Description
+
+        The Container object is used to represent a grouping of articles in the knowledge base. This can include Spaces,
+        Folders, Databases, etc.
+
+        ### Usage Example
+
+        Fetch from the `GET /api/knowledgebase/containers` endpoint and view their containers.
+      title: Container
+    PaginatedContainerList:
+      type: object
+      properties:
+        next:
+          type:
+            - string
+            - 'null'
+        previous:
+          type:
+            - string
+            - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Container'
+      title: PaginatedContainerList
+    ContainersIdGetParametersExpand:
+      type: string
+      enum:
+        - parent_article
+        - parent_article,parent_container
+        - parent_container
+        - permissions
+        - permissions,parent_article
+        - permissions,parent_article,parent_container
+        - permissions,parent_container
+      title: ContainersIdGetParametersExpand
+    GroupsGetParametersExpand:
+      type: string
+      enum:
+        - parent_group
+        - users
+        - users,parent_group
+      title: GroupsGetParametersExpand
+    UserFieldMappings:
+      type: object
+      properties: {}
+      title: UserFieldMappings
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+            - string
+            - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        name:
+          type:
+            - string
+            - 'null'
+          description: The user's name.
+        email_address:
+          type:
+            - string
+            - 'null'
+          description: The user's email address.
+        remote_was_deleted:
+          type: boolean
+          description: >-
+            Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion
+            detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn
+            more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+            - $ref: '#/components/schemas/UserFieldMappings'
+            - type: 'null'
+      description: |-
+        # The User Object
+        ### Description
+        The `User` object is used to represent a user within the Knowledge Base account.
+        ### Usage Example
+        Fetch from the `GET /api/knowledgebase/users` endpoint and view their users.
+      title: User
+    GroupFieldMappings:
+      type: object
+      properties: {}
+      title: GroupFieldMappings
+    Group:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+            - string
+            - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        name:
+          type:
+            - string
+            - 'null'
+          description: The group's name.
+        parent_group:
+          type:
+            - string
+            - 'null'
+          format: uuid
+          description: The parent group for this group.
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        remote_was_deleted:
+          type: boolean
+          description: >-
+            Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion
+            detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn
+            more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+            - $ref: '#/components/schemas/GroupFieldMappings'
+            - type: 'null'
+        remote_data:
+          type:
+            - array
+            - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: |-
+        # The Group Object
+        ### Description
+        The `Group` object is used to represent any subset of `Users`. This can extend to company domains as well.
+        ### Usage Example
+        Fetch from the `GET /api/knowledgebase/groups` endpoint and view their groups.
+      title: Group
+    PaginatedGroupList:
+      type: object
+      properties:
+        next:
+          type:
+            - string
+            - 'null'
+        previous:
+          type:
+            - string
+            - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Group'
+      title: PaginatedGroupList
+    GroupsIdGetParametersExpand:
+      type: string
+      enum:
+        - parent_group
+        - users
+        - users,parent_group
+      title: GroupsIdGetParametersExpand
+    PaginatedUserList:
+      type: object
+      properties:
+        next:
+          type:
+            - string
+            - 'null'
+        previous:
+          type:
+            - string
+            - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+      title: PaginatedUserList
+    CategoryEnum:
+      type: string
+      enum:
+        - hris
+        - ats
+        - accounting
+        - ticketing
+        - crm
+        - mktg
+        - filestorage
+        - knowledgebase
+      description: |-
+        * `hris` - hris
+        * `ats` - ats
+        * `accounting` - accounting
+        * `ticketing` - ticketing
+        * `crm` - crm
+        * `mktg` - mktg
+        * `filestorage` - filestorage
+        * `knowledgebase` - knowledgebase
+      title: CategoryEnum
+    AccountDetails:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        integration:
+          type: string
+        integration_slug:
+          type: string
+        category:
+          oneOf:
+            - $ref: '#/components/schemas/CategoryEnum'
+            - type: 'null'
+        end_user_origin_id:
+          type: string
+        end_user_organization_name:
+          type: string
+        end_user_email_address:
+          type: string
+          format: email
+        status:
+          type: string
+        webhook_listener_url:
+          type: string
+          format: uri
+        is_duplicate:
+          type:
+            - boolean
+            - 'null'
+          description: >-
+            Whether a Production Linked Account's credentials match another existing Production Linked Account. This
+            field is `null` for Test Linked Accounts, incomplete Production Linked Accounts, and ignored duplicate
+            Production Linked Account sets.
+        account_type:
+          type: string
+        completed_at:
+          type:
+            - string
+            - 'null'
+          format: date-time
+          description: The time at which account completes the linking flow.
+      title: AccountDetails
+    CategoriesEnum:
+      type: string
+      enum:
+        - hris
+        - ats
+        - accounting
+        - ticketing
+        - crm
+        - mktg
+        - filestorage
+        - knowledgebase
+      description: |-
+        * `hris` - hris
+        * `ats` - ats
+        * `accounting` - accounting
+        * `ticketing` - ticketing
+        * `crm` - crm
+        * `mktg` - mktg
+        * `filestorage` - filestorage
+        * `knowledgebase` - knowledgebase
+      title: CategoriesEnum
+    AccountIntegrationCategoryBetaStatus:
+      type: object
+      properties: {}
+      description: Category or categories this integration is in beta status for.
+      title: AccountIntegrationCategoryBetaStatus
+    AccountIntegration:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Company name.
+        abbreviated_name:
+          type:
+            - string
+            - 'null'
+          description: >-
+            Optional. This shortened name appears in places with limited space, usually in conjunction with the
+            platform's logo (e.g., Merge Link menu).<br><br>Example: <i>Workforce Now (in lieu of ADP Workforce Now),
+            SuccessFactors (in lieu of SAP SuccessFactors)</i>
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/CategoriesEnum'
+          description: >-
+            Category or categories this integration belongs to. Multiple categories should be comma separated, i.e.
+            [ats, hris].
+        image:
+          type:
+            - string
+            - 'null'
+          format: uri
+          description: Company logo in rectangular shape.
+        square_image:
+          type:
+            - string
+            - 'null'
+          format: uri
+          description: Company logo in square shape.
+        color:
+          type: string
+          description: >-
+            The color of this integration used for buttons and text throughout the app and landing pages. <b>Choose a
+            darker, saturated color.</b>
+        slug:
+          type: string
+        api_endpoints_to_documentation_urls:
+          type: object
+          additionalProperties:
+            description: Any type
+          description: >-
+            Mapping of API endpoints to documentation urls for support. Example: {'GET': [['/common-model-scopes',
+            'https://docs.merge.dev/accounting/common-model-scopes/#common_model_scopes_retrieve'],['/common-model-actions',
+            'https://docs.merge.dev/accounting/common-model-actions/#common_model_actions_retrieve']], 'POST': []}
+        webhook_setup_guide_url:
+          type:
+            - string
+            - 'null'
+          description: Setup guide URL for third party webhook creation. Exposed in Merge Docs.
+        category_beta_status:
+          $ref: '#/components/schemas/AccountIntegrationCategoryBetaStatus'
+          description: Category or categories this integration is in beta status for.
+      required:
+        - name
+      title: AccountIntegration
+    AccountToken:
+      type: object
+      properties:
+        account_token:
+          type: string
+        integration:
+          $ref: '#/components/schemas/AccountIntegration'
+        id:
+          type: string
+      required:
+        - account_token
+        - integration
+        - id
+      title: AccountToken
+    RegenerateAccountToken:
+      type: object
+      properties:
+        linked_account_id:
+          type: string
+        account_token:
+          type: string
+      required:
+        - linked_account_id
+        - account_token
+      description: |-
+        # The RegenerateAccountToken Object
+        ### Description
+        The `RegenerateAccountToken` object is used to exchange an old account token for a new one.
+
+        ### Usage Example
+        Post to receive a new `RegenerateAccountToken`.
+      title: RegenerateAccountToken
+    deleteAccount_delete_Response_200:
+      type: object
+      properties: {}
+      description: Empty response body
+      title: deleteAccount_delete_Response_200
+    IssuesGetParametersStatus:
+      type: string
+      enum:
+        - ONGOING
+        - RESOLVED
+      title: IssuesGetParametersStatus
+    IssueStatusEnum:
+      type: string
+      enum:
+        - ONGOING
+        - RESOLVED
+      description: |-
+        * `ONGOING` - ONGOING
+        * `RESOLVED` - RESOLVED
+      title: IssueStatusEnum
+    Issue:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        status:
+          $ref: '#/components/schemas/IssueStatusEnum'
+          description: |-
+            Status of the issue. Options: ('ONGOING', 'RESOLVED')
+
+            * `ONGOING` - ONGOING
+            * `RESOLVED` - RESOLVED
+        error_description:
+          type: string
+        end_user:
+          type: object
+          additionalProperties:
+            description: Any type
+        first_incident_time:
+          type:
+            - string
+            - 'null'
+          format: date-time
+        last_incident_time:
+          type:
+            - string
+            - 'null'
+          format: date-time
+        is_muted:
+          type: boolean
+        error_details:
+          type: array
+          items:
+            type: string
+      required:
+        - error_description
+      title: Issue
+    PaginatedIssueList:
+      type: object
+      properties:
+        next:
+          type:
+            - string
+            - 'null'
+        previous:
+          type:
+            - string
+            - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Issue'
+      title: PaginatedIssueList
+    LinkedAccountsGetParametersCategory:
+      type: string
+      enum:
+        - accounting
+        - ats
+        - chat
+        - communication
+        - crm
+        - datawarehouse
+        - filestorage
+        - hris
+        - knowledgebase
+        - mktg
+        - ticketing
+      title: LinkedAccountsGetParametersCategory
+    AccountDetailsAndActionsStatusEnum:
+      type: string
+      enum:
+        - COMPLETE
+        - INCOMPLETE
+        - RELINK_NEEDED
+        - IDLE
+      description: |-
+        * `COMPLETE` - COMPLETE
+        * `INCOMPLETE` - INCOMPLETE
+        * `RELINK_NEEDED` - RELINK_NEEDED
+        * `IDLE` - IDLE
+      title: AccountDetailsAndActionsStatusEnum
+    ModelOperation:
+      type: object
+      properties:
+        model_name:
+          type: string
+        available_operations:
+          type: array
+          items:
+            type: string
+        required_post_parameters:
+          type: array
+          items:
+            type: string
+        supported_fields:
+          type: array
+          items:
+            type: string
+      required:
+        - model_name
+        - available_operations
+        - required_post_parameters
+        - supported_fields
+      description: |-
+        # The ModelOperation Object
+        ### Description
+        The `ModelOperation` object is used to represent the operations that are currently supported for a given model.
+
+        ### Usage Example
+        View what operations are supported for the `Candidate` endpoint.
+      title: ModelOperation
+    AccountDetailsAndActionsIntegration:
+      type: object
+      properties:
+        name:
+          type: string
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/CategoriesEnum'
+        image:
+          type: string
+        square_image:
+          type: string
+        color:
+          type: string
+        slug:
+          type: string
+        passthrough_available:
+          type: boolean
+        available_model_operations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ModelOperation'
+      required:
+        - name
+        - categories
+        - color
+        - slug
+        - passthrough_available
+      title: AccountDetailsAndActionsIntegration
+    AccountDetailsAndActions:
+      type: object
+      properties:
+        id:
+          type: string
+        category:
+          $ref: '#/components/schemas/CategoryEnum'
+        status:
+          $ref: '#/components/schemas/AccountDetailsAndActionsStatusEnum'
+        status_detail:
+          type: string
+        end_user_origin_id:
+          type: string
+        end_user_organization_name:
+          type: string
+        end_user_email_address:
+          type: string
+        subdomain:
+          type: string
+          description: The tenant or domain the customer has provided access to.
+        webhook_listener_url:
+          type: string
+        is_duplicate:
+          type:
+            - boolean
+            - 'null'
+          description: >-
+            Whether a Production Linked Account's credentials match another existing Production Linked Account. This
+            field is `null` for Test Linked Accounts, incomplete Production Linked Accounts, and ignored duplicate
+            Production Linked Account sets.
+        integration:
+          $ref: '#/components/schemas/AccountDetailsAndActionsIntegration'
+        account_type:
+          type: string
+        completed_at:
+          type: string
+          format: date-time
+        integration_specific_fields:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+        - id
+        - status
+        - end_user_organization_name
+        - end_user_email_address
+        - webhook_listener_url
+        - account_type
+        - completed_at
+      description: |-
+        # The LinkedAccount Object
+        ### Description
+        The `LinkedAccount` object is used to represent an end user's link with a specific integration.
+
+        ### Usage Example
+        View a list of your organization's `LinkedAccount` objects.
+      title: AccountDetailsAndActions
+    PaginatedAccountDetailsAndActionsList:
+      type: object
+      properties:
+        next:
+          type:
+            - string
+            - 'null'
+        previous:
+          type:
+            - string
+            - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountDetailsAndActions'
+      title: PaginatedAccountDetailsAndActionsList
+    EnabledActionsEnum:
+      type: string
+      enum:
+        - READ
+        - WRITE
+      description: |-
+        * `READ` - READ
+        * `WRITE` - WRITE
+      title: EnabledActionsEnum
+    CommonModelScopesBodyRequest:
+      type: object
+      properties:
+        model_id:
+          type: string
+        enabled_actions:
+          type: array
+          items:
+            $ref: '#/components/schemas/EnabledActionsEnum'
+        disabled_fields:
+          type: array
+          items:
+            type: string
+      required:
+        - model_id
+        - enabled_actions
+        - disabled_fields
+      title: CommonModelScopesBodyRequest
+    ModelPermissionDeserializerRequest:
+      type: object
+      properties:
+        is_enabled:
+          type: boolean
+      title: ModelPermissionDeserializerRequest
+    FieldPermissionDeserializerRequest:
+      type: object
+      properties:
+        enabled_fields:
+          type: array
+          items:
+            description: Any type
+        disabled_fields:
+          type: array
+          items:
+            description: Any type
+      title: FieldPermissionDeserializerRequest
+    IndividualCommonModelScopeDeserializerRequest:
+      type: object
+      properties:
+        model_name:
+          type: string
+        model_permissions:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/ModelPermissionDeserializerRequest'
+        field_permissions:
+          $ref: '#/components/schemas/FieldPermissionDeserializerRequest'
+      required:
+        - model_name
+      title: IndividualCommonModelScopeDeserializerRequest
+    LanguageEnum:
+      type: string
+      enum:
+        - en
+        - de
+      description: |-
+        * `en` - en
+        * `de` - de
+      title: LanguageEnum
+    CompletedAccountInitialScreenEnum:
+      type: string
+      enum:
+        - SELECTIVE_SYNC
+      description: '* `SELECTIVE_SYNC` - SELECTIVE_SYNC'
+      title: CompletedAccountInitialScreenEnum
+    EndUserDetailsRequest:
+      type: object
+      properties:
+        end_user_email_address:
+          type: string
+          description: >-
+            Your end user's email address. This is purely for identification purposes - setting this value will not
+            cause any emails to be sent.
+        end_user_organization_name:
+          type: string
+          description: Your end user's organization.
+        end_user_origin_id:
+          type: string
+          description: >-
+            This unique identifier typically represents the ID for your end user in your product's database. This value
+            must be distinct from other Linked Accounts' unique identifiers.
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/CategoriesEnum'
+          description: The integration categories to show in Merge Link.
+        integration:
+          type:
+            - string
+            - 'null'
+          description: >-
+            The slug of a specific pre-selected integration for this linking flow token. For examples of slugs, see
+            https://docs.merge.dev/guides/merge-link/single-integration/.
+        link_expiry_mins:
+          type: integer
+          default: 30
+          description: >-
+            An integer number of minutes between [30, 720 or 10080 if for a Magic Link URL] for how long this token is
+            valid. Defaults to 30.
+        should_create_magic_link_url:
+          type:
+            - boolean
+            - 'null'
+          default: false
+          description: >-
+            Whether to generate a Magic Link URL. Defaults to false. For more information on Magic Link, see
+            https://merge.dev/blog/integrations-fast-say-hello-to-magic-link.
+        hide_admin_magic_link:
+          type:
+            - boolean
+            - 'null'
+          default: false
+          description: >-
+            Whether to generate a Magic Link URL on the Admin Needed screen during the linking flow. Defaults to false.
+            For more information on Magic Link, see https://merge.dev/blog/integrations-fast-say-hello-to-magic-link.
+        common_models:
+          type:
+            - array
+            - 'null'
+          items:
+            $ref: '#/components/schemas/CommonModelScopesBodyRequest'
+          description: >-
+            An array of objects to specify the models and fields that will be disabled for a given Linked Account. Each
+            object uses model_id, enabled_actions, and disabled_fields to specify the model, method, and fields that are
+            scoped for a given Linked Account.
+        category_common_model_scopes:
+          type:
+            - object
+            - 'null'
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/IndividualCommonModelScopeDeserializerRequest'
+          description: >-
+            When creating a Link Token, you can set permissions for Common Models that will apply to the account that is
+            going to be linked. Any model or field not specified in link token payload will default to existing
+            settings.
+        language:
+          oneOf:
+            - $ref: '#/components/schemas/LanguageEnum'
+            - type: 'null'
+          description: |-
+            The following subset of IETF language tags can be used to configure localization.
+
+            * `en` - en
+            * `de` - de
+        are_syncs_disabled:
+          type:
+            - boolean
+            - 'null'
+          default: false
+          description: The boolean that indicates whether initial, periodic, and force syncs will be disabled.
+        integration_specific_config:
+          type:
+            - object
+            - 'null'
+          additionalProperties:
+            description: Any type
+          description: A JSON object containing integration-specific configuration options.
+        completed_account_initial_screen:
+          oneOf:
+            - $ref: '#/components/schemas/CompletedAccountInitialScreenEnum'
+            - type: 'null'
+          description: >-
+            When creating a Link token, you can specifiy the initial screen of Linking Flow for a completed Linked
+            Account.
+
+
+            * `SELECTIVE_SYNC` - SELECTIVE_SYNC
+        linked_destination_id:
+          type:
+            - string
+            - 'null'
+          format: uuid
+          description: The UUID of the linked destination that you want this Linked Account to be tied to.
+        credential_id:
+          type:
+            - string
+            - 'null'
+          format: uuid
+          description: The id of the credential that you want this Linked Account to be tied to.
+      required:
+        - end_user_email_address
+        - end_user_organization_name
+        - end_user_origin_id
+        - categories
+      title: EndUserDetailsRequest
+    LinkToken:
+      type: object
+      properties:
+        link_token:
+          type: string
+        integration_name:
+          type: string
+        magic_link_url:
+          type: string
+      required:
+        - link_token
+      title: LinkToken
+    FieldMappingApiInstanceTargetField:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        is_organization_wide:
+          type: boolean
+      required:
+        - name
+        - description
+        - is_organization_wide
+      title: FieldMappingApiInstanceTargetField
+    FieldMappingApiInstanceRemoteFieldRemoteEndpointInfo:
+      type: object
+      properties:
+        method:
+          type:
+            - string
+            - 'null'
+        url_path:
+          type:
+            - string
+            - 'null'
+        field_traversal_path:
+          type:
+            - array
+            - 'null'
+          items:
+            type: string
+      required:
+        - method
+        - url_path
+        - field_traversal_path
+      title: FieldMappingApiInstanceRemoteFieldRemoteEndpointInfo
+    FieldMappingApiInstanceRemoteField:
+      type: object
+      properties:
+        remote_key_name:
+          type:
+            - string
+            - 'null'
+        schema:
+          type:
+            - object
+            - 'null'
+          additionalProperties:
+            description: Any type
+        remote_endpoint_info:
+          $ref: '#/components/schemas/FieldMappingApiInstanceRemoteFieldRemoteEndpointInfo'
+      required:
+        - remote_key_name
+        - schema
+        - remote_endpoint_info
+      title: FieldMappingApiInstanceRemoteField
+    FieldMappingApiInstance:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        is_integration_wide:
+          type: boolean
+        target_field:
+          oneOf:
+            - $ref: '#/components/schemas/FieldMappingApiInstanceTargetField'
+            - type: 'null'
+        remote_field:
+          oneOf:
+            - $ref: '#/components/schemas/FieldMappingApiInstanceRemoteField'
+            - type: 'null'
+        jmes_path:
+          type:
+            - string
+            - 'null'
+      title: FieldMappingApiInstance
+    FieldMappingApiInstanceResponse:
+      type: object
+      properties:
+        Container:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        Article:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        Attachment:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        User:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        Group:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+      title: FieldMappingApiInstanceResponse
+    CreateFieldMappingRequest:
+      type: object
+      properties:
+        target_field_name:
+          type: string
+          description: The name of the target field you want this remote field to map to.
+        target_field_description:
+          type: string
+          description: The description of the target field you want this remote field to map to.
+        remote_field_traversal_path:
+          type: array
+          items:
+            description: Any type
+          description: The field traversal path of the remote field listed when you hit the GET /remote-fields endpoint.
+        remote_method:
+          type: string
+          description: The method of the remote endpoint where the remote field is coming from.
+        remote_url_path:
+          type: string
+          description: The path of the remote endpoint where the remote field is coming from.
+        common_model_name:
+          type: string
+          description: The name of the Common Model that the remote field corresponds to in a given category.
+        jmes_path:
+          type: string
+          description: JMES path to specify json query expression to be used on field mapping.
+      required:
+        - target_field_name
+        - target_field_description
+        - remote_field_traversal_path
+        - remote_method
+        - remote_url_path
+        - common_model_name
+      title: CreateFieldMappingRequest
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+        - pointer
+      title: ValidationProblemSource
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+      required:
+        - title
+        - detail
+        - problem_type
+      title: WarningValidationProblem
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+      required:
+        - title
+        - detail
+        - problem_type
+      title: ErrorValidationProblem
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+        - url
+        - method
+        - status_code
+      title: DebugModelLogSummary
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+        - log_id
+        - dashboard_view
+        - log_summary
+      title: DebugModeLog
+    FieldMappingInstanceResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/FieldMappingApiInstance'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+        - model
+        - warnings
+        - errors
+      title: FieldMappingInstanceResponse
+    PatchedEditFieldMappingRequest:
+      type: object
+      properties:
+        remote_field_traversal_path:
+          type: array
+          items:
+            description: Any type
+          description: The field traversal path of the remote field listed when you hit the GET /remote-fields endpoint.
+        remote_method:
+          type: string
+          description: The method of the remote endpoint where the remote field is coming from.
+        remote_url_path:
+          type: string
+          description: The path of the remote endpoint where the remote field is coming from.
+        jmes_path:
+          type: string
+          description: JMES path to specify json query expression to be used on field mapping.
+      title: PatchedEditFieldMappingRequest
+    RemoteEndpointInfo:
+      type: object
+      properties:
+        method:
+          type: string
+        url_path:
+          type: string
+        field_traversal_path:
+          type: array
+          items:
+            description: Any type
+      required:
+        - method
+        - url_path
+        - field_traversal_path
+      title: RemoteEndpointInfo
+    AdvancedMetadata:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        display_name:
+          type: string
+        description:
+          type: string
+        is_required:
+          type: boolean
+        is_custom:
+          type: boolean
+        field_choices:
+          type: array
+          items:
+            description: Any type
+      required:
+        - id
+      title: AdvancedMetadata
+    RemoteFieldApiCoverage:
+      oneOf:
+        - type: integer
+        - type: number
+          format: double
+      title: RemoteFieldApiCoverage
+    RemoteFieldAPI:
+      type: object
+      properties:
+        schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        remote_key_name:
+          type: string
+        remote_endpoint_info:
+          $ref: '#/components/schemas/RemoteEndpointInfo'
+        example_values:
+          type:
+            - array
+            - 'null'
+          items:
+            description: Any type
+        advanced_metadata:
+          oneOf:
+            - $ref: '#/components/schemas/AdvancedMetadata'
+            - type: 'null'
+        coverage:
+          oneOf:
+            - $ref: '#/components/schemas/RemoteFieldApiCoverage'
+            - type: 'null'
+      required:
+        - schema
+        - remote_key_name
+        - remote_endpoint_info
+        - advanced_metadata
+      title: RemoteFieldAPI
+    RemoteFieldAPIResponse:
+      type: object
+      properties:
+        Container:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldAPI'
+        Article:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldAPI'
+        Attachment:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldAPI'
+        User:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldAPI'
+        Group:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldAPI'
+      title: RemoteFieldAPIResponse
+    ExternalTargetFieldAPI:
+      type: object
+      properties:
+        name:
+          type:
+            - string
+            - 'null'
+        description:
+          type:
+            - string
+            - 'null'
+        is_mapped:
+          type:
+            - string
+            - 'null'
+      title: ExternalTargetFieldAPI
+    ExternalTargetFieldAPIResponse:
+      type: object
+      properties:
+        Container:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalTargetFieldAPI'
+        Article:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalTargetFieldAPI'
+        Attachment:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalTargetFieldAPI'
+        User:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalTargetFieldAPI'
+        Group:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalTargetFieldAPI'
+      title: ExternalTargetFieldAPIResponse
+    ModelPermissionDeserializer:
+      type: object
+      properties:
+        is_enabled:
+          type: boolean
+      title: ModelPermissionDeserializer
+    FieldPermissionDeserializer:
+      type: object
+      properties:
+        enabled_fields:
+          type: array
+          items:
+            description: Any type
+        disabled_fields:
+          type: array
+          items:
+            description: Any type
+      title: FieldPermissionDeserializer
+    IndividualCommonModelScopeDeserializer:
+      type: object
+      properties:
+        model_name:
+          type: string
+        model_permissions:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/ModelPermissionDeserializer'
+        field_permissions:
+          $ref: '#/components/schemas/FieldPermissionDeserializer'
+      required:
+        - model_name
+      title: IndividualCommonModelScopeDeserializer
+    CommonModelScopeAPI:
+      type: object
+      properties:
+        common_models:
+          type: array
+          items:
+            $ref: '#/components/schemas/IndividualCommonModelScopeDeserializer'
+          description: The common models you want to update the scopes for
+      required:
+        - common_models
+      title: CommonModelScopeAPI
+    LinkedAccountCommonModelScopeDeserializerRequest:
+      type: object
+      properties:
+        common_models:
+          type: array
+          items:
+            $ref: '#/components/schemas/IndividualCommonModelScopeDeserializerRequest'
+          description: The common models you want to update the scopes for
+      required:
+        - common_models
+      title: LinkedAccountCommonModelScopeDeserializerRequest
+    LastSyncResultEnum:
+      type: string
+      enum:
+        - SYNCING
+        - DONE
+        - FAILED
+        - DISABLED
+        - PAUSED
+        - PARTIALLY_SYNCED
+      description: |-
+        * `SYNCING` - SYNCING
+        * `DONE` - DONE
+        * `FAILED` - FAILED
+        * `DISABLED` - DISABLED
+        * `PAUSED` - PAUSED
+        * `PARTIALLY_SYNCED` - PARTIALLY_SYNCED
+      title: LastSyncResultEnum
+    StatusFd5Enum:
+      type: string
+      enum:
+        - SYNCING
+        - DONE
+        - FAILED
+        - DISABLED
+        - PAUSED
+        - PARTIALLY_SYNCED
+      description: |-
+        * `SYNCING` - SYNCING
+        * `DONE` - DONE
+        * `FAILED` - FAILED
+        * `DISABLED` - DISABLED
+        * `PAUSED` - PAUSED
+        * `PARTIALLY_SYNCED` - PARTIALLY_SYNCED
+      title: StatusFd5Enum
+    SelectiveSyncConfigurationsUsageEnum:
+      type: string
+      enum:
+        - IN_NEXT_SYNC
+        - IN_LAST_SYNC
+      description: |-
+        * `IN_NEXT_SYNC` - IN_NEXT_SYNC
+        * `IN_LAST_SYNC` - IN_LAST_SYNC
+      title: SelectiveSyncConfigurationsUsageEnum
+    SyncStatus:
+      type: object
+      properties:
+        model_name:
+          type: string
+        model_id:
+          type: string
+        last_sync_start:
+          type: string
+          format: date-time
+        next_sync_start:
+          type: string
+          format: date-time
+        last_sync_result:
+          $ref: '#/components/schemas/LastSyncResultEnum'
+        last_sync_finished:
+          type: string
+          format: date-time
+        status:
+          $ref: '#/components/schemas/StatusFd5Enum'
+        is_initial_sync:
+          type: boolean
+        selective_sync_configurations_usage:
+          $ref: '#/components/schemas/SelectiveSyncConfigurationsUsageEnum'
+      required:
+        - model_name
+        - model_id
+        - status
+        - is_initial_sync
+      description: |-
+        # The SyncStatus Object
+        ### Description
+        The `SyncStatus` object is used to represent the syncing state of an account
+
+        ### Usage Example
+        View the `SyncStatus` for an account to see how recently its models were synced.
+      title: SyncStatus
+    MethodEnum:
+      type: string
+      enum:
+        - GET
+        - OPTIONS
+        - HEAD
+        - POST
+        - PUT
+        - PATCH
+        - DELETE
+      description: |-
+        * `GET` - GET
+        * `OPTIONS` - OPTIONS
+        * `HEAD` - HEAD
+        * `POST` - POST
+        * `PUT` - PUT
+        * `PATCH` - PATCH
+        * `DELETE` - DELETE
+      title: MethodEnum
+    EncodingEnum:
+      type: string
+      enum:
+        - RAW
+        - BASE64
+        - GZIP_BASE64
+      description: |-
+        * `RAW` - RAW
+        * `BASE64` - BASE64
+        * `GZIP_BASE64` - GZIP_BASE64
+      title: EncodingEnum
+    MultipartFormFieldRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the form field
+        data:
+          type: string
+          description: The data for the form field.
+        encoding:
+          oneOf:
+            - $ref: '#/components/schemas/EncodingEnum'
+            - type: 'null'
+          description: |-
+            The encoding of the value of `data`. Defaults to `RAW` if not defined.
+
+            * `RAW` - RAW
+            * `BASE64` - BASE64
+            * `GZIP_BASE64` - GZIP_BASE64
+        file_name:
+          type:
+            - string
+            - 'null'
+          description: The file name of the form field, if the field is for a file.
+        content_type:
+          type:
+            - string
+            - 'null'
+          description: The MIME type of the file, if the field is for a file.
+      required:
+        - name
+        - data
+      description: |-
+        # The MultipartFormField Object
+        ### Description
+        The `MultipartFormField` object is used to represent fields in an HTTP request using `multipart/form-data`.
+
+        ### Usage Example
+        Create a `MultipartFormField` to define a multipart form entry.
+      title: MultipartFormFieldRequest
+    RequestFormatEnum:
+      type: string
+      enum:
+        - JSON
+        - XML
+        - MULTIPART
+      description: |-
+        * `JSON` - JSON
+        * `XML` - XML
+        * `MULTIPART` - MULTIPART
+      title: RequestFormatEnum
+    DataPassthroughRequest:
+      type: object
+      properties:
+        method:
+          $ref: '#/components/schemas/MethodEnum'
+        path:
+          type: string
+          description: The path of the request in the third party's platform.
+        base_url_override:
+          type:
+            - string
+            - 'null'
+          description: An optional override of the third party's base url for the request.
+        data:
+          type:
+            - string
+            - 'null'
+          description: The data with the request. You must include a `request_format` parameter matching the data's format
+        multipart_form_data:
+          type:
+            - array
+            - 'null'
+          items:
+            $ref: '#/components/schemas/MultipartFormFieldRequest'
+          description: >-
+            Pass an array of `MultipartFormField` objects in here instead of using the `data` param if `request_format`
+            is set to `MULTIPART`.
+        headers:
+          type:
+            - object
+            - 'null'
+          additionalProperties:
+            description: Any type
+          description: >-
+            The headers to use for the request (Merge will handle the account's authorization headers). `Content-Type`
+            header is required for passthrough. Choose content type corresponding to expected format of receiving
+            server.
+        request_format:
+          oneOf:
+            - $ref: '#/components/schemas/RequestFormatEnum'
+            - type: 'null'
+        normalize_response:
+          type: boolean
+          description: >-
+            Optional. If true, the response will always be an object of the form `{"type": T, "value": ...}` where `T`
+            will be one of `string, boolean, number, null, array, object`.
+      required:
+        - method
+        - path
+      description: |-
+        # The DataPassthrough Object
+        ### Description
+        The `DataPassthrough` object is used to send information to an otherwise-unsupported third-party endpoint.
+
+        ### Usage Example
+        Create a `DataPassthrough` to get team hierarchies from your Rippling integration.
+      title: DataPassthroughRequest
+    ResponseTypeEnum:
+      type: string
+      enum:
+        - JSON
+        - BASE64_GZIP
+      description: |-
+        * `JSON` - JSON
+        * `BASE64_GZIP` - BASE64_GZIP
+      title: ResponseTypeEnum
+    RemoteResponse:
+      type: object
+      properties:
+        method:
+          type: string
+        path:
+          type: string
+        status:
+          type: integer
+        response:
+          description: Any type
+        response_headers:
+          type: object
+          additionalProperties:
+            description: Any type
+        response_type:
+          $ref: '#/components/schemas/ResponseTypeEnum'
+        headers:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+        - method
+        - path
+        - status
+        - response
+      description: |-
+        # The RemoteResponse Object
+        ### Description
+        The `RemoteResponse` object is used to represent information returned from a third-party endpoint.
+
+        ### Usage Example
+        View the `RemoteResponse` returned from your `DataPassthrough`.
+      title: RemoteResponse
+    AsyncPassthroughReciept:
+      type: object
+      properties:
+        async_passthrough_receipt_id:
+          type: string
+          format: uuid
+      required:
+        - async_passthrough_receipt_id
+      title: AsyncPassthroughReciept
+    PaginatedSyncStatusList:
+      type: object
+      properties:
+        next:
+          type:
+            - string
+            - 'null'
+        previous:
+          type:
+            - string
+            - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SyncStatus'
+      title: PaginatedSyncStatusList
+    GenerateRemoteKeyRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the remote key
+      required:
+        - name
+      description: |-
+        # The GenerateRemoteKey Object
+        ### Description
+        The `GenerateRemoteKey` object is used to represent a request for a new remote key.
+
+        ### Usage Example
+        Post a `GenerateRemoteKey` to create a new remote key.
+      title: GenerateRemoteKeyRequest
+    RemoteKey:
+      type: object
+      properties:
+        name:
+          type: string
+        key:
+          type: string
+      required:
+        - name
+        - key
+      description: |-
+        # The RemoteKey Object
+        ### Description
+        The `RemoteKey` object is used to represent a request for a new remote key.
+
+        ### Usage Example
+        Post a `GenerateRemoteKey` to receive a new `RemoteKey`.
+      title: RemoteKey
+    RemoteKeyForRegenerationRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the remote key
+      required:
+        - name
+      description: |-
+        # The RemoteKeyForRegeneration Object
+        ### Description
+        The `RemoteKeyForRegeneration` object is used to exchange an old remote key for a new one
+
+        ### Usage Example
+        Post a `RemoteKeyForRegeneration` to swap out an old remote key for a new one
+      title: RemoteKeyForRegenerationRequest
+    RoleEnum:
+      type: string
+      enum:
+        - ADMIN
+        - DEVELOPER
+        - MEMBER
+        - API
+        - SYSTEM
+        - MERGE_TEAM
+      description: |-
+        * `ADMIN` - ADMIN
+        * `DEVELOPER` - DEVELOPER
+        * `MEMBER` - MEMBER
+        * `API` - API
+        * `SYSTEM` - SYSTEM
+        * `MERGE_TEAM` - MERGE_TEAM
+      title: RoleEnum
+    EventTypeEnum:
+      type: string
+      enum:
+        - CREATED_REMOTE_PRODUCTION_API_KEY
+        - DELETED_REMOTE_PRODUCTION_API_KEY
+        - CREATED_TEST_API_KEY
+        - DELETED_TEST_API_KEY
+        - REGENERATED_PRODUCTION_API_KEY
+        - REGENERATED_WEBHOOK_SIGNATURE
+        - INVITED_USER
+        - TWO_FACTOR_AUTH_ENABLED
+        - TWO_FACTOR_AUTH_DISABLED
+        - DELETED_LINKED_ACCOUNT
+        - DELETED_ALL_COMMON_MODELS_FOR_LINKED_ACCOUNT
+        - CREATED_DESTINATION
+        - DELETED_DESTINATION
+        - CHANGED_DESTINATION
+        - CHANGED_SCOPES
+        - CHANGED_PERSONAL_INFORMATION
+        - CHANGED_ORGANIZATION_SETTINGS
+        - ENABLED_INTEGRATION
+        - DISABLED_INTEGRATION
+        - ENABLED_CATEGORY
+        - DISABLED_CATEGORY
+        - CHANGED_PASSWORD
+        - RESET_PASSWORD
+        - ENABLED_REDACT_UNMAPPED_DATA_FOR_ORGANIZATION
+        - ENABLED_REDACT_UNMAPPED_DATA_FOR_LINKED_ACCOUNT
+        - DISABLED_REDACT_UNMAPPED_DATA_FOR_ORGANIZATION
+        - DISABLED_REDACT_UNMAPPED_DATA_FOR_LINKED_ACCOUNT
+        - CREATED_INTEGRATION_WIDE_FIELD_MAPPING
+        - CREATED_LINKED_ACCOUNT_FIELD_MAPPING
+        - CHANGED_INTEGRATION_WIDE_FIELD_MAPPING
+        - CHANGED_LINKED_ACCOUNT_FIELD_MAPPING
+        - DELETED_INTEGRATION_WIDE_FIELD_MAPPING
+        - DELETED_LINKED_ACCOUNT_FIELD_MAPPING
+        - CREATED_LINKED_ACCOUNT_COMMON_MODEL_OVERRIDE
+        - CHANGED_LINKED_ACCOUNT_COMMON_MODEL_OVERRIDE
+        - DELETED_LINKED_ACCOUNT_COMMON_MODEL_OVERRIDE
+        - FORCED_LINKED_ACCOUNT_RESYNC
+        - MUTED_ISSUE
+        - GENERATED_MAGIC_LINK
+        - ENABLED_MERGE_WEBHOOK
+        - DISABLED_MERGE_WEBHOOK
+        - MERGE_WEBHOOK_TARGET_CHANGED
+        - END_USER_CREDENTIALS_ACCESSED
+      description: |-
+        * `CREATED_REMOTE_PRODUCTION_API_KEY` - CREATED_REMOTE_PRODUCTION_API_KEY
+        * `DELETED_REMOTE_PRODUCTION_API_KEY` - DELETED_REMOTE_PRODUCTION_API_KEY
+        * `CREATED_TEST_API_KEY` - CREATED_TEST_API_KEY
+        * `DELETED_TEST_API_KEY` - DELETED_TEST_API_KEY
+        * `REGENERATED_PRODUCTION_API_KEY` - REGENERATED_PRODUCTION_API_KEY
+        * `REGENERATED_WEBHOOK_SIGNATURE` - REGENERATED_WEBHOOK_SIGNATURE
+        * `INVITED_USER` - INVITED_USER
+        * `TWO_FACTOR_AUTH_ENABLED` - TWO_FACTOR_AUTH_ENABLED
+        * `TWO_FACTOR_AUTH_DISABLED` - TWO_FACTOR_AUTH_DISABLED
+        * `DELETED_LINKED_ACCOUNT` - DELETED_LINKED_ACCOUNT
+        * `DELETED_ALL_COMMON_MODELS_FOR_LINKED_ACCOUNT` - DELETED_ALL_COMMON_MODELS_FOR_LINKED_ACCOUNT
+        * `CREATED_DESTINATION` - CREATED_DESTINATION
+        * `DELETED_DESTINATION` - DELETED_DESTINATION
+        * `CHANGED_DESTINATION` - CHANGED_DESTINATION
+        * `CHANGED_SCOPES` - CHANGED_SCOPES
+        * `CHANGED_PERSONAL_INFORMATION` - CHANGED_PERSONAL_INFORMATION
+        * `CHANGED_ORGANIZATION_SETTINGS` - CHANGED_ORGANIZATION_SETTINGS
+        * `ENABLED_INTEGRATION` - ENABLED_INTEGRATION
+        * `DISABLED_INTEGRATION` - DISABLED_INTEGRATION
+        * `ENABLED_CATEGORY` - ENABLED_CATEGORY
+        * `DISABLED_CATEGORY` - DISABLED_CATEGORY
+        * `CHANGED_PASSWORD` - CHANGED_PASSWORD
+        * `RESET_PASSWORD` - RESET_PASSWORD
+        * `ENABLED_REDACT_UNMAPPED_DATA_FOR_ORGANIZATION` - ENABLED_REDACT_UNMAPPED_DATA_FOR_ORGANIZATION
+        * `ENABLED_REDACT_UNMAPPED_DATA_FOR_LINKED_ACCOUNT` - ENABLED_REDACT_UNMAPPED_DATA_FOR_LINKED_ACCOUNT
+        * `DISABLED_REDACT_UNMAPPED_DATA_FOR_ORGANIZATION` - DISABLED_REDACT_UNMAPPED_DATA_FOR_ORGANIZATION
+        * `DISABLED_REDACT_UNMAPPED_DATA_FOR_LINKED_ACCOUNT` - DISABLED_REDACT_UNMAPPED_DATA_FOR_LINKED_ACCOUNT
+        * `CREATED_INTEGRATION_WIDE_FIELD_MAPPING` - CREATED_INTEGRATION_WIDE_FIELD_MAPPING
+        * `CREATED_LINKED_ACCOUNT_FIELD_MAPPING` - CREATED_LINKED_ACCOUNT_FIELD_MAPPING
+        * `CHANGED_INTEGRATION_WIDE_FIELD_MAPPING` - CHANGED_INTEGRATION_WIDE_FIELD_MAPPING
+        * `CHANGED_LINKED_ACCOUNT_FIELD_MAPPING` - CHANGED_LINKED_ACCOUNT_FIELD_MAPPING
+        * `DELETED_INTEGRATION_WIDE_FIELD_MAPPING` - DELETED_INTEGRATION_WIDE_FIELD_MAPPING
+        * `DELETED_LINKED_ACCOUNT_FIELD_MAPPING` - DELETED_LINKED_ACCOUNT_FIELD_MAPPING
+        * `CREATED_LINKED_ACCOUNT_COMMON_MODEL_OVERRIDE` - CREATED_LINKED_ACCOUNT_COMMON_MODEL_OVERRIDE
+        * `CHANGED_LINKED_ACCOUNT_COMMON_MODEL_OVERRIDE` - CHANGED_LINKED_ACCOUNT_COMMON_MODEL_OVERRIDE
+        * `DELETED_LINKED_ACCOUNT_COMMON_MODEL_OVERRIDE` - DELETED_LINKED_ACCOUNT_COMMON_MODEL_OVERRIDE
+        * `FORCED_LINKED_ACCOUNT_RESYNC` - FORCED_LINKED_ACCOUNT_RESYNC
+        * `MUTED_ISSUE` - MUTED_ISSUE
+        * `GENERATED_MAGIC_LINK` - GENERATED_MAGIC_LINK
+        * `ENABLED_MERGE_WEBHOOK` - ENABLED_MERGE_WEBHOOK
+        * `DISABLED_MERGE_WEBHOOK` - DISABLED_MERGE_WEBHOOK
+        * `MERGE_WEBHOOK_TARGET_CHANGED` - MERGE_WEBHOOK_TARGET_CHANGED
+        * `END_USER_CREDENTIALS_ACCESSED` - END_USER_CREDENTIALS_ACCESSED
+      title: EventTypeEnum
+    AuditLogEvent:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        user_name:
+          type:
+            - string
+            - 'null'
+          description: The User's full name at the time of this Event occurring.
+        user_email:
+          type:
+            - string
+            - 'null'
+          format: email
+          description: The User's email at the time of this Event occurring.
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+          description: >-
+            Designates the role of the user (or SYSTEM/API if action not taken by a user) at the time of this Event
+            occurring.
+
+
+            * `ADMIN` - ADMIN
+
+            * `DEVELOPER` - DEVELOPER
+
+            * `MEMBER` - MEMBER
+
+            * `API` - API
+
+            * `SYSTEM` - SYSTEM
+
+            * `MERGE_TEAM` - MERGE_TEAM
+        ip_address:
+          type: string
+        event_type:
+          $ref: '#/components/schemas/EventTypeEnum'
+          description: |-
+            Designates the type of event that occurred.
+
+            * `CREATED_REMOTE_PRODUCTION_API_KEY` - CREATED_REMOTE_PRODUCTION_API_KEY
+            * `DELETED_REMOTE_PRODUCTION_API_KEY` - DELETED_REMOTE_PRODUCTION_API_KEY
+            * `CREATED_TEST_API_KEY` - CREATED_TEST_API_KEY
+            * `DELETED_TEST_API_KEY` - DELETED_TEST_API_KEY
+            * `REGENERATED_PRODUCTION_API_KEY` - REGENERATED_PRODUCTION_API_KEY
+            * `REGENERATED_WEBHOOK_SIGNATURE` - REGENERATED_WEBHOOK_SIGNATURE
+            * `INVITED_USER` - INVITED_USER
+            * `TWO_FACTOR_AUTH_ENABLED` - TWO_FACTOR_AUTH_ENABLED
+            * `TWO_FACTOR_AUTH_DISABLED` - TWO_FACTOR_AUTH_DISABLED
+            * `DELETED_LINKED_ACCOUNT` - DELETED_LINKED_ACCOUNT
+            * `DELETED_ALL_COMMON_MODELS_FOR_LINKED_ACCOUNT` - DELETED_ALL_COMMON_MODELS_FOR_LINKED_ACCOUNT
+            * `CREATED_DESTINATION` - CREATED_DESTINATION
+            * `DELETED_DESTINATION` - DELETED_DESTINATION
+            * `CHANGED_DESTINATION` - CHANGED_DESTINATION
+            * `CHANGED_SCOPES` - CHANGED_SCOPES
+            * `CHANGED_PERSONAL_INFORMATION` - CHANGED_PERSONAL_INFORMATION
+            * `CHANGED_ORGANIZATION_SETTINGS` - CHANGED_ORGANIZATION_SETTINGS
+            * `ENABLED_INTEGRATION` - ENABLED_INTEGRATION
+            * `DISABLED_INTEGRATION` - DISABLED_INTEGRATION
+            * `ENABLED_CATEGORY` - ENABLED_CATEGORY
+            * `DISABLED_CATEGORY` - DISABLED_CATEGORY
+            * `CHANGED_PASSWORD` - CHANGED_PASSWORD
+            * `RESET_PASSWORD` - RESET_PASSWORD
+            * `ENABLED_REDACT_UNMAPPED_DATA_FOR_ORGANIZATION` - ENABLED_REDACT_UNMAPPED_DATA_FOR_ORGANIZATION
+            * `ENABLED_REDACT_UNMAPPED_DATA_FOR_LINKED_ACCOUNT` - ENABLED_REDACT_UNMAPPED_DATA_FOR_LINKED_ACCOUNT
+            * `DISABLED_REDACT_UNMAPPED_DATA_FOR_ORGANIZATION` - DISABLED_REDACT_UNMAPPED_DATA_FOR_ORGANIZATION
+            * `DISABLED_REDACT_UNMAPPED_DATA_FOR_LINKED_ACCOUNT` - DISABLED_REDACT_UNMAPPED_DATA_FOR_LINKED_ACCOUNT
+            * `CREATED_INTEGRATION_WIDE_FIELD_MAPPING` - CREATED_INTEGRATION_WIDE_FIELD_MAPPING
+            * `CREATED_LINKED_ACCOUNT_FIELD_MAPPING` - CREATED_LINKED_ACCOUNT_FIELD_MAPPING
+            * `CHANGED_INTEGRATION_WIDE_FIELD_MAPPING` - CHANGED_INTEGRATION_WIDE_FIELD_MAPPING
+            * `CHANGED_LINKED_ACCOUNT_FIELD_MAPPING` - CHANGED_LINKED_ACCOUNT_FIELD_MAPPING
+            * `DELETED_INTEGRATION_WIDE_FIELD_MAPPING` - DELETED_INTEGRATION_WIDE_FIELD_MAPPING
+            * `DELETED_LINKED_ACCOUNT_FIELD_MAPPING` - DELETED_LINKED_ACCOUNT_FIELD_MAPPING
+            * `CREATED_LINKED_ACCOUNT_COMMON_MODEL_OVERRIDE` - CREATED_LINKED_ACCOUNT_COMMON_MODEL_OVERRIDE
+            * `CHANGED_LINKED_ACCOUNT_COMMON_MODEL_OVERRIDE` - CHANGED_LINKED_ACCOUNT_COMMON_MODEL_OVERRIDE
+            * `DELETED_LINKED_ACCOUNT_COMMON_MODEL_OVERRIDE` - DELETED_LINKED_ACCOUNT_COMMON_MODEL_OVERRIDE
+            * `FORCED_LINKED_ACCOUNT_RESYNC` - FORCED_LINKED_ACCOUNT_RESYNC
+            * `MUTED_ISSUE` - MUTED_ISSUE
+            * `GENERATED_MAGIC_LINK` - GENERATED_MAGIC_LINK
+            * `ENABLED_MERGE_WEBHOOK` - ENABLED_MERGE_WEBHOOK
+            * `DISABLED_MERGE_WEBHOOK` - DISABLED_MERGE_WEBHOOK
+            * `MERGE_WEBHOOK_TARGET_CHANGED` - MERGE_WEBHOOK_TARGET_CHANGED
+            * `END_USER_CREDENTIALS_ACCESSED` - END_USER_CREDENTIALS_ACCESSED
+        event_description:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+      required:
+        - role
+        - ip_address
+        - event_type
+        - event_description
+      title: AuditLogEvent
+    PaginatedAuditLogEventList:
+      type: object
+      properties:
+        next:
+          type:
+            - string
+            - 'null'
+        previous:
+          type:
+            - string
+            - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuditLogEvent'
+      title: PaginatedAuditLogEventList
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      description: Token-based authentication with required prefix "Bearer"
