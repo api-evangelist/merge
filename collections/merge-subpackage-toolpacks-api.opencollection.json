@@ -1,0 +1,258 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Accounting subpackage_toolPacks API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "subpackage_toolPacks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Tool Packs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.merge.dev/api/api/v1/tool-packs/",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              }
+            ]
+          },
+          "docs": "Retrieves a list of Tool Packs"
+        },
+        {
+          "info": {
+            "name": "Create Tool Pack",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.merge.dev/api/api/v1/tool-packs/",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a Tool Pack with connectors"
+        },
+        {
+          "info": {
+            "name": "Get Tool Pack",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.merge.dev/api/api/v1/tool-packs/:id/",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Agent Handler ID of the Tool Pack"
+              }
+            ]
+          },
+          "docs": "Retrieves a Tool Pack by ID"
+        },
+        {
+          "info": {
+            "name": "Update Tool Pack",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.merge.dev/api/api/v1/tool-packs/:id/",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Agent Handler ID of the Tool Pack"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a Tool Pack by ID"
+        },
+        {
+          "info": {
+            "name": "Delete Tool Pack",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.merge.dev/api/api/v1/tool-packs/:id/",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Agent Handler ID of the Tool Pack"
+              }
+            ]
+          },
+          "docs": "Deletes a Tool Pack by ID"
+        },
+        {
+          "info": {
+            "name": "List connectors in a Tool Pack",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.merge.dev/api/api/v1/tool-packs/:tool_pack_id/connectors/",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "tool_pack_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List the connectors attached to a tool pack, with the tools enabled on each connector."
+        },
+        {
+          "info": {
+            "name": "Update connectors in a Tool Pack",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.merge.dev/api/api/v1/tool-packs/:tool_pack_id/connectors/",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "tool_pack_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Replace a tool pack's connector list declaratively. Any connector not in the request body is removed from the tool pack.\n\n`tool_names` behavior per item:\n- Omitted: all tools are enabled on the connector.\n- `[]` (empty list): the connector is removed from the tool pack.\n- Otherwise: exactly these tools are enabled.\n\nReturns the updated list of connectors on the tool pack."
+        },
+        {
+          "info": {
+            "name": "Update connectors in a Tool Pack (partial)",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.merge.dev/api/api/v1/tool-packs/:tool_pack_id/connectors/",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "tool_pack_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Partially update a tool pack's connectors. Connectors not listed in the request body are left untouched.\n\n`tool_names` behavior per item:\n- Omitted (new connector): all tools are enabled.\n- Omitted (existing connector): the connector's tools are left unchanged.\n- `[]` (empty list): the connector is removed from the tool pack.\n- Otherwise: exactly these tools are enabled.\n\nReturns the updated list of connectors on the tool pack."
+        },
+        {
+          "info": {
+            "name": "Remove a connector from a Tool Pack",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.merge.dev/api/api/v1/tool-packs/:tool_pack_id/connectors/:slug/",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "slug",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "tool_pack_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Remove a single connector from a tool pack by slug. Returns 204 No Content."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,301 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Accounting subpackage_applications API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "subpackage_applications",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.merge.dev/api/ats/v1/applications",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "X-Account-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "candidate_id",
+                "value": "",
+                "type": "query",
+                "description": "If provided, will only return applications for this candidate."
+              },
+              {
+                "name": "created_after",
+                "value": "",
+                "type": "query",
+                "description": "If provided, will only return objects created after this datetime."
+              },
+              {
+                "name": "created_before",
+                "value": "",
+                "type": "query",
+                "description": "If provided, will only return objects created before this datetime."
+              },
+              {
+                "name": "credited_to_id",
+                "value": "",
+                "type": "query",
+                "description": "If provided, will only return applications credited to this user."
+              },
+              {
+                "name": "current_stage_id",
+                "value": "",
+                "type": "query",
+                "description": "If provided, will only return applications at this interview stage."
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "The pagination cursor value."
+              },
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query",
+                "description": "Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces."
+              },
+              {
+                "name": "include_deleted_data",
+                "value": "",
+                "type": "query",
+                "description": "Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/)."
+              },
+              {
+                "name": "include_remote_data",
+                "value": "",
+                "type": "query",
+                "description": "Whether to include the original data Merge fetched from the third-party to produce these models."
+              },
+              {
+                "name": "include_shell_data",
+                "value": "",
+                "type": "query",
+                "description": "Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null)."
+              },
+              {
+                "name": "job_id",
+                "value": "",
+                "type": "query",
+                "description": "If provided, will only return applications for this job."
+              },
+              {
+                "name": "modified_after",
+                "value": "",
+                "type": "query",
+                "description": "If provided, only objects synced by Merge after this date time will be returned."
+              },
+              {
+                "name": "modified_before",
+                "value": "",
+                "type": "query",
+                "description": "If provided, only objects synced by Merge before this date time will be returned."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page. The maximum limit is 100."
+              },
+              {
+                "name": "reject_reason_id",
+                "value": "",
+                "type": "query",
+                "description": "If provided, will only return applications with this reject reason."
+              },
+              {
+                "name": "remote_id",
+                "value": "",
+                "type": "query",
+                "description": "The API provider's ID for the given object."
+              },
+              {
+                "name": "source",
+                "value": "",
+                "type": "query",
+                "description": "If provided, will only return applications with this source."
+              }
+            ]
+          },
+          "docs": "Returns a list of `Application` objects.{/* BEGIN_ATS_APPLICATION_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType=\"GET\" data=\"H4sIAAAAAAAAA+1caXPaOBj+K4w/ZjiakPTIzM4OVzgaTAokabrT8cjyixHYkiPLEOj0v+/IR4J3k7YQmUCbTxkb+bH96HlPyfmmYSTAZnyhnWpI+Fpec5kFjnaqVTzPIRgJwqiW15BHdORCNMqYHWl5zQ88j3EB1hkBx/JbHEbaqVZygdtQCCgZEbBKSPglQgXYPETyS/dXFUbhZVpecwidglXBmAVU/AAnGldA0cD/HMqffaHlNQ/5vhhzFtjjPtwG4P8IUj6NAy5QgZyChQQqrVxe4NH1j52Tz22BAwKsOhKoDgKwfMH4VmMhPP+0VBqD4xXD2xYtmJW"
+        },
+        {
+          "info": {
+            "name": "Create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.merge.dev/api/ats/v1/applications",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "X-Account-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "is_debug_mode",
+                "value": "",
+                "type": "query",
+                "description": "Whether to include debug fields (such as log file links) in the response."
+              },
+              {
+                "name": "run_async",
+                "value": "",
+                "type": "query",
+                "description": "Whether or not third-party updates should be run asynchronously."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates an `Application` object with the given values.\nFor certain integrations, but not all, our API detects duplicate candidates and will associate applications with existing records in the third-party. New candidates are created and automatically linked to the application.\n\nSee our [Help Center article](https://help.merge.dev/en/articles/10012366-updates-to-post-applications-oct-2024) for detailed support per integration.\n{/* BEGIN_ATS_APPLICATION_CREATE_SUPPORTED_FIELDS */}<Footer><MergeSupp"
+        },
+        {
+          "info": {
+            "name": "Retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.merge.dev/api/ats/v1/applications/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "X-Account-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query",
+                "description": "Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces."
+              },
+              {
+                "name": "include_remote_data",
+                "value": "",
+                "type": "query",
+                "description": "Whether to include the original data Merge fetched from the third-party to produce these models."
+              },
+              {
+                "name": "include_shell_data",
+                "value": "",
+                "type": "query",
+                "description": "Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null)."
+              }
+            ]
+          },
+          "docs": "Returns an `Application` object with the given `id`.{/* BEGIN_ATS_APPLICATION_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType=\"GET\" data=\"H4sIAAAAAAAAA+1caXPaOBj+K4w/ZjiakPTIzM4OVzgaTAokabrT8cjyixHYkiPLEOj0v+/IR4J3k7YQmUCbTxkb+bH96HlPyfmmYSTAZnyhnWpI+Fpec5kFjnaqVTzPIRgJwqiW15BHdORCNMqYHWl5zQ88j3EB1hkBx/JbHEbaqVZygdtQCCgZEbBKSPglQgXYPETyS/dXFUbhZVpecwidglXBmAVU/AAnGldA0cD/HMqffaHlNQ/5vhhzFtjjPtwG4P8IUj6NAy5QgZyChQQqrVxe4NH1j52Tz22BAwKsOhKoDgKwfMH4VmMhPP+0VBq"
+        },
+        {
+          "info": {
+            "name": "Change Stage Create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.merge.dev/api/ats/v1/applications/:id/change-stage",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "X-Account-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "is_debug_mode",
+                "value": "",
+                "type": "query",
+                "description": "Whether to include debug fields (such as log file links) in the response."
+              },
+              {
+                "name": "run_async",
+                "value": "",
+                "type": "query",
+                "description": "Whether or not third-party updates should be run asynchronously."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the `current_stage` field of an `Application` object{/* BEGIN_ATS_APPLICATION_CREATE_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType=\"POST\" data=\"H4sIAAAAAAAAA+WZbVPiOhTHvwqTlw4Pq+jdlZk7d3hahJWigst6HSeTpocSSJOapCDs7HffaQsqdxHdMaD33nc0Tf4pv/xPck77HVFiwJdqhkqIGI2yKJAecFRC5TDkjBLDpEBZRELmkADSXnhygLJIR2EolQHvMwPu6RMFA1RChQCUD7lIsAEDr0CMLjBhwFeJki7cj8oNkmEoizgTY/DKlMpImA06ab8cSTv+4zK+rQ3KopBobYZKRv7wAm4j0Jsk46fhEIAwhOc8Ykjh0fCcSseva4uf2wMOBrwaMaQGBmj8BxdTDY0Jd"
+        },
+        {
+          "info": {
+            "name": "Meta Post Retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.merge.dev/api/ats/v1/applications/meta/post",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "X-Account-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "application_remote_template_id",
+                "value": "",
+                "type": "query",
+                "description": "The template ID associated with the nested application in the request."
+              }
+            ]
+          },
+          "docs": "Returns metadata for `Application` POSTs.{/* BEGIN_ATS_APPLICATION_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType=\"GET\" data=\"H4sIAAAAAAAAA+1caXPaOBj+K4w/ZjiakPTIzM4OVzgaTAokabrT8cjyixHYkiPLEOj0v+/IR4J3k7YQmUCbTxkb+bH96HlPyfmmYSTAZnyhnWpI+Fpec5kFjnaqVTzPIRgJwqiW15BHdORCNMqYHWl5zQ88j3EB1hkBx/JbHEbaqVZygdtQCCgZEbBKSPglQgXYPETyS/dXFUbhZVpecwidglXBmAVU/AAnGldA0cD/HMqffaHlNQ/5vhhzFtjjPtwG4P8IUj6NAy5QgZyChQQqrVxe4NH1j52Tz22BAwKsOhKoDgKwfMH4VmMhPP+0VBqD4xXD2xYtmJ"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

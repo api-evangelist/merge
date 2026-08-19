@@ -1,0 +1,142 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Accounting subpackage_accessKeys API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "subpackage_accessKeys",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List access keys",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.merge.dev/api/api/v1/access-keys/",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "A page number within the paginated result set."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page."
+              }
+            ]
+          },
+          "docs": "Lists active access keys for the organization."
+        },
+        {
+          "info": {
+            "name": "Create access key",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.merge.dev/api/api/v1/access-keys/",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new access key. Can be scoped to specific tool packs and registered users. The new key's scope must be a subset of the parent key (the access key authenticating this request)."
+        },
+        {
+          "info": {
+            "name": "Get access key",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.merge.dev/api/api/v1/access-keys/:key_id/",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "key_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Retrieves an access key by id."
+        },
+        {
+          "info": {
+            "name": "Regenerate access key secret",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.merge.dev/api/api/v1/access-keys/:key_id/regenerate/",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "key_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Rotates the secret of an existing access key. Scope and expiration are preserved; only the secret value changes."
+        },
+        {
+          "info": {
+            "name": "Revoke access key",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.merge.dev/api/api/v1/access-keys/:key_id/revoke/",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "key_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Revokes an access key. Revocation is permanent."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

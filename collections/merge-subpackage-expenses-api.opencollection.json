@@ -1,0 +1,426 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Accounting subpackage_expenses API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "subpackage_expenses",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.merge.dev/api/accounting/v1/expenses",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "X-Account-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "company_id",
+                "value": "",
+                "type": "query",
+                "description": "If provided, will only return expenses for this company."
+              },
+              {
+                "name": "created_after",
+                "value": "",
+                "type": "query",
+                "description": "If provided, will only return objects created after this datetime."
+              },
+              {
+                "name": "created_before",
+                "value": "",
+                "type": "query",
+                "description": "If provided, will only return objects created before this datetime."
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "The pagination cursor value."
+              },
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query",
+                "description": "Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces."
+              },
+              {
+                "name": "include_deleted_data",
+                "value": "",
+                "type": "query",
+                "description": "Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/)."
+              },
+              {
+                "name": "include_remote_data",
+                "value": "",
+                "type": "query",
+                "description": "Whether to include the original data Merge fetched from the third-party to produce these models."
+              },
+              {
+                "name": "include_remote_fields",
+                "value": "",
+                "type": "query",
+                "description": "Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format."
+              },
+              {
+                "name": "include_shell_data",
+                "value": "",
+                "type": "query",
+                "description": "Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null)."
+              },
+              {
+                "name": "modified_after",
+                "value": "",
+                "type": "query",
+                "description": "If provided, only objects synced by Merge after this date time will be returned."
+              },
+              {
+                "name": "modified_before",
+                "value": "",
+                "type": "query",
+                "description": "If provided, only objects synced by Merge before this date time will be returned."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page. The maximum limit is 100."
+              },
+              {
+                "name": "remote_id",
+                "value": "",
+                "type": "query",
+                "description": "The API provider's ID for the given object."
+              },
+              {
+                "name": "transaction_date_after",
+                "value": "",
+                "type": "query",
+                "description": "If provided, will only return objects created after this datetime."
+              },
+              {
+                "name": "transaction_date_before",
+                "value": "",
+                "type": "query",
+                "description": "If provided, will only return objects created before this datetime."
+              }
+            ]
+          },
+          "docs": "Returns a list of `Expense` objects.{/* BEGIN_ACCOUNTING_EXPENSE_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType=\"GET\" data=\"H4sIAAAAAAAAA9VXa2/iOBT9K8gfEZBpGaYq0mpFgb40hA6lo+mOKuviXIIhsVPbocBo/vvKIS2B6Qs1bLcfc20f2+eec6/zizAw6Es1J3UCjMlYGC58UiKh9DAgddKeRSg0khKBiLsQ4tpEOt0nJaLjKJLKoHfMMfD0qcIhqRMnROVjORZ8yNFzVoscLgz6CgyXQjsPi8vDZDUpkYCLCXqN5YKX4ZbTy2lk41M7AdeGlEgEWpuRkrE/6uFtjPoVyPZsAYYoDARlDww4GZSyWsI8FrO38DBAg14LDLTQILPXTXccGRPpuuOMMIgqye4VD6cOCgeU4SxA7dSq"
+        },
+        {
+          "info": {
+            "name": "Create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.merge.dev/api/accounting/v1/expenses",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "X-Account-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "is_debug_mode",
+                "value": "",
+                "type": "query",
+                "description": "Whether to include debug fields (such as log file links) in the response."
+              },
+              {
+                "name": "run_async",
+                "value": "",
+                "type": "query",
+                "description": "Whether or not third-party updates should be run asynchronously."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates an `Expense` object with the given values.{/* BEGIN_ACCOUNTING_EXPENSE_CREATE_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType=\"POST\" data=\"H4sIAAAAAAAAA8WVYW/aOhSG/8rkjygko4xVRbq6ooWtVCN0LZ1WTZV1cA7B4Nip7VBg2n+/ckhLyuhoN3r3LT45fn18zpM33wkDi7HSC9IkwJjKpOUyJh5JVISCNElnnqI0SDwCKQ8hwUeJdHZAPGKyNFXaYvSBo4jMqcYRaZIgQR1jNZN8xDEK1psCLi3GGixX0gQPm6ujfDfxiOByilFrtWG33Cq9WkQ2liYQ3FjikRSMsWOtsnh8gbcZmmcou9oEJigtiGoEFoKSSlWvZLbF3C0iFGgxaoOFNlpk7rrFiWNrU9MMgjGK1M9P9yOc"
+        },
+        {
+          "info": {
+            "name": "Retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.merge.dev/api/accounting/v1/expenses/:id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "X-Account-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "expand",
+                "value": "",
+                "type": "query",
+                "description": "Which relations should be returned in expanded form. Multiple relation names should be comma separated without spaces."
+              },
+              {
+                "name": "include_remote_data",
+                "value": "",
+                "type": "query",
+                "description": "Whether to include the original data Merge fetched from the third-party to produce these models."
+              },
+              {
+                "name": "include_remote_fields",
+                "value": "",
+                "type": "query",
+                "description": "Whether to include all remote fields, including fields that Merge did not map to common models, in a normalized format."
+              },
+              {
+                "name": "include_shell_data",
+                "value": "",
+                "type": "query",
+                "description": "Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null)."
+              }
+            ]
+          },
+          "docs": "Returns an `Expense` object with the given `id`.{/* BEGIN_ACCOUNTING_EXPENSE_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType=\"GET\" data=\"H4sIAAAAAAAAA9VXa2/iOBT9K8gfEZBpGaYq0mpFgb40hA6lo+mOKuviXIIhsVPbocBo/vvKIS2B6Qs1bLcfc20f2+eec6/zizAw6Es1J3UCjMlYGC58UiKh9DAgddKeRSg0khKBiLsQ4tpEOt0nJaLjKJLKoHfMMfD0qcIhqRMnROVjORZ8yNFzVoscLgz6CgyXQjsPi8vDZDUpkYCLCXqN5YKX4ZbTy2lk41M7AdeGlEgEWpuRkrE/6uFtjPoVyPZsAYYoDARlDww4GZSyWsI8FrO38DBAg14LDLTQILPXTXccGRPpuuOMMIgqye4VD6cO"
+        },
+        {
+          "info": {
+            "name": "Lines Remote Field Classes List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.merge.dev/api/accounting/v1/expenses/lines/remote-field-classes",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "X-Account-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "The pagination cursor value."
+              },
+              {
+                "name": "include_deleted_data",
+                "value": "",
+                "type": "query",
+                "description": "Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/)."
+              },
+              {
+                "name": "include_remote_data",
+                "value": "",
+                "type": "query",
+                "description": "Whether to include the original data Merge fetched from the third-party to produce these models."
+              },
+              {
+                "name": "include_shell_data",
+                "value": "",
+                "type": "query",
+                "description": "Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null)."
+              },
+              {
+                "name": "is_common_model_field",
+                "value": "",
+                "type": "query",
+                "description": "If provided, will only return remote field classes with this is_common_model_field value"
+              },
+              {
+                "name": "is_custom",
+                "value": "",
+                "type": "query",
+                "description": "If provided, will only return remote fields classes with this is_custom value"
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page. The maximum limit is 100."
+              }
+            ]
+          },
+          "docs": "Returns a list of `RemoteFieldClass` objects.{/* BEGIN_ACCOUNTING_EXPENSE_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType=\"GET\" data=\"H4sIAAAAAAAAA9VXa2/iOBT9K8gfEZBpGaYq0mpFgb40hA6lo+mOKuviXIIhsVPbocBo/vvKIS2B6Qs1bLcfc20f2+eec6/zizAw6Es1J3UCjMlYGC58UiKh9DAgddKeRSg0khKBiLsQ4tpEOt0nJaLjKJLKoHfMMfD0qcIhqRMnROVjORZ8yNFzVoscLgz6CgyXQjsPi8vDZDUpkYCLCXqN5YKX4ZbTy2lk41M7AdeGlEgEWpuRkrE/6uFtjPoVyPZsAYYoDARlDww4GZSyWsI8FrO38DBAg14LDLTQILPXTXccGRPpuuOMMIgqye4VD6cOCge"
+        },
+        {
+          "info": {
+            "name": "Meta Post Retrieve",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.merge.dev/api/accounting/v1/expenses/meta/post",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "X-Account-Token",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Returns metadata for `Expense` POSTs.{/* BEGIN_ACCOUNTING_EXPENSE_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType=\"GET\" data=\"H4sIAAAAAAAAA9VXa2/iOBT9K8gfEZBpGaYq0mpFgb40hA6lo+mOKuviXIIhsVPbocBo/vvKIS2B6Qs1bLcfc20f2+eec6/zizAw6Es1J3UCjMlYGC58UiKh9DAgddKeRSg0khKBiLsQ4tpEOt0nJaLjKJLKoHfMMfD0qcIhqRMnROVjORZ8yNFzVoscLgz6CgyXQjsPi8vDZDUpkYCLCXqN5YKX4ZbTy2lk41M7AdeGlEgEWpuRkrE/6uFtjPoVyPZsAYYoDARlDww4GZSyWsI8FrO38DBAg14LDLTQILPXTXccGRPpuuOMMIgqye4VD6cOCgeU4SxA7dS"
+        },
+        {
+          "info": {
+            "name": "Remote Field Classes List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.merge.dev/api/accounting/v1/expenses/remote-field-classes",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "X-Account-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "The pagination cursor value."
+              },
+              {
+                "name": "include_deleted_data",
+                "value": "",
+                "type": "query",
+                "description": "Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/)."
+              },
+              {
+                "name": "include_remote_data",
+                "value": "",
+                "type": "query",
+                "description": "Whether to include the original data Merge fetched from the third-party to produce these models."
+              },
+              {
+                "name": "include_shell_data",
+                "value": "",
+                "type": "query",
+                "description": "Whether to include shell records. Shell records are empty records (they may contain some metadata but all other fields are null)."
+              },
+              {
+                "name": "is_common_model_field",
+                "value": "",
+                "type": "query",
+                "description": "If provided, will only return remote field classes with this is_common_model_field value"
+              },
+              {
+                "name": "is_custom",
+                "value": "",
+                "type": "query",
+                "description": "If provided, will only return remote fields classes with this is_custom value"
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to return per page. The maximum limit is 100."
+              }
+            ]
+          },
+          "docs": "Returns a list of `RemoteFieldClass` objects.{/* BEGIN_ACCOUNTING_EXPENSE_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType=\"GET\" data=\"H4sIAAAAAAAAA9VXa2/iOBT9K8gfEZBpGaYq0mpFgb40hA6lo+mOKuviXIIhsVPbocBo/vvKIS2B6Qs1bLcfc20f2+eec6/zizAw6Es1J3UCjMlYGC58UiKh9DAgddKeRSg0khKBiLsQ4tpEOt0nJaLjKJLKoHfMMfD0qcIhqRMnROVjORZ8yNFzVoscLgz6CgyXQjsPi8vDZDUpkYCLCXqN5YKX4ZbTy2lk41M7AdeGlEgEWpuRkrE/6uFtjPoVyPZsAYYoDARlDww4GZSyWsI8FrO38DBAg14LDLTQILPXTXccGRPpuuOMMIgqye4VD6cOCge"
+        },
+        {
+          "info": {
+            "name": "Async Bulk Create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.merge.dev/api/accounting/v1/expenses/bulk",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "X-Account-Token",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates multiple `Expense` objects with the given values.{/* BEGIN_ACCOUNTING_EXPENSE_BULK_CREATE_SUPPORTED_FIELDS */}{/* END_ACCOUNTING_EXPENSE_BULK_CREATE_SUPPORTED_FIELDS */}"
+        },
+        {
+          "info": {
+            "name": "Batch Objects List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.merge.dev/api/accounting/v1/expenses/bulk/:batch_id",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              },
+              {
+                "name": "X-Account-Token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "batch_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns the status and results of an `Expense` bulk create batch.{/* BEGIN_ACCOUNTING_EXPENSE_BULK_FETCH_SUPPORTED_FIELDS */}{/* END_ACCOUNTING_EXPENSE_BULK_FETCH_SUPPORTED_FIELDS */}"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

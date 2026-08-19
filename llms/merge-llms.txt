@@ -1,0 +1,101 @@
+# Merge
+
+> Build once. Connect to every API, tool, and LLM. Ship products and agents to production without owning the integration stack.
+
+Merge has three products: the **Unified API** for reading and writing data across integrations, **Agent Handler** for giving AI agents secure access to third-party tools via MCP, and **Gateway** for routing LLM requests across providers.
+
+## Instructions for AI Agents
+
+- Always authenticate with `Authorization: Bearer <API_KEY>` and `X-Account-Token: <ACCOUNT_TOKEN>` headers
+- Use the Unified API for reading and writing structured data (employees, candidates, contacts, invoices, tickets, files)
+- Use Agent Handler when an AI agent needs to execute actions in third-party tools
+- Use Gateway when routing LLM requests across multiple providers
+- Before making POST requests, call the `/meta` endpoint to discover required fields — they vary by integration and Linked Account
+- Use `modified_after` query parameter for incremental data syncing instead of full re-fetches
+- Pagination is cursor-based: follow the `next` cursor in responses
+- For complete section indexes, append `/llms.txt` to any section URL
+- For markdown of any page, append `.md` to the page URL
+- For full documentation in one file: https://docs.merge.dev/llms-full.txt
+
+OpenAPI specs by category (append to `https://docs.merge.dev/openapi.json`):
+- HRIS: `?api=b09aa0ca-693a-4876-a486-1055e9becaf4`
+- ATS: `?api=ab98dbba-d4d5-47b8-b63c-7a2d3c4e41ce`
+- CRM: `?api=57176b63-cbd8-42d5-9c6a-0febcc26b28f`
+- Accounting: `?api=6a844f64-8d41-422d-85a8-fd9c76edb67b`
+- Ticketing: `?api=471b91b1-129e-4848-931f-a9e65a6ba89b`
+- File Storage: `?api=a3e19ded-5758-4da5-9c2a-f7f88b93aa65`
+- Knowledge Base: `?api=d78d5e5d-d155-45d9-a15d-02fea785cc08`
+
+## Home
+
+- [Welcome to Merge Docs](https://docs.merge.dev/home.md): Overview of Merge's three products — Unified API, Agent Handler, and Gateway
+
+## Getting Started
+
+- [How Merge Works](https://docs.merge.dev/merge-unified/concepts.md): Core concepts — Merge Link, Linked Accounts, account tokens, the Unified API, and Common Models
+- [Quickstart](https://docs.merge.dev/merge-unified/quickstart.md): Make your first Merge API call in under 10 minutes
+- [Merge Link](https://docs.merge.dev/merge-unified/merge-link.md): Embed the drop-in UI component for end users to connect their integrations
+- [Architecture Reference](https://docs.merge.dev/merge-unified/architecture-reference.md): How Merge fits into your app
+- [SDKs](https://docs.merge.dev/merge-unified/hris/merge-api-basics/sdks.md): Official SDK installation for all supported languages
+
+## Unified API Basics
+
+- [Authentication](https://docs.merge.dev/merge-unified/hris/merge-api-basics/authentication.md): API key and account token authentication
+- [Pagination](https://docs.merge.dev/merge-unified/hris/merge-api-basics/pagination.md): Cursor-based pagination for list endpoints
+- [Rate Limits](https://docs.merge.dev/merge-unified/hris/merge-api-basics/rate-limits.md): Request limits by plan tier
+- [Sync Frequency](https://docs.merge.dev/merge-unified/hris/merge-api-basics/sync-frequency.md): How often Merge syncs data from third parties
+- [Webhooks](https://docs.merge.dev/merge-unified/reading-data/webhooks/overview.md): Real-time data change notifications
+- [Syncing Best Practices](https://docs.merge.dev/merge-unified/reading-data/syncing-best-practices.md): Incremental syncing with modified_after
+
+## Writing Data
+
+- [Making Writes](https://docs.merge.dev/merge-unified/writing-data/writes/introduction.md): POST and PATCH requests to create and update records
+- [Programmatic Writes with /meta](https://docs.merge.dev/merge-unified/writing-data/programmatic-writes-with-meta/introduction.md): Discover required fields before writing
+- [Related and Nested Writes](https://docs.merge.dev/merge-unified/writing-data/writes/nested.md): Create records with relations in a single request
+
+## Supplemental Data
+
+- [Overview](https://docs.merge.dev/merge-unified/supplemental-data/overview.md): Ways to access data beyond Common Models
+- [Passthrough Requests](https://docs.merge.dev/merge-unified/supplemental-data/passthrough-request/overview.md): Proxy requests to the third-party API
+- [Remote Data](https://docs.merge.dev/merge-unified/supplemental-data/remote-data.md): Get raw third-party responses alongside normalized data
+- [Field Mapping](https://docs.merge.dev/merge-unified/supplemental-data/field-mapping/overview.md): Map custom fields to Common Models
+- [Custom Objects](https://docs.merge.dev/merge-unified/supplemental-data/custom-objects.md): Interact with non-standard CRM objects
+- [Scopes](https://docs.merge.dev/merge-unified/hris/data-management/scopes.md): Control which models and fields are synced
+
+## API Categories
+
+- [HRIS](https://docs.merge.dev/merge-unified/hris/overview.md): HR, payroll, and directory data
+- [ATS](https://docs.merge.dev/merge-unified/ats/overview.md): Recruiting and applicant tracking data
+- [CRM](https://docs.merge.dev/merge-unified/crm/overview.md): Sales and customer relationship data
+- [Accounting](https://docs.merge.dev/merge-unified/accounting/overview.md): Invoices, payments, and financial reporting
+- [Ticketing](https://docs.merge.dev/merge-unified/ticketing/overview.md): Tickets, comments, and project management
+- [File Storage](https://docs.merge.dev/merge-unified/filestorage/overview.md): Files, folders, and drives
+- [Knowledge Base](https://docs.merge.dev/merge-unified/knowledge-base/overview.md): Articles and knowledge content
+
+## Full Section Indexes
+
+For complete page listings, use these section-level indexes:
+- [Unified API (all pages)](https://docs.merge.dev/merge-unified/llms.txt)
+- [Agent Handler (all pages)](https://docs.merge.dev/merge-agent-handler/llms.txt)
+- [Gateway (all pages)](https://docs.merge.dev/merge-gateway/llms.txt)
+
+## Agent Handler
+
+- [Overview](https://docs.merge.dev/merge-agent-handler/overview.md): Give AI agents secure access to third-party tools via MCP
+- [Quickstart](https://docs.merge.dev/merge-agent-handler/quickstart.md): Test Agent Handler with a pre-configured tool pack
+- [How it works](https://docs.merge.dev/merge-agent-handler/how-it-works.md): Registered users, connectors, tools, tool packs, Link
+- [MCP Integration](https://docs.merge.dev/merge-agent-handler/build/connecting-agents/mcp-integration.md): Connect to Agent Handler over MCP
+- [Connectors](https://docs.merge.dev/merge-agent-handler/connectors.md): Browse available third-party tool connectors
+
+## Gateway
+
+- [Quickstart](https://docs.merge.dev/merge-gateway/get-started.md): Send your first LLM request through Gateway
+- [Routing Policies](https://docs.merge.dev/merge-gateway/features/routing-policies/overview.md): Route requests across providers for cost, performance, or reliability
+- [Tool Calling](https://docs.merge.dev/merge-gateway/features/tool-calling.md): Let models call functions in your application
+- [Cost Governance](https://docs.merge.dev/merge-gateway/features/cost-governance-and-savings.md): Budgets, spend caps, and cost optimization
+
+## Optional
+
+- [Postman Testing Guide](https://docs.merge.dev/merge-unified/testing/testing-merges-unified-api-via-postman.md)
+- [Sandboxes](https://docs.merge.dev/merge-unified/hris/integrations/sandboxes.md): Merge-hosted test environments
+- [Integration Metadata](https://docs.merge.dev/merge-unified/platform-and-account-metadata/integration-metadata.md): Fetch available integrations programmatically

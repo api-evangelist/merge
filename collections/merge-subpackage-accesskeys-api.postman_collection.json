@@ -1,0 +1,529 @@
+{
+  "item": [
+    {
+      "id": "735dc761-ce04-4a86-957e-446d4b9bd670",
+      "name": "subpackage_accessKeys",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "b295575b-b4b2-4799-98a0-80198ec4f22e",
+          "name": "List access keys",
+          "request": {
+            "name": "List access keys",
+            "description": {
+              "content": "Lists active access keys for the organization.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "access-keys",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "A page number within the paginated result set."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "<integer>",
+                  "description": "Number of results to return per page."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "fb69b63a-2429-45bf-9ad6-9e6e02708660",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "access-keys",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Token-based authentication with required prefix \"Bearer\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"count\": 2902,\n  \"next\": \"string\",\n  \"previous\": \"string\",\n  \"results\": [\n    {\n      \"id\": \"1083a5fa-222c-08fd-d90c-9d549e724736\",\n      \"name\": \"string\",\n      \"key_masked\": \"string\",\n      \"scopes\": [\n        \"string\",\n        \"string\"\n      ],\n      \"is_test\": false,\n      \"expires_at\": \"2005-08-19T01:51:16.898Z\",\n      \"created_at\": \"1984-05-21T16:36:30.077Z\",\n      \"tool_pack_ids\": [\n        \"1b15cf66-80b1-7a4f-ebbc-7a90e93f23b0\",\n        \"4f0b70eb-8278-ccb9-9891-45cbf4a4eb49\"\n      ],\n      \"registered_user_ids\": [\n        \"74b04531-e8b4-ff3d-457a-d326c728b991\",\n        \"fcae5a35-3700-a10e-d0af-94b247734589\"\n      ]\n    },\n    {\n      \"id\": \"5b54bb8e-b969-16aa-cd9c-dc3b71c2e533\",\n      \"name\": \"string\",\n      \"key_masked\": \"string\",\n      \"scopes\": [\n        \"string\",\n        \"string\"\n      ],\n      \"is_test\": false,\n      \"expires_at\": \"1949-09-02T21:06:45.411Z\",\n      \"created_at\": \"1966-06-08T15:11:00.750Z\",\n      \"tool_pack_ids\": [\n        \"4b7988dd-752a-2998-2ba3-1f4a8f6ab802\",\n        \"8d773752-b0dd-b6b6-c159-d14bf0662aac\"\n      ],\n      \"registered_user_ids\": [\n        \"30a52b4a-85e1-ff10-19c8-4dd86bdda90f\",\n        \"149bda6a-8159-cbef-3e56-c219afdde3f4\"\n      ]\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "18edd427-7845-431a-8901-b6d3d99c00e3",
+          "name": "Create access key",
+          "request": {
+            "name": "Create access key",
+            "description": {
+              "content": "Creates a new access key. Can be scoped to specific tool packs and registered users. The new key's scope must be a subset of the parent key (the access key authenticating this request).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "access-keys",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"<uuid>\",\n  \"key\": \"<string,null>\",\n  \"key_masked\": \"<string>\",\n  \"created_at\": \"<dateTime>\",\n  \"name\": \"<string>\",\n  \"tool_pack_ids\": [\n    \"<uuid>\",\n    \"<uuid>\"\n  ],\n  \"registered_user_ids\": [\n    \"<uuid>\",\n    \"<uuid>\"\n  ],\n  \"scopes\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"is_test\": false,\n  \"expires_at\": \"<string,null-date-time>\",\n  \"expires_in\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b80f9043-58f2-4198-b449-c41694178945",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "access-keys",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Token-based authentication with required prefix \"Bearer\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"<uuid>\",\n  \"key\": \"<string,null>\",\n  \"key_masked\": \"<string>\",\n  \"created_at\": \"<dateTime>\",\n  \"name\": \"<string>\",\n  \"tool_pack_ids\": [\n    \"<uuid>\",\n    \"<uuid>\"\n  ],\n  \"registered_user_ids\": [\n    \"<uuid>\",\n    \"<uuid>\"\n  ],\n  \"scopes\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"is_test\": false,\n  \"expires_at\": \"<string,null-date-time>\",\n  \"expires_in\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"139fa834-3207-ef80-706c-b68761e133da\",\n  \"key\": \"string\",\n  \"key_masked\": \"string\",\n  \"created_at\": \"1973-03-29T11:57:27.116Z\",\n  \"name\": \"string\",\n  \"tool_pack_ids\": [\n    \"3a81568f-e6de-b5f1-4089-55be3d377603\",\n    \"d1efbef4-5b35-0305-b992-6e30bf849384\"\n  ],\n  \"registered_user_ids\": [\n    \"46d049cb-0666-5378-9195-27cdee9bbd8d\",\n    \"174ac2a0-f865-eeb1-a2d2-76cd3700bbce\"\n  ],\n  \"scopes\": [\n    \"string\",\n    \"string\"\n  ],\n  \"is_test\": false,\n  \"expires_at\": \"2010-02-14T13:29:04.950Z\",\n  \"expires_in\": 4196\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "df2a902f-3da9-42d8-83bd-a6b79a13e5d1",
+          "name": "Get access key",
+          "request": {
+            "name": "Get access key",
+            "description": {
+              "content": "Retrieves an access key by id.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "access-keys",
+                ":key_id",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "key_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7c9b103f-218d-427c-a844-27a47177c19c",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "access-keys",
+                    ":key_id",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "key_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Token-based authentication with required prefix \"Bearer\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"b2229461-25a3-c689-f451-0d944b266506\",\n  \"name\": \"string\",\n  \"key_masked\": \"string\",\n  \"scopes\": [\n    \"string\",\n    \"string\"\n  ],\n  \"is_test\": true,\n  \"expires_at\": \"1988-12-20T01:23:09.935Z\",\n  \"created_at\": \"1994-06-09T18:53:04.811Z\",\n  \"tool_pack_ids\": [\n    \"c385c4f4-6f86-5fef-e09a-4106a09ccfc8\",\n    \"5111e667-e075-130d-43f1-10136f3dcdff\"\n  ],\n  \"registered_user_ids\": [\n    \"779502d1-8a20-dd4d-7c12-63c384028a55\",\n    \"f1e4a8bd-62fb-1a9a-96df-3e50ab9fd3bc\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "eb5531b1-c58f-4866-bf5c-077ce9d53941",
+          "name": "Regenerate access key secret",
+          "request": {
+            "name": "Regenerate access key secret",
+            "description": {
+              "content": "Rotates the secret of an existing access key. Scope and expiration are preserved; only the secret value changes.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "access-keys",
+                ":key_id",
+                "regenerate",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "key_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "600052f9-8bff-43b8-b6a0-d69389700806",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "access-keys",
+                    ":key_id",
+                    "regenerate",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "key_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Token-based authentication with required prefix \"Bearer\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"139fa834-3207-ef80-706c-b68761e133da\",\n  \"key\": \"string\",\n  \"key_masked\": \"string\",\n  \"created_at\": \"1973-03-29T11:57:27.116Z\",\n  \"name\": \"string\",\n  \"tool_pack_ids\": [\n    \"3a81568f-e6de-b5f1-4089-55be3d377603\",\n    \"d1efbef4-5b35-0305-b992-6e30bf849384\"\n  ],\n  \"registered_user_ids\": [\n    \"46d049cb-0666-5378-9195-27cdee9bbd8d\",\n    \"174ac2a0-f865-eeb1-a2d2-76cd3700bbce\"\n  ],\n  \"scopes\": [\n    \"string\",\n    \"string\"\n  ],\n  \"is_test\": false,\n  \"expires_at\": \"2010-02-14T13:29:04.950Z\",\n  \"expires_in\": 4196\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f52b9b39-2bb9-440c-b2f0-166be9eb53fa",
+          "name": "Revoke access key",
+          "request": {
+            "name": "Revoke access key",
+            "description": {
+              "content": "Revokes an access key. Revocation is permanent.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "access-keys",
+                ":key_id",
+                "revoke",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "key_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7c97f48d-18ea-43f9-a7e9-23cc7fef1bd4",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "access-keys",
+                    ":key_id",
+                    "revoke",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "key_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) Token-based authentication with required prefix \"Bearer\"",
+                    "key": "Authorization",
+                    "value": "string"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.merge.dev/api",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "2ec9c831-53e0-4e04-b459-866e8e1becf1",
+    "name": "Accounting subpackage_accessKeys API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}
