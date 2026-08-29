@@ -1,11 +1,9 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Accounting subpackage_accessKeys API
+  title: Agent Handler Subpackage Access Keys API
   version: 1.0.0
 servers:
-- url: https://api.merge.dev/api
-- url: https://api-eu.merge.dev/api
-- url: https://api-ap.merge.dev/api
+- url: https://ah-api.merge.dev
 tags:
 - name: subpackage_accessKeys
 paths:
@@ -146,67 +144,6 @@ paths:
           description: Successful response
 components:
   schemas:
-    AccessKeyCreate:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-          description: Human-readable label for the key. Auto-generated if omitted.
-        key:
-          type:
-          - string
-          - 'null'
-          description: Raw secret value. Returned only on create or regenerate.
-        key_masked:
-          type: string
-          description: Truncated form of the secret safe to display in UIs.
-        tool_pack_ids:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-            format: uuid
-          description: Tool packs this key can access. Must be a subset of the parent key's `tool_pack_ids`. Pass `null` for unrestricted access to all tool packs in the organization.
-        registered_user_ids:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-            format: uuid
-          description: Registered users this key can access. Must be a subset of the parent key's `registered_user_ids`. Pass `null` for unrestricted access to all registered users in the organization.
-        scopes:
-          type: array
-          items:
-            type: string
-          description: 'Limits which actions this key can perform. Available scopes: `runtime:all` (MCP tool calls), `management:all` (resource management endpoints).'
-        is_test:
-          type: boolean
-          default: false
-          description: If true, the key can only authenticate test registered users.
-        expires_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Expiration timestamp. Must be before the parent key's `expires_at`. Defaults to 90 days from now if omitted. Pass `null` explicitly for a key that never expires.
-        expires_in:
-          type: integer
-          description: Seconds until the key expires. Alternative to `expires_at`.
-        created_at:
-          type: string
-          format: date-time
-      required:
-      - id
-      - key
-      - key_masked
-      - created_at
-      description: Request and response shape for creating or regenerating an access key.
-      title: AccessKeyCreate
     AccessKey:
       type: object
       properties:
@@ -287,6 +224,67 @@ components:
       - previous
       - results
       title: PaginatedAccessKeyList
+    AccessKeyCreate:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          description: Human-readable label for the key. Auto-generated if omitted.
+        key:
+          type:
+          - string
+          - 'null'
+          description: Raw secret value. Returned only on create or regenerate.
+        key_masked:
+          type: string
+          description: Truncated form of the secret safe to display in UIs.
+        tool_pack_ids:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+            format: uuid
+          description: Tool packs this key can access. Must be a subset of the parent key's `tool_pack_ids`. Pass `null` for unrestricted access to all tool packs in the organization.
+        registered_user_ids:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+            format: uuid
+          description: Registered users this key can access. Must be a subset of the parent key's `registered_user_ids`. Pass `null` for unrestricted access to all registered users in the organization.
+        scopes:
+          type: array
+          items:
+            type: string
+          description: 'Limits which actions this key can perform. Available scopes: `runtime:all` (MCP tool calls), `management:all` (resource management endpoints).'
+        is_test:
+          type: boolean
+          default: false
+          description: If true, the key can only authenticate test registered users.
+        expires_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Expiration timestamp. Must be before the parent key's `expires_at`. Defaults to 90 days from now if omitted. Pass `null` explicitly for a key that never expires.
+        expires_in:
+          type: integer
+          description: Seconds until the key expires. Alternative to `expires_at`.
+        created_at:
+          type: string
+          format: date-time
+      required:
+      - id
+      - key
+      - key_masked
+      - created_at
+      description: Request and response shape for creating or regenerating an access key.
+      title: AccessKeyCreate
   securitySchemes:
     tokenAuth:
       type: http

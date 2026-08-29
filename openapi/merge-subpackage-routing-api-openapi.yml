@@ -1,11 +1,9 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Accounting subpackage_routing API
+  title: Overview Subpackage Routing API
   version: 1.0.0
 servers:
-- url: https://api.merge.dev/api
-- url: https://api-eu.merge.dev/api
-- url: https://api-ap.merge.dev/api
+- url: https://api-gateway.merge.dev
 tags:
 - name: subpackage_routing
 paths:
@@ -42,31 +40,14 @@ paths:
                 $ref: '#/components/schemas/Routing_listStrategies_Response_200'
 components:
   schemas:
-    RoutingStrategiesGetResponsesContentApplicationJsonSchemaDataItemsMlRouting:
+    RoutingPoliciesGetResponsesContentApplicationJsonSchemaDataItemsProvidersItems:
       type: object
       properties:
-        score_exponent:
-          type: number
-          format: double
-        behavior:
+        provider:
           type: string
-      title: RoutingStrategiesGetResponsesContentApplicationJsonSchemaDataItemsMlRouting
-    RoutingStrategiesGetResponsesContentApplicationJsonSchemaDataItems:
-      type: object
-      properties:
-        id:
+        model:
           type: string
-        name:
-          type: string
-        is_intelligent:
-          type: boolean
-        description:
-          type: string
-        ml_routing:
-          oneOf:
-          - $ref: '#/components/schemas/RoutingStrategiesGetResponsesContentApplicationJsonSchemaDataItemsMlRouting'
-          - type: 'null'
-      title: RoutingStrategiesGetResponsesContentApplicationJsonSchemaDataItems
+      title: RoutingPoliciesGetResponsesContentApplicationJsonSchemaDataItemsProvidersItems
     RoutingPoliciesGetResponsesContentApplicationJsonSchemaDataItems:
       type: object
       properties:
@@ -101,14 +82,31 @@ components:
           items:
             $ref: '#/components/schemas/RoutingStrategiesGetResponsesContentApplicationJsonSchemaDataItems'
       title: Routing_listStrategies_Response_200
-    RoutingPoliciesGetResponsesContentApplicationJsonSchemaDataItemsProvidersItems:
+    RoutingStrategiesGetResponsesContentApplicationJsonSchemaDataItemsMlRouting:
       type: object
       properties:
-        provider:
+        score_exponent:
+          type: number
+          format: double
+        behavior:
           type: string
-        model:
+      title: RoutingStrategiesGetResponsesContentApplicationJsonSchemaDataItemsMlRouting
+    RoutingStrategiesGetResponsesContentApplicationJsonSchemaDataItems:
+      type: object
+      properties:
+        id:
           type: string
-      title: RoutingPoliciesGetResponsesContentApplicationJsonSchemaDataItemsProvidersItems
+        name:
+          type: string
+        is_intelligent:
+          type: boolean
+        description:
+          type: string
+        ml_routing:
+          oneOf:
+          - $ref: '#/components/schemas/RoutingStrategiesGetResponsesContentApplicationJsonSchemaDataItemsMlRouting'
+          - type: 'null'
+      title: RoutingStrategiesGetResponsesContentApplicationJsonSchemaDataItems
     Routing_listPolicies_Response_200:
       type: object
       properties:
@@ -121,8 +119,3 @@ components:
           items:
             $ref: '#/components/schemas/RoutingPoliciesGetResponsesContentApplicationJsonSchemaDataItems'
       title: Routing_listPolicies_Response_200
-  securitySchemes:
-    tokenAuth:
-      type: http
-      scheme: bearer
-      description: Token-based authentication with required prefix "Bearer"

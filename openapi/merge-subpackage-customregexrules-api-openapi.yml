@@ -1,11 +1,9 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Accounting subpackage_customRegexRules API
+  title: Agent Handler Subpackage Custom Regex Rules API
   version: 1.0.0
 servers:
-- url: https://api.merge.dev/api
-- url: https://api-eu.merge.dev/api
-- url: https://api-ap.merge.dev/api
+- url: https://ah-api.merge.dev
 tags:
 - name: subpackage_customRegexRules
 paths:
@@ -323,67 +321,6 @@ paths:
               $ref: '#/components/schemas/PatchedToolPackCustomRegexOverride'
 components:
   schemas:
-    PatchedCustomRegexRuleUpdateInputOutboundAction:
-      type: string
-      enum:
-      - BLOCK
-      - REDACT
-      - LOG
-      - NONE
-      description: '* `BLOCK` - BLOCK
-
-        * `REDACT` - REDACT
-
-        * `LOG` - LOG
-
-        * `NONE` - NONE'
-      title: PatchedCustomRegexRuleUpdateInputOutboundAction
-    PatchedToolPackCustomRegexOverrideOutboundAction:
-      type: string
-      enum:
-      - BLOCK
-      - REDACT
-      - LOG
-      - NONE
-      description: '* `BLOCK` - BLOCK
-
-        * `REDACT` - REDACT
-
-        * `LOG` - LOG
-
-        * `NONE` - NONE'
-      title: PatchedToolPackCustomRegexOverrideOutboundAction
-    PatchedToolPackCustomRegexOverrideInboundAction:
-      type: string
-      enum:
-      - BLOCK
-      - REDACT
-      - LOG
-      - NONE
-      description: '* `BLOCK` - BLOCK
-
-        * `REDACT` - REDACT
-
-        * `LOG` - LOG
-
-        * `NONE` - NONE'
-      title: PatchedToolPackCustomRegexOverrideInboundAction
-    CustomRegexRuleCreateInputOutboundAction:
-      type: string
-      enum:
-      - BLOCK
-      - REDACT
-      - LOG
-      - NONE
-      default: REDACT
-      description: '* `BLOCK` - BLOCK
-
-        * `REDACT` - REDACT
-
-        * `LOG` - LOG
-
-        * `NONE` - NONE'
-      title: CustomRegexRuleCreateInputOutboundAction
     CustomRegexRuleCreateInput:
       type: object
       properties:
@@ -429,108 +366,7 @@ components:
 
         serializers.ValidationError so errors are attributed to the correct field.'
       title: CustomRegexRuleCreateInput
-    PatchedToolPackCustomRegexOverride:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        is_active:
-          type: boolean
-        regex:
-          type: string
-        score:
-          type: number
-          format: double
-        context_keywords:
-          description: Any type
-        inbound_action:
-          $ref: '#/components/schemas/PatchedToolPackCustomRegexOverrideInboundAction'
-          description: '* `BLOCK` - BLOCK
-
-            * `REDACT` - REDACT
-
-            * `LOG` - LOG
-
-            * `NONE` - NONE'
-        outbound_action:
-          $ref: '#/components/schemas/PatchedToolPackCustomRegexOverrideOutboundAction'
-          description: '* `BLOCK` - BLOCK
-
-            * `REDACT` - REDACT
-
-            * `LOG` - LOG
-
-            * `NONE` - NONE'
-        created_at:
-          type: string
-          format: date-time
-        modified_at:
-          type: string
-          format: date-time
-      description: Rejects requests that explicitly set defined_at to ORGANIZATION in tool pack endpoints.
-      title: PatchedToolPackCustomRegexOverride
-    CustomRegexRuleCreateInputInboundAction:
-      type: string
-      enum:
-      - BLOCK
-      - REDACT
-      - LOG
-      - NONE
-      default: REDACT
-      description: '* `BLOCK` - BLOCK
-
-        * `REDACT` - REDACT
-
-        * `LOG` - LOG
-
-        * `NONE` - NONE'
-      title: CustomRegexRuleCreateInputInboundAction
-    CustomRegexOverrideCreateInput:
-      type: object
-      properties:
-        name:
-          type: string
-        regex:
-          type: string
-        score:
-          type: number
-          format: double
-        context_keywords:
-          description: Any type
-        is_active:
-          type: boolean
-        inbound_action:
-          $ref: '#/components/schemas/CustomRegexOverrideCreateInputInboundAction'
-          description: '* `BLOCK` - BLOCK
-
-            * `REDACT` - REDACT
-
-            * `LOG` - LOG
-
-            * `NONE` - NONE'
-        outbound_action:
-          $ref: '#/components/schemas/CustomRegexOverrideCreateInputOutboundAction'
-          description: '* `BLOCK` - BLOCK
-
-            * `REDACT` - REDACT
-
-            * `LOG` - LOG
-
-            * `NONE` - NONE'
-      required:
-      - name
-      - regex
-      - score
-      - context_keywords
-      - is_active
-      - inbound_action
-      - outbound_action
-      description: Input serializer for POST /tool-packs/<id>/custom-regex-rules/.
-      title: CustomRegexOverrideCreateInput
-    CustomRegexOverrideCreateInputOutboundAction:
+    PatchedCustomRegexRuleUpdateInputOutboundAction:
       type: string
       enum:
       - BLOCK
@@ -544,107 +380,7 @@ components:
         * `LOG` - LOG
 
         * `NONE` - NONE'
-      title: CustomRegexOverrideCreateInputOutboundAction
-    CustomRegexOverrideCreateInputInboundAction:
-      type: string
-      enum:
-      - BLOCK
-      - REDACT
-      - LOG
-      - NONE
-      description: '* `BLOCK` - BLOCK
-
-        * `REDACT` - REDACT
-
-        * `LOG` - LOG
-
-        * `NONE` - NONE'
-      title: CustomRegexOverrideCreateInputInboundAction
-    CustomRegexRuleResponseOutboundAction:
-      type: string
-      enum:
-      - BLOCK
-      - REDACT
-      - LOG
-      - NONE
-      description: '* `BLOCK` - BLOCK
-
-        * `REDACT` - REDACT
-
-        * `LOG` - LOG
-
-        * `NONE` - NONE'
-      title: CustomRegexRuleResponseOutboundAction
-    PatchedCustomRegexRuleUpdateInputInboundAction:
-      type: string
-      enum:
-      - BLOCK
-      - REDACT
-      - LOG
-      - NONE
-      description: '* `BLOCK` - BLOCK
-
-        * `REDACT` - REDACT
-
-        * `LOG` - LOG
-
-        * `NONE` - NONE'
-      title: PatchedCustomRegexRuleUpdateInputInboundAction
-    PaginatedPublicCombinedCustomRegexRuleList:
-      type: object
-      properties:
-        count:
-          type: integer
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/PublicCombinedCustomRegexRule'
-      required:
-      - count
-      - results
-      title: PaginatedPublicCombinedCustomRegexRuleList
-    PublicCombinedCustomRegexRule:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        regex:
-          type: string
-        score:
-          type: number
-          format: double
-        context_keywords:
-          description: Any type
-        is_active:
-          type: boolean
-        outbound_action:
-          type: string
-        defined_at:
-          type: string
-      required:
-      - id
-      - name
-      - regex
-      - score
-      - context_keywords
-      - is_active
-      - outbound_action
-      - defined_at
-      description: Custom regex rule with effective configuration for a tool pack.
-      title: PublicCombinedCustomRegexRule
+      title: PatchedCustomRegexRuleUpdateInputOutboundAction
     CustomRegexRuleResponse:
       type: object
       properties:
@@ -696,6 +432,291 @@ components:
       - defined_at
       description: Custom regex rule for an organization.
       title: CustomRegexRuleResponse
+    PatchedCustomRegexRuleUpdateInputInboundAction:
+      type: string
+      enum:
+      - BLOCK
+      - REDACT
+      - LOG
+      - NONE
+      description: '* `BLOCK` - BLOCK
+
+        * `REDACT` - REDACT
+
+        * `LOG` - LOG
+
+        * `NONE` - NONE'
+      title: PatchedCustomRegexRuleUpdateInputInboundAction
+    CustomRegexOverrideCreateInputInboundAction:
+      type: string
+      enum:
+      - BLOCK
+      - REDACT
+      - LOG
+      - NONE
+      description: '* `BLOCK` - BLOCK
+
+        * `REDACT` - REDACT
+
+        * `LOG` - LOG
+
+        * `NONE` - NONE'
+      title: CustomRegexOverrideCreateInputInboundAction
+    PatchedToolPackCustomRegexOverrideInboundAction:
+      type: string
+      enum:
+      - BLOCK
+      - REDACT
+      - LOG
+      - NONE
+      description: '* `BLOCK` - BLOCK
+
+        * `REDACT` - REDACT
+
+        * `LOG` - LOG
+
+        * `NONE` - NONE'
+      title: PatchedToolPackCustomRegexOverrideInboundAction
+    CustomRegexOverrideCreateInput:
+      type: object
+      properties:
+        name:
+          type: string
+        regex:
+          type: string
+        score:
+          type: number
+          format: double
+        context_keywords:
+          description: Any type
+        is_active:
+          type: boolean
+        inbound_action:
+          $ref: '#/components/schemas/CustomRegexOverrideCreateInputInboundAction'
+          description: '* `BLOCK` - BLOCK
+
+            * `REDACT` - REDACT
+
+            * `LOG` - LOG
+
+            * `NONE` - NONE'
+        outbound_action:
+          $ref: '#/components/schemas/CustomRegexOverrideCreateInputOutboundAction'
+          description: '* `BLOCK` - BLOCK
+
+            * `REDACT` - REDACT
+
+            * `LOG` - LOG
+
+            * `NONE` - NONE'
+      required:
+      - name
+      - regex
+      - score
+      - context_keywords
+      - is_active
+      - inbound_action
+      - outbound_action
+      description: Input serializer for POST /tool-packs/<id>/custom-regex-rules/.
+      title: CustomRegexOverrideCreateInput
+    CustomRegexRuleCreateInputOutboundAction:
+      type: string
+      enum:
+      - BLOCK
+      - REDACT
+      - LOG
+      - NONE
+      default: REDACT
+      description: '* `BLOCK` - BLOCK
+
+        * `REDACT` - REDACT
+
+        * `LOG` - LOG
+
+        * `NONE` - NONE'
+      title: CustomRegexRuleCreateInputOutboundAction
+    CustomRegexRuleCreateInputInboundAction:
+      type: string
+      enum:
+      - BLOCK
+      - REDACT
+      - LOG
+      - NONE
+      default: REDACT
+      description: '* `BLOCK` - BLOCK
+
+        * `REDACT` - REDACT
+
+        * `LOG` - LOG
+
+        * `NONE` - NONE'
+      title: CustomRegexRuleCreateInputInboundAction
+    PaginatedCustomRegexRuleResponseList:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomRegexRuleResponse'
+      required:
+      - count
+      - results
+      title: PaginatedCustomRegexRuleResponseList
+    PatchedToolPackCustomRegexOverride:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        is_active:
+          type: boolean
+        regex:
+          type: string
+        score:
+          type: number
+          format: double
+        context_keywords:
+          description: Any type
+        inbound_action:
+          $ref: '#/components/schemas/PatchedToolPackCustomRegexOverrideInboundAction'
+          description: '* `BLOCK` - BLOCK
+
+            * `REDACT` - REDACT
+
+            * `LOG` - LOG
+
+            * `NONE` - NONE'
+        outbound_action:
+          $ref: '#/components/schemas/PatchedToolPackCustomRegexOverrideOutboundAction'
+          description: '* `BLOCK` - BLOCK
+
+            * `REDACT` - REDACT
+
+            * `LOG` - LOG
+
+            * `NONE` - NONE'
+        created_at:
+          type: string
+          format: date-time
+        modified_at:
+          type: string
+          format: date-time
+      description: Rejects requests that explicitly set defined_at to ORGANIZATION in tool pack endpoints.
+      title: PatchedToolPackCustomRegexOverride
+    CustomRegexOverrideCreateInputOutboundAction:
+      type: string
+      enum:
+      - BLOCK
+      - REDACT
+      - LOG
+      - NONE
+      description: '* `BLOCK` - BLOCK
+
+        * `REDACT` - REDACT
+
+        * `LOG` - LOG
+
+        * `NONE` - NONE'
+      title: CustomRegexOverrideCreateInputOutboundAction
+    PublicCombinedCustomRegexRule:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        regex:
+          type: string
+        score:
+          type: number
+          format: double
+        context_keywords:
+          description: Any type
+        is_active:
+          type: boolean
+        outbound_action:
+          type: string
+        defined_at:
+          type: string
+      required:
+      - id
+      - name
+      - regex
+      - score
+      - context_keywords
+      - is_active
+      - outbound_action
+      - defined_at
+      description: Custom regex rule with effective configuration for a tool pack.
+      title: PublicCombinedCustomRegexRule
+    PatchedToolPackCustomRegexOverrideOutboundAction:
+      type: string
+      enum:
+      - BLOCK
+      - REDACT
+      - LOG
+      - NONE
+      description: '* `BLOCK` - BLOCK
+
+        * `REDACT` - REDACT
+
+        * `LOG` - LOG
+
+        * `NONE` - NONE'
+      title: PatchedToolPackCustomRegexOverrideOutboundAction
+    CustomRegexRuleResponseOutboundAction:
+      type: string
+      enum:
+      - BLOCK
+      - REDACT
+      - LOG
+      - NONE
+      description: '* `BLOCK` - BLOCK
+
+        * `REDACT` - REDACT
+
+        * `LOG` - LOG
+
+        * `NONE` - NONE'
+      title: CustomRegexRuleResponseOutboundAction
+    PaginatedPublicCombinedCustomRegexRuleList:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicCombinedCustomRegexRule'
+      required:
+      - count
+      - results
+      title: PaginatedPublicCombinedCustomRegexRuleList
     PatchedCustomRegexRuleUpdateInput:
       type: object
       properties:
@@ -739,29 +760,6 @@ components:
 
         serializers.ValidationError so errors are attributed to the correct field.'
       title: PatchedCustomRegexRuleUpdateInput
-    PaginatedCustomRegexRuleResponseList:
-      type: object
-      properties:
-        count:
-          type: integer
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/CustomRegexRuleResponse'
-      required:
-      - count
-      - results
-      title: PaginatedCustomRegexRuleResponseList
   securitySchemes:
     tokenAuth:
       type: http

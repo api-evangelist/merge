@@ -1,11 +1,16 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Accounting subpackage_users API
+  title: Merge Subpackage Users API
   version: 1.0.0
+  description: 'Operations tagged subpackage_users across 6 of this provider''s published API definitions: merge-ats-api-openapi.yaml, merge-chat-api-openapi.yaml, merge-crm-api-openapi.yaml, merge-file-storage-api-openapi.yaml, merge-knowledge-base-api-openapi.yaml, merge-ticketing-api-openapi.yaml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://api.merge.dev/api
 - url: https://api-eu.merge.dev/api
 - url: https://api-ap.merge.dev/api
+- url: https://api.merge.dev/api/chat/v1
+- url: https://api-eu.merge.dev/api/chat/v1
+- url: https://api-ap.merge.dev/api/chat/v1
+- url: https://api-ap.merge.dev/api/knowledgebase/v1
 tags:
 - name: subpackage_users
 paths:
@@ -118,6 +123,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaginatedRemoteUserList'
+    servers:
+    - url: https://api.merge.dev/api
+    - url: https://api-eu.merge.dev/api
+    - url: https://api-ap.merge.dev/api
   /ats/v1/users/{id}:
     get:
       operationId: retrieve
@@ -175,6 +184,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RemoteUser'
+    servers:
+    - url: https://api.merge.dev/api
+    - url: https://api-eu.merge.dev/api
+    - url: https://api-ap.merge.dev/api
   /users:
     get:
       operationId: list
@@ -274,6 +287,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaginatedUserList'
+    servers:
+    - url: https://api.merge.dev/api/chat/v1
+    - url: https://api-eu.merge.dev/api/chat/v1
+    - url: https://api-ap.merge.dev/api/chat/v1
   /users/{id}:
     get:
       operationId: retrieve
@@ -327,6 +344,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
+    servers:
+    - url: https://api.merge.dev/api/chat/v1
+    - url: https://api-eu.merge.dev/api/chat/v1
+    - url: https://api-ap.merge.dev/api/chat/v1
   /crm/v1/users:
     get:
       operationId: list
@@ -430,6 +451,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaginatedUserList'
+    servers:
+    - url: https://api.merge.dev/api
+    - url: https://api-eu.merge.dev/api
+    - url: https://api-ap.merge.dev/api
   /crm/v1/users/{id}:
     get:
       operationId: retrieve
@@ -481,6 +506,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User_2'
+    servers:
+    - url: https://api.merge.dev/api
+    - url: https://api-eu.merge.dev/api
+    - url: https://api-ap.merge.dev/api
   /crm/v1/users/ignore/{model_id}:
     post:
       operationId: ignore-create
@@ -519,6 +548,10 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/IgnoreCommonModelRequest'
+    servers:
+    - url: https://api.merge.dev/api
+    - url: https://api-eu.merge.dev/api
+    - url: https://api-ap.merge.dev/api
   /crm/v1/users/remote-field-classes:
     get:
       operationId: remote-field-classes-list
@@ -594,6 +627,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaginatedRemoteFieldClassList'
+    servers:
+    - url: https://api.merge.dev/api
+    - url: https://api-eu.merge.dev/api
+    - url: https://api-ap.merge.dev/api
   /filestorage/v1/users:
     get:
       operationId: list
@@ -697,6 +734,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaginatedUserList'
+    servers:
+    - url: https://api.merge.dev/api
+    - url: https://api-eu.merge.dev/api
+    - url: https://api-ap.merge.dev/api
   /filestorage/v1/users/{id}:
     get:
       operationId: retrieve
@@ -742,6 +783,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User_3'
+    servers:
+    - url: https://api.merge.dev/api
+    - url: https://api-eu.merge.dev/api
+    - url: https://api-ap.merge.dev/api
   /knowledgebase/v1/users:
     get:
       operationId: list
@@ -833,6 +878,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaginatedUserList'
+    servers:
+    - url: https://api.merge.dev/api
+    - url: https://api-eu.merge.dev/api
+    - url: https://api-ap.merge.dev/api
+    - url: https://api-ap.merge.dev/api/knowledgebase/v1
   /knowledgebase/v1/users/{id}:
     get:
       operationId: retrieve
@@ -878,6 +928,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User_4'
+    servers:
+    - url: https://api.merge.dev/api
+    - url: https://api-eu.merge.dev/api
+    - url: https://api-ap.merge.dev/api
+    - url: https://api-ap.merge.dev/api/knowledgebase/v1
   /ticketing/v1/users:
     get:
       operationId: list
@@ -1007,6 +1062,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaginatedUserList'
+    servers:
+    - url: https://api.merge.dev/api
+    - url: https://api-eu.merge.dev/api
+    - url: https://api-ap.merge.dev/api
   /ticketing/v1/users/{id}:
     get:
       operationId: retrieve
@@ -1060,9 +1119,75 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User_5'
+    servers:
+    - url: https://api.merge.dev/api
+    - url: https://api-eu.merge.dev/api
+    - url: https://api-ap.merge.dev/api
 components:
   schemas:
-    User_3:
+    UsersGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - access_role
+      title: UsersGetParametersShowEnumOrigins
+    UsersIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - access_role
+      title: UsersIdGetParametersShowEnumOrigins
+    UsersIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - access_role
+      title: UsersIdGetParametersRemoteFields
+    UsersGetParametersRemoteFields:
+      type: string
+      enum:
+      - access_role
+      title: UsersGetParametersRemoteFields
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    AccessRoleEnum:
+      type: string
+      enum:
+      - SUPER_ADMIN
+      - ADMIN
+      - TEAM_MEMBER
+      - LIMITED_TEAM_MEMBER
+      - INTERVIEWER
+      title: AccessRoleEnum
+    RemoteUserFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: RemoteUserFieldMappings
+    RemoteUser:
       type: object
       properties:
         id:
@@ -1081,25 +1206,44 @@ components:
           type: string
           format: date-time
           description: The datetime that this object was modified by Merge.
-        name:
+        first_name:
           type:
           - string
           - 'null'
-          description: The user's name.
-        email_address:
+          description: The user's first name.
+        last_name:
           type:
           - string
           - 'null'
-          description: The user's email address. This is typically used to identify a user across linked accounts.
-        is_me:
-          type: boolean
-          description: Whether the user is the one who linked this account.
+          description: The user's last name.
+        email:
+          type:
+          - string
+          - 'null'
+          format: email
+          description: The user's email.
+        disabled:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the user's account had been disabled.
+        remote_created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's user was created.
+        access_role:
+          oneOf:
+          - $ref: '#/components/schemas/AccessRoleEnum'
+          - type: 'null'
+          description: The user's role.
         remote_was_deleted:
           type: boolean
           description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
         field_mappings:
           oneOf:
-          - $ref: '#/components/schemas/UserFieldMappings'
+          - $ref: '#/components/schemas/RemoteUserFieldMappings'
           - type: 'null'
         remote_data:
           type:
@@ -1107,51 +1251,42 @@ components:
           - 'null'
           items:
             $ref: '#/components/schemas/RemoteData'
-      description: '# The User Object
+      description: '# The RemoteUser Object
 
         ### Description
 
-        The `User` object is used to represent a user within the File Storage account.
+        The `RemoteUser` object is used to represent a user with a login to the ATS system.
 
         ### Usage Example
 
-        Fetch from the `GET /api/filestorage/v1/users` endpoint and view their users.'
-      title: User
-    UsersGetParametersRemoteFields:
-      type: string
-      enum:
-      - access_role
-      title: UsersGetParametersRemoteFields
-    ItemTypeEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: ItemTypeEnum
-    UserFieldMappings_2:
+        Fetch from the `LIST RemoteUsers` endpoint to show all users for a third party.'
+      title: RemoteUser
+    PaginatedRemoteUserList:
       type: object
-      properties: {}
-      title: UserFieldMappings
-    ItemFormatEnum:
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteUser'
+      title: PaginatedRemoteUserList
+    UsersGetParametersExpandSchemaItems:
       type: string
       enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: ItemFormatEnum
-    UsersGetParametersExpandSchemaItems_2:
-      type: string
-      enum:
-      - roles
-      - teams
+      - groups
       title: UsersGetParametersExpandSchemaItems
+    UsersIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - groups
+      title: UsersIdGetParametersExpandSchemaItems
     User:
       type: object
       properties:
@@ -1243,95 +1378,62 @@ components:
 
         Fetch from the `GET /api/chat/v1/users` endpoint and view their users.'
       title: User
-    UsersIdGetParametersExpandSchemaItems_2:
-      type: string
-      enum:
-      - roles
-      - teams
-      title: UsersIdGetParametersExpandSchemaItems
-    RemoteUser:
+    UserFieldMappings:
       type: object
       properties:
-        id:
-          type: string
-          format: uuid
-        remote_id:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: UserFieldMappings
+    PaginatedUserList:
+      type: object
+      properties:
+        next:
           type:
           - string
           - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        first_name:
+        previous:
           type:
           - string
           - 'null'
-          description: The user's first name.
-        last_name:
-          type:
-          - string
-          - 'null'
-          description: The user's last name.
-        email:
-          type:
-          - string
-          - 'null'
-          format: email
-          description: The user's email.
-        disabled:
-          type:
-          - boolean
-          - 'null'
-          description: Whether the user's account had been disabled.
-        remote_created_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: When the third party's user was created.
-        access_role:
-          oneOf:
-          - $ref: '#/components/schemas/AccessRoleEnum'
-          - type: 'null'
-          description: The user's role.
-        remote_was_deleted:
-          type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-        field_mappings:
-          oneOf:
-          - $ref: '#/components/schemas/RemoteUserFieldMappings'
-          - type: 'null'
-        remote_data:
-          type:
-          - array
-          - 'null'
+        results:
+          type: array
           items:
-            $ref: '#/components/schemas/RemoteData'
-      description: '# The RemoteUser Object
-
-        ### Description
-
-        The `RemoteUser` object is used to represent a user with a login to the ATS system.
-
-        ### Usage Example
-
-        Fetch from the `LIST RemoteUsers` endpoint to show all users for a third party.'
-      title: RemoteUser
-    AccessRoleEnum:
-      type: string
-      enum:
-      - SUPER_ADMIN
-      - ADMIN
-      - TEAM_MEMBER
-      - LIMITED_TEAM_MEMBER
-      - INTERVIEWER
-      title: AccessRoleEnum
+            $ref: '#/components/schemas/User'
+      title: PaginatedUserList
+    RemoteField:
+      type: object
+      properties:
+        remote_field_class:
+          $ref: '#/components/schemas/RemoteFieldClass'
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteField
+    PaginatedRemoteFieldClassList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldClass'
+      title: PaginatedRemoteFieldClassList
     User_2:
       type: object
       properties:
@@ -1399,6 +1501,167 @@ components:
 
         TODO'
       title: User
+    FieldFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldFormatEnum
+    FieldTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldTypeEnum
+    ReasonEnum:
+      type: string
+      enum:
+      - GENERAL_CUSTOMER_REQUEST
+      - GDPR
+      - OTHER
+      title: ReasonEnum
+    RemoteFieldClass:
+      type: object
+      properties:
+        id:
+          type: string
+        display_name:
+          type: string
+        remote_key_name:
+          type: string
+        description:
+          type: string
+        is_custom:
+          type: boolean
+        is_common_model_field:
+          type: boolean
+        is_required:
+          type: boolean
+        field_type:
+          $ref: '#/components/schemas/FieldTypeEnum'
+        field_format:
+          $ref: '#/components/schemas/FieldFormatEnum'
+        field_choices:
+          type: array
+          items:
+            type: string
+        item_schema:
+          $ref: '#/components/schemas/ItemSchema'
+      title: RemoteFieldClass
+    ItemSchema:
+      type: object
+      properties:
+        item_type:
+          $ref: '#/components/schemas/ItemTypeEnum'
+        item_format:
+          $ref: '#/components/schemas/ItemFormatEnum'
+        item_choices:
+          type: array
+          items:
+            type: string
+      title: ItemSchema
+    ItemTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemTypeEnum
+    ItemFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemFormatEnum
+    users_ignoreCreate_Response_200:
+      type: object
+      properties: {}
+      description: Empty response body
+      title: users_ignoreCreate_Response_200
+    IgnoreCommonModelRequest:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/ReasonEnum'
+        message:
+          type: string
+      required:
+      - reason
+      title: IgnoreCommonModelRequest
+    User_3:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The user's name.
+        email_address:
+          type:
+          - string
+          - 'null'
+          description: The user's email address. This is typically used to identify a user across linked accounts.
+        is_me:
+          type: boolean
+          description: Whether the user is the one who linked this account.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/UserFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The User Object
+
+        ### Description
+
+        The `User` object is used to represent a user within the File Storage account.
+
+        ### Usage Example
+
+        Fetch from the `GET /api/filestorage/v1/users` endpoint and view their users.'
+      title: User
+    UserFieldMappings_2:
+      type: object
+      properties: {}
+      title: UserFieldMappings
     User_4:
       type: object
       properties:
@@ -1445,213 +1708,18 @@ components:
 
         Fetch from the `GET /api/knowledgebase/users` endpoint and view their users.'
       title: User
-    UsersIdGetParametersShowEnumOrigins:
+    UsersGetParametersExpandSchemaItems_2:
       type: string
       enum:
-      - access_role
-      title: UsersIdGetParametersShowEnumOrigins
-    ReasonEnum:
+      - roles
+      - teams
+      title: UsersGetParametersExpandSchemaItems
+    UsersIdGetParametersExpandSchemaItems_2:
       type: string
       enum:
-      - GENERAL_CUSTOMER_REQUEST
-      - GDPR
-      - OTHER
-      title: ReasonEnum
-    PaginatedRemoteFieldClassList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/RemoteFieldClass'
-      title: PaginatedRemoteFieldClassList
-    IgnoreCommonModelRequest:
-      type: object
-      properties:
-        reason:
-          $ref: '#/components/schemas/ReasonEnum'
-        message:
-          type: string
-      required:
-      - reason
-      title: IgnoreCommonModelRequest
-    UsersGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - access_role
-      title: UsersGetParametersShowEnumOrigins
-    ItemSchema:
-      type: object
-      properties:
-        item_type:
-          $ref: '#/components/schemas/ItemTypeEnum'
-        item_format:
-          $ref: '#/components/schemas/ItemFormatEnum'
-        item_choices:
-          type: array
-          items:
-            type: string
-      title: ItemSchema
-    UsersIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - groups
+      - roles
+      - teams
       title: UsersIdGetParametersExpandSchemaItems
-    PaginatedRemoteUserList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/RemoteUser'
-      title: PaginatedRemoteUserList
-    RemoteData:
-      type: object
-      properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
-      required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
-    UserFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: UserFieldMappings
-    RemoteFieldClass:
-      type: object
-      properties:
-        id:
-          type: string
-        display_name:
-          type: string
-        remote_key_name:
-          type: string
-        description:
-          type: string
-        is_custom:
-          type: boolean
-        is_common_model_field:
-          type: boolean
-        is_required:
-          type: boolean
-        field_type:
-          $ref: '#/components/schemas/FieldTypeEnum'
-        field_format:
-          $ref: '#/components/schemas/FieldFormatEnum'
-        field_choices:
-          type: array
-          items:
-            type: string
-        item_schema:
-          $ref: '#/components/schemas/ItemSchema'
-      title: RemoteFieldClass
-    RemoteField:
-      type: object
-      properties:
-        remote_field_class:
-          $ref: '#/components/schemas/RemoteFieldClass'
-        value:
-          type: object
-          additionalProperties:
-            description: Any type
-      required:
-      - remote_field_class
-      title: RemoteField
-    users_ignoreCreate_Response_200:
-      type: object
-      properties: {}
-      description: Empty response body
-      title: users_ignoreCreate_Response_200
-    PaginatedUserList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/User'
-      title: PaginatedUserList
-    RemoteUserFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: RemoteUserFieldMappings
-    FieldFormatEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: FieldFormatEnum
-    FieldTypeEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: FieldTypeEnum
-    UsersIdGetParametersRemoteFields:
-      type: string
-      enum:
-      - access_role
-      title: UsersIdGetParametersRemoteFields
     User_5:
       type: object
       properties:
@@ -1727,13 +1795,15 @@ components:
 
         TODO'
       title: User
-    UsersGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - groups
-      title: UsersGetParametersExpandSchemaItems
   securitySchemes:
     tokenAuth:
       type: http
       scheme: bearer
       description: Token-based authentication with required prefix "Bearer"
+x-refined-from:
+- merge-ats-api-openapi.yaml
+- merge-chat-api-openapi.yaml
+- merge-crm-api-openapi.yaml
+- merge-file-storage-api-openapi.yaml
+- merge-knowledge-base-api-openapi.yaml
+- merge-ticketing-api-openapi.yaml

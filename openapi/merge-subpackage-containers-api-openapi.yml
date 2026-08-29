@@ -1,11 +1,12 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Accounting subpackage_containers API
+  title: Knowledge Base Subpackage Containers API
   version: 1.0.0
 servers:
 - url: https://api.merge.dev/api
 - url: https://api-eu.merge.dev/api
 - url: https://api-ap.merge.dev/api
+- url: https://api-ap.merge.dev/api/knowledgebase/v1
 tags:
 - name: subpackage_containers
 paths:
@@ -179,6 +180,39 @@ paths:
                 $ref: '#/components/schemas/Container'
 components:
   schemas:
+    ContainerTypeEnum:
+      type: string
+      enum:
+      - FOLDER
+      - SPACE
+      - COLLECTION
+      - SECTION
+      - CATEGORY
+      - DATABASE
+      description: '* `FOLDER` - FOLDER
+
+        * `SPACE` - SPACE
+
+        * `COLLECTION` - COLLECTION
+
+        * `SECTION` - SECTION
+
+        * `CATEGORY` - CATEGORY
+
+        * `DATABASE` - DATABASE'
+      title: ContainerTypeEnum
+    VisibilityEnum:
+      type: string
+      enum:
+      - PUBLIC
+      - INTERNAL
+      - RESTRICTED
+      description: '* `PUBLIC` - PUBLIC
+
+        * `INTERNAL` - INTERNAL
+
+        * `RESTRICTED` - RESTRICTED'
+      title: VisibilityEnum
     Status3c6Enum:
       type: string
       enum:
@@ -194,139 +228,6 @@ components:
 
         * `TRASH` - TRASH'
       title: Status3c6Enum
-    Permission:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        user:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        group:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        type:
-          oneOf:
-          - $ref: '#/components/schemas/PermissionTypeEnum'
-          - type: 'null'
-          description: 'Denotes what type of people have access to the Article or Container.
-
-
-            * `USER` - USER
-
-            * `GROUP` - GROUP
-
-            * `COMPANY` - COMPANY
-
-            * `ANYONE` - ANYONE'
-        roles:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/RolesEnum'
-          description: The permissions that the user or group has for the Article or Container. It is possible for a user or group to have multiple roles, such as viewing & uploading.
-        remote_was_deleted:
-          type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-        field_mappings:
-          oneOf:
-          - $ref: '#/components/schemas/PermissionFieldMappings'
-          - type: 'null'
-      description: '# The Permission Object
-
-        ### Description
-
-        The `Permission` object is used to represent a user''s or group''s access to an article or container. Permissions are unexpanded by default.
-
-        ### Usage Example'
-      title: Permission
-    ContainersGetParametersType:
-      type: string
-      enum:
-      - ''
-      - CATEGORY
-      - COLLECTION
-      - DATABASE
-      - FOLDER
-      - SECTION
-      - SPACE
-      title: ContainersGetParametersType
-    PermissionFieldMappings:
-      type: object
-      properties: {}
-      title: PermissionFieldMappings
-    PermissionTypeEnum:
-      type: string
-      enum:
-      - USER
-      - GROUP
-      - COMPANY
-      - ANYONE
-      description: '* `USER` - USER
-
-        * `GROUP` - GROUP
-
-        * `COMPANY` - COMPANY
-
-        * `ANYONE` - ANYONE'
-      title: PermissionTypeEnum
-    ContainersIdGetParametersExpand:
-      type: string
-      enum:
-      - parent_article
-      - parent_article,parent_container
-      - parent_container
-      - permissions
-      - permissions,parent_article
-      - permissions,parent_article,parent_container
-      - permissions,parent_container
-      title: ContainersIdGetParametersExpand
-    PaginatedContainerList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Container'
-      title: PaginatedContainerList
-    ContainersGetParametersExpand:
-      type: string
-      enum:
-      - parent_article
-      - parent_article,parent_container
-      - parent_container
-      - permissions
-      - permissions,parent_article
-      - permissions,parent_article,parent_container
-      - permissions,parent_container
-      title: ContainersGetParametersExpand
     Container:
       type: object
       properties:
@@ -460,6 +361,41 @@ components:
       type: object
       properties: {}
       title: ContainerFieldMappings
+    PermissionFieldMappings:
+      type: object
+      properties: {}
+      title: PermissionFieldMappings
+    PaginatedContainerList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Container'
+      title: PaginatedContainerList
+    PermissionTypeEnum:
+      type: string
+      enum:
+      - USER
+      - GROUP
+      - COMPANY
+      - ANYONE
+      description: '* `USER` - USER
+
+        * `GROUP` - GROUP
+
+        * `COMPANY` - COMPANY
+
+        * `ANYONE` - ANYONE'
+      title: PermissionTypeEnum
     RemoteData:
       type: object
       properties:
@@ -481,39 +417,6 @@ components:
 
         TODO'
       title: RemoteData
-    VisibilityEnum:
-      type: string
-      enum:
-      - PUBLIC
-      - INTERNAL
-      - RESTRICTED
-      description: '* `PUBLIC` - PUBLIC
-
-        * `INTERNAL` - INTERNAL
-
-        * `RESTRICTED` - RESTRICTED'
-      title: VisibilityEnum
-    ContainerTypeEnum:
-      type: string
-      enum:
-      - FOLDER
-      - SPACE
-      - COLLECTION
-      - SECTION
-      - CATEGORY
-      - DATABASE
-      description: '* `FOLDER` - FOLDER
-
-        * `SPACE` - SPACE
-
-        * `COLLECTION` - COLLECTION
-
-        * `SECTION` - SECTION
-
-        * `CATEGORY` - CATEGORY
-
-        * `DATABASE` - DATABASE'
-      title: ContainerTypeEnum
     RolesEnum:
       type: string
       enum:
@@ -526,6 +429,104 @@ components:
 
         * `OWNER` - OWNER'
       title: RolesEnum
+    Permission:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        user:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        group:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        type:
+          oneOf:
+          - $ref: '#/components/schemas/PermissionTypeEnum'
+          - type: 'null'
+          description: 'Denotes what type of people have access to the Article or Container.
+
+
+            * `USER` - USER
+
+            * `GROUP` - GROUP
+
+            * `COMPANY` - COMPANY
+
+            * `ANYONE` - ANYONE'
+        roles:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RolesEnum'
+          description: The permissions that the user or group has for the Article or Container. It is possible for a user or group to have multiple roles, such as viewing & uploading.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/PermissionFieldMappings'
+          - type: 'null'
+      description: '# The Permission Object
+
+        ### Description
+
+        The `Permission` object is used to represent a user''s or group''s access to an article or container. Permissions are unexpanded by default.
+
+        ### Usage Example'
+      title: Permission
+    ContainersGetParametersType:
+      type: string
+      enum:
+      - ''
+      - CATEGORY
+      - COLLECTION
+      - DATABASE
+      - FOLDER
+      - SECTION
+      - SPACE
+      title: ContainersGetParametersType
+    ContainersGetParametersExpand:
+      type: string
+      enum:
+      - parent_article
+      - parent_article,parent_container
+      - parent_container
+      - permissions
+      - permissions,parent_article
+      - permissions,parent_article,parent_container
+      - permissions,parent_container
+      title: ContainersGetParametersExpand
+    ContainersIdGetParametersExpand:
+      type: string
+      enum:
+      - parent_article
+      - parent_article,parent_container
+      - parent_container
+      - permissions
+      - permissions,parent_article
+      - permissions,parent_article,parent_container
+      - permissions,parent_container
+      title: ContainersIdGetParametersExpand
   securitySchemes:
     tokenAuth:
       type: http

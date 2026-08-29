@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Accounting subpackage_bankInfo API
+  title: HRIS Subpackage Bank Info API
   version: 1.0.0
 servers:
 - url: https://api.merge.dev/api
@@ -220,6 +220,22 @@ components:
       - SAVINGS
       - CHECKING
       title: AccountTypeEnum
+    BankInfoIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - employee
+      title: BankInfoIdGetParametersExpandSchemaItems
+    BankInfoGetParametersAccountType:
+      type: string
+      enum:
+      - CHECKING
+      - SAVINGS
+      title: BankInfoGetParametersAccountType
+    BankInfoGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - account_type
+      title: BankInfoGetParametersShowEnumOrigins
     BankInfo:
       type: object
       properties:
@@ -300,27 +316,6 @@ components:
       enum:
       - account_type
       title: BankInfoIdGetParametersRemoteFields
-    BankInfoGetParametersRemoteFields:
-      type: string
-      enum:
-      - account_type
-      title: BankInfoGetParametersRemoteFields
-    BankInfoIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - employee
-      title: BankInfoIdGetParametersExpandSchemaItems
-    BankInfoGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - account_type
-      title: BankInfoGetParametersShowEnumOrigins
-    BankInfoGetParametersAccountType:
-      type: string
-      enum:
-      - CHECKING
-      - SAVINGS
-      title: BankInfoGetParametersAccountType
     RemoteData:
       type: object
       properties:
@@ -342,6 +337,11 @@ components:
 
         TODO'
       title: RemoteData
+    BankInfoGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - employee
+      title: BankInfoGetParametersExpandSchemaItems
     PaginatedBankInfoList:
       type: object
       properties:
@@ -358,22 +358,6 @@ components:
           items:
             $ref: '#/components/schemas/BankInfo'
       title: PaginatedBankInfoList
-    BankInfoIdGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - account_type
-      title: BankInfoIdGetParametersShowEnumOrigins
-    BankInfoGetParametersOrderBy:
-      type: string
-      enum:
-      - -remote_created_at
-      - remote_created_at
-      title: BankInfoGetParametersOrderBy
-    BankInfoGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - employee
-      title: BankInfoGetParametersExpandSchemaItems
     BankInfoFieldMappings:
       type: object
       properties:
@@ -386,6 +370,22 @@ components:
           additionalProperties:
             description: Any type
       title: BankInfoFieldMappings
+    BankInfoIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - account_type
+      title: BankInfoIdGetParametersShowEnumOrigins
+    BankInfoGetParametersOrderBy:
+      type: string
+      enum:
+      - -remote_created_at
+      - remote_created_at
+      title: BankInfoGetParametersOrderBy
+    BankInfoGetParametersRemoteFields:
+      type: string
+      enum:
+      - account_type
+      title: BankInfoGetParametersRemoteFields
   securitySchemes:
     tokenAuth:
       type: http

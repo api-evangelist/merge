@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Accounting subpackage_engagements API
+  title: CRM Subpackage Engagements API
   version: 1.0.0
 servers:
 - url: https://api.merge.dev/api
@@ -416,14 +416,71 @@ paths:
                 $ref: '#/components/schemas/PaginatedRemoteFieldClassList'
 components:
   schemas:
-    EngagementsIdGetParametersExpandSchemaItems:
+    EngagementFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: EngagementFieldMappings
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    ItemTypeEnum:
       type: string
       enum:
-      - account
-      - contacts
-      - engagement_type
-      - owner
-      title: EngagementsIdGetParametersExpandSchemaItems
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemTypeEnum
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    FieldFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldFormatEnum
     ErrorValidationProblem:
       type: object
       properties:
@@ -446,53 +503,6 @@ components:
       - detail
       - problem_type
       title: ErrorValidationProblem
-    PaginatedEngagementList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Engagement'
-      title: PaginatedEngagementList
-    RemoteFieldRequest:
-      type: object
-      properties:
-        remote_field_class:
-          type: string
-          format: uuid
-        value:
-          type: object
-          additionalProperties:
-            description: Any type
-      required:
-      - remote_field_class
-      title: RemoteFieldRequest
-    PatchedEngagementEndpointRequest:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/PatchedEngagementRequest'
-      required:
-      - model
-      title: PatchedEngagementEndpointRequest
-    ItemTypeEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: ItemTypeEnum
     ItemFormatEnum:
       type: string
       enum:
@@ -503,62 +513,6 @@ components:
       - bool
       - list
       title: ItemFormatEnum
-    EngagementFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: EngagementFieldMappings
-    WarningValidationProblem:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
-          type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
-      required:
-      - title
-      - detail
-      - problem_type
-      title: WarningValidationProblem
-    EngagementEndpointRequest:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/EngagementRequest'
-      required:
-      - model
-      title: EngagementEndpointRequest
-    DebugModeLog:
-      type: object
-      properties:
-        log_id:
-          type: string
-        dashboard_view:
-          type: string
-        log_summary:
-          $ref: '#/components/schemas/DebugModelLogSummary'
-      required:
-      - log_id
-      - dashboard_view
-      - log_summary
-      title: DebugModeLog
     MetaResponse:
       type: object
       properties:
@@ -583,6 +537,208 @@ components:
       - has_conditional_params
       - has_required_linked_account_params
       title: MetaResponse
+    RemoteField:
+      type: object
+      properties:
+        remote_field_class:
+          $ref: '#/components/schemas/RemoteFieldClass'
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteField
+    DirectionEnum:
+      type: string
+      enum:
+      - INBOUND
+      - OUTBOUND
+      title: DirectionEnum
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    EngagementResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/Engagement'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: EngagementResponse
+    EngagementsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - account
+      - contacts
+      - engagement_type
+      - owner
+      title: EngagementsIdGetParametersExpandSchemaItems
+    EngagementsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - account
+      - contacts
+      - engagement_type
+      - owner
+      title: EngagementsGetParametersExpandSchemaItems
+    RemoteFieldClass:
+      type: object
+      properties:
+        id:
+          type: string
+        display_name:
+          type: string
+        remote_key_name:
+          type: string
+        description:
+          type: string
+        is_custom:
+          type: boolean
+        is_common_model_field:
+          type: boolean
+        is_required:
+          type: boolean
+        field_type:
+          $ref: '#/components/schemas/FieldTypeEnum'
+        field_format:
+          $ref: '#/components/schemas/FieldFormatEnum'
+        field_choices:
+          type: array
+          items:
+            type: string
+        item_schema:
+          $ref: '#/components/schemas/ItemSchema'
+      title: RemoteFieldClass
+    ItemSchema:
+      type: object
+      properties:
+        item_type:
+          $ref: '#/components/schemas/ItemTypeEnum'
+        item_format:
+          $ref: '#/components/schemas/ItemFormatEnum'
+        item_choices:
+          type: array
+          items:
+            type: string
+      title: ItemSchema
+    PatchedEngagementRequest:
+      type: object
+      properties:
+        owner:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The engagement's owner.
+        content:
+          type:
+          - string
+          - 'null'
+          description: The engagement's content.
+        subject:
+          type:
+          - string
+          - 'null'
+          description: The engagement's subject.
+        direction:
+          oneOf:
+          - $ref: '#/components/schemas/DirectionEnum'
+          - type: 'null'
+          description: The engagement's direction.
+        engagement_type:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The engagement type of the engagement.
+        start_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The time at which the engagement started.
+        end_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The time at which the engagement ended.
+        account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The account of the engagement.
+        contacts:
+          type: array
+          items:
+            type: string
+            format: uuid
+        engagement_url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The engagement's URL in the remote system.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldRequest'
+      description: '# The Engagement Object
+
+        ### Description
+
+        The `Engagement` object is used to represent an interaction noted in a CRM system.
+
+        ### Usage Example
+
+        TODO'
+      title: PatchedEngagementRequest
     EngagementRequest:
       type: object
       properties:
@@ -668,6 +824,14 @@ components:
 
         TODO'
       title: EngagementRequest
+    PatchedEngagementEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/PatchedEngagementRequest'
+      required:
+      - model
+      title: PatchedEngagementEndpointRequest
     PaginatedRemoteFieldClassList:
       type: object
       properties:
@@ -684,93 +848,38 @@ components:
           items:
             $ref: '#/components/schemas/RemoteFieldClass'
       title: PaginatedRemoteFieldClassList
-    ItemSchema:
+    DebugModeLog:
       type: object
       properties:
-        item_type:
-          $ref: '#/components/schemas/ItemTypeEnum'
-        item_format:
-          $ref: '#/components/schemas/ItemFormatEnum'
-        item_choices:
-          type: array
-          items:
-            type: string
-      title: ItemSchema
-    RemoteData:
-      type: object
-      properties:
-        path:
+        log_id:
           type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
       required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
-    ValidationProblemSource:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    EngagementEndpointRequest:
       type: object
       properties:
-        pointer:
-          type: string
+        model:
+          $ref: '#/components/schemas/EngagementRequest'
       required:
-      - pointer
-      title: ValidationProblemSource
-    RemoteField:
-      type: object
-      properties:
-        remote_field_class:
-          $ref: '#/components/schemas/RemoteFieldClass'
-        value:
-          type: object
-          additionalProperties:
-            description: Any type
-      required:
-      - remote_field_class
-      title: RemoteField
-    RemoteFieldClass:
-      type: object
-      properties:
-        id:
-          type: string
-        display_name:
-          type: string
-        remote_key_name:
-          type: string
-        description:
-          type: string
-        is_custom:
-          type: boolean
-        is_common_model_field:
-          type: boolean
-        is_required:
-          type: boolean
-        field_type:
-          $ref: '#/components/schemas/FieldTypeEnum'
-        field_format:
-          $ref: '#/components/schemas/FieldFormatEnum'
-        field_choices:
-          type: array
-          items:
-            type: string
-        item_schema:
-          $ref: '#/components/schemas/ItemSchema'
-      title: RemoteFieldClass
-    DirectionEnum:
+      - model
+      title: EngagementEndpointRequest
+    FieldTypeEnum:
       type: string
       enum:
-      - INBOUND
-      - OUTBOUND
-      title: DirectionEnum
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldTypeEnum
     Engagement:
       type: object
       properties:
@@ -873,166 +982,57 @@ components:
 
         TODO'
       title: Engagement
-    PatchedEngagementRequest:
+    WarningValidationProblem:
       type: object
       properties:
-        owner:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The engagement's owner.
-        content:
-          type:
-          - string
-          - 'null'
-          description: The engagement's content.
-        subject:
-          type:
-          - string
-          - 'null'
-          description: The engagement's subject.
-        direction:
-          oneOf:
-          - $ref: '#/components/schemas/DirectionEnum'
-          - type: 'null'
-          description: The engagement's direction.
-        engagement_type:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The engagement type of the engagement.
-        start_time:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The time at which the engagement started.
-        end_time:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The time at which the engagement ended.
-        account:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The account of the engagement.
-        contacts:
-          type: array
-          items:
-            type: string
-            format: uuid
-        engagement_url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The engagement's URL in the remote system.
-        integration_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        linked_account_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        remote_fields:
-          type: array
-          items:
-            $ref: '#/components/schemas/RemoteFieldRequest'
-      description: '# The Engagement Object
-
-        ### Description
-
-        The `Engagement` object is used to represent an interaction noted in a CRM system.
-
-        ### Usage Example
-
-        TODO'
-      title: PatchedEngagementRequest
-    FieldFormatEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: FieldFormatEnum
-    EngagementsGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - account
-      - contacts
-      - engagement_type
-      - owner
-      title: EngagementsGetParametersExpandSchemaItems
-    DebugModelLogSummary:
-      type: object
-      properties:
-        url:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
           type: string
-        method:
+        detail:
           type: string
-        status_code:
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
           type: integer
       required:
-      - url
-      - method
-      - status_code
-      title: DebugModelLogSummary
-    LinkedAccountStatus:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    PaginatedEngagementList:
       type: object
       properties:
-        linked_account_status:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Engagement'
+      title: PaginatedEngagementList
+    RemoteFieldRequest:
+      type: object
+      properties:
+        remote_field_class:
           type: string
-        can_make_request:
-          type: boolean
+          format: uuid
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
       required:
-      - linked_account_status
-      - can_make_request
-      title: LinkedAccountStatus
-    FieldTypeEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: FieldTypeEnum
-    EngagementResponse:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/Engagement'
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/WarningValidationProblem'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorValidationProblem'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/DebugModeLog'
-      required:
-      - model
-      - warnings
-      - errors
-      title: EngagementResponse
+      - remote_field_class
+      title: RemoteFieldRequest
   securitySchemes:
     tokenAuth:
       type: http

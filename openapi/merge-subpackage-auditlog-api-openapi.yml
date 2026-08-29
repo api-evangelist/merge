@@ -1,11 +1,9 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Accounting subpackage_auditLog API
+  title: Agent Handler Subpackage Audit Log API
   version: 1.0.0
 servers:
-- url: https://api.merge.dev/api
-- url: https://api-eu.merge.dev/api
-- url: https://api-ap.merge.dev/api
+- url: https://ah-api.merge.dev
 tags:
 - name: subpackage_auditLog
 paths:
@@ -71,46 +69,29 @@ paths:
                 $ref: '#/components/schemas/PaginatedAuditLogEventPublicList'
 components:
   schemas:
-    AuditLogEventPublic:
+    PaginatedAuditLogEventPublicList:
       type: object
       properties:
-        id:
-          type: string
-          description: Unique identifier for the audit log event
-        user_name:
-          type: string
-          description: Name of the user who performed the action
-        user_email:
-          type: string
-          description: Email of the user who performed the action
-        role:
+        count:
+          type: integer
+        next:
           type:
           - string
           - 'null'
-          description: Role of the user at the time of the action
-        ip_address:
-          type: string
-          description: IP address from which the action was performed
-        event_type:
-          type: string
-          description: Type of audit event (e.g., TOOL_PACK_CREATED, USER_UPDATED)
-        event_description:
-          type: string
-          description: Human-readable description of the event
-        created_at:
-          type: string
-          format: date-time
-          description: Timestamp when the event occurred
+          format: uri
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuditLogEventPublic'
       required:
-      - id
-      - user_name
-      - user_email
-      - role
-      - ip_address
-      - event_type
-      - event_description
-      - created_at
-      title: AuditLogEventPublic
+      - count
+      - results
+      title: PaginatedAuditLogEventPublicList
     ApiV1AuditLogGetParametersEventType:
       type: string
       enum:
@@ -202,29 +183,46 @@ components:
       - USER_PASSWORD_RESET
       - USER_UPDATED
       title: ApiV1AuditLogGetParametersEventType
-    PaginatedAuditLogEventPublicList:
+    AuditLogEventPublic:
       type: object
       properties:
-        count:
-          type: integer
-        next:
+        id:
+          type: string
+          description: Unique identifier for the audit log event
+        user_name:
+          type: string
+          description: Name of the user who performed the action
+        user_email:
+          type: string
+          description: Email of the user who performed the action
+        role:
           type:
           - string
           - 'null'
-          format: uri
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/AuditLogEventPublic'
+          description: Role of the user at the time of the action
+        ip_address:
+          type: string
+          description: IP address from which the action was performed
+        event_type:
+          type: string
+          description: Type of audit event (e.g., TOOL_PACK_CREATED, USER_UPDATED)
+        event_description:
+          type: string
+          description: Human-readable description of the event
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the event occurred
       required:
-      - count
-      - results
-      title: PaginatedAuditLogEventPublicList
+      - id
+      - user_name
+      - user_email
+      - role
+      - ip_address
+      - event_type
+      - event_description
+      - created_at
+      title: AuditLogEventPublic
   securitySchemes:
     tokenAuth:
       type: http

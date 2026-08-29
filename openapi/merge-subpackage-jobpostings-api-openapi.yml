@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Accounting subpackage_jobPostings API
+  title: ATS Subpackage Job Postings API
   version: 1.0.0
 servers:
 - url: https://api.merge.dev/api
@@ -172,15 +172,20 @@ paths:
                 $ref: '#/components/schemas/JobPosting'
 components:
   schemas:
-    JobPostingStatusEnum:
+    JobPostingsGetParametersStatus:
       type: string
       enum:
-      - PUBLISHED
       - CLOSED
       - DRAFT
       - INTERNAL
       - PENDING
-      title: JobPostingStatusEnum
+      - PUBLISHED
+      title: JobPostingsGetParametersStatus
+    JobPostingsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - job
+      title: JobPostingsIdGetParametersExpandSchemaItems
     UrlTypeEnum:
       type: string
       enum:
@@ -192,58 +197,27 @@ components:
       - OTHER
       - JOB_POSTING
       title: UrlTypeEnum
-    JobPostingsIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - job
-      title: JobPostingsIdGetParametersExpandSchemaItems
-    JobPostingFieldMappings:
+    RemoteData:
       type: object
       properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: JobPostingFieldMappings
-    Url:
-      type: object
-      properties:
-        created_at:
+        path:
           type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        value:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The site's url.
-        url_type:
-          oneOf:
-          - $ref: '#/components/schemas/UrlTypeEnum'
-          - type: 'null'
-          description: The type of site.
-        remote_was_deleted:
-          type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-      description: '# The Url Object
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
 
         ### Description
 
-        The `Url` object is used to represent hyperlinks associated with the parent model.
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
 
         ### Usage Example
 
-        Fetch from the `GET Candidate` endpoint and view their website urls.'
-      title: Url
+        TODO'
+      title: RemoteData
     JobPosting:
       type: object
       properties:
@@ -329,27 +303,41 @@ components:
 
         Fetch from the `LIST JobPostings` endpoint to show all job postings.'
       title: JobPosting
-    RemoteData:
+    Url:
       type: object
       properties:
-        path:
+        created_at:
           type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
-      required:
-      - path
-      description: '# The RemoteData Object
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        value:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The site's url.
+        url_type:
+          oneOf:
+          - $ref: '#/components/schemas/UrlTypeEnum'
+          - type: 'null'
+          description: The type of site.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+      description: '# The Url Object
 
         ### Description
 
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
+        The `Url` object is used to represent hyperlinks associated with the parent model.
 
         ### Usage Example
 
-        TODO'
-      title: RemoteData
+        Fetch from the `GET Candidate` endpoint and view their website urls.'
+      title: Url
     PaginatedJobPostingList:
       type: object
       properties:
@@ -371,15 +359,27 @@ components:
       enum:
       - job
       title: JobPostingsGetParametersExpandSchemaItems
-    JobPostingsGetParametersStatus:
+    JobPostingStatusEnum:
       type: string
       enum:
+      - PUBLISHED
       - CLOSED
       - DRAFT
       - INTERNAL
       - PENDING
-      - PUBLISHED
-      title: JobPostingsGetParametersStatus
+      title: JobPostingStatusEnum
+    JobPostingFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: JobPostingFieldMappings
   securitySchemes:
     tokenAuth:
       type: http

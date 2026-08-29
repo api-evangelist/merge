@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Accounting subpackage_trackingCategories API
+  title: Accounting Subpackage Tracking Categories API
   version: 1.0.0
 servers:
 - url: https://api.merge.dev/api
@@ -211,55 +211,6 @@ paths:
                 $ref: '#/components/schemas/TrackingCategory'
 components:
   schemas:
-    PaginatedTrackingCategoryList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/TrackingCategory'
-      title: PaginatedTrackingCategoryList
-    TrackingCategoriesGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - status
-      title: TrackingCategoriesGetParametersShowEnumOrigins
-    Status7d1Enum:
-      type: string
-      enum:
-      - ACTIVE
-      - ARCHIVED
-      title: Status7d1Enum
-    TrackingCategoryFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: TrackingCategoryFieldMappings
-    TrackingCategoriesIdGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - status
-      title: TrackingCategoriesIdGetParametersShowEnumOrigins
-    TrackingCategoriesGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - company
-      title: TrackingCategoriesGetParametersExpandSchemaItems
     TrackingCategoriesIdGetParametersRemoteFields:
       type: string
       enum:
@@ -272,17 +223,28 @@ components:
       - CLASS
       - DEPARTMENT
       title: TrackingCategoriesGetParametersCategoryType
-    CategoryTypeEnum:
+    TrackingCategoriesGetParametersRemoteFields:
       type: string
       enum:
-      - CLASS
-      - DEPARTMENT
-      title: CategoryTypeEnum
-    TrackingCategoriesIdGetParametersExpandSchemaItems:
+      - status
+      title: TrackingCategoriesGetParametersRemoteFields
+    TrackingCategoriesIdGetParametersShowEnumOrigins:
       type: string
       enum:
-      - company
-      title: TrackingCategoriesIdGetParametersExpandSchemaItems
+      - status
+      title: TrackingCategoriesIdGetParametersShowEnumOrigins
+    TrackingCategoryFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: TrackingCategoryFieldMappings
     TrackingCategoriesGetParametersStatus:
       type: string
       enum:
@@ -290,11 +252,6 @@ components:
       - ACTIVE
       - ARCHIVED
       title: TrackingCategoriesGetParametersStatus
-    TrackingCategoriesGetParametersRemoteFields:
-      type: string
-      enum:
-      - status
-      title: TrackingCategoriesGetParametersRemoteFields
     TrackingCategory:
       type: object
       properties:
@@ -358,6 +315,49 @@ components:
 
         Fetch from the `GET TrackingCategory` endpoint and view a company''s tracking category.'
       title: TrackingCategory
+    Status7d1Enum:
+      type: string
+      enum:
+      - ACTIVE
+      - ARCHIVED
+      title: Status7d1Enum
+    TrackingCategoriesGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - company
+      title: TrackingCategoriesGetParametersExpandSchemaItems
+    TrackingCategoriesIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - company
+      title: TrackingCategoriesIdGetParametersExpandSchemaItems
+    CategoryTypeEnum:
+      type: string
+      enum:
+      - CLASS
+      - DEPARTMENT
+      title: CategoryTypeEnum
+    PaginatedTrackingCategoryList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TrackingCategory'
+      title: PaginatedTrackingCategoryList
+    TrackingCategoriesGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - status
+      title: TrackingCategoriesGetParametersShowEnumOrigins
   securitySchemes:
     tokenAuth:
       type: http

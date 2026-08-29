@@ -1,11 +1,9 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Accounting subpackage_registeredUsers API
+  title: Agent Handler Subpackage Registered Users API
   version: 1.0.0
 servers:
-- url: https://api.merge.dev/api
-- url: https://api-eu.merge.dev/api
-- url: https://api-ap.merge.dev/api
+- url: https://ah-api.merge.dev
 tags:
 - name: subpackage_registeredUsers
 paths:
@@ -158,6 +156,35 @@ paths:
               $ref: '#/components/schemas/PatchedRegisteredUserPublicRequest'
 components:
   schemas:
+    RegisteredUserPublicRequest:
+      type: object
+      properties:
+        id:
+          type: string
+        origin_user_id:
+          type: string
+          description: Unique identifier for Registered User
+        origin_user_name:
+          type: string
+          description: The human readable name of Registered User
+        shared_credential_group:
+          $ref: '#/components/schemas/SharedCredentialGroup'
+          description: Object used to identify which the groupings a Registered User is part of and can share credentials across.
+        user_type:
+          oneOf:
+          - $ref: '#/components/schemas/RegisteredUserPublicRequestUserType'
+          - type: 'null'
+          description: 'ENUM of `HUMAN` or `SYSTEM`
+
+
+            * `HUMAN` - HUMAN
+
+            * `SYSTEM` - SYSTEM'
+      required:
+      - id
+      - origin_user_id
+      - origin_user_name
+      title: RegisteredUserPublicRequest
     RegisteredUserPublicRequestUserType:
       type: string
       enum:
@@ -196,6 +223,19 @@ components:
 
             * `SYSTEM` - SYSTEM'
       title: PatchedRegisteredUserPublicRequest
+    PatchedRegisteredUserPublicRequestUserType:
+      type: string
+      enum:
+      - HUMAN
+      - SYSTEM
+      default: HUMAN
+      description: 'ENUM of `HUMAN` or `SYSTEM`
+
+
+        * `HUMAN` - HUMAN
+
+        * `SYSTEM` - SYSTEM'
+      title: PatchedRegisteredUserPublicRequestUserType
     RegisteredUserPublicResponse:
       type: object
       properties:
@@ -232,6 +272,25 @@ components:
       - shared_credential_group
       - authenticated_connectors
       title: RegisteredUserPublicResponse
+    SharedCredentialGroup:
+      type: object
+      properties:
+        origin_company_id:
+          type:
+          - string
+          - 'null'
+          description: Unique identifier for the company of the Registered User
+        origin_company_name:
+          type:
+          - string
+          - 'null'
+          description: The human readable name of the company of the Registered User
+        custom_groupings:
+          type: object
+          additionalProperties:
+            type: string
+          description: Optional identifier / grouping that you can provide to further segment Registered Users
+      title: SharedCredentialGroup
     PaginatedRegisteredUserPublicResponseList:
       type: object
       properties:
@@ -255,67 +314,6 @@ components:
       - count
       - results
       title: PaginatedRegisteredUserPublicResponseList
-    RegisteredUserPublicRequest:
-      type: object
-      properties:
-        id:
-          type: string
-        origin_user_id:
-          type: string
-          description: Unique identifier for Registered User
-        origin_user_name:
-          type: string
-          description: The human readable name of Registered User
-        shared_credential_group:
-          $ref: '#/components/schemas/SharedCredentialGroup'
-          description: Object used to identify which the groupings a Registered User is part of and can share credentials across.
-        user_type:
-          oneOf:
-          - $ref: '#/components/schemas/RegisteredUserPublicRequestUserType'
-          - type: 'null'
-          description: 'ENUM of `HUMAN` or `SYSTEM`
-
-
-            * `HUMAN` - HUMAN
-
-            * `SYSTEM` - SYSTEM'
-      required:
-      - id
-      - origin_user_id
-      - origin_user_name
-      title: RegisteredUserPublicRequest
-    SharedCredentialGroup:
-      type: object
-      properties:
-        origin_company_id:
-          type:
-          - string
-          - 'null'
-          description: Unique identifier for the company of the Registered User
-        origin_company_name:
-          type:
-          - string
-          - 'null'
-          description: The human readable name of the company of the Registered User
-        custom_groupings:
-          type: object
-          additionalProperties:
-            type: string
-          description: Optional identifier / grouping that you can provide to further segment Registered Users
-      title: SharedCredentialGroup
-    PatchedRegisteredUserPublicRequestUserType:
-      type: string
-      enum:
-      - HUMAN
-      - SYSTEM
-      default: HUMAN
-      description: 'ENUM of `HUMAN` or `SYSTEM`
-
-
-        * `HUMAN` - HUMAN
-
-        * `SYSTEM` - SYSTEM'
-      title: PatchedRegisteredUserPublicRequestUserType
   securitySchemes:
     tokenAuth:
       type: http

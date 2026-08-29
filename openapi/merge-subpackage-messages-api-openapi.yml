@@ -1,11 +1,11 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Accounting subpackage_messages API
+  title: Chat Subpackage Messages API
   version: 1.0.0
 servers:
-- url: https://api.merge.dev/api
-- url: https://api-eu.merge.dev/api
-- url: https://api-ap.merge.dev/api
+- url: https://api.merge.dev/api/chat/v1
+- url: https://api-eu.merge.dev/api/chat/v1
+- url: https://api-ap.merge.dev/api/chat/v1
 tags:
 - name: subpackage_messages
 paths:
@@ -235,6 +235,22 @@ paths:
                 $ref: '#/components/schemas/PaginatedMessageList'
 components:
   schemas:
+    PaginatedMessageList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+      title: PaginatedMessageList
     Message:
       type: object
       properties:
@@ -313,34 +329,18 @@ components:
 
         Fetch from the `GET /api/chat/v1/messages` endpoint and view their message.'
       title: Message
-    PaginatedMessageList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Message'
-      title: PaginatedMessageList
-    MessagesMessageIdRepliesGetParametersOrderBy:
-      type: string
-      enum:
-      - -remote_created_at
-      - remote_created_at
-      title: MessagesMessageIdRepliesGetParametersOrderBy
     MessagesGetParametersOrderBy:
       type: string
       enum:
       - -remote_created_at
       - remote_created_at
       title: MessagesGetParametersOrderBy
+    MessagesMessageIdRepliesGetParametersOrderBy:
+      type: string
+      enum:
+      - -remote_created_at
+      - remote_created_at
+      title: MessagesMessageIdRepliesGetParametersOrderBy
   securitySchemes:
     tokenAuth:
       type: http

@@ -1,11 +1,11 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Accounting subpackage_availableActions API
+  title: Chat Subpackage Available Actions API
   version: 1.0.0
 servers:
-- url: https://api.merge.dev/api
-- url: https://api-eu.merge.dev/api
-- url: https://api-ap.merge.dev/api
+- url: https://api.merge.dev/api/chat/v1
+- url: https://api-eu.merge.dev/api/chat/v1
+- url: https://api-ap.merge.dev/api/chat/v1
 tags:
 - name: subpackage_availableActions
 paths:
@@ -38,6 +38,39 @@ paths:
                 $ref: '#/components/schemas/AvailableActions'
 components:
   schemas:
+    ModelOperation:
+      type: object
+      properties:
+        model_name:
+          type: string
+        available_operations:
+          type: array
+          items:
+            type: string
+        required_post_parameters:
+          type: array
+          items:
+            type: string
+        supported_fields:
+          type: array
+          items:
+            type: string
+      required:
+      - model_name
+      - available_operations
+      - required_post_parameters
+      - supported_fields
+      description: '# The ModelOperation Object
+
+        ### Description
+
+        The `ModelOperation` object is used to represent the operations that are currently supported for a given model.
+
+
+        ### Usage Example
+
+        View what operations are supported for the `Candidate` endpoint.'
+      title: ModelOperation
     AccountIntegration:
       type: object
       properties:
@@ -87,39 +120,18 @@ components:
       required:
       - name
       title: AccountIntegration
-    ModelOperation:
-      type: object
-      properties:
-        model_name:
-          type: string
-        available_operations:
-          type: array
-          items:
-            type: string
-        required_post_parameters:
-          type: array
-          items:
-            type: string
-        supported_fields:
-          type: array
-          items:
-            type: string
-      required:
-      - model_name
-      - available_operations
-      - required_post_parameters
-      - supported_fields
-      description: '# The ModelOperation Object
-
-        ### Description
-
-        The `ModelOperation` object is used to represent the operations that are currently supported for a given model.
-
-
-        ### Usage Example
-
-        View what operations are supported for the `Candidate` endpoint.'
-      title: ModelOperation
+    CategoriesEnum:
+      type: string
+      enum:
+      - hris
+      - ats
+      - accounting
+      - ticketing
+      - crm
+      - mktg
+      - filestorage
+      - knowledgebase
+      title: CategoriesEnum
     AvailableActions:
       type: object
       properties:
@@ -150,18 +162,6 @@ components:
       properties: {}
       description: Category or categories this integration is in beta status for.
       title: AccountIntegrationCategoryBetaStatus
-    CategoriesEnum:
-      type: string
-      enum:
-      - hris
-      - ats
-      - accounting
-      - ticketing
-      - crm
-      - mktg
-      - filestorage
-      - knowledgebase
-      title: CategoriesEnum
   securitySchemes:
     tokenAuth:
       type: http

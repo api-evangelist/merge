@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Accounting subpackage_transactions API
+  title: Accounting Subpackage Transactions API
   version: 1.0.0
 servers:
 - url: https://api.merge.dev/api
@@ -183,144 +183,18 @@ paths:
                 $ref: '#/components/schemas/Transaction'
 components:
   schemas:
-    TransactionsIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - account
-      - accounting_period
-      - company
-      - contact
-      - line_items
-      - tracking_categories
-      title: TransactionsIdGetParametersExpandSchemaItems
-    Transaction:
+    TransactionFieldMappings:
       type: object
       properties:
-        id:
-          type: string
-          format: uuid
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        transaction_type:
-          type:
-          - string
-          - 'null'
-          description: The type of transaction, which can by any transaction object not already included in Merge’s common model.
-        number:
-          type:
-          - string
-          - 'null'
-          description: The transaction's number used for identifying purposes.
-        transaction_date:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date upon which the transaction occurred.
-        account:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The transaction's account.
-        contact:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The contact to whom the transaction relates to.
-        inclusive_of_tax:
-          type:
-          - boolean
-          - 'null'
-          description: If the transaction is inclusive or exclusive of tax. `True` if inclusive, `False` if exclusive.
-        total_amount:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          description: The total amount being paid after taxes.
-        currency:
-          oneOf:
-          - $ref: '#/components/schemas/TransactionCurrencyEnum'
-          - type: 'null'
-          description: The transaction's currency. The currency code in ISO 4217 format.
-        exchange_rate:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          description: The transaction's exchange rate.
-        company:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The company the transaction belongs to.
-        tracking_categories:
-          type: array
-          items:
-            type: string
-            format: uuid
-        line_items:
-          type: array
-          items:
-            $ref: '#/components/schemas/TransactionLineItem'
-        remote_was_deleted:
-          type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-        accounting_period:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The accounting period that the Transaction was generated in.
-        field_mappings:
-          oneOf:
-          - $ref: '#/components/schemas/TransactionFieldMappings'
-          - type: 'null'
-        remote_data:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/RemoteData'
-      description: '# The Transaction Object
-
-        ### Description
-
-        The `Transaction` common model includes records of all types of transactions that do not appear in other common models. The type of transaction can be identified through the type field. More specifically, it will contain all types of transactions outside of:
-
-        * __Credit Notes__
-
-        * __Expenses__
-
-        * __Invoices__
-
-        * __Journal Entries__
-
-        * __Payments__
-
-        * __Purchase Orders__
-
-        * __Vendor Credits__
-
-
-        ### Usage Example
-
-        Fetch from the `GET Transaction` endpoint and view a company''s transactions.'
-      title: Transaction
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: TransactionFieldMappings
     TransactionsGetParametersExpandSchemaItems:
       type: string
       enum:
@@ -642,18 +516,6 @@ components:
       - ZWL
       description: The currency code in ISO 4217 format.
       title: TransactionCurrencyEnum
-    TransactionFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: TransactionFieldMappings
     RemoteData:
       type: object
       properties:
@@ -777,6 +639,16 @@ components:
 
         Fetch from the `GET TransactionLineItem` endpoint and view the transaction''s line items.'
       title: TransactionLineItem
+    TransactionsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - account
+      - accounting_period
+      - company
+      - contact
+      - line_items
+      - tracking_categories
+      title: TransactionsIdGetParametersExpandSchemaItems
     PaginatedTransactionList:
       type: object
       properties:
@@ -793,6 +665,134 @@ components:
           items:
             $ref: '#/components/schemas/Transaction'
       title: PaginatedTransactionList
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        transaction_type:
+          type:
+          - string
+          - 'null'
+          description: The type of transaction, which can by any transaction object not already included in Merge’s common model.
+        number:
+          type:
+          - string
+          - 'null'
+          description: The transaction's number used for identifying purposes.
+        transaction_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date upon which the transaction occurred.
+        account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The transaction's account.
+        contact:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The contact to whom the transaction relates to.
+        inclusive_of_tax:
+          type:
+          - boolean
+          - 'null'
+          description: If the transaction is inclusive or exclusive of tax. `True` if inclusive, `False` if exclusive.
+        total_amount:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The total amount being paid after taxes.
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: The transaction's currency. The currency code in ISO 4217 format.
+        exchange_rate:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The transaction's exchange rate.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the transaction belongs to.
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+        line_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransactionLineItem'
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        accounting_period:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The accounting period that the Transaction was generated in.
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The Transaction Object
+
+        ### Description
+
+        The `Transaction` common model includes records of all types of transactions that do not appear in other common models. The type of transaction can be identified through the type field. More specifically, it will contain all types of transactions outside of:
+
+        * __Credit Notes__
+
+        * __Expenses__
+
+        * __Invoices__
+
+        * __Journal Entries__
+
+        * __Payments__
+
+        * __Purchase Orders__
+
+        * __Vendor Credits__
+
+
+        ### Usage Example
+
+        Fetch from the `GET Transaction` endpoint and view a company''s transactions.'
+      title: Transaction
   securitySchemes:
     tokenAuth:
       type: http

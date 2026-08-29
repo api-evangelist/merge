@@ -1,7 +1,8 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Accounting subpackage_contacts API
+  title: Merge Subpackage Contacts API
   version: 1.0.0
+  description: 'Operations tagged subpackage_contacts across 3 of this provider''s published API definitions: merge-accounting-api-openapi.yaml, merge-crm-api-openapi.yaml, merge-ticketing-api-openapi.yaml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://api.merge.dev/api
 - url: https://api-eu.merge.dev/api
@@ -205,6 +206,10 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/ContactEndpointRequest'
+    servers:
+    - url: https://api.merge.dev/api
+    - url: https://api-eu.merge.dev/api
+    - url: https://api-ap.merge.dev/api
   /accounting/v1/contacts/{id}:
     get:
       operationId: retrieve
@@ -325,6 +330,10 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/PatchedContactEndpointRequest'
+    servers:
+    - url: https://api.merge.dev/api
+    - url: https://api-eu.merge.dev/api
+    - url: https://api-ap.merge.dev/api
   /accounting/v1/contacts/meta/patch/{id}:
     get:
       operationId: meta-patch-retrieve
@@ -358,6 +367,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MetaResponse'
+    servers:
+    - url: https://api.merge.dev/api
+    - url: https://api-eu.merge.dev/api
+    - url: https://api-ap.merge.dev/api
   /accounting/v1/contacts/meta/post:
     get:
       operationId: meta-post-retrieve
@@ -385,6 +398,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MetaResponse'
+    servers:
+    - url: https://api.merge.dev/api
+    - url: https://api-eu.merge.dev/api
+    - url: https://api-ap.merge.dev/api
   /accounting/v1/contacts/remote-field-classes:
     get:
       operationId: remote-field-classes-list
@@ -454,6 +471,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaginatedRemoteFieldClassList'
+    servers:
+    - url: https://api.merge.dev/api
+    - url: https://api-eu.merge.dev/api
+    - url: https://api-ap.merge.dev/api
   /crm/v1/contacts:
     get:
       operationId: list
@@ -620,6 +641,10 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/CRMContactEndpointRequest'
+    servers:
+    - url: https://api.merge.dev/api
+    - url: https://api-eu.merge.dev/api
+    - url: https://api-ap.merge.dev/api
   /crm/v1/contacts/{id}:
     get:
       operationId: retrieve
@@ -728,6 +753,10 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/PatchedCRMContactEndpointRequest'
+    servers:
+    - url: https://api.merge.dev/api
+    - url: https://api-eu.merge.dev/api
+    - url: https://api-ap.merge.dev/api
   /crm/v1/contacts/ignore/{model_id}:
     post:
       operationId: ignore-create
@@ -766,6 +795,10 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/IgnoreCommonModelRequest'
+    servers:
+    - url: https://api.merge.dev/api
+    - url: https://api-eu.merge.dev/api
+    - url: https://api-ap.merge.dev/api
   /crm/v1/contacts/meta/patch/{id}:
     get:
       operationId: meta-patch-retrieve
@@ -799,6 +832,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MetaResponse'
+    servers:
+    - url: https://api.merge.dev/api
+    - url: https://api-eu.merge.dev/api
+    - url: https://api-ap.merge.dev/api
   /crm/v1/contacts/meta/post:
     get:
       operationId: meta-post-retrieve
@@ -826,6 +863,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MetaResponse'
+    servers:
+    - url: https://api.merge.dev/api
+    - url: https://api-eu.merge.dev/api
+    - url: https://api-ap.merge.dev/api
   /crm/v1/contacts/remote-field-classes:
     get:
       operationId: remote-field-classes-list
@@ -901,6 +942,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaginatedRemoteFieldClassList'
+    servers:
+    - url: https://api.merge.dev/api
+    - url: https://api-eu.merge.dev/api
+    - url: https://api-ap.merge.dev/api
   /ticketing/v1/contacts:
     get:
       operationId: list
@@ -1049,6 +1094,10 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/TicketingContactEndpointRequest'
+    servers:
+    - url: https://api.merge.dev/api
+    - url: https://api-eu.merge.dev/api
+    - url: https://api-ap.merge.dev/api
   /ticketing/v1/contacts/{id}:
     get:
       operationId: retrieve
@@ -1102,6 +1151,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Contact_3'
+    servers:
+    - url: https://api.merge.dev/api
+    - url: https://api-eu.merge.dev/api
+    - url: https://api-ap.merge.dev/api
   /ticketing/v1/contacts/meta/post:
     get:
       operationId: meta-post-retrieve
@@ -1129,448 +1182,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MetaResponse'
+    servers:
+    - url: https://api.merge.dev/api
+    - url: https://api-eu.merge.dev/api
+    - url: https://api-ap.merge.dev/api
 components:
   schemas:
-    ContactsGetParametersStatus:
-      type: string
-      enum:
-      - ''
-      - ACTIVE
-      - ARCHIVED
-      title: ContactsGetParametersStatus
-    Address:
-      type: object
-      properties:
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        type:
-          oneOf:
-          - $ref: '#/components/schemas/AddressTypeEnum'
-          - type: 'null'
-          description: The address type.
-        street_1:
-          type:
-          - string
-          - 'null'
-          description: Line 1 of the address's street.
-        street_2:
-          type:
-          - string
-          - 'null'
-          description: Line 2 of the address's street.
-        city:
-          type:
-          - string
-          - 'null'
-          description: The address's city.
-        state:
-          oneOf:
-          - description: Any type
-          - type: 'null'
-          description: The address's state or region.
-        country_subdivision:
-          type:
-          - string
-          - 'null'
-          description: The address's state or region.
-        country:
-          oneOf:
-          - $ref: '#/components/schemas/CountryEnum'
-          - type: 'null'
-          description: The address's country. The country code in ISO 3166-1 alpha-2 format.
-        zip_code:
-          type:
-          - string
-          - 'null'
-          description: The address's zip code.
-      description: '# The Address Object
-
-        ### Description
-
-        The `Address` object is used to represent a contact''s or company''s address.
-
-
-        ### Usage Example
-
-        Fetch from the `GET CompanyInfo` endpoint and view the company''s addresses.'
-      title: Address
-    AccountingPhoneNumber:
-      type: object
-      properties:
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        number:
-          type:
-          - string
-          - 'null'
-          description: The phone number.
-        type:
-          type:
-          - string
-          - 'null'
-          description: The phone number's type.
-      description: '# The AccountingPhoneNumber Object
-
-        ### Description
-
-        The `AccountingPhoneNumber` object is used to represent a contact''s or company''s phone number.
-
-
-        ### Usage Example
-
-        Fetch from the `GET CompanyInfo` endpoint and view the company''s phone numbers.'
-      title: AccountingPhoneNumber
-    AddressRequest:
-      type: object
-      properties:
-        type:
-          oneOf:
-          - $ref: '#/components/schemas/AddressTypeEnum'
-          - type: 'null'
-          description: The address type.
-        street_1:
-          type:
-          - string
-          - 'null'
-          description: Line 1 of the address's street.
-        street_2:
-          type:
-          - string
-          - 'null'
-          description: Line 2 of the address's street.
-        city:
-          type:
-          - string
-          - 'null'
-          description: The address's city.
-        country_subdivision:
-          type:
-          - string
-          - 'null'
-          description: The address's state or region.
-        country:
-          oneOf:
-          - $ref: '#/components/schemas/CountryEnum'
-          - type: 'null'
-          description: The address's country. The country code in ISO 3166-1 alpha-2 format.
-        zip_code:
-          type:
-          - string
-          - 'null'
-          description: The address's zip code.
-        integration_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        linked_account_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-      description: '# The Address Object
-
-        ### Description
-
-        The `Address` object is used to represent a contact''s or company''s address.
-
-
-        ### Usage Example
-
-        Fetch from the `GET CompanyInfo` endpoint and view the company''s addresses.'
-      title: AddressRequest
-    ContactsIdGetParametersExpandSchemaItems_3:
-      type: string
-      enum:
-      - account
-      title: ContactsIdGetParametersExpandSchemaItems
-    ErrorValidationProblem:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
-          type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
-      required:
-      - title
-      - detail
-      - problem_type
-      title: ErrorValidationProblem
-    PatchedContactRequest:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          description: The contact's name.
-        is_supplier:
-          type:
-          - boolean
-          - 'null'
-          description: Whether the contact is a supplier.
-        is_customer:
-          type:
-          - boolean
-          - 'null'
-          description: Whether the contact is a customer.
-        email_address:
-          type:
-          - string
-          - 'null'
-          description: The contact's email address.
-        tax_number:
-          type:
-          - string
-          - 'null'
-          description: The contact's tax number.
-        status:
-          oneOf:
-          - $ref: '#/components/schemas/Status7d1Enum'
-          - type: 'null'
-          description: The contact's status
-        currency:
-          type:
-          - string
-          - 'null'
-          description: The currency the contact's transactions are in.
-        company:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The company the contact belongs to.
-        addresses:
-          type: array
-          items:
-            $ref: '#/components/schemas/AddressRequest'
-          description: '`Address` object IDs for the given `Contacts` object.'
-        phone_numbers:
-          type: array
-          items:
-            $ref: '#/components/schemas/AccountingPhoneNumberRequest'
-          description: '`AccountingPhoneNumber` object for the given `Contacts` object.'
-        integration_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        linked_account_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        remote_fields:
-          type: array
-          items:
-            $ref: '#/components/schemas/RemoteFieldRequest'
-      description: '# The Contact Object
-
-        ### Description
-
-        A `Contact` is an individual or business entity to which products and services are sold to or purchased from. The `Contact` model contains both Customers, in which products and services are sold to, and Vendors (or Suppliers), in which products and services are purchased from.
-
-        * A `Contact` is a Vendor/Supplier if the `is_supplier` property is true.
-
-        * A `Contact` is a customer if the `is_customer` property is true.
-
-
-        ### Usage Example
-
-        Fetch from the `LIST Contacts` endpoint and view a company''s contacts.'
-      title: PatchedContactRequest
-    CRMContactResponse:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/Contact_2'
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/WarningValidationProblem'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorValidationProblem'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/DebugModeLog'
-      required:
-      - model
-      - warnings
-      - errors
-      title: CRMContactResponse
-    RemoteFieldRequest:
-      type: object
-      properties:
-        remote_field_class:
-          type: string
-          format: uuid
-        value:
-          type: object
-          additionalProperties:
-            description: Any type
-      required:
-      - remote_field_class
-      title: RemoteFieldRequest
-    contacts_ignoreCreate_Response_200:
-      type: object
-      properties: {}
-      description: Empty response body
-      title: contacts_ignoreCreate_Response_200
-    ContactsGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - addresses
-      - company
-      - phone_numbers
-      title: ContactsGetParametersExpandSchemaItems
-    ContactResponse:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/Contact'
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/WarningValidationProblem'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorValidationProblem'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/DebugModeLog'
-      required:
-      - model
-      - warnings
-      - errors
-      title: ContactResponse
-    ItemTypeEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: ItemTypeEnum
-    ItemFormatEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: ItemFormatEnum
-    ContactFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: ContactFieldMappings
-    EmailAddress:
-      type: object
-      properties:
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        email_address:
-          type:
-          - string
-          - 'null'
-          description: The email address.
-        email_address_type:
-          type:
-          - string
-          - 'null'
-          description: The email address's type.
-      description: '# The EmailAddress Object
-
-        ### Description
-
-        The `EmailAddress` object is used to represent an entity''s email address.
-
-        ### Usage Example
-
-        Fetch from the `GET Contact` endpoint and view their email addresses.'
-      title: EmailAddress
-    ContactsGetParametersExpandSchemaItems_3:
-      type: string
-      enum:
-      - account
-      title: ContactsGetParametersExpandSchemaItems
-    PatchedContactEndpointRequest:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/PatchedContactRequest'
-      required:
-      - model
-      title: PatchedContactEndpointRequest
-    ContactsIdGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - status
-      title: ContactsIdGetParametersShowEnumOrigins
-    TicketingContactEndpointRequest:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/ContactRequest_3'
-      required:
-      - model
-      title: TicketingContactEndpointRequest
-    PatchedCRMContactEndpointRequest:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/PatchedContactRequest_2'
-      required:
-      - model
-      title: PatchedCRMContactEndpointRequest
     ContactRequest:
       type: object
       properties:
@@ -1656,76 +1273,52 @@ components:
 
         Fetch from the `LIST Contacts` endpoint and view a company''s contacts.'
       title: ContactRequest
-    ContactsIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - addresses
-      - company
-      - phone_numbers
-      title: ContactsIdGetParametersExpandSchemaItems
-    ContactsGetParametersExpandSchemaItems_2:
-      type: string
-      enum:
-      - account
-      - owner
-      title: ContactsGetParametersExpandSchemaItems
-    ContactEndpointRequest:
+    ValidationProblemSource:
       type: object
       properties:
-        model:
-          $ref: '#/components/schemas/ContactRequest'
+        pointer:
+          type: string
       required:
-      - model
-      title: ContactEndpointRequest
-    PatchedContactRequest_2:
+      - pointer
+      title: ValidationProblemSource
+    AddressRequest:
       type: object
       properties:
-        first_name:
+        type:
+          oneOf:
+          - $ref: '#/components/schemas/AddressTypeEnum'
+          - type: 'null'
+          description: The address type.
+        street_1:
           type:
           - string
           - 'null'
-          description: The contact's first name.
-        last_name:
+          description: Line 1 of the address's street.
+        street_2:
           type:
           - string
           - 'null'
-          description: The contact's last name.
-        account:
+          description: Line 2 of the address's street.
+        city:
           type:
           - string
           - 'null'
-          format: uuid
-          description: The contact's account.
-        owner:
+          description: The address's city.
+        country_subdivision:
           type:
           - string
           - 'null'
-          format: uuid
-          description: The contact's owner.
-        addresses:
-          type: array
-          items:
-            $ref: '#/components/schemas/AddressRequest_2'
-        email_addresses:
-          type: array
-          items:
-            $ref: '#/components/schemas/EmailAddressRequest'
-        phone_numbers:
-          type: array
-          items:
-            $ref: '#/components/schemas/PhoneNumberRequest'
-        last_activity_at:
+          description: The address's state or region.
+        country:
+          oneOf:
+          - $ref: '#/components/schemas/CountryEnum'
+          - type: 'null'
+          description: The address's country. The country code in ISO 3166-1 alpha-2 format.
+        zip_code:
           type:
           - string
           - 'null'
-          format: date-time
-          description: When the contact's last activity occurred.
-        contact_url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The contact's URL in the remote system.
+          description: The address's zip code.
         integration_params:
           type:
           - object
@@ -1738,20 +1331,179 @@ components:
           - 'null'
           additionalProperties:
             description: Any type
-        remote_fields:
-          type: array
-          items:
-            $ref: '#/components/schemas/RemoteFieldRequest'
-      description: '# The Contact Object
+      description: '# The Address Object
 
         ### Description
 
-        The `Contact` object is used to represent an existing point of contact at a company in a CRM system.
+        The `Address` object is used to represent a contact''s or company''s address.
+
 
         ### Usage Example
 
-        TODO'
-      title: PatchedContactRequest
+        Fetch from the `GET CompanyInfo` endpoint and view the company''s addresses.'
+      title: AddressRequest
+    ContactEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/ContactRequest'
+      required:
+      - model
+      title: ContactEndpointRequest
+    ItemTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemTypeEnum
+    Address:
+      type: object
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        type:
+          oneOf:
+          - $ref: '#/components/schemas/AddressTypeEnum'
+          - type: 'null'
+          description: The address type.
+        street_1:
+          type:
+          - string
+          - 'null'
+          description: Line 1 of the address's street.
+        street_2:
+          type:
+          - string
+          - 'null'
+          description: Line 2 of the address's street.
+        city:
+          type:
+          - string
+          - 'null'
+          description: The address's city.
+        state:
+          oneOf:
+          - description: Any type
+          - type: 'null'
+          description: The address's state or region.
+        country_subdivision:
+          type:
+          - string
+          - 'null'
+          description: The address's state or region.
+        country:
+          oneOf:
+          - $ref: '#/components/schemas/CountryEnum'
+          - type: 'null'
+          description: The address's country. The country code in ISO 3166-1 alpha-2 format.
+        zip_code:
+          type:
+          - string
+          - 'null'
+          description: The address's zip code.
+      description: '# The Address Object
+
+        ### Description
+
+        The `Address` object is used to represent a contact''s or company''s address.
+
+
+        ### Usage Example
+
+        Fetch from the `GET CompanyInfo` endpoint and view the company''s addresses.'
+      title: Address
+    ContactResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/Contact'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: ContactResponse
+    AddressTypeEnum:
+      type: string
+      enum:
+      - BILLING
+      - SHIPPING
+      title: AddressTypeEnum
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    ContactsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - addresses
+      - company
+      - phone_numbers
+      title: ContactsIdGetParametersExpandSchemaItems
+    ContactsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - addresses
+      - company
+      - phone_numbers
+      title: ContactsGetParametersExpandSchemaItems
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    FieldFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldFormatEnum
+    ContactsIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - status
+      title: ContactsIdGetParametersShowEnumOrigins
     PaginatedContactList:
       type: object
       properties:
@@ -1768,28 +1520,107 @@ components:
           items:
             $ref: '#/components/schemas/Contact'
       title: PaginatedContactList
-    WarningValidationProblem:
+    ItemFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemFormatEnum
+    ContactsGetParametersStatus:
+      type: string
+      enum:
+      - ''
+      - ACTIVE
+      - ARCHIVED
+      title: ContactsGetParametersStatus
+    MetaResponse:
       type: object
       properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
-          type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
           type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
       required:
-      - title
-      - detail
-      - problem_type
-      title: WarningValidationProblem
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    ContactFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: ContactFieldMappings
+    AccountingPhoneNumberRequest:
+      type: object
+      properties:
+        number:
+          type:
+          - string
+          - 'null'
+          description: The phone number.
+        type:
+          type:
+          - string
+          - 'null'
+          description: The phone number's type.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The AccountingPhoneNumber Object
+
+        ### Description
+
+        The `AccountingPhoneNumber` object is used to represent a contact''s or company''s phone number.
+
+
+        ### Usage Example
+
+        Fetch from the `GET CompanyInfo` endpoint and view the company''s phone numbers.'
+      title: AccountingPhoneNumberRequest
+    RemoteField:
+      type: object
+      properties:
+        remote_field_class:
+          $ref: '#/components/schemas/RemoteFieldClass'
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteField
     CountryEnum:
       type: string
       enum:
@@ -2044,449 +1875,6 @@ components:
       - ZW
       description: The country code in ISO 3166-1 alpha-2 format.
       title: CountryEnum
-    AddressTypeEnum:
-      type: string
-      enum:
-      - BILLING
-      - SHIPPING
-      title: AddressTypeEnum
-    PhoneNumberRequest:
-      type: object
-      properties:
-        phone_number:
-          type:
-          - string
-          - 'null'
-          description: The phone number.
-        phone_number_type:
-          type:
-          - string
-          - 'null'
-          description: The phone number's type.
-        integration_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        linked_account_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-      description: '# The PhoneNumber Object
-
-        ### Description
-
-        The `PhoneNumber` object is used to represent an entity''s phone number.
-
-        ### Usage Example
-
-        Fetch from the `GET Contact` endpoint and view their phone numbers.'
-      title: PhoneNumberRequest
-    PhoneNumber:
-      type: object
-      properties:
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        phone_number:
-          type:
-          - string
-          - 'null'
-          description: The phone number.
-        phone_number_type:
-          type:
-          - string
-          - 'null'
-          description: The phone number's type.
-      description: '# The PhoneNumber Object
-
-        ### Description
-
-        The `PhoneNumber` object is used to represent an entity''s phone number.
-
-        ### Usage Example
-
-        Fetch from the `GET Contact` endpoint and view their phone numbers.'
-      title: PhoneNumber
-    TicketingContactResponse:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/Contact_3'
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/WarningValidationProblem'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorValidationProblem'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/DebugModeLog'
-      required:
-      - model
-      - warnings
-      - errors
-      title: TicketingContactResponse
-    CRMContactEndpointRequest:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/ContactRequest_2'
-      required:
-      - model
-      title: CRMContactEndpointRequest
-    Status7d1Enum:
-      type: string
-      enum:
-      - ACTIVE
-      - ARCHIVED
-      title: Status7d1Enum
-    ReasonEnum:
-      type: string
-      enum:
-      - GENERAL_CUSTOMER_REQUEST
-      - GDPR
-      - OTHER
-      title: ReasonEnum
-    DebugModeLog:
-      type: object
-      properties:
-        log_id:
-          type: string
-        dashboard_view:
-          type: string
-        log_summary:
-          $ref: '#/components/schemas/DebugModelLogSummary'
-      required:
-      - log_id
-      - dashboard_view
-      - log_summary
-      title: DebugModeLog
-    AddressRequest_2:
-      type: object
-      properties:
-        street_1:
-          type:
-          - string
-          - 'null'
-          description: Line 1 of the address's street.
-        street_2:
-          type:
-          - string
-          - 'null'
-          description: Line 2 of the address's street.
-        city:
-          type:
-          - string
-          - 'null'
-          description: The address's city.
-        state:
-          type:
-          - string
-          - 'null'
-          description: The address's state.
-        postal_code:
-          type:
-          - string
-          - 'null'
-          description: The address's postal code.
-        country:
-          oneOf:
-          - $ref: '#/components/schemas/CountryEnum'
-          - type: 'null'
-          description: The address's country. The country code in ISO 3166-1 alpha-2 format.
-        address_type:
-          oneOf:
-          - $ref: '#/components/schemas/AddressTypeEnum'
-          - type: 'null'
-          description: The address type.
-        integration_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        linked_account_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-      description: '# The Address Object
-
-        ### Description
-
-        The `Address` object is used to represent an entity''s address.
-
-        ### Usage Example
-
-        TODO'
-      title: AddressRequest
-    MetaResponse:
-      type: object
-      properties:
-        request_schema:
-          type: object
-          additionalProperties:
-            description: Any type
-        status:
-          $ref: '#/components/schemas/LinkedAccountStatus'
-        has_conditional_params:
-          type: boolean
-        has_required_linked_account_params:
-          type: boolean
-        remote_fields:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: Remote field values to populate
-      required:
-      - request_schema
-      - has_conditional_params
-      - has_required_linked_account_params
-      title: MetaResponse
-    PaginatedRemoteFieldClassList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/RemoteFieldClass'
-      title: PaginatedRemoteFieldClassList
-    IgnoreCommonModelRequest:
-      type: object
-      properties:
-        reason:
-          $ref: '#/components/schemas/ReasonEnum'
-        message:
-          type: string
-      required:
-      - reason
-      title: IgnoreCommonModelRequest
-    ItemSchema:
-      type: object
-      properties:
-        item_type:
-          $ref: '#/components/schemas/ItemTypeEnum'
-        item_format:
-          $ref: '#/components/schemas/ItemFormatEnum'
-        item_choices:
-          type: array
-          items:
-            type: string
-      title: ItemSchema
-    Address_2:
-      type: object
-      properties:
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        street_1:
-          type:
-          - string
-          - 'null'
-          description: Line 1 of the address's street.
-        street_2:
-          type:
-          - string
-          - 'null'
-          description: Line 2 of the address's street.
-        city:
-          type:
-          - string
-          - 'null'
-          description: The address's city.
-        state:
-          type:
-          - string
-          - 'null'
-          description: The address's state.
-        postal_code:
-          type:
-          - string
-          - 'null'
-          description: The address's postal code.
-        country:
-          oneOf:
-          - $ref: '#/components/schemas/CountryEnum'
-          - type: 'null'
-          description: The address's country. The country code in ISO 3166-1 alpha-2 format.
-        address_type:
-          oneOf:
-          - $ref: '#/components/schemas/AddressTypeEnum'
-          - type: 'null'
-          description: The address type.
-      description: '# The Address Object
-
-        ### Description
-
-        The `Address` object is used to represent an entity''s address.
-
-        ### Usage Example
-
-        TODO'
-      title: Address
-    RemoteData:
-      type: object
-      properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
-      required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
-    ValidationProblemSource:
-      type: object
-      properties:
-        pointer:
-          type: string
-      required:
-      - pointer
-      title: ValidationProblemSource
-    ContactRequest_3:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          description: The contact's name.
-        email_address:
-          type:
-          - string
-          - 'null'
-          description: The contact's email address.
-        phone_number:
-          type:
-          - string
-          - 'null'
-          description: The contact's phone number.
-        details:
-          type:
-          - string
-          - 'null'
-          description: The contact's details.
-        account:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The contact's account.
-        integration_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        linked_account_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-      description: '# The Contact Object
-
-        ### Description
-
-        The `Contact` object is used to represent the customer, lead, or external user that a ticket is associated with.
-
-
-        ### Usage Example
-
-        TODO'
-      title: ContactRequest
-    RemoteFieldClass:
-      type: object
-      properties:
-        id:
-          type: string
-        display_name:
-          type: string
-        remote_key_name:
-          type: string
-        description:
-          type: string
-        is_custom:
-          type: boolean
-        is_common_model_field:
-          type: boolean
-        is_required:
-          type: boolean
-        field_type:
-          $ref: '#/components/schemas/FieldTypeEnum'
-        field_format:
-          $ref: '#/components/schemas/FieldFormatEnum'
-        field_choices:
-          type: array
-          items:
-            type: string
-        item_schema:
-          $ref: '#/components/schemas/ItemSchema'
-      title: RemoteFieldClass
-    RemoteField:
-      type: object
-      properties:
-        remote_field_class:
-          $ref: '#/components/schemas/RemoteFieldClass'
-        value:
-          type: object
-          additionalProperties:
-            description: Any type
-      required:
-      - remote_field_class
-      title: RemoteField
-    ContactsGetParametersRemoteFields:
-      type: string
-      enum:
-      - status
-      title: ContactsGetParametersRemoteFields
-    FieldFormatEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: FieldFormatEnum
     Contact:
       type: object
       properties:
@@ -2595,6 +1983,310 @@ components:
 
         Fetch from the `LIST Contacts` endpoint and view a company''s contacts.'
       title: Contact
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    PatchedContactRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          description: The contact's name.
+        is_supplier:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the contact is a supplier.
+        is_customer:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the contact is a customer.
+        email_address:
+          type:
+          - string
+          - 'null'
+          description: The contact's email address.
+        tax_number:
+          type:
+          - string
+          - 'null'
+          description: The contact's tax number.
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/Status7d1Enum'
+          - type: 'null'
+          description: The contact's status
+        currency:
+          type:
+          - string
+          - 'null'
+          description: The currency the contact's transactions are in.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the contact belongs to.
+        addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddressRequest'
+          description: '`Address` object IDs for the given `Contacts` object.'
+        phone_numbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountingPhoneNumberRequest'
+          description: '`AccountingPhoneNumber` object for the given `Contacts` object.'
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldRequest'
+      description: '# The Contact Object
+
+        ### Description
+
+        A `Contact` is an individual or business entity to which products and services are sold to or purchased from. The `Contact` model contains both Customers, in which products and services are sold to, and Vendors (or Suppliers), in which products and services are purchased from.
+
+        * A `Contact` is a Vendor/Supplier if the `is_supplier` property is true.
+
+        * A `Contact` is a customer if the `is_customer` property is true.
+
+
+        ### Usage Example
+
+        Fetch from the `LIST Contacts` endpoint and view a company''s contacts.'
+      title: PatchedContactRequest
+    Status7d1Enum:
+      type: string
+      enum:
+      - ACTIVE
+      - ARCHIVED
+      title: Status7d1Enum
+    ContactsGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - status
+      title: ContactsGetParametersShowEnumOrigins
+    ContactsIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - status
+      title: ContactsIdGetParametersRemoteFields
+    RemoteFieldClass:
+      type: object
+      properties:
+        id:
+          type: string
+        display_name:
+          type: string
+        remote_key_name:
+          type: string
+        description:
+          type: string
+        is_custom:
+          type: boolean
+        is_common_model_field:
+          type: boolean
+        is_required:
+          type: boolean
+        field_type:
+          $ref: '#/components/schemas/FieldTypeEnum'
+        field_format:
+          $ref: '#/components/schemas/FieldFormatEnum'
+        field_choices:
+          type: array
+          items:
+            type: string
+        item_schema:
+          $ref: '#/components/schemas/ItemSchema'
+      title: RemoteFieldClass
+    ItemSchema:
+      type: object
+      properties:
+        item_type:
+          $ref: '#/components/schemas/ItemTypeEnum'
+        item_format:
+          $ref: '#/components/schemas/ItemFormatEnum'
+        item_choices:
+          type: array
+          items:
+            type: string
+      title: ItemSchema
+    PaginatedRemoteFieldClassList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldClass'
+      title: PaginatedRemoteFieldClassList
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    AccountingPhoneNumber:
+      type: object
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        number:
+          type:
+          - string
+          - 'null'
+          description: The phone number.
+        type:
+          type:
+          - string
+          - 'null'
+          description: The phone number's type.
+      description: '# The AccountingPhoneNumber Object
+
+        ### Description
+
+        The `AccountingPhoneNumber` object is used to represent a contact''s or company''s phone number.
+
+
+        ### Usage Example
+
+        Fetch from the `GET CompanyInfo` endpoint and view the company''s phone numbers.'
+      title: AccountingPhoneNumber
+    FieldTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldTypeEnum
+    ContactsGetParametersRemoteFields:
+      type: string
+      enum:
+      - status
+      title: ContactsGetParametersRemoteFields
+    PatchedContactEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/PatchedContactRequest'
+      required:
+      - model
+      title: PatchedContactEndpointRequest
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    RemoteFieldRequest:
+      type: object
+      properties:
+        remote_field_class:
+          type: string
+          format: uuid
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteFieldRequest
     ContactRequest_2:
       type: object
       properties:
@@ -2670,17 +2362,39 @@ components:
 
         TODO'
       title: ContactRequest
-    Contact_3:
+    PatchedCRMContactEndpointRequest:
       type: object
       properties:
-        id:
-          type: string
-          format: uuid
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
+        model:
+          $ref: '#/components/schemas/PatchedContactRequest_2'
+      required:
+      - model
+      title: PatchedCRMContactEndpointRequest
+    CRMContactResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/Contact_2'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: CRMContactResponse
+    EmailAddress:
+      type: object
+      properties:
         created_at:
           type: string
           format: date-time
@@ -2689,94 +2403,64 @@ components:
           type: string
           format: date-time
           description: The datetime that this object was modified by Merge.
-        name:
-          type:
-          - string
-          - 'null'
-          description: The contact's name.
         email_address:
           type:
           - string
           - 'null'
-          description: The contact's email address.
-        phone_number:
+          description: The email address.
+        email_address_type:
           type:
           - string
           - 'null'
-          description: The contact's phone number.
-        details:
-          type:
-          - string
-          - 'null'
-          description: The contact's details.
-        account:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The contact's account.
-        remote_was_deleted:
-          type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-        field_mappings:
-          oneOf:
-          - $ref: '#/components/schemas/ContactFieldMappings'
-          - type: 'null'
-        remote_data:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/RemoteData'
-      description: '# The Contact Object
+          description: The email address's type.
+      description: '# The EmailAddress Object
 
         ### Description
 
-        The `Contact` object is used to represent the customer, lead, or external user that a ticket is associated with.
-
+        The `EmailAddress` object is used to represent an entity''s email address.
 
         ### Usage Example
 
-        TODO'
-      title: Contact
-    DebugModelLogSummary:
+        Fetch from the `GET Contact` endpoint and view their email addresses.'
+      title: EmailAddress
+    AddressRequest_2:
       type: object
       properties:
-        url:
-          type: string
-        method:
-          type: string
-        status_code:
-          type: integer
-      required:
-      - url
-      - method
-      - status_code
-      title: DebugModelLogSummary
-    LinkedAccountStatus:
-      type: object
-      properties:
-        linked_account_status:
-          type: string
-        can_make_request:
-          type: boolean
-      required:
-      - linked_account_status
-      - can_make_request
-      title: LinkedAccountStatus
-    AccountingPhoneNumberRequest:
-      type: object
-      properties:
-        number:
+        street_1:
           type:
           - string
           - 'null'
-          description: The phone number.
-        type:
+          description: Line 1 of the address's street.
+        street_2:
           type:
           - string
           - 'null'
-          description: The phone number's type.
+          description: Line 2 of the address's street.
+        city:
+          type:
+          - string
+          - 'null'
+          description: The address's city.
+        state:
+          type:
+          - string
+          - 'null'
+          description: The address's state.
+        postal_code:
+          type:
+          - string
+          - 'null'
+          description: The address's postal code.
+        country:
+          oneOf:
+          - $ref: '#/components/schemas/CountryEnum'
+          - type: 'null'
+          description: The address's country. The country code in ISO 3166-1 alpha-2 format.
+        address_type:
+          oneOf:
+          - $ref: '#/components/schemas/AddressTypeEnum'
+          - type: 'null'
+          description: The address type.
         integration_params:
           type:
           - object
@@ -2789,38 +2473,127 @@ components:
           - 'null'
           additionalProperties:
             description: Any type
-      description: '# The AccountingPhoneNumber Object
+      description: '# The Address Object
 
         ### Description
 
-        The `AccountingPhoneNumber` object is used to represent a contact''s or company''s phone number.
-
+        The `Address` object is used to represent an entity''s address.
 
         ### Usage Example
 
-        Fetch from the `GET CompanyInfo` endpoint and view the company''s phone numbers.'
-      title: AccountingPhoneNumberRequest
-    FieldTypeEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: FieldTypeEnum
-    ContactsIdGetParametersRemoteFields:
-      type: string
-      enum:
-      - status
-      title: ContactsIdGetParametersRemoteFields
+        TODO'
+      title: AddressRequest
+    PhoneNumber:
+      type: object
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        phone_number:
+          type:
+          - string
+          - 'null'
+          description: The phone number.
+        phone_number_type:
+          type:
+          - string
+          - 'null'
+          description: The phone number's type.
+      description: '# The PhoneNumber Object
+
+        ### Description
+
+        The `PhoneNumber` object is used to represent an entity''s phone number.
+
+        ### Usage Example
+
+        Fetch from the `GET Contact` endpoint and view their phone numbers.'
+      title: PhoneNumber
+    Address_2:
+      type: object
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        street_1:
+          type:
+          - string
+          - 'null'
+          description: Line 1 of the address's street.
+        street_2:
+          type:
+          - string
+          - 'null'
+          description: Line 2 of the address's street.
+        city:
+          type:
+          - string
+          - 'null'
+          description: The address's city.
+        state:
+          type:
+          - string
+          - 'null'
+          description: The address's state.
+        postal_code:
+          type:
+          - string
+          - 'null'
+          description: The address's postal code.
+        country:
+          oneOf:
+          - $ref: '#/components/schemas/CountryEnum'
+          - type: 'null'
+          description: The address's country. The country code in ISO 3166-1 alpha-2 format.
+        address_type:
+          oneOf:
+          - $ref: '#/components/schemas/AddressTypeEnum'
+          - type: 'null'
+          description: The address type.
+      description: '# The Address Object
+
+        ### Description
+
+        The `Address` object is used to represent an entity''s address.
+
+        ### Usage Example
+
+        TODO'
+      title: Address
+    contacts_ignoreCreate_Response_200:
+      type: object
+      properties: {}
+      description: Empty response body
+      title: contacts_ignoreCreate_Response_200
     ContactsIdGetParametersExpandSchemaItems_2:
       type: string
       enum:
       - account
       - owner
       title: ContactsIdGetParametersExpandSchemaItems
+    ContactsGetParametersExpandSchemaItems_2:
+      type: string
+      enum:
+      - account
+      - owner
+      title: ContactsGetParametersExpandSchemaItems
+    ReasonEnum:
+      type: string
+      enum:
+      - GENERAL_CUSTOMER_REQUEST
+      - GDPR
+      - OTHER
+      title: ReasonEnum
     Contact_2:
       type: object
       properties:
@@ -2919,11 +2692,81 @@ components:
 
         TODO'
       title: Contact
-    ContactsGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - status
-      title: ContactsGetParametersShowEnumOrigins
+    PatchedContactRequest_2:
+      type: object
+      properties:
+        first_name:
+          type:
+          - string
+          - 'null'
+          description: The contact's first name.
+        last_name:
+          type:
+          - string
+          - 'null'
+          description: The contact's last name.
+        account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The contact's account.
+        owner:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The contact's owner.
+        addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddressRequest_2'
+        email_addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailAddressRequest'
+        phone_numbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneNumberRequest'
+        last_activity_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the contact's last activity occurred.
+        contact_url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The contact's URL in the remote system.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldRequest'
+      description: '# The Contact Object
+
+        ### Description
+
+        The `Contact` object is used to represent an existing point of contact at a company in a CRM system.
+
+        ### Usage Example
+
+        TODO'
+      title: PatchedContactRequest
     EmailAddressRequest:
       type: object
       properties:
@@ -2959,8 +2802,226 @@ components:
 
         Fetch from the `GET Contact` endpoint and view their email addresses.'
       title: EmailAddressRequest
+    CRMContactEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/ContactRequest_2'
+      required:
+      - model
+      title: CRMContactEndpointRequest
+    PhoneNumberRequest:
+      type: object
+      properties:
+        phone_number:
+          type:
+          - string
+          - 'null'
+          description: The phone number.
+        phone_number_type:
+          type:
+          - string
+          - 'null'
+          description: The phone number's type.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The PhoneNumber Object
+
+        ### Description
+
+        The `PhoneNumber` object is used to represent an entity''s phone number.
+
+        ### Usage Example
+
+        Fetch from the `GET Contact` endpoint and view their phone numbers.'
+      title: PhoneNumberRequest
+    IgnoreCommonModelRequest:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/ReasonEnum'
+        message:
+          type: string
+      required:
+      - reason
+      title: IgnoreCommonModelRequest
+    TicketingContactEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/ContactRequest_3'
+      required:
+      - model
+      title: TicketingContactEndpointRequest
+    ContactRequest_3:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          description: The contact's name.
+        email_address:
+          type:
+          - string
+          - 'null'
+          description: The contact's email address.
+        phone_number:
+          type:
+          - string
+          - 'null'
+          description: The contact's phone number.
+        details:
+          type:
+          - string
+          - 'null'
+          description: The contact's details.
+        account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The contact's account.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The Contact Object
+
+        ### Description
+
+        The `Contact` object is used to represent the customer, lead, or external user that a ticket is associated with.
+
+
+        ### Usage Example
+
+        TODO'
+      title: ContactRequest
+    Contact_3:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The contact's name.
+        email_address:
+          type:
+          - string
+          - 'null'
+          description: The contact's email address.
+        phone_number:
+          type:
+          - string
+          - 'null'
+          description: The contact's phone number.
+        details:
+          type:
+          - string
+          - 'null'
+          description: The contact's details.
+        account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The contact's account.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/ContactFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The Contact Object
+
+        ### Description
+
+        The `Contact` object is used to represent the customer, lead, or external user that a ticket is associated with.
+
+
+        ### Usage Example
+
+        TODO'
+      title: Contact
+    ContactsGetParametersExpandSchemaItems_3:
+      type: string
+      enum:
+      - account
+      title: ContactsGetParametersExpandSchemaItems
+    ContactsIdGetParametersExpandSchemaItems_3:
+      type: string
+      enum:
+      - account
+      title: ContactsIdGetParametersExpandSchemaItems
+    TicketingContactResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/Contact_3'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: TicketingContactResponse
   securitySchemes:
     tokenAuth:
       type: http
       scheme: bearer
       description: Token-based authentication with required prefix "Bearer"
+x-refined-from:
+- merge-accounting-api-openapi.yaml
+- merge-crm-api-openapi.yaml
+- merge-ticketing-api-openapi.yaml

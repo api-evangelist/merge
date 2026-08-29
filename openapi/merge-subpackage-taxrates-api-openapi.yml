@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Accounting subpackage_taxRates API
+  title: Accounting Subpackage Tax Rates API
   version: 1.0.0
 servers:
 - url: https://api.merge.dev/api
@@ -175,12 +175,6 @@ paths:
                 $ref: '#/components/schemas/TaxRate'
 components:
   schemas:
-    Status7d1Enum:
-      type: string
-      enum:
-      - ACTIVE
-      - ARCHIVED
-      title: Status7d1Enum
     TaxRate:
       type: object
       properties:
@@ -272,28 +266,6 @@ components:
 
         Fetch from the `LIST TaxRates` endpoint and view tax rates relevant to a company.'
       title: TaxRate
-    PaginatedTaxRateList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/TaxRate'
-      title: PaginatedTaxRateList
-    ComponentTypeEnum:
-      type: string
-      enum:
-      - SALES
-      - PURCHASE
-      title: ComponentTypeEnum
     TaxComponent:
       type: object
       properties:
@@ -369,11 +341,44 @@ components:
 
         TODO'
       title: RemoteData
+    Status7d1Enum:
+      type: string
+      enum:
+      - ACTIVE
+      - ARCHIVED
+      title: Status7d1Enum
     TaxRatesGetParametersExpandSchemaItems:
       type: string
       enum:
       - company
       title: TaxRatesGetParametersExpandSchemaItems
+    TaxRatesIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - company
+      title: TaxRatesIdGetParametersExpandSchemaItems
+    ComponentTypeEnum:
+      type: string
+      enum:
+      - SALES
+      - PURCHASE
+      title: ComponentTypeEnum
+    PaginatedTaxRateList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaxRate'
+      title: PaginatedTaxRateList
     TaxRateFieldMappings:
       type: object
       properties:
@@ -386,11 +391,6 @@ components:
           additionalProperties:
             description: Any type
       title: TaxRateFieldMappings
-    TaxRatesIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - company
-      title: TaxRatesIdGetParametersExpandSchemaItems
   securitySchemes:
     tokenAuth:
       type: http

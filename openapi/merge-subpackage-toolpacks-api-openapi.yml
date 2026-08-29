@@ -1,11 +1,9 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Accounting subpackage_toolPacks API
+  title: Agent Handler Subpackage Tool Packs API
   version: 1.0.0
 servers:
-- url: https://api.merge.dev/api
-- url: https://api-eu.merge.dev/api
-- url: https://api-ap.merge.dev/api
+- url: https://ah-api.merge.dev
 tags:
 - name: subpackage_toolPacks
 paths:
@@ -305,6 +303,44 @@ paths:
           description: Successful response
 components:
   schemas:
+    ToolPackConnectorBulkInputAuthScope:
+      type: string
+      enum:
+      - INDIVIDUAL
+      - SHARED
+      - ORGANIZATION
+      description: 'Authentication scope. INDIVIDUAL: each user authenticates separately. SHARED: users in the same registered_company share one credential. Defaults to INDIVIDUAL when creating a new connector.
+
+
+        * `INDIVIDUAL` - INDIVIDUAL
+
+        * `SHARED` - SHARED
+
+        * `ORGANIZATION` - ORGANIZATION'
+      title: ToolPackConnectorBulkInputAuthScope
+    ToolPackConnectorInputAuthScope:
+      type: string
+      enum:
+      - INDIVIDUAL
+      - SHARED
+      - ORGANIZATION
+      default: INDIVIDUAL
+      description: 'How credentials are shared for this connector.
+
+
+        - `INDIVIDUAL`: each registered user authenticates with their own credential
+
+        - `SHARED`: users in the same registered_company share one credential
+
+        - `ORGANIZATION`: one credential is used for the whole organization
+
+
+        * `INDIVIDUAL` - INDIVIDUAL
+
+        * `SHARED` - SHARED
+
+        * `ORGANIZATION` - ORGANIZATION'
+      title: ToolPackConnectorInputAuthScope
     ToolPackConnectorBulkInput:
       type: object
       properties:
@@ -340,6 +376,26 @@ components:
             - Otherwise: exactly these tools are enabled.'
       description: One item in a tool pack connector update request.
       title: ToolPackConnectorBulkInput
+    ConnectorTool:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        input_schema:
+          description: Any type
+        credit_type:
+          type: string
+      required:
+      - name
+      - description
+      - input_schema
+      - credit_type
+      description: Full version of ConnectorTool serializer that includes input_schema details.
+      title: ConnectorTool
     PatchedToolPackPublicWrite:
       type: object
       properties:
@@ -356,26 +412,90 @@ components:
             $ref: '#/components/schemas/ToolPackConnectorInput'
           description: Full-replace list of connectors. Any connector not in this array is detached from the tool pack. For incremental add/remove, use the `/tool-packs/{id}/connectors/` sub-resource endpoints.
       title: PatchedToolPackPublicWrite
-    ToolPackPublicWrite:
+    ConnectorPublicAuthScope:
+      type: string
+      enum:
+      - INDIVIDUAL
+      - SHARED
+      - ORGANIZATION
+      description: 'How credentials are shared for this connector.
+
+
+        - `INDIVIDUAL`: each registered user authenticates with their own credential
+
+        - `SHARED`: users in the same registered_company share one credential
+
+        - `ORGANIZATION`: one credential is used for the whole organization
+
+
+        * `INDIVIDUAL` - INDIVIDUAL
+
+        * `SHARED` - SHARED
+
+        * `ORGANIZATION` - ORGANIZATION'
+      title: ConnectorPublicAuthScope
+    PaginatedToolPackPublicList:
       type: object
       properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        description:
-          type: string
-        connectors:
+        count:
+          type: integer
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+        results:
           type: array
           items:
-            $ref: '#/components/schemas/ToolPackConnectorInput'
-          description: Full-replace list of connectors. Any connector not in this array is detached from the tool pack. For incremental add/remove, use the `/tool-packs/{id}/connectors/` sub-resource endpoints.
+            $ref: '#/components/schemas/ToolPackPublic'
       required:
-      - id
-      - name
-      - description
-      title: ToolPackPublicWrite
+      - count
+      - results
+      title: PaginatedToolPackPublicList
+    ToolPackConnectorInput:
+      type: object
+      properties:
+        slug:
+          type: string
+          description: Connector slug — primary identifier.
+        connector_id:
+          type: string
+          format: uuid
+          description: DEPRECATED — prefer `slug`. Retained for backward compatibility.
+        auth_scope:
+          $ref: '#/components/schemas/ToolPackConnectorInputAuthScope'
+          description: 'How credentials are shared for this connector.
+
+
+            - `INDIVIDUAL`: each registered user authenticates with their own credential
+
+            - `SHARED`: users in the same registered_company share one credential
+
+            - `ORGANIZATION`: one credential is used for the whole organization
+
+
+            * `INDIVIDUAL` - INDIVIDUAL
+
+            * `SHARED` - SHARED
+
+            * `ORGANIZATION` - ORGANIZATION'
+        tool_names:
+          type: array
+          items:
+            type: string
+          description: Tool names to enable for this connector. Omit to enable all tools.
+      description: 'Shared validation for connector identifier inputs.
+
+
+        At least one identifier must be provided. When both are set, `slug` wins
+
+        and the deprecated `connector_id` is discarded.'
+      title: ToolPackConnectorInput
     ConnectorPublic:
       type: object
       properties:
@@ -438,49 +558,6 @@ components:
 
         See the "Consolidating connector response" tech-debt spec (column E).'
       title: ConnectorPublic
-    ConnectorTool:
-      type: object
-      properties:
-        name:
-          type: string
-        description:
-          type:
-          - string
-          - 'null'
-        input_schema:
-          description: Any type
-        credit_type:
-          type: string
-      required:
-      - name
-      - description
-      - input_schema
-      - credit_type
-      description: Full version of ConnectorTool serializer that includes input_schema details.
-      title: ConnectorTool
-    PaginatedToolPackPublicList:
-      type: object
-      properties:
-        count:
-          type: integer
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ToolPackPublic'
-      required:
-      - count
-      - results
-      title: PaginatedToolPackPublicList
     ToolPackPublic:
       type: object
       properties:
@@ -505,105 +582,26 @@ components:
       - description
       - connectors
       title: ToolPackPublic
-    ToolPackConnectorBulkInputAuthScope:
-      type: string
-      enum:
-      - INDIVIDUAL
-      - SHARED
-      - ORGANIZATION
-      description: 'Authentication scope. INDIVIDUAL: each user authenticates separately. SHARED: users in the same registered_company share one credential. Defaults to INDIVIDUAL when creating a new connector.
-
-
-        * `INDIVIDUAL` - INDIVIDUAL
-
-        * `SHARED` - SHARED
-
-        * `ORGANIZATION` - ORGANIZATION'
-      title: ToolPackConnectorBulkInputAuthScope
-    ToolPackConnectorInputAuthScope:
-      type: string
-      enum:
-      - INDIVIDUAL
-      - SHARED
-      - ORGANIZATION
-      default: INDIVIDUAL
-      description: 'How credentials are shared for this connector.
-
-
-        - `INDIVIDUAL`: each registered user authenticates with their own credential
-
-        - `SHARED`: users in the same registered_company share one credential
-
-        - `ORGANIZATION`: one credential is used for the whole organization
-
-
-        * `INDIVIDUAL` - INDIVIDUAL
-
-        * `SHARED` - SHARED
-
-        * `ORGANIZATION` - ORGANIZATION'
-      title: ToolPackConnectorInputAuthScope
-    ConnectorPublicAuthScope:
-      type: string
-      enum:
-      - INDIVIDUAL
-      - SHARED
-      - ORGANIZATION
-      description: 'How credentials are shared for this connector.
-
-
-        - `INDIVIDUAL`: each registered user authenticates with their own credential
-
-        - `SHARED`: users in the same registered_company share one credential
-
-        - `ORGANIZATION`: one credential is used for the whole organization
-
-
-        * `INDIVIDUAL` - INDIVIDUAL
-
-        * `SHARED` - SHARED
-
-        * `ORGANIZATION` - ORGANIZATION'
-      title: ConnectorPublicAuthScope
-    ToolPackConnectorInput:
+    ToolPackPublicWrite:
       type: object
       properties:
-        slug:
-          type: string
-          description: Connector slug — primary identifier.
-        connector_id:
+        id:
           type: string
           format: uuid
-          description: DEPRECATED — prefer `slug`. Retained for backward compatibility.
-        auth_scope:
-          $ref: '#/components/schemas/ToolPackConnectorInputAuthScope'
-          description: 'How credentials are shared for this connector.
-
-
-            - `INDIVIDUAL`: each registered user authenticates with their own credential
-
-            - `SHARED`: users in the same registered_company share one credential
-
-            - `ORGANIZATION`: one credential is used for the whole organization
-
-
-            * `INDIVIDUAL` - INDIVIDUAL
-
-            * `SHARED` - SHARED
-
-            * `ORGANIZATION` - ORGANIZATION'
-        tool_names:
+        name:
+          type: string
+        description:
+          type: string
+        connectors:
           type: array
           items:
-            type: string
-          description: Tool names to enable for this connector. Omit to enable all tools.
-      description: 'Shared validation for connector identifier inputs.
-
-
-        At least one identifier must be provided. When both are set, `slug` wins
-
-        and the deprecated `connector_id` is discarded.'
-      title: ToolPackConnectorInput
+            $ref: '#/components/schemas/ToolPackConnectorInput'
+          description: Full-replace list of connectors. Any connector not in this array is detached from the tool pack. For incremental add/remove, use the `/tool-packs/{id}/connectors/` sub-resource endpoints.
+      required:
+      - id
+      - name
+      - description
+      title: ToolPackPublicWrite
   securitySchemes:
     tokenAuth:
       type: http

@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Accounting subpackage_associationTypes API
+  title: CRM Subpackage Association Types API
   version: 1.0.0
 servers:
 - url: https://api.merge.dev/api
@@ -257,63 +257,67 @@ paths:
                 $ref: '#/components/schemas/MetaResponse'
 components:
   schemas:
-    CRMAssociationTypeResponse:
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    CustomObjectClassesCustomObjectClassIdAssociationTypesIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - target_object_classes
+      title: CustomObjectClassesCustomObjectClassIdAssociationTypesIdGetParametersExpandSchemaItems
+    CRMAssociationTypeEndpointRequest:
       type: object
       properties:
         model:
-          $ref: '#/components/schemas/AssociationType'
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/WarningValidationProblem'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorValidationProblem'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/DebugModeLog'
+          $ref: '#/components/schemas/AssociationTypeRequestRequest'
       required:
       - model
-      - warnings
-      - errors
-      title: CRMAssociationTypeResponse
-    OriginTypeEnum:
-      type: string
-      enum:
-      - CUSTOM_OBJECT
-      - COMMON_MODEL
-      - REMOTE_ONLY_MODEL
-      title: OriginTypeEnum
-    AssociationSubType:
+      title: CRMAssociationTypeEndpointRequest
+    AssociationTypeRequestRequest:
+      type: object
+      properties:
+        source_object_class:
+          $ref: '#/components/schemas/ObjectClassDescriptionRequest'
+        target_object_classes:
+          type: array
+          items:
+            $ref: '#/components/schemas/ObjectClassDescriptionRequest'
+        remote_key_name:
+          type: string
+        display_name:
+          type: string
+        cardinality:
+          $ref: '#/components/schemas/CardinalityEnum'
+        is_required:
+          type: boolean
+          default: false
+      required:
+      - source_object_class
+      - target_object_classes
+      - remote_key_name
+      title: AssociationTypeRequestRequest
+    ObjectClassDescriptionRequest:
       type: object
       properties:
         id:
-          type:
-          - string
-          - 'null'
-        created_at:
           type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
         origin_type:
-          type:
-          - string
-          - 'null'
-      title: AssociationSubType
-    ValidationProblemSource:
-      type: object
-      properties:
-        pointer:
-          type: string
+          $ref: '#/components/schemas/OriginTypeEnum'
       required:
-      - pointer
-      title: ValidationProblemSource
+      - id
+      - origin_type
+      title: ObjectClassDescriptionRequest
     DebugModeLog:
       type: object
       properties:
@@ -328,55 +332,15 @@ components:
       - dashboard_view
       - log_summary
       title: DebugModeLog
-    CardinalityEnum:
-      type: string
-      enum:
-      - ONE_TO_ONE
-      - MANY_TO_ONE
-      - MANY_TO_MANY
-      - ONE_TO_MANY
-      title: CardinalityEnum
-    ObjectClassDescriptionRequest:
+    ValidationProblemSource:
       type: object
       properties:
-        id:
+        pointer:
           type: string
-        origin_type:
-          $ref: '#/components/schemas/OriginTypeEnum'
       required:
-      - id
-      - origin_type
-      title: ObjectClassDescriptionRequest
-    MetaResponse:
-      type: object
-      properties:
-        request_schema:
-          type: object
-          additionalProperties:
-            description: Any type
-        status:
-          $ref: '#/components/schemas/LinkedAccountStatus'
-        has_conditional_params:
-          type: boolean
-        has_required_linked_account_params:
-          type: boolean
-        remote_fields:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: Remote field values to populate
-      required:
-      - request_schema
-      - has_conditional_params
-      - has_required_linked_account_params
-      title: MetaResponse
-    CustomObjectClassesCustomObjectClassIdAssociationTypesGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - target_object_classes
-      title: CustomObjectClassesCustomObjectClassIdAssociationTypesGetParametersExpandSchemaItems
-    ErrorValidationProblem:
+      - pointer
+      title: ValidationProblemSource
+    WarningValidationProblem:
       type: object
       properties:
         source:
@@ -397,15 +361,18 @@ components:
       - title
       - detail
       - problem_type
-      title: ErrorValidationProblem
-    CRMAssociationTypeEndpointRequest:
+      title: WarningValidationProblem
+    LinkedAccountStatus:
       type: object
       properties:
-        model:
-          $ref: '#/components/schemas/AssociationTypeRequestRequest'
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
       required:
-      - model
-      title: CRMAssociationTypeEndpointRequest
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
     AssociationType:
       type: object
       properties:
@@ -458,55 +425,85 @@ components:
 
         TODO'
       title: AssociationType
-    DebugModelLogSummary:
+    CRMAssociationTypeResponse:
       type: object
       properties:
-        url:
-          type: string
-        method:
-          type: string
-        status_code:
-          type: integer
-      required:
-      - url
-      - method
-      - status_code
-      title: DebugModelLogSummary
-    LinkedAccountStatus:
-      type: object
-      properties:
-        linked_account_status:
-          type: string
-        can_make_request:
-          type: boolean
-      required:
-      - linked_account_status
-      - can_make_request
-      title: LinkedAccountStatus
-    AssociationTypeRequestRequest:
-      type: object
-      properties:
-        source_object_class:
-          $ref: '#/components/schemas/ObjectClassDescriptionRequest'
-        target_object_classes:
+        model:
+          $ref: '#/components/schemas/AssociationType'
+        warnings:
           type: array
           items:
-            $ref: '#/components/schemas/ObjectClassDescriptionRequest'
-        remote_key_name:
-          type: string
-        display_name:
-          type: string
-        cardinality:
-          $ref: '#/components/schemas/CardinalityEnum'
-        is_required:
-          type: boolean
-          default: false
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
       required:
-      - source_object_class
+      - model
+      - warnings
+      - errors
+      title: CRMAssociationTypeResponse
+    CustomObjectClassesCustomObjectClassIdAssociationTypesGetParametersExpandSchemaItems:
+      type: string
+      enum:
       - target_object_classes
-      - remote_key_name
-      title: AssociationTypeRequestRequest
-    WarningValidationProblem:
+      title: CustomObjectClassesCustomObjectClassIdAssociationTypesGetParametersExpandSchemaItems
+    PaginatedAssociationTypeList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssociationType'
+      title: PaginatedAssociationTypeList
+    AssociationSubType:
+      type: object
+      properties:
+        id:
+          type:
+          - string
+          - 'null'
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        origin_type:
+          type:
+          - string
+          - 'null'
+      title: AssociationSubType
+    OriginTypeEnum:
+      type: string
+      enum:
+      - CUSTOM_OBJECT
+      - COMMON_MODEL
+      - REMOTE_ONLY_MODEL
+      title: OriginTypeEnum
+    CardinalityEnum:
+      type: string
+      enum:
+      - ONE_TO_ONE
+      - MANY_TO_ONE
+      - MANY_TO_MANY
+      - ONE_TO_MANY
+      title: CardinalityEnum
+    ErrorValidationProblem:
       type: object
       properties:
         source:
@@ -527,28 +524,31 @@ components:
       - title
       - detail
       - problem_type
-      title: WarningValidationProblem
-    CustomObjectClassesCustomObjectClassIdAssociationTypesIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - target_object_classes
-      title: CustomObjectClassesCustomObjectClassIdAssociationTypesIdGetParametersExpandSchemaItems
-    PaginatedAssociationTypeList:
+      title: ErrorValidationProblem
+    MetaResponse:
       type: object
       properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
           type: array
           items:
-            $ref: '#/components/schemas/AssociationType'
-      title: PaginatedAssociationTypeList
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
   securitySchemes:
     tokenAuth:
       type: http

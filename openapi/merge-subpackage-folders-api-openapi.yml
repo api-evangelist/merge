@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Accounting subpackage_folders API
+  title: File Storage Subpackage Folders API
   version: 1.0.0
 servers:
 - url: https://api.merge.dev/api
@@ -342,167 +342,14 @@ components:
 
         Fetch from the `GET /api/filestorage/v1/folders` endpoint and view their folders.'
       title: Folder
-    FoldersGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - drive
-      - parent_folder
-      - permissions
-      title: FoldersGetParametersExpandSchemaItems
-    PermissionFieldMappings:
+    ValidationProblemSource:
       type: object
       properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: PermissionFieldMappings
-    ErrorValidationProblem:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
+        pointer:
           type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
       required:
-      - title
-      - detail
-      - problem_type
-      title: ErrorValidationProblem
-    PermissionRequest:
-      type: object
-      properties:
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        user:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The user that is granted this permission. This will only be populated if the type is `USER`.
-        group:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The group that is granted this permission. This will only be populated if the type is `GROUP`.
-        type:
-          oneOf:
-          - $ref: '#/components/schemas/TypeEnum'
-          - type: 'null'
-          description: Denotes what type of people have access to the file.
-        roles:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/RolesEnum'
-          description: 'The permissions that the user or group has for the File or Folder. It is possible for a user or group to have multiple roles, such as viewing & uploading. Possible values include: `READ`, `WRITE`, `OWNER`. In cases where there is no clear mapping, the original value passed through will be returned.'
-        integration_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        linked_account_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-      description: '# The Permission Object
-
-        ### Description
-
-        The Permission object is used to represent a user''s or group''s access to a File or Folder. Permissions are unexpanded by default.
-
-
-        ### Usage Example
-
-        Fetch from the `GET Files` or `GET Folders` endpoint. Permissions are unexpanded by default. Use the query param `expand=permissions` to see more details.'
-      title: PermissionRequest
-    FileStorageFolderEndpointRequest:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/FolderRequest'
-      required:
-      - model
-      title: FileStorageFolderEndpointRequest
-    PaginatedFolderList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Folder'
-      title: PaginatedFolderList
-    WarningValidationProblem:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
-          type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
-      required:
-      - title
-      - detail
-      - problem_type
-      title: WarningValidationProblem
-    RolesEnum:
-      type: string
-      enum:
-      - READ
-      - WRITE
-      - OWNER
-      title: RolesEnum
-    FolderFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: FolderFieldMappings
+      - pointer
+      title: ValidationProblemSource
     FileStorageFolderResponse:
       type: object
       properties:
@@ -525,20 +372,26 @@ components:
       - warnings
       - errors
       title: FileStorageFolderResponse
-    DebugModeLog:
+    FolderFieldMappings:
       type: object
       properties:
-        log_id:
-          type: string
-        dashboard_view:
-          type: string
-        log_summary:
-          $ref: '#/components/schemas/DebugModelLogSummary'
-      required:
-      - log_id
-      - dashboard_view
-      - log_summary
-      title: DebugModeLog
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: FolderFieldMappings
+    TypeEnum:
+      type: string
+      enum:
+      - USER
+      - GROUP
+      - COMPANY
+      - ANYONE
+      title: TypeEnum
     FolderRequest:
       type: object
       properties:
@@ -601,67 +454,51 @@ components:
 
         Fetch from the `GET /api/filestorage/v1/folders` endpoint and view their folders.'
       title: FolderRequest
-    MetaResponse:
+    DebugModelLogSummary:
       type: object
       properties:
-        request_schema:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    FileStorageFolderEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/FolderRequest'
+      required:
+      - model
+      title: FileStorageFolderEndpointRequest
+    PermissionFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
           type: object
           additionalProperties:
             description: Any type
-        status:
-          $ref: '#/components/schemas/LinkedAccountStatus'
-        has_conditional_params:
-          type: boolean
-        has_required_linked_account_params:
-          type: boolean
-        remote_fields:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: Remote field values to populate
-      required:
-      - request_schema
-      - has_conditional_params
-      - has_required_linked_account_params
-      title: MetaResponse
-    RemoteData:
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: PermissionFieldMappings
+    LinkedAccountStatus:
       type: object
       properties:
-        path:
+        linked_account_status:
           type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
+        can_make_request:
+          type: boolean
       required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
-    ValidationProblemSource:
-      type: object
-      properties:
-        pointer:
-          type: string
-      required:
-      - pointer
-      title: ValidationProblemSource
-    TypeEnum:
-      type: string
-      enum:
-      - USER
-      - GROUP
-      - COMPANY
-      - ANYONE
-      title: TypeEnum
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
     Permission:
       type: object
       properties:
@@ -723,20 +560,30 @@ components:
 
         Fetch from the `GET Files` or `GET Folders` endpoint. Permissions are unexpanded by default. Use the query param `expand=permissions` to see more details.'
       title: Permission
-    DebugModelLogSummary:
+    MetaResponse:
       type: object
       properties:
-        url:
-          type: string
-        method:
-          type: string
-        status_code:
-          type: integer
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
       required:
-      - url
-      - method
-      - status_code
-      title: DebugModelLogSummary
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
     FoldersIdGetParametersExpandSchemaItems:
       type: string
       enum:
@@ -744,17 +591,170 @@ components:
       - parent_folder
       - permissions
       title: FoldersIdGetParametersExpandSchemaItems
-    LinkedAccountStatus:
+    RemoteData:
       type: object
       properties:
-        linked_account_status:
+        path:
           type: string
-        can_make_request:
-          type: boolean
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
       required:
-      - linked_account_status
-      - can_make_request
-      title: LinkedAccountStatus
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    PaginatedFolderList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Folder'
+      title: PaginatedFolderList
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    RolesEnum:
+      type: string
+      enum:
+      - READ
+      - WRITE
+      - OWNER
+      title: RolesEnum
+    PermissionRequest:
+      type: object
+      properties:
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        user:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The user that is granted this permission. This will only be populated if the type is `USER`.
+        group:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The group that is granted this permission. This will only be populated if the type is `GROUP`.
+        type:
+          oneOf:
+          - $ref: '#/components/schemas/TypeEnum'
+          - type: 'null'
+          description: Denotes what type of people have access to the file.
+        roles:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RolesEnum'
+          description: 'The permissions that the user or group has for the File or Folder. It is possible for a user or group to have multiple roles, such as viewing & uploading. Possible values include: `READ`, `WRITE`, `OWNER`. In cases where there is no clear mapping, the original value passed through will be returned.'
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The Permission Object
+
+        ### Description
+
+        The Permission object is used to represent a user''s or group''s access to a File or Folder. Permissions are unexpanded by default.
+
+
+        ### Usage Example
+
+        Fetch from the `GET Files` or `GET Folders` endpoint. Permissions are unexpanded by default. Use the query param `expand=permissions` to see more details.'
+      title: PermissionRequest
+    FoldersGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - drive
+      - parent_folder
+      - permissions
+      title: FoldersGetParametersExpandSchemaItems
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
   securitySchemes:
     tokenAuth:
       type: http

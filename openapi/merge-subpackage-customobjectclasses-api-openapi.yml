@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Accounting subpackage_customObjectClasses API
+  title: CRM Subpackage Custom Object Classes API
   version: 1.0.0
 servers:
 - url: https://api.merge.dev/api
@@ -163,28 +163,51 @@ paths:
                 $ref: '#/components/schemas/CustomObjectClass'
 components:
   schemas:
-    RemoteFieldClassForCustomObjectClassItemSchema:
+    RemoteFieldClassForCustomObjectClass:
       type: object
       properties:
-        item_type:
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        display_name:
           type:
           - string
           - 'null'
-        item_format:
+        remote_key_name:
           type:
           - string
           - 'null'
-        item_choices:
+        description:
+          type:
+          - string
+          - 'null'
+        is_required:
+          type: boolean
+        field_type:
+          $ref: '#/components/schemas/FieldTypeEnum'
+        field_format:
+          $ref: '#/components/schemas/FieldFormatEnum'
+        field_choices:
           type:
           - array
           - 'null'
           items:
             type: string
-      required:
-      - item_type
-      - item_format
-      - item_choices
-      title: RemoteFieldClassForCustomObjectClassItemSchema
+        item_schema:
+          oneOf:
+          - $ref: '#/components/schemas/RemoteFieldClassForCustomObjectClassItemSchema'
+          - type: 'null'
+      title: RemoteFieldClassForCustomObjectClass
+    CustomObjectClassesGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - fields
+      title: CustomObjectClassesGetParametersExpandSchemaItems
     CustomObjectClass:
       type: object
       properties:
@@ -240,56 +263,11 @@ components:
 
         TODO'
       title: CustomObjectClass
-    RemoteFieldClassForCustomObjectClass:
-      type: object
-      properties:
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        display_name:
-          type:
-          - string
-          - 'null'
-        remote_key_name:
-          type:
-          - string
-          - 'null'
-        description:
-          type:
-          - string
-          - 'null'
-        is_required:
-          type: boolean
-        field_type:
-          $ref: '#/components/schemas/FieldTypeEnum'
-        field_format:
-          $ref: '#/components/schemas/FieldFormatEnum'
-        field_choices:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-        item_schema:
-          oneOf:
-          - $ref: '#/components/schemas/RemoteFieldClassForCustomObjectClassItemSchema'
-          - type: 'null'
-      title: RemoteFieldClassForCustomObjectClass
-    FieldFormatEnum:
+    CustomObjectClassesIdGetParametersExpandSchemaItems:
       type: string
       enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: FieldFormatEnum
+      - fields
+      title: CustomObjectClassesIdGetParametersExpandSchemaItems
     PaginatedCustomObjectClassList:
       type: object
       properties:
@@ -306,16 +284,38 @@ components:
           items:
             $ref: '#/components/schemas/CustomObjectClass'
       title: PaginatedCustomObjectClassList
-    CustomObjectClassesGetParametersExpandSchemaItems:
+    RemoteFieldClassForCustomObjectClassItemSchema:
+      type: object
+      properties:
+        item_type:
+          type:
+          - string
+          - 'null'
+        item_format:
+          type:
+          - string
+          - 'null'
+        item_choices:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+      required:
+      - item_type
+      - item_format
+      - item_choices
+      title: RemoteFieldClassForCustomObjectClassItemSchema
+    FieldFormatEnum:
       type: string
       enum:
-      - fields
-      title: CustomObjectClassesGetParametersExpandSchemaItems
-    CustomObjectClassesIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - fields
-      title: CustomObjectClassesIdGetParametersExpandSchemaItems
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldFormatEnum
     FieldTypeEnum:
       type: string
       enum:

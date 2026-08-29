@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Accounting subpackage_files API
+  title: File Storage Subpackage Files API
   version: 1.0.0
 servers:
 - url: https://api.merge.dev/api
@@ -451,14 +451,191 @@ paths:
                 $ref: '#/components/schemas/MetaResponse'
 components:
   schemas:
-    FileStorageFileEndpointRequest:
+    FileStorageFileResponse:
       type: object
       properties:
         model:
-          $ref: '#/components/schemas/FileRequest'
+          $ref: '#/components/schemas/File'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
       required:
       - model
-      title: FileStorageFileEndpointRequest
+      - warnings
+      - errors
+      title: FileStorageFileResponse
+    FilesIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - drive
+      - folder
+      - permissions
+      title: FilesIdGetParametersExpandSchemaItems
+    FilesDownloadRequestMetaGetParametersOrderBy:
+      type: string
+      enum:
+      - -created_at
+      - -modified_at
+      - created_at
+      - modified_at
+      title: FilesDownloadRequestMetaGetParametersOrderBy
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    PaginatedFileList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/File'
+      title: PaginatedFileList
+    PaginatedDownloadRequestMetaList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/DownloadRequestMeta'
+      title: PaginatedDownloadRequestMetaList
+    FilesGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - drive
+      - folder
+      - permissions
+      title: FilesGetParametersExpandSchemaItems
+    TypeEnum:
+      type: string
+      enum:
+      - USER
+      - GROUP
+      - COMPANY
+      - ANYONE
+      title: TypeEnum
+    FileRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          description: The file's name.
+        file_url:
+          type:
+          - string
+          - 'null'
+          description: The URL to access the file.
+        file_thumbnail_url:
+          type:
+          - string
+          - 'null'
+          description: The URL that produces a thumbnail preview of the file. Typically an image.
+        size:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: The file's size, in bytes.
+        mime_type:
+          type:
+          - string
+          - 'null'
+          description: The file's mime type.
+        description:
+          type:
+          - string
+          - 'null'
+          description: The file's description.
+        folder:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The folder that the file belongs to.
+        checksum:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+          description: This field stores file checksum data. 'type' indicates the algorithm (e.g. crc_32, sha1, sha256, quickXor, or md5), and 'content_hash' is the unique hash used to verify file integrity and detect alterations.
+        permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/PermissionRequest'
+        drive:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The drive that the file belongs to.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The File Object
+
+        ### Description
+
+        The `File` object is used to represent a file in the workspace. The Object typically exists under a folder or drive, if it exists.
+
+        ### Usage Example
+
+        Fetch from the `GET /api/filestorage/v1/files` endpoint and view their files.'
+      title: FileRequest
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
     PermissionFieldMappings:
       type: object
       properties:
@@ -471,44 +648,6 @@ components:
           additionalProperties:
             description: Any type
       title: PermissionFieldMappings
-    ErrorValidationProblem:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
-          type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
-      required:
-      - title
-      - detail
-      - problem_type
-      title: ErrorValidationProblem
-    FilesDownloadRequestMetaGetParametersOrderBy:
-      type: string
-      enum:
-      - -created_at
-      - -modified_at
-      - created_at
-      - modified_at
-      title: FilesDownloadRequestMetaGetParametersOrderBy
-    FilesGetParametersOrderBy:
-      type: string
-      enum:
-      - -created_at
-      - -modified_at
-      - created_at
-      - modified_at
-      title: FilesGetParametersOrderBy
     File:
       type: object
       properties:
@@ -617,308 +756,17 @@ components:
 
         Fetch from the `GET /api/filestorage/v1/files` endpoint and view their files.'
       title: File
-    FilesGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - drive
-      - folder
-      - permissions
-      title: FilesGetParametersExpandSchemaItems
-    PermissionRequest:
+    LinkedAccountStatus:
       type: object
       properties:
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        user:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The user that is granted this permission. This will only be populated if the type is `USER`.
-        group:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The group that is granted this permission. This will only be populated if the type is `GROUP`.
-        type:
-          oneOf:
-          - $ref: '#/components/schemas/TypeEnum'
-          - type: 'null'
-          description: Denotes what type of people have access to the file.
-        roles:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/RolesEnum'
-          description: 'The permissions that the user or group has for the File or Folder. It is possible for a user or group to have multiple roles, such as viewing & uploading. Possible values include: `READ`, `WRITE`, `OWNER`. In cases where there is no clear mapping, the original value passed through will be returned.'
-        integration_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        linked_account_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-      description: '# The Permission Object
-
-        ### Description
-
-        The Permission object is used to represent a user''s or group''s access to a File or Folder. Permissions are unexpanded by default.
-
-
-        ### Usage Example
-
-        Fetch from the `GET Files` or `GET Folders` endpoint. Permissions are unexpanded by default. Use the query param `expand=permissions` to see more details.'
-      title: PermissionRequest
-    FileRequest:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          description: The file's name.
-        file_url:
-          type:
-          - string
-          - 'null'
-          description: The URL to access the file.
-        file_thumbnail_url:
-          type:
-          - string
-          - 'null'
-          description: The URL that produces a thumbnail preview of the file. Typically an image.
-        size:
-          type:
-          - integer
-          - 'null'
-          format: int64
-          description: The file's size, in bytes.
-        mime_type:
-          type:
-          - string
-          - 'null'
-          description: The file's mime type.
-        description:
-          type:
-          - string
-          - 'null'
-          description: The file's description.
-        folder:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The folder that the file belongs to.
-        checksum:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-          description: This field stores file checksum data. 'type' indicates the algorithm (e.g. crc_32, sha1, sha256, quickXor, or md5), and 'content_hash' is the unique hash used to verify file integrity and detect alterations.
-        permissions:
-          type: array
-          items:
-            $ref: '#/components/schemas/PermissionRequest'
-        drive:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The drive that the file belongs to.
-        integration_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        linked_account_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-      description: '# The File Object
-
-        ### Description
-
-        The `File` object is used to represent a file in the workspace. The Object typically exists under a folder or drive, if it exists.
-
-        ### Usage Example
-
-        Fetch from the `GET /api/filestorage/v1/files` endpoint and view their files.'
-      title: FileRequest
-    PaginatedDownloadRequestMetaList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/DownloadRequestMeta'
-      title: PaginatedDownloadRequestMetaList
-    WarningValidationProblem:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
+        linked_account_status:
           type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
+        can_make_request:
           type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
       required:
-      - title
-      - detail
-      - problem_type
-      title: WarningValidationProblem
-    RolesEnum:
-      type: string
-      enum:
-      - READ
-      - WRITE
-      - OWNER
-      title: RolesEnum
-    DebugModeLog:
-      type: object
-      properties:
-        log_id:
-          type: string
-        dashboard_view:
-          type: string
-        log_summary:
-          $ref: '#/components/schemas/DebugModelLogSummary'
-      required:
-      - log_id
-      - dashboard_view
-      - log_summary
-      title: DebugModeLog
-    MetaResponse:
-      type: object
-      properties:
-        request_schema:
-          type: object
-          additionalProperties:
-            description: Any type
-        status:
-          $ref: '#/components/schemas/LinkedAccountStatus'
-        has_conditional_params:
-          type: boolean
-        has_required_linked_account_params:
-          type: boolean
-        remote_fields:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: Remote field values to populate
-      required:
-      - request_schema
-      - has_conditional_params
-      - has_required_linked_account_params
-      title: MetaResponse
-    FileStorageFileResponse:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/File'
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/WarningValidationProblem'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorValidationProblem'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/DebugModeLog'
-      required:
-      - model
-      - warnings
-      - errors
-      title: FileStorageFileResponse
-    FileFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: FileFieldMappings
-    RemoteData:
-      type: object
-      properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
-      required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
-    ValidationProblemSource:
-      type: object
-      properties:
-        pointer:
-          type: string
-      required:
-      - pointer
-      title: ValidationProblemSource
-    FilesIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - drive
-      - folder
-      - permissions
-      title: FilesIdGetParametersExpandSchemaItems
-    TypeEnum:
-      type: string
-      enum:
-      - USER
-      - GROUP
-      - COMPANY
-      - ANYONE
-      title: TypeEnum
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
     Permission:
       type: object
       properties:
@@ -980,20 +828,147 @@ components:
 
         Fetch from the `GET Files` or `GET Folders` endpoint. Permissions are unexpanded by default. Use the query param `expand=permissions` to see more details.'
       title: Permission
-    DebugModelLogSummary:
+    MetaResponse:
       type: object
       properties:
-        url:
-          type: string
-        method:
-          type: string
-        status_code:
-          type: integer
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
       required:
-      - url
-      - method
-      - status_code
-      title: DebugModelLogSummary
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    FileStorageFileEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/FileRequest'
+      required:
+      - model
+      title: FileStorageFileEndpointRequest
+    FileFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: FileFieldMappings
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    RolesEnum:
+      type: string
+      enum:
+      - READ
+      - WRITE
+      - OWNER
+      title: RolesEnum
+    PermissionRequest:
+      type: object
+      properties:
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        user:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The user that is granted this permission. This will only be populated if the type is `USER`.
+        group:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The group that is granted this permission. This will only be populated if the type is `GROUP`.
+        type:
+          oneOf:
+          - $ref: '#/components/schemas/TypeEnum'
+          - type: 'null'
+          description: Denotes what type of people have access to the file.
+        roles:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RolesEnum'
+          description: 'The permissions that the user or group has for the File or Folder. It is possible for a user or group to have multiple roles, such as viewing & uploading. Possible values include: `READ`, `WRITE`, `OWNER`. In cases where there is no clear mapping, the original value passed through will be returned.'
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The Permission Object
+
+        ### Description
+
+        The Permission object is used to represent a user''s or group''s access to a File or Folder. Permissions are unexpanded by default.
+
+
+        ### Usage Example
+
+        Fetch from the `GET Files` or `GET Folders` endpoint. Permissions are unexpanded by default. Use the query param `expand=permissions` to see more details.'
+      title: PermissionRequest
     DownloadRequestMeta:
       type: object
       properties:
@@ -1013,33 +988,58 @@ components:
       - method
       - headers
       title: DownloadRequestMeta
-    LinkedAccountStatus:
+    WarningValidationProblem:
       type: object
       properties:
-        linked_account_status:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
           type: string
-        can_make_request:
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
           type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
       required:
-      - linked_account_status
-      - can_make_request
-      title: LinkedAccountStatus
-    PaginatedFileList:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    FilesGetParametersOrderBy:
+      type: string
+      enum:
+      - -created_at
+      - -modified_at
+      - created_at
+      - modified_at
+      title: FilesGetParametersOrderBy
+    ErrorValidationProblem:
       type: object
       properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/File'
-      title: PaginatedFileList
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
   securitySchemes:
     tokenAuth:
       type: http

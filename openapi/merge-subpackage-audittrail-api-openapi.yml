@@ -1,11 +1,16 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Accounting subpackage_auditTrail API
+  title: Merge Subpackage Audit Trail API
   version: 1.0.0
+  description: 'Operations tagged subpackage_auditTrail across 8 of this provider''s published API definitions: merge-accounting-api-openapi.yaml, merge-ats-api-openapi.yaml, merge-chat-api-openapi.yaml, merge-crm-api-openapi.yaml, merge-file-storage-api-openapi.yaml, merge-hris-api-openapi.yaml, merge-knowledge-base-api-openapi.yaml, merge-ticketing-api-openapi.yaml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://api.merge.dev/api
 - url: https://api-eu.merge.dev/api
 - url: https://api-ap.merge.dev/api
+- url: https://api.merge.dev/api/chat/v1
+- url: https://api-eu.merge.dev/api/chat/v1
+- url: https://api-ap.merge.dev/api/chat/v1
+- url: https://api-ap.merge.dev/api/knowledgebase/v1
 tags:
 - name: subpackage_auditTrail
 paths:
@@ -66,6 +71,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaginatedAuditLogEventList'
+    servers:
+    - url: https://api.merge.dev/api
+    - url: https://api-eu.merge.dev/api
+    - url: https://api-ap.merge.dev/api
   /ats/v1/audit-trail:
     get:
       operationId: list
@@ -123,6 +132,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaginatedAuditLogEventList'
+    servers:
+    - url: https://api.merge.dev/api
+    - url: https://api-eu.merge.dev/api
+    - url: https://api-ap.merge.dev/api
   /audit-trail:
     get:
       operationId: list
@@ -180,6 +193,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaginatedAuditLogEventList'
+    servers:
+    - url: https://api.merge.dev/api/chat/v1
+    - url: https://api-eu.merge.dev/api/chat/v1
+    - url: https://api-ap.merge.dev/api/chat/v1
   /crm/v1/audit-trail:
     get:
       operationId: list
@@ -237,6 +254,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaginatedAuditLogEventList'
+    servers:
+    - url: https://api.merge.dev/api
+    - url: https://api-eu.merge.dev/api
+    - url: https://api-ap.merge.dev/api
   /filestorage/v1/audit-trail:
     get:
       operationId: list
@@ -294,6 +315,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaginatedAuditLogEventList'
+    servers:
+    - url: https://api.merge.dev/api
+    - url: https://api-eu.merge.dev/api
+    - url: https://api-ap.merge.dev/api
   /hris/v1/audit-trail:
     get:
       operationId: list
@@ -351,6 +376,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaginatedAuditLogEventList'
+    servers:
+    - url: https://api.merge.dev/api
+    - url: https://api-eu.merge.dev/api
+    - url: https://api-ap.merge.dev/api
   /knowledgebase/v1/audit-trail:
     get:
       operationId: list
@@ -408,6 +437,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaginatedAuditLogEventList'
+    servers:
+    - url: https://api.merge.dev/api
+    - url: https://api-eu.merge.dev/api
+    - url: https://api-ap.merge.dev/api
+    - url: https://api-ap.merge.dev/api/knowledgebase/v1
   /ticketing/v1/audit-trail:
     get:
       operationId: list
@@ -465,60 +499,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaginatedAuditLogEventList'
+    servers:
+    - url: https://api.merge.dev/api
+    - url: https://api-eu.merge.dev/api
+    - url: https://api-ap.merge.dev/api
 components:
   schemas:
-    PaginatedAuditLogEventList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/AuditLogEvent'
-      title: PaginatedAuditLogEventList
-    AuditLogEvent:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        user_name:
-          type:
-          - string
-          - 'null'
-          description: The User's full name at the time of this Event occurring.
-        user_email:
-          type:
-          - string
-          - 'null'
-          format: email
-          description: The User's email at the time of this Event occurring.
-        role:
-          $ref: '#/components/schemas/RoleEnum'
-          description: Designates the role of the user (or SYSTEM/API if action not taken by a user) at the time of this Event occurring.
-        ip_address:
-          type: string
-        event_type:
-          $ref: '#/components/schemas/EventTypeEnum'
-          description: Designates the type of event that occurred.
-        event_description:
-          type: string
-        created_at:
-          type: string
-          format: date-time
-      required:
-      - role
-      - ip_address
-      - event_type
-      - event_description
-      title: AuditLogEvent
     RoleEnum:
       type: string
       enum:
@@ -577,8 +563,358 @@ components:
       - MERGE_WEBHOOK_TARGET_CHANGED
       - END_USER_CREDENTIALS_ACCESSED
       title: EventTypeEnum
+    AuditLogEvent:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        user_name:
+          type:
+          - string
+          - 'null'
+          description: The User's full name at the time of this Event occurring.
+        user_email:
+          type:
+          - string
+          - 'null'
+          format: email
+          description: The User's email at the time of this Event occurring.
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+          description: Designates the role of the user (or SYSTEM/API if action not taken by a user) at the time of this Event occurring.
+        ip_address:
+          type: string
+        event_type:
+          $ref: '#/components/schemas/EventTypeEnum'
+          description: Designates the type of event that occurred.
+        event_description:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+      required:
+      - role
+      - ip_address
+      - event_type
+      - event_description
+      title: AuditLogEvent
+    PaginatedAuditLogEventList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuditLogEvent'
+      title: PaginatedAuditLogEventList
+    RoleEnum_2:
+      type: string
+      enum:
+      - ADMIN
+      - DEVELOPER
+      - MEMBER
+      - API
+      - SYSTEM
+      - MERGE_TEAM
+      description: '* `ADMIN` - ADMIN
+
+        * `DEVELOPER` - DEVELOPER
+
+        * `MEMBER` - MEMBER
+
+        * `API` - API
+
+        * `SYSTEM` - SYSTEM
+
+        * `MERGE_TEAM` - MERGE_TEAM'
+      title: RoleEnum
+    EventTypeEnum_2:
+      type: string
+      enum:
+      - CREATED_REMOTE_PRODUCTION_API_KEY
+      - DELETED_REMOTE_PRODUCTION_API_KEY
+      - CREATED_TEST_API_KEY
+      - DELETED_TEST_API_KEY
+      - REGENERATED_PRODUCTION_API_KEY
+      - REGENERATED_WEBHOOK_SIGNATURE
+      - INVITED_USER
+      - TWO_FACTOR_AUTH_ENABLED
+      - TWO_FACTOR_AUTH_DISABLED
+      - DELETED_LINKED_ACCOUNT
+      - DELETED_ALL_COMMON_MODELS_FOR_LINKED_ACCOUNT
+      - CREATED_DESTINATION
+      - DELETED_DESTINATION
+      - CHANGED_DESTINATION
+      - CHANGED_SCOPES
+      - CHANGED_PERSONAL_INFORMATION
+      - CHANGED_ORGANIZATION_SETTINGS
+      - ENABLED_INTEGRATION
+      - DISABLED_INTEGRATION
+      - ENABLED_CATEGORY
+      - DISABLED_CATEGORY
+      - CHANGED_PASSWORD
+      - RESET_PASSWORD
+      - ENABLED_REDACT_UNMAPPED_DATA_FOR_ORGANIZATION
+      - ENABLED_REDACT_UNMAPPED_DATA_FOR_LINKED_ACCOUNT
+      - DISABLED_REDACT_UNMAPPED_DATA_FOR_ORGANIZATION
+      - DISABLED_REDACT_UNMAPPED_DATA_FOR_LINKED_ACCOUNT
+      - CREATED_INTEGRATION_WIDE_FIELD_MAPPING
+      - CREATED_LINKED_ACCOUNT_FIELD_MAPPING
+      - CHANGED_INTEGRATION_WIDE_FIELD_MAPPING
+      - CHANGED_LINKED_ACCOUNT_FIELD_MAPPING
+      - DELETED_INTEGRATION_WIDE_FIELD_MAPPING
+      - DELETED_LINKED_ACCOUNT_FIELD_MAPPING
+      - CREATED_LINKED_ACCOUNT_COMMON_MODEL_OVERRIDE
+      - CHANGED_LINKED_ACCOUNT_COMMON_MODEL_OVERRIDE
+      - DELETED_LINKED_ACCOUNT_COMMON_MODEL_OVERRIDE
+      - FORCED_LINKED_ACCOUNT_RESYNC
+      - MUTED_ISSUE
+      - GENERATED_MAGIC_LINK
+      - ENABLED_MERGE_WEBHOOK
+      - DISABLED_MERGE_WEBHOOK
+      - MERGE_WEBHOOK_TARGET_CHANGED
+      - END_USER_CREDENTIALS_ACCESSED
+      description: '* `CREATED_REMOTE_PRODUCTION_API_KEY` - CREATED_REMOTE_PRODUCTION_API_KEY
+
+        * `DELETED_REMOTE_PRODUCTION_API_KEY` - DELETED_REMOTE_PRODUCTION_API_KEY
+
+        * `CREATED_TEST_API_KEY` - CREATED_TEST_API_KEY
+
+        * `DELETED_TEST_API_KEY` - DELETED_TEST_API_KEY
+
+        * `REGENERATED_PRODUCTION_API_KEY` - REGENERATED_PRODUCTION_API_KEY
+
+        * `REGENERATED_WEBHOOK_SIGNATURE` - REGENERATED_WEBHOOK_SIGNATURE
+
+        * `INVITED_USER` - INVITED_USER
+
+        * `TWO_FACTOR_AUTH_ENABLED` - TWO_FACTOR_AUTH_ENABLED
+
+        * `TWO_FACTOR_AUTH_DISABLED` - TWO_FACTOR_AUTH_DISABLED
+
+        * `DELETED_LINKED_ACCOUNT` - DELETED_LINKED_ACCOUNT
+
+        * `DELETED_ALL_COMMON_MODELS_FOR_LINKED_ACCOUNT` - DELETED_ALL_COMMON_MODELS_FOR_LINKED_ACCOUNT
+
+        * `CREATED_DESTINATION` - CREATED_DESTINATION
+
+        * `DELETED_DESTINATION` - DELETED_DESTINATION
+
+        * `CHANGED_DESTINATION` - CHANGED_DESTINATION
+
+        * `CHANGED_SCOPES` - CHANGED_SCOPES
+
+        * `CHANGED_PERSONAL_INFORMATION` - CHANGED_PERSONAL_INFORMATION
+
+        * `CHANGED_ORGANIZATION_SETTINGS` - CHANGED_ORGANIZATION_SETTINGS
+
+        * `ENABLED_INTEGRATION` - ENABLED_INTEGRATION
+
+        * `DISABLED_INTEGRATION` - DISABLED_INTEGRATION
+
+        * `ENABLED_CATEGORY` - ENABLED_CATEGORY
+
+        * `DISABLED_CATEGORY` - DISABLED_CATEGORY
+
+        * `CHANGED_PASSWORD` - CHANGED_PASSWORD
+
+        * `RESET_PASSWORD` - RESET_PASSWORD
+
+        * `ENABLED_REDACT_UNMAPPED_DATA_FOR_ORGANIZATION` - ENABLED_REDACT_UNMAPPED_DATA_FOR_ORGANIZATION
+
+        * `ENABLED_REDACT_UNMAPPED_DATA_FOR_LINKED_ACCOUNT` - ENABLED_REDACT_UNMAPPED_DATA_FOR_LINKED_ACCOUNT
+
+        * `DISABLED_REDACT_UNMAPPED_DATA_FOR_ORGANIZATION` - DISABLED_REDACT_UNMAPPED_DATA_FOR_ORGANIZATION
+
+        * `DISABLED_REDACT_UNMAPPED_DATA_FOR_LINKED_ACCOUNT` - DISABLED_REDACT_UNMAPPED_DATA_FOR_LINKED_ACCOUNT
+
+        * `CREATED_INTEGRATION_WIDE_FIELD_MAPPING` - CREATED_INTEGRATION_WIDE_FIELD_MAPPING
+
+        * `CREATED_LINKED_ACCOUNT_FIELD_MAPPING` - CREATED_LINKED_ACCOUNT_FIELD_MAPPING
+
+        * `CHANGED_INTEGRATION_WIDE_FIELD_MAPPING` - CHANGED_INTEGRATION_WIDE_FIELD_MAPPING
+
+        * `CHANGED_LINKED_ACCOUNT_FIELD_MAPPING` - CHANGED_LINKED_ACCOUNT_FIELD_MAPPING
+
+        * `DELETED_INTEGRATION_WIDE_FIELD_MAPPING` - DELETED_INTEGRATION_WIDE_FIELD_MAPPING
+
+        * `DELETED_LINKED_ACCOUNT_FIELD_MAPPING` - DELETED_LINKED_ACCOUNT_FIELD_MAPPING
+
+        * `CREATED_LINKED_ACCOUNT_COMMON_MODEL_OVERRIDE` - CREATED_LINKED_ACCOUNT_COMMON_MODEL_OVERRIDE
+
+        * `CHANGED_LINKED_ACCOUNT_COMMON_MODEL_OVERRIDE` - CHANGED_LINKED_ACCOUNT_COMMON_MODEL_OVERRIDE
+
+        * `DELETED_LINKED_ACCOUNT_COMMON_MODEL_OVERRIDE` - DELETED_LINKED_ACCOUNT_COMMON_MODEL_OVERRIDE
+
+        * `FORCED_LINKED_ACCOUNT_RESYNC` - FORCED_LINKED_ACCOUNT_RESYNC
+
+        * `MUTED_ISSUE` - MUTED_ISSUE
+
+        * `GENERATED_MAGIC_LINK` - GENERATED_MAGIC_LINK
+
+        * `ENABLED_MERGE_WEBHOOK` - ENABLED_MERGE_WEBHOOK
+
+        * `DISABLED_MERGE_WEBHOOK` - DISABLED_MERGE_WEBHOOK
+
+        * `MERGE_WEBHOOK_TARGET_CHANGED` - MERGE_WEBHOOK_TARGET_CHANGED
+
+        * `END_USER_CREDENTIALS_ACCESSED` - END_USER_CREDENTIALS_ACCESSED'
+      title: EventTypeEnum
+    AuditLogEvent_2:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        user_name:
+          type:
+          - string
+          - 'null'
+          description: The User's full name at the time of this Event occurring.
+        user_email:
+          type:
+          - string
+          - 'null'
+          format: email
+          description: The User's email at the time of this Event occurring.
+        role:
+          $ref: '#/components/schemas/RoleEnum_2'
+          description: 'Designates the role of the user (or SYSTEM/API if action not taken by a user) at the time of this Event occurring.
+
+
+            * `ADMIN` - ADMIN
+
+            * `DEVELOPER` - DEVELOPER
+
+            * `MEMBER` - MEMBER
+
+            * `API` - API
+
+            * `SYSTEM` - SYSTEM
+
+            * `MERGE_TEAM` - MERGE_TEAM'
+        ip_address:
+          type: string
+        event_type:
+          $ref: '#/components/schemas/EventTypeEnum_2'
+          description: 'Designates the type of event that occurred.
+
+
+            * `CREATED_REMOTE_PRODUCTION_API_KEY` - CREATED_REMOTE_PRODUCTION_API_KEY
+
+            * `DELETED_REMOTE_PRODUCTION_API_KEY` - DELETED_REMOTE_PRODUCTION_API_KEY
+
+            * `CREATED_TEST_API_KEY` - CREATED_TEST_API_KEY
+
+            * `DELETED_TEST_API_KEY` - DELETED_TEST_API_KEY
+
+            * `REGENERATED_PRODUCTION_API_KEY` - REGENERATED_PRODUCTION_API_KEY
+
+            * `REGENERATED_WEBHOOK_SIGNATURE` - REGENERATED_WEBHOOK_SIGNATURE
+
+            * `INVITED_USER` - INVITED_USER
+
+            * `TWO_FACTOR_AUTH_ENABLED` - TWO_FACTOR_AUTH_ENABLED
+
+            * `TWO_FACTOR_AUTH_DISABLED` - TWO_FACTOR_AUTH_DISABLED
+
+            * `DELETED_LINKED_ACCOUNT` - DELETED_LINKED_ACCOUNT
+
+            * `DELETED_ALL_COMMON_MODELS_FOR_LINKED_ACCOUNT` - DELETED_ALL_COMMON_MODELS_FOR_LINKED_ACCOUNT
+
+            * `CREATED_DESTINATION` - CREATED_DESTINATION
+
+            * `DELETED_DESTINATION` - DELETED_DESTINATION
+
+            * `CHANGED_DESTINATION` - CHANGED_DESTINATION
+
+            * `CHANGED_SCOPES` - CHANGED_SCOPES
+
+            * `CHANGED_PERSONAL_INFORMATION` - CHANGED_PERSONAL_INFORMATION
+
+            * `CHANGED_ORGANIZATION_SETTINGS` - CHANGED_ORGANIZATION_SETTINGS
+
+            * `ENABLED_INTEGRATION` - ENABLED_INTEGRATION
+
+            * `DISABLED_INTEGRATION` - DISABLED_INTEGRATION
+
+            * `ENABLED_CATEGORY` - ENABLED_CATEGORY
+
+            * `DISABLED_CATEGORY` - DISABLED_CATEGORY
+
+            * `CHANGED_PASSWORD` - CHANGED_PASSWORD
+
+            * `RESET_PASSWORD` - RESET_PASSWORD
+
+            * `ENABLED_REDACT_UNMAPPED_DATA_FOR_ORGANIZATION` - ENABLED_REDACT_UNMAPPED_DATA_FOR_ORGANIZATION
+
+            * `ENABLED_REDACT_UNMAPPED_DATA_FOR_LINKED_ACCOUNT` - ENABLED_REDACT_UNMAPPED_DATA_FOR_LINKED_ACCOUNT
+
+            * `DISABLED_REDACT_UNMAPPED_DATA_FOR_ORGANIZATION` - DISABLED_REDACT_UNMAPPED_DATA_FOR_ORGANIZATION
+
+            * `DISABLED_REDACT_UNMAPPED_DATA_FOR_LINKED_ACCOUNT` - DISABLED_REDACT_UNMAPPED_DATA_FOR_LINKED_ACCOUNT
+
+            * `CREATED_INTEGRATION_WIDE_FIELD_MAPPING` - CREATED_INTEGRATION_WIDE_FIELD_MAPPING
+
+            * `CREATED_LINKED_ACCOUNT_FIELD_MAPPING` - CREATED_LINKED_ACCOUNT_FIELD_MAPPING
+
+            * `CHANGED_INTEGRATION_WIDE_FIELD_MAPPING` - CHANGED_INTEGRATION_WIDE_FIELD_MAPPING
+
+            * `CHANGED_LINKED_ACCOUNT_FIELD_MAPPING` - CHANGED_LINKED_ACCOUNT_FIELD_MAPPING
+
+            * `DELETED_INTEGRATION_WIDE_FIELD_MAPPING` - DELETED_INTEGRATION_WIDE_FIELD_MAPPING
+
+            * `DELETED_LINKED_ACCOUNT_FIELD_MAPPING` - DELETED_LINKED_ACCOUNT_FIELD_MAPPING
+
+            * `CREATED_LINKED_ACCOUNT_COMMON_MODEL_OVERRIDE` - CREATED_LINKED_ACCOUNT_COMMON_MODEL_OVERRIDE
+
+            * `CHANGED_LINKED_ACCOUNT_COMMON_MODEL_OVERRIDE` - CHANGED_LINKED_ACCOUNT_COMMON_MODEL_OVERRIDE
+
+            * `DELETED_LINKED_ACCOUNT_COMMON_MODEL_OVERRIDE` - DELETED_LINKED_ACCOUNT_COMMON_MODEL_OVERRIDE
+
+            * `FORCED_LINKED_ACCOUNT_RESYNC` - FORCED_LINKED_ACCOUNT_RESYNC
+
+            * `MUTED_ISSUE` - MUTED_ISSUE
+
+            * `GENERATED_MAGIC_LINK` - GENERATED_MAGIC_LINK
+
+            * `ENABLED_MERGE_WEBHOOK` - ENABLED_MERGE_WEBHOOK
+
+            * `DISABLED_MERGE_WEBHOOK` - DISABLED_MERGE_WEBHOOK
+
+            * `MERGE_WEBHOOK_TARGET_CHANGED` - MERGE_WEBHOOK_TARGET_CHANGED
+
+            * `END_USER_CREDENTIALS_ACCESSED` - END_USER_CREDENTIALS_ACCESSED'
+        event_description:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+      required:
+      - role
+      - ip_address
+      - event_type
+      - event_description
+      title: AuditLogEvent
   securitySchemes:
     tokenAuth:
       type: http
       scheme: bearer
       description: Token-based authentication with required prefix "Bearer"
+x-refined-from:
+- merge-accounting-api-openapi.yaml
+- merge-ats-api-openapi.yaml
+- merge-chat-api-openapi.yaml
+- merge-crm-api-openapi.yaml
+- merge-file-storage-api-openapi.yaml
+- merge-hris-api-openapi.yaml
+- merge-knowledge-base-api-openapi.yaml
+- merge-ticketing-api-openapi.yaml

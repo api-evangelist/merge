@@ -1,7 +1,8 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Accounting subpackage_employees API
+  title: Merge Subpackage Employees API
   version: 1.0.0
+  description: 'Operations tagged subpackage_employees across 2 of this provider''s published API definitions: merge-accounting-api-openapi.yaml, merge-hris-api-openapi.yaml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://api.merge.dev/api
 - url: https://api-eu.merge.dev/api
@@ -114,6 +115,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaginatedEmployeeList'
+    servers:
+    - url: https://api.merge.dev/api
+    - url: https://api-eu.merge.dev/api
+    - url: https://api-ap.merge.dev/api
   /accounting/v1/employees/{id}:
     get:
       operationId: retrieve
@@ -167,6 +172,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Employee'
+    servers:
+    - url: https://api.merge.dev/api
+    - url: https://api-eu.merge.dev/api
+    - url: https://api-ap.merge.dev/api
   /hris/v1/employees:
     get:
       operationId: list
@@ -411,6 +420,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaginatedEmployeeList'
+    servers:
+    - url: https://api.merge.dev/api
+    - url: https://api-eu.merge.dev/api
+    - url: https://api-ap.merge.dev/api
   /hris/v1/employees/{id}:
     get:
       operationId: retrieve
@@ -482,6 +495,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Employee_2'
+    servers:
+    - url: https://api.merge.dev/api
+    - url: https://api-eu.merge.dev/api
+    - url: https://api-ap.merge.dev/api
   /hris/v1/employees/ignore/{model_id}:
     post:
       operationId: ignore-create
@@ -520,6 +537,10 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/IgnoreCommonModelRequest'
+    servers:
+    - url: https://api.merge.dev/api
+    - url: https://api-eu.merge.dev/api
+    - url: https://api-ap.merge.dev/api
   /hris/v1/employees/meta/post:
     get:
       operationId: meta-post-retrieve
@@ -547,20 +568,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MetaResponse'
+    servers:
+    - url: https://api.merge.dev/api
+    - url: https://api-eu.merge.dev/api
+    - url: https://api-ap.merge.dev/api
 components:
   schemas:
-    EmployeesGetParametersExpandSchemaItems_2:
-      type: string
-      enum:
-      - company
-      - employments
-      - groups
-      - home_location
-      - manager
-      - pay_group
-      - team
-      - work_location
-      title: EmployeesGetParametersExpandSchemaItems
     EmployeesIdGetParametersExpandSchemaItems:
       type: string
       enum:
@@ -582,15 +595,6 @@ components:
           items:
             $ref: '#/components/schemas/Employee'
       title: PaginatedEmployeeList
-    MaritalStatusEnum:
-      type: string
-      enum:
-      - SINGLE
-      - MARRIED_FILING_JOINTLY
-      - MARRIED_FILING_SEPARATELY
-      - HEAD_OF_HOUSEHOLD
-      - QUALIFYING_WIDOW_OR_WIDOWER_WITH_DEPENDENT_CHILD
-      title: MaritalStatusEnum
     Employee:
       type: object
       properties:
@@ -674,56 +678,27 @@ components:
 
         Fetch from the `LIST Employees` endpoint and view a company''s employees.'
       title: Employee
-    EmployeesGetParametersRemoteFields:
-      type: string
-      enum:
-      - employment_status
-      - employment_status,ethnicity
-      - employment_status,ethnicity,gender
-      - employment_status,ethnicity,gender,marital_status
-      - employment_status,ethnicity,marital_status
-      - employment_status,gender
-      - employment_status,gender,marital_status
-      - employment_status,marital_status
-      - ethnicity
-      - ethnicity,gender
-      - ethnicity,gender,marital_status
-      - ethnicity,marital_status
-      - gender
-      - gender,marital_status
-      - marital_status
-      title: EmployeesGetParametersRemoteFields
-    EmployeesIdGetParametersExpandSchemaItems_2:
-      type: string
-      enum:
-      - company
-      - employments
-      - groups
-      - home_location
-      - manager
-      - pay_group
-      - team
-      - work_location
-      title: EmployeesIdGetParametersExpandSchemaItems
-    EmployeesGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - employment_status
-      - employment_status,ethnicity
-      - employment_status,ethnicity,gender
-      - employment_status,ethnicity,gender,marital_status
-      - employment_status,ethnicity,marital_status
-      - employment_status,gender
-      - employment_status,gender,marital_status
-      - employment_status,marital_status
-      - ethnicity
-      - ethnicity,gender
-      - ethnicity,gender,marital_status
-      - ethnicity,marital_status
-      - gender
-      - gender,marital_status
-      - marital_status
-      title: EmployeesGetParametersShowEnumOrigins
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
     EmployeeFieldMappings:
       type: object
       properties:
@@ -736,6 +711,17 @@ components:
           additionalProperties:
             description: Any type
       title: EmployeeFieldMappings
+    Status895Enum:
+      type: string
+      enum:
+      - ACTIVE
+      - INACTIVE
+      title: Status895Enum
+    EmployeesGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - company
+      title: EmployeesGetParametersExpandSchemaItems
     Employee_2:
       type: object
       properties:
@@ -941,7 +927,33 @@ components:
 
         Fetch from the `LIST Employee` endpoint and filter by `ID` to show all employees.'
       title: Employee
-    EmployeesIdGetParametersRemoteFields:
+    EthnicityEnum:
+      type: string
+      enum:
+      - AMERICAN_INDIAN_OR_ALASKA_NATIVE
+      - ASIAN_OR_INDIAN_SUBCONTINENT
+      - BLACK_OR_AFRICAN_AMERICAN
+      - HISPANIC_OR_LATINO
+      - NATIVE_HAWAIIAN_OR_OTHER_PACIFIC_ISLANDER
+      - TWO_OR_MORE_RACES
+      - WHITE
+      - PREFER_NOT_TO_DISCLOSE
+      title: EthnicityEnum
+    MaritalStatusEnum:
+      type: string
+      enum:
+      - SINGLE
+      - MARRIED_FILING_JOINTLY
+      - MARRIED_FILING_SEPARATELY
+      - HEAD_OF_HOUSEHOLD
+      - QUALIFYING_WIDOW_OR_WIDOWER_WITH_DEPENDENT_CHILD
+      title: MaritalStatusEnum
+    employees_ignoreCreate_Response_200:
+      type: object
+      properties: {}
+      description: Empty response body
+      title: employees_ignoreCreate_Response_200
+    EmployeesGetParametersRemoteFields:
       type: string
       enum:
       - employment_status
@@ -959,12 +971,25 @@ components:
       - gender
       - gender,marital_status
       - marital_status
-      title: EmployeesIdGetParametersRemoteFields
-    EmployeesGetParametersExpandSchemaItems:
+      title: EmployeesGetParametersRemoteFields
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    ReasonEnum:
       type: string
       enum:
-      - company
-      title: EmployeesGetParametersExpandSchemaItems
+      - GENERAL_CUSTOMER_REQUEST
+      - GDPR
+      - OTHER
+      title: ReasonEnum
     EmployeesIdGetParametersShowEnumOrigins:
       type: string
       enum:
@@ -984,18 +1009,6 @@ components:
       - gender,marital_status
       - marital_status
       title: EmployeesIdGetParametersShowEnumOrigins
-    employees_ignoreCreate_Response_200:
-      type: object
-      properties: {}
-      description: Empty response body
-      title: employees_ignoreCreate_Response_200
-    ReasonEnum:
-      type: string
-      enum:
-      - GENERAL_CUSTOMER_REQUEST
-      - GDPR
-      - OTHER
-      title: ReasonEnum
     MetaResponse:
       type: object
       properties:
@@ -1020,6 +1033,37 @@ components:
       - has_conditional_params
       - has_required_linked_account_params
       title: MetaResponse
+    EmployeesIdGetParametersExpandSchemaItems_2:
+      type: string
+      enum:
+      - company
+      - employments
+      - groups
+      - home_location
+      - manager
+      - pay_group
+      - team
+      - work_location
+      title: EmployeesIdGetParametersExpandSchemaItems
+    EmployeesGetParametersEmploymentStatus:
+      type: string
+      enum:
+      - ACTIVE
+      - INACTIVE
+      - PENDING
+      title: EmployeesGetParametersEmploymentStatus
+    EmployeesGetParametersExpandSchemaItems_2:
+      type: string
+      enum:
+      - company
+      - employments
+      - groups
+      - home_location
+      - manager
+      - pay_group
+      - team
+      - work_location
+      title: EmployeesGetParametersExpandSchemaItems
     IgnoreCommonModelRequest:
       type: object
       properties:
@@ -1030,27 +1074,51 @@ components:
       required:
       - reason
       title: IgnoreCommonModelRequest
-    RemoteData:
-      type: object
-      properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
-      required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
+    EmployeesGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - employment_status
+      - employment_status,ethnicity
+      - employment_status,ethnicity,gender
+      - employment_status,ethnicity,gender,marital_status
+      - employment_status,ethnicity,marital_status
+      - employment_status,gender
+      - employment_status,gender,marital_status
+      - employment_status,marital_status
+      - ethnicity
+      - ethnicity,gender
+      - ethnicity,gender,marital_status
+      - ethnicity,marital_status
+      - gender
+      - gender,marital_status
+      - marital_status
+      title: EmployeesGetParametersShowEnumOrigins
+    EmploymentStatusEnum:
+      type: string
+      enum:
+      - ACTIVE
+      - PENDING
+      - INACTIVE
+      title: EmploymentStatusEnum
+    EmployeesIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - employment_status
+      - employment_status,ethnicity
+      - employment_status,ethnicity,gender
+      - employment_status,ethnicity,gender,marital_status
+      - employment_status,ethnicity,marital_status
+      - employment_status,gender
+      - employment_status,gender,marital_status
+      - employment_status,marital_status
+      - ethnicity
+      - ethnicity,gender
+      - ethnicity,gender,marital_status
+      - ethnicity,marital_status
+      - gender
+      - gender,marital_status
+      - marital_status
+      title: EmployeesIdGetParametersRemoteFields
     GenderEnum:
       type: string
       enum:
@@ -1060,51 +1128,11 @@ components:
       - OTHER
       - PREFER_NOT_TO_DISCLOSE
       title: GenderEnum
-    EmploymentStatusEnum:
-      type: string
-      enum:
-      - ACTIVE
-      - PENDING
-      - INACTIVE
-      title: EmploymentStatusEnum
-    LinkedAccountStatus:
-      type: object
-      properties:
-        linked_account_status:
-          type: string
-        can_make_request:
-          type: boolean
-      required:
-      - linked_account_status
-      - can_make_request
-      title: LinkedAccountStatus
-    EmployeesGetParametersEmploymentStatus:
-      type: string
-      enum:
-      - ACTIVE
-      - INACTIVE
-      - PENDING
-      title: EmployeesGetParametersEmploymentStatus
-    Status895Enum:
-      type: string
-      enum:
-      - ACTIVE
-      - INACTIVE
-      title: Status895Enum
-    EthnicityEnum:
-      type: string
-      enum:
-      - AMERICAN_INDIAN_OR_ALASKA_NATIVE
-      - ASIAN_OR_INDIAN_SUBCONTINENT
-      - BLACK_OR_AFRICAN_AMERICAN
-      - HISPANIC_OR_LATINO
-      - NATIVE_HAWAIIAN_OR_OTHER_PACIFIC_ISLANDER
-      - TWO_OR_MORE_RACES
-      - WHITE
-      - PREFER_NOT_TO_DISCLOSE
-      title: EthnicityEnum
   securitySchemes:
     tokenAuth:
       type: http
       scheme: bearer
       description: Token-based authentication with required prefix "Bearer"
+x-refined-from:
+- merge-accounting-api-openapi.yaml
+- merge-hris-api-openapi.yaml

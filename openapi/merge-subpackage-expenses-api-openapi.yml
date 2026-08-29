@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Accounting subpackage_expenses API
+  title: Accounting Subpackage Expenses API
   version: 1.0.0
 servers:
 - url: https://api.merge.dev/api
@@ -468,25 +468,69 @@ paths:
                 $ref: '#/components/schemas/BatchObjectsResponse'
 components:
   schemas:
-    ExpenseLine:
+    ValidationProblemSource:
       type: object
       properties:
-        id:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    AsyncBulkCreateResponse:
+      type: object
+      properties:
+        batch_id:
           type: string
           format: uuid
+          description: The ID of the batch.
+      required:
+      - batch_id
+      description: Response serializer for POST bulk create - returns only batch_id
+      title: AsyncBulkCreateResponse
+    PaginatedExpenseList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Expense'
+      title: PaginatedExpenseList
+    BatchObjectsResponseStatusEnum:
+      type: string
+      enum:
+      - ENQUEUED
+      - IN_PROGRESS
+      - PARTIAL_SUCCESS
+      - SUCCESS
+      - FAILED
+      - RATE_LIMITED
+      title: BatchObjectsResponseStatusEnum
+    ItemTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemTypeEnum
+    ExpenseLineRequest:
+      type: object
+      properties:
         remote_id:
           type:
           - string
           - 'null'
           description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
         item:
           type:
           - string
@@ -573,9 +617,22 @@ components:
           - 'null'
           format: decimal
           description: Unit price of the item for the expense line.
-        remote_was_deleted:
-          type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldRequest'
       description: '# The ExpenseLine Object
 
         ### Description
@@ -586,99 +643,33 @@ components:
         ### Usage Example
 
         Fetch from the `GET Expense` endpoint and view the expense''s line items.'
-      title: ExpenseLine
-    ErrorValidationProblem:
+      title: ExpenseLineRequest
+    DebugModelLogSummary:
       type: object
       properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
+        url:
           type: string
-        detail:
+        method:
           type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
+        status_code:
           type: integer
       required:
-      - title
-      - detail
-      - problem_type
-      title: ErrorValidationProblem
-    RemoteFieldRequest:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    ExpenseBatchItemRequest:
       type: object
       properties:
-        remote_field_class:
+        item_id:
           type: string
-          format: uuid
-        value:
-          type: object
-          additionalProperties:
-            description: Any type
+          description: The third-party item ID for this model in the bulk create request
+        payload:
+          $ref: '#/components/schemas/ExpenseRequest'
       required:
-      - remote_field_class
-      title: RemoteFieldRequest
-    BatchObjectsResponse:
-      type: object
-      properties:
-        batch_id:
-          type: string
-          format: uuid
-          description: The ID of the batch.
-        status:
-          $ref: '#/components/schemas/BatchObjectsResponseStatusEnum'
-          description: 'Possible overall statuses:
-
-
-            * `ENQUEUED` - The request has been received and a task has been enqueued for processing
-
-            * `IN_PROGRESS` - The enqueued task is being processed
-
-            * `PARTIAL_SUCCESS` - The task has been processed, but not all objects were written successfully
-
-            * `SUCCESS` - The task has been processed, and all objects were written successfully
-
-            * `FAILED` - The task has been processed, but ran into an error while processing
-
-            * `RATE_LIMITED` - The request was received but ran into rate limits while processing. The rate limited objects are being retried.'
-        total_count:
-          type: integer
-          description: The total number of objects in the batch.
-        objects:
-          type: array
-          items:
-            $ref: '#/components/schemas/BatchObject'
-      required:
-      - batch_id
-      - status
-      - total_count
-      - objects
-      description: Response serializer for GET bulk/{batch_id} - returns batch status and objects
-      title: BatchObjectsResponse
-    ItemTypeEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: ItemTypeEnum
-    ItemFormatEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: ItemFormatEnum
+      - item_id
+      - payload
+      title: ExpenseBatchItemRequest
     Expense:
       type: object
       properties:
@@ -819,573 +810,6 @@ components:
 
         Fetch from the `GET Expense` endpoint and view a company''s expense.'
       title: Expense
-    BatchObjectItemResponse:
-      type: object
-      properties:
-        merge_common_model_id:
-          type: string
-          format: uuid
-        error_message:
-          type: string
-      description: Response for individual items within a batch
-      title: BatchObjectItemResponse
-    ExpenseLineRequest:
-      type: object
-      properties:
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        item:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The line's item.
-        net_amount:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: The line's net amount.
-        tracking_category:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        tracking_categories:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: The expense line item's associated tracking categories.
-        company:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The company the expense belongs to.
-        employee:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The employee this overall transaction relates to.
-        currency:
-          oneOf:
-          - $ref: '#/components/schemas/TransactionCurrencyEnum'
-          - type: 'null'
-          description: The expense line item's currency. The currency code in ISO 4217 format.
-        account:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The expense's payment account.
-        contact:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The expense's contact.
-        project:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        description:
-          type:
-          - string
-          - 'null'
-          description: The description of the item that was purchased by the company.
-        exchange_rate:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          description: The expense line item's exchange rate.
-        tax_rate:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The tax rate that applies to this line item.
-        quantity:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          description: Number of items for the expense line.
-        unit_price:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          description: Unit price of the item for the expense line.
-        integration_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        linked_account_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        remote_fields:
-          type: array
-          items:
-            $ref: '#/components/schemas/RemoteFieldRequest'
-      description: '# The ExpenseLine Object
-
-        ### Description
-
-        The `ExpenseLine` object is used to represent an expense''s line items.
-
-
-        ### Usage Example
-
-        Fetch from the `GET Expense` endpoint and view the expense''s line items.'
-      title: ExpenseLineRequest
-    WarningValidationProblem:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
-          type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
-      required:
-      - title
-      - detail
-      - problem_type
-      title: WarningValidationProblem
-    AsyncBulkCreateResponse:
-      type: object
-      properties:
-        batch_id:
-          type: string
-          format: uuid
-          description: The ID of the batch.
-      required:
-      - batch_id
-      description: Response serializer for POST bulk create - returns only batch_id
-      title: AsyncBulkCreateResponse
-    PaginatedExpenseList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Expense'
-      title: PaginatedExpenseList
-    ExpenseBatchItemRequest:
-      type: object
-      properties:
-        item_id:
-          type: string
-          description: The third-party item ID for this model in the bulk create request
-        payload:
-          $ref: '#/components/schemas/ExpenseRequest'
-      required:
-      - item_id
-      - payload
-      title: ExpenseBatchItemRequest
-    DebugModeLog:
-      type: object
-      properties:
-        log_id:
-          type: string
-        dashboard_view:
-          type: string
-        log_summary:
-          $ref: '#/components/schemas/DebugModelLogSummary'
-      required:
-      - log_id
-      - dashboard_view
-      - log_summary
-      title: DebugModeLog
-    BatchObject:
-      type: object
-      properties:
-        item_id:
-          type: string
-        status:
-          $ref: '#/components/schemas/BatchObjectStatusEnum'
-          description: 'Possible per-object statuses:
-
-
-            * `PENDING` - This object has not been processed yet
-
-            * `SUCCESS` - This object was successfully POSTed
-
-            * `FAILURE` - This object was not successfully POSTed'
-        response:
-          $ref: '#/components/schemas/BatchObjectItemResponse'
-      required:
-      - item_id
-      - status
-      description: Individual batch object with status
-      title: BatchObject
-    MetaResponse:
-      type: object
-      properties:
-        request_schema:
-          type: object
-          additionalProperties:
-            description: Any type
-        status:
-          $ref: '#/components/schemas/LinkedAccountStatus'
-        has_conditional_params:
-          type: boolean
-        has_required_linked_account_params:
-          type: boolean
-        remote_fields:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: Remote field values to populate
-      required:
-      - request_schema
-      - has_conditional_params
-      - has_required_linked_account_params
-      title: MetaResponse
-    PaginatedRemoteFieldClassList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/RemoteFieldClass'
-      title: PaginatedRemoteFieldClassList
-    BatchObjectStatusEnum:
-      type: string
-      enum:
-      - PENDING
-      - SUCCESS
-      - FAILURE
-      title: BatchObjectStatusEnum
-    ItemSchema:
-      type: object
-      properties:
-        item_type:
-          $ref: '#/components/schemas/ItemTypeEnum'
-        item_format:
-          $ref: '#/components/schemas/ItemFormatEnum'
-        item_choices:
-          type: array
-          items:
-            type: string
-      title: ItemSchema
-    ExpensesIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - account
-      - accounting_period
-      - company
-      - contact
-      - employee
-      - tracking_categories
-      title: ExpensesIdGetParametersExpandSchemaItems
-    RemoteData:
-      type: object
-      properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
-      required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
-    ValidationProblemSource:
-      type: object
-      properties:
-        pointer:
-          type: string
-      required:
-      - pointer
-      title: ValidationProblemSource
-    RemoteFieldClass:
-      type: object
-      properties:
-        id:
-          type: string
-        display_name:
-          type: string
-        remote_key_name:
-          type: string
-        description:
-          type: string
-        is_custom:
-          type: boolean
-        is_common_model_field:
-          type: boolean
-        is_required:
-          type: boolean
-        field_type:
-          $ref: '#/components/schemas/FieldTypeEnum'
-        field_format:
-          $ref: '#/components/schemas/FieldFormatEnum'
-        field_choices:
-          type: array
-          items:
-            type: string
-        item_schema:
-          $ref: '#/components/schemas/ItemSchema'
-      title: RemoteFieldClass
-    RemoteField:
-      type: object
-      properties:
-        remote_field_class:
-          $ref: '#/components/schemas/RemoteFieldClass'
-        value:
-          type: object
-          additionalProperties:
-            description: Any type
-      required:
-      - remote_field_class
-      title: RemoteField
-    ExpenseResponse:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/Expense'
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/WarningValidationProblem'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorValidationProblem'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/DebugModeLog'
-      required:
-      - model
-      - warnings
-      - errors
-      title: ExpenseResponse
-    ExpenseRequest:
-      type: object
-      properties:
-        transaction_date:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: When the transaction occurred.
-        account:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The expense's payment account.
-        contact:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The expense's contact.
-        total_amount:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: The expense's total amount.
-        sub_total:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: The expense's total amount before tax.
-        total_tax_amount:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: The expense's total tax amount.
-        currency:
-          oneOf:
-          - $ref: '#/components/schemas/TransactionCurrencyEnum'
-          - type: 'null'
-          description: The expense's currency. The currency code in ISO 4217 format.
-        exchange_rate:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          description: The expense's exchange rate.
-        inclusive_of_tax:
-          type:
-          - boolean
-          - 'null'
-          description: If the transaction is inclusive or exclusive of tax. `True` if inclusive, `False` if exclusive.
-        company:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The company the expense belongs to.
-        employee:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The employee this overall transaction relates to.
-        memo:
-          type:
-          - string
-          - 'null'
-          description: The expense's private note.
-        lines:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExpenseLineRequest'
-        tracking_categories:
-          type: array
-          items:
-            type: string
-            format: uuid
-        accounting_period:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The accounting period that the Expense was generated in.
-        integration_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        linked_account_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        remote_fields:
-          type: array
-          items:
-            $ref: '#/components/schemas/RemoteFieldRequest'
-      description: '# The Expense Object
-
-        ### Description
-
-        The `Expense` object is used to represent a direct purchase by a business, typically made with a check, credit card, or cash. Each `Expense` object is dedicated to a grouping of expenses, with each expense recorded in the lines object.
-
-
-        The `Expense` object is also used to represent refunds to direct purchases. Refunds can be distinguished from purchases by the amount sign of the records. Expense objects with a negative amount are purchases and `Expense` objects with a positive amount are refunds to those purchases.
-
-
-        ### Usage Example
-
-        Fetch from the `GET Expense` endpoint and view a company''s expense.'
-      title: ExpenseRequest
-    FieldFormatEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: FieldFormatEnum
-    BatchObjectsResponseStatusEnum:
-      type: string
-      enum:
-      - ENQUEUED
-      - IN_PROGRESS
-      - PARTIAL_SUCCESS
-      - SUCCESS
-      - FAILED
-      - RATE_LIMITED
-      title: BatchObjectsResponseStatusEnum
-    ExpensesGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - account
-      - accounting_period
-      - company
-      - contact
-      - employee
-      - tracking_categories
-      title: ExpensesGetParametersExpandSchemaItems
-    ExpenseEndpointRequest:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/ExpenseRequest'
-      required:
-      - model
-      title: ExpenseEndpointRequest
-    ExpenseBulkRequest:
-      type: object
-      properties:
-        batch_items:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExpenseBatchItemRequest'
-      required:
-      - batch_items
-      title: ExpenseBulkRequest
-    DebugModelLogSummary:
-      type: object
-      properties:
-        url:
-          type: string
-        method:
-          type: string
-        status_code:
-          type: integer
-      required:
-      - url
-      - method
-      - status_code
-      title: DebugModelLogSummary
     TransactionCurrencyEnum:
       type: string
       enum:
@@ -1697,6 +1121,143 @@ components:
       - ZWL
       description: The currency code in ISO 4217 format.
       title: TransactionCurrencyEnum
+    BatchObjectItemResponse:
+      type: object
+      properties:
+        merge_common_model_id:
+          type: string
+          format: uuid
+        error_message:
+          type: string
+      description: Response for individual items within a batch
+      title: BatchObjectItemResponse
+    ExpenseEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/ExpenseRequest'
+      required:
+      - model
+      title: ExpenseEndpointRequest
+    ExpenseLine:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        item:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The line's item.
+        net_amount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The line's net amount.
+        tracking_category:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: The expense line item's associated tracking categories.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the expense belongs to.
+        employee:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The employee this overall transaction relates to.
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: The expense line item's currency. The currency code in ISO 4217 format.
+        account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The expense's payment account.
+        contact:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The expense's contact.
+        project:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        description:
+          type:
+          - string
+          - 'null'
+          description: The description of the item that was purchased by the company.
+        exchange_rate:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The expense line item's exchange rate.
+        tax_rate:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The tax rate that applies to this line item.
+        quantity:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: Number of items for the expense line.
+        unit_price:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: Unit price of the item for the expense line.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+      description: '# The ExpenseLine Object
+
+        ### Description
+
+        The `ExpenseLine` object is used to represent an expense''s line items.
+
+
+        ### Usage Example
+
+        Fetch from the `GET Expense` endpoint and view the expense''s line items.'
+      title: ExpenseLine
     LinkedAccountStatus:
       type: object
       properties:
@@ -1708,7 +1269,7 @@ components:
       - linked_account_status
       - can_make_request
       title: LinkedAccountStatus
-    FieldTypeEnum:
+    FieldFormatEnum:
       type: string
       enum:
       - string
@@ -1717,7 +1278,207 @@ components:
       - datetime
       - bool
       - list
-      title: FieldTypeEnum
+      title: FieldFormatEnum
+    BatchObjectsResponse:
+      type: object
+      properties:
+        batch_id:
+          type: string
+          format: uuid
+          description: The ID of the batch.
+        status:
+          $ref: '#/components/schemas/BatchObjectsResponseStatusEnum'
+          description: 'Possible overall statuses:
+
+
+            * `ENQUEUED` - The request has been received and a task has been enqueued for processing
+
+            * `IN_PROGRESS` - The enqueued task is being processed
+
+            * `PARTIAL_SUCCESS` - The task has been processed, but not all objects were written successfully
+
+            * `SUCCESS` - The task has been processed, and all objects were written successfully
+
+            * `FAILED` - The task has been processed, but ran into an error while processing
+
+            * `RATE_LIMITED` - The request was received but ran into rate limits while processing. The rate limited objects are being retried.'
+        total_count:
+          type: integer
+          description: The total number of objects in the batch.
+        objects:
+          type: array
+          items:
+            $ref: '#/components/schemas/BatchObject'
+      required:
+      - batch_id
+      - status
+      - total_count
+      - objects
+      description: Response serializer for GET bulk/{batch_id} - returns batch status and objects
+      title: BatchObjectsResponse
+    ExpenseRequest:
+      type: object
+      properties:
+        transaction_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the transaction occurred.
+        account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The expense's payment account.
+        contact:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The expense's contact.
+        total_amount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The expense's total amount.
+        sub_total:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The expense's total amount before tax.
+        total_tax_amount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The expense's total tax amount.
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: The expense's currency. The currency code in ISO 4217 format.
+        exchange_rate:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The expense's exchange rate.
+        inclusive_of_tax:
+          type:
+          - boolean
+          - 'null'
+          description: If the transaction is inclusive or exclusive of tax. `True` if inclusive, `False` if exclusive.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the expense belongs to.
+        employee:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The employee this overall transaction relates to.
+        memo:
+          type:
+          - string
+          - 'null'
+          description: The expense's private note.
+        lines:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExpenseLineRequest'
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+        accounting_period:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The accounting period that the Expense was generated in.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldRequest'
+      description: '# The Expense Object
+
+        ### Description
+
+        The `Expense` object is used to represent a direct purchase by a business, typically made with a check, credit card, or cash. Each `Expense` object is dedicated to a grouping of expenses, with each expense recorded in the lines object.
+
+
+        The `Expense` object is also used to represent refunds to direct purchases. Refunds can be distinguished from purchases by the amount sign of the records. Expense objects with a negative amount are purchases and `Expense` objects with a positive amount are refunds to those purchases.
+
+
+        ### Usage Example
+
+        Fetch from the `GET Expense` endpoint and view a company''s expense.'
+      title: ExpenseRequest
+    ItemFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemFormatEnum
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    RemoteField:
+      type: object
+      properties:
+        remote_field_class:
+          $ref: '#/components/schemas/RemoteFieldClass'
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteField
     ExpenseFieldMappings:
       type: object
       properties:
@@ -1730,6 +1491,245 @@ components:
           additionalProperties:
             description: Any type
       title: ExpenseFieldMappings
+    BatchObjectStatusEnum:
+      type: string
+      enum:
+      - PENDING
+      - SUCCESS
+      - FAILURE
+      title: BatchObjectStatusEnum
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    ExpensesIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - account
+      - accounting_period
+      - company
+      - contact
+      - employee
+      - tracking_categories
+      title: ExpensesIdGetParametersExpandSchemaItems
+    BatchObject:
+      type: object
+      properties:
+        item_id:
+          type: string
+        status:
+          $ref: '#/components/schemas/BatchObjectStatusEnum'
+          description: 'Possible per-object statuses:
+
+
+            * `PENDING` - This object has not been processed yet
+
+            * `SUCCESS` - This object was successfully POSTed
+
+            * `FAILURE` - This object was not successfully POSTed'
+        response:
+          $ref: '#/components/schemas/BatchObjectItemResponse'
+      required:
+      - item_id
+      - status
+      description: Individual batch object with status
+      title: BatchObject
+    ExpenseBulkRequest:
+      type: object
+      properties:
+        batch_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExpenseBatchItemRequest'
+      required:
+      - batch_items
+      title: ExpenseBulkRequest
+    RemoteFieldClass:
+      type: object
+      properties:
+        id:
+          type: string
+        display_name:
+          type: string
+        remote_key_name:
+          type: string
+        description:
+          type: string
+        is_custom:
+          type: boolean
+        is_common_model_field:
+          type: boolean
+        is_required:
+          type: boolean
+        field_type:
+          $ref: '#/components/schemas/FieldTypeEnum'
+        field_format:
+          $ref: '#/components/schemas/FieldFormatEnum'
+        field_choices:
+          type: array
+          items:
+            type: string
+        item_schema:
+          $ref: '#/components/schemas/ItemSchema'
+      title: RemoteFieldClass
+    ItemSchema:
+      type: object
+      properties:
+        item_type:
+          $ref: '#/components/schemas/ItemTypeEnum'
+        item_format:
+          $ref: '#/components/schemas/ItemFormatEnum'
+        item_choices:
+          type: array
+          items:
+            type: string
+      title: ItemSchema
+    ExpenseResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/Expense'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: ExpenseResponse
+    ExpensesGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - account
+      - accounting_period
+      - company
+      - contact
+      - employee
+      - tracking_categories
+      title: ExpensesGetParametersExpandSchemaItems
+    PaginatedRemoteFieldClassList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldClass'
+      title: PaginatedRemoteFieldClassList
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    FieldTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldTypeEnum
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    RemoteFieldRequest:
+      type: object
+      properties:
+        remote_field_class:
+          type: string
+          format: uuid
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteFieldRequest
   securitySchemes:
     tokenAuth:
       type: http

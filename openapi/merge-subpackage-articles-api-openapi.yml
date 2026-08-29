@@ -1,11 +1,12 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Accounting subpackage_articles API
+  title: Knowledge Base Subpackage Articles API
   version: 1.0.0
 servers:
 - url: https://api.merge.dev/api
 - url: https://api-eu.merge.dev/api
 - url: https://api-ap.merge.dev/api
+- url: https://api-ap.merge.dev/api/knowledgebase/v1
 tags:
 - name: subpackage_articles
 paths:
@@ -189,6 +190,157 @@ paths:
                 $ref: '#/components/schemas/Article'
 components:
   schemas:
+    PaginatedArticleList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Article'
+      title: PaginatedArticleList
+    ArticlesGetParametersExpand:
+      type: string
+      enum:
+      - attachments
+      - attachments,author
+      - attachments,author,last_edited_by
+      - attachments,author,last_edited_by,parent_article
+      - attachments,author,last_edited_by,parent_article,parent_container
+      - attachments,author,last_edited_by,parent_article,parent_container,root_container
+      - attachments,author,last_edited_by,parent_article,root_container
+      - attachments,author,last_edited_by,parent_container
+      - attachments,author,last_edited_by,parent_container,root_container
+      - attachments,author,last_edited_by,root_container
+      - attachments,author,parent_article
+      - attachments,author,parent_article,parent_container
+      - attachments,author,parent_article,parent_container,root_container
+      - attachments,author,parent_article,root_container
+      - attachments,author,parent_container
+      - attachments,author,parent_container,root_container
+      - attachments,author,root_container
+      - attachments,last_edited_by
+      - attachments,last_edited_by,parent_article
+      - attachments,last_edited_by,parent_article,parent_container
+      - attachments,last_edited_by,parent_article,parent_container,root_container
+      - attachments,last_edited_by,parent_article,root_container
+      - attachments,last_edited_by,parent_container
+      - attachments,last_edited_by,parent_container,root_container
+      - attachments,last_edited_by,root_container
+      - attachments,parent_article
+      - attachments,parent_article,parent_container
+      - attachments,parent_article,parent_container,root_container
+      - attachments,parent_article,root_container
+      - attachments,parent_container
+      - attachments,parent_container,root_container
+      - attachments,root_container
+      - author
+      - author,last_edited_by
+      - author,last_edited_by,parent_article
+      - author,last_edited_by,parent_article,parent_container
+      - author,last_edited_by,parent_article,parent_container,root_container
+      - author,last_edited_by,parent_article,root_container
+      - author,last_edited_by,parent_container
+      - author,last_edited_by,parent_container,root_container
+      - author,last_edited_by,root_container
+      - author,parent_article
+      - author,parent_article,parent_container
+      - author,parent_article,parent_container,root_container
+      - author,parent_article,root_container
+      - author,parent_container
+      - author,parent_container,root_container
+      - author,root_container
+      - last_edited_by
+      - last_edited_by,parent_article
+      - last_edited_by,parent_article,parent_container
+      - last_edited_by,parent_article,parent_container,root_container
+      - last_edited_by,parent_article,root_container
+      - last_edited_by,parent_container
+      - last_edited_by,parent_container,root_container
+      - last_edited_by,root_container
+      - parent_article
+      - parent_article,parent_container
+      - parent_article,parent_container,root_container
+      - parent_article,root_container
+      - parent_container
+      - parent_container,root_container
+      - permissions
+      - permissions,attachments
+      - permissions,attachments,author
+      - permissions,attachments,author,last_edited_by
+      - permissions,attachments,author,last_edited_by,parent_article
+      - permissions,attachments,author,last_edited_by,parent_article,parent_container
+      - permissions,attachments,author,last_edited_by,parent_article,parent_container,root_container
+      - permissions,attachments,author,last_edited_by,parent_article,root_container
+      - permissions,attachments,author,last_edited_by,parent_container
+      - permissions,attachments,author,last_edited_by,parent_container,root_container
+      - permissions,attachments,author,last_edited_by,root_container
+      - permissions,attachments,author,parent_article
+      - permissions,attachments,author,parent_article,parent_container
+      - permissions,attachments,author,parent_article,parent_container,root_container
+      - permissions,attachments,author,parent_article,root_container
+      - permissions,attachments,author,parent_container
+      - permissions,attachments,author,parent_container,root_container
+      - permissions,attachments,author,root_container
+      - permissions,attachments,last_edited_by
+      - permissions,attachments,last_edited_by,parent_article
+      - permissions,attachments,last_edited_by,parent_article,parent_container
+      - permissions,attachments,last_edited_by,parent_article,parent_container,root_container
+      - permissions,attachments,last_edited_by,parent_article,root_container
+      - permissions,attachments,last_edited_by,parent_container
+      - permissions,attachments,last_edited_by,parent_container,root_container
+      - permissions,attachments,last_edited_by,root_container
+      - permissions,attachments,parent_article
+      - permissions,attachments,parent_article,parent_container
+      - permissions,attachments,parent_article,parent_container,root_container
+      - permissions,attachments,parent_article,root_container
+      - permissions,attachments,parent_container
+      - permissions,attachments,parent_container,root_container
+      - permissions,attachments,root_container
+      - permissions,author
+      - permissions,author,last_edited_by
+      - permissions,author,last_edited_by,parent_article
+      - permissions,author,last_edited_by,parent_article,parent_container
+      - permissions,author,last_edited_by,parent_article,parent_container,root_container
+      - permissions,author,last_edited_by,parent_article,root_container
+      - permissions,author,last_edited_by,parent_container
+      - permissions,author,last_edited_by,parent_container,root_container
+      - permissions,author,last_edited_by,root_container
+      - permissions,author,parent_article
+      - permissions,author,parent_article,parent_container
+      - permissions,author,parent_article,parent_container,root_container
+      - permissions,author,parent_article,root_container
+      - permissions,author,parent_container
+      - permissions,author,parent_container,root_container
+      - permissions,author,root_container
+      - permissions,last_edited_by
+      - permissions,last_edited_by,parent_article
+      - permissions,last_edited_by,parent_article,parent_container
+      - permissions,last_edited_by,parent_article,parent_container,root_container
+      - permissions,last_edited_by,parent_article,root_container
+      - permissions,last_edited_by,parent_container
+      - permissions,last_edited_by,parent_container,root_container
+      - permissions,last_edited_by,root_container
+      - permissions,parent_article
+      - permissions,parent_article,parent_container
+      - permissions,parent_article,parent_container,root_container
+      - permissions,parent_article,root_container
+      - permissions,parent_container
+      - permissions,parent_container,root_container
+      - permissions,root_container
+      - root_container
+      title: ArticlesGetParametersExpand
+    ArticleFieldMappings:
+      type: object
+      properties: {}
+      title: ArticleFieldMappings
     Status3c6Enum:
       type: string
       enum:
@@ -204,94 +356,18 @@ components:
 
         * `TRASH` - TRASH'
       title: Status3c6Enum
-    Permission:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        user:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        group:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        type:
-          oneOf:
-          - $ref: '#/components/schemas/PermissionTypeEnum'
-          - type: 'null'
-          description: 'Denotes what type of people have access to the Article or Container.
-
-
-            * `USER` - USER
-
-            * `GROUP` - GROUP
-
-            * `COMPANY` - COMPANY
-
-            * `ANYONE` - ANYONE'
-        roles:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/RolesEnum'
-          description: The permissions that the user or group has for the Article or Container. It is possible for a user or group to have multiple roles, such as viewing & uploading.
-        remote_was_deleted:
-          type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-        field_mappings:
-          oneOf:
-          - $ref: '#/components/schemas/PermissionFieldMappings'
-          - type: 'null'
-      description: '# The Permission Object
-
-        ### Description
-
-        The `Permission` object is used to represent a user''s or group''s access to an article or container. Permissions are unexpanded by default.
-
-        ### Usage Example'
-      title: Permission
-    ArticleFieldMappings:
-      type: object
-      properties: {}
-      title: ArticleFieldMappings
-    PermissionFieldMappings:
-      type: object
-      properties: {}
-      title: PermissionFieldMappings
-    PermissionTypeEnum:
+    VisibilityEnum:
       type: string
       enum:
-      - USER
-      - GROUP
-      - COMPANY
-      - ANYONE
-      description: '* `USER` - USER
+      - PUBLIC
+      - INTERNAL
+      - RESTRICTED
+      description: '* `PUBLIC` - PUBLIC
 
-        * `GROUP` - GROUP
+        * `INTERNAL` - INTERNAL
 
-        * `COMPANY` - COMPANY
-
-        * `ANYONE` - ANYONE'
-      title: PermissionTypeEnum
+        * `RESTRICTED` - RESTRICTED'
+      title: VisibilityEnum
     ArticlesIdGetParametersExpand:
       type: string
       enum:
@@ -423,6 +499,131 @@ components:
       - permissions,root_container
       - root_container
       title: ArticlesIdGetParametersExpand
+    PermissionFieldMappings:
+      type: object
+      properties: {}
+      title: PermissionFieldMappings
+    PermissionTypeEnum:
+      type: string
+      enum:
+      - USER
+      - GROUP
+      - COMPANY
+      - ANYONE
+      description: '* `USER` - USER
+
+        * `GROUP` - GROUP
+
+        * `COMPANY` - COMPANY
+
+        * `ANYONE` - ANYONE'
+      title: PermissionTypeEnum
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    ArticlesGetParametersType:
+      type: string
+      enum:
+      - ''
+      - BLOG_POST
+      - PAGE
+      - SMART_LINK
+      title: ArticlesGetParametersType
+    RolesEnum:
+      type: string
+      enum:
+      - READ
+      - WRITE
+      - OWNER
+      description: '* `READ` - READ
+
+        * `WRITE` - WRITE
+
+        * `OWNER` - OWNER'
+      title: RolesEnum
+    Permission:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        user:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        group:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        type:
+          oneOf:
+          - $ref: '#/components/schemas/PermissionTypeEnum'
+          - type: 'null'
+          description: 'Denotes what type of people have access to the Article or Container.
+
+
+            * `USER` - USER
+
+            * `GROUP` - GROUP
+
+            * `COMPANY` - COMPANY
+
+            * `ANYONE` - ANYONE'
+        roles:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RolesEnum'
+          description: The permissions that the user or group has for the Article or Container. It is possible for a user or group to have multiple roles, such as viewing & uploading.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/PermissionFieldMappings'
+          - type: 'null'
+      description: '# The Permission Object
+
+        ### Description
+
+        The `Permission` object is used to represent a user''s or group''s access to an article or container. Permissions are unexpanded by default.
+
+        ### Usage Example'
+      title: Permission
     Article:
       type: object
       properties:
@@ -579,14 +780,6 @@ components:
 
         Fetch from the `GET /api/knowledgebase/articles` endpoint and view their articles.'
       title: Article
-    ArticlesGetParametersType:
-      type: string
-      enum:
-      - ''
-      - BLOG_POST
-      - PAGE
-      - SMART_LINK
-      title: ArticlesGetParametersType
     ArticleTypeEnum:
       type: string
       enum:
@@ -599,198 +792,6 @@ components:
 
         * `SMART_LINK` - SMART_LINK'
       title: ArticleTypeEnum
-    ArticlesGetParametersExpand:
-      type: string
-      enum:
-      - attachments
-      - attachments,author
-      - attachments,author,last_edited_by
-      - attachments,author,last_edited_by,parent_article
-      - attachments,author,last_edited_by,parent_article,parent_container
-      - attachments,author,last_edited_by,parent_article,parent_container,root_container
-      - attachments,author,last_edited_by,parent_article,root_container
-      - attachments,author,last_edited_by,parent_container
-      - attachments,author,last_edited_by,parent_container,root_container
-      - attachments,author,last_edited_by,root_container
-      - attachments,author,parent_article
-      - attachments,author,parent_article,parent_container
-      - attachments,author,parent_article,parent_container,root_container
-      - attachments,author,parent_article,root_container
-      - attachments,author,parent_container
-      - attachments,author,parent_container,root_container
-      - attachments,author,root_container
-      - attachments,last_edited_by
-      - attachments,last_edited_by,parent_article
-      - attachments,last_edited_by,parent_article,parent_container
-      - attachments,last_edited_by,parent_article,parent_container,root_container
-      - attachments,last_edited_by,parent_article,root_container
-      - attachments,last_edited_by,parent_container
-      - attachments,last_edited_by,parent_container,root_container
-      - attachments,last_edited_by,root_container
-      - attachments,parent_article
-      - attachments,parent_article,parent_container
-      - attachments,parent_article,parent_container,root_container
-      - attachments,parent_article,root_container
-      - attachments,parent_container
-      - attachments,parent_container,root_container
-      - attachments,root_container
-      - author
-      - author,last_edited_by
-      - author,last_edited_by,parent_article
-      - author,last_edited_by,parent_article,parent_container
-      - author,last_edited_by,parent_article,parent_container,root_container
-      - author,last_edited_by,parent_article,root_container
-      - author,last_edited_by,parent_container
-      - author,last_edited_by,parent_container,root_container
-      - author,last_edited_by,root_container
-      - author,parent_article
-      - author,parent_article,parent_container
-      - author,parent_article,parent_container,root_container
-      - author,parent_article,root_container
-      - author,parent_container
-      - author,parent_container,root_container
-      - author,root_container
-      - last_edited_by
-      - last_edited_by,parent_article
-      - last_edited_by,parent_article,parent_container
-      - last_edited_by,parent_article,parent_container,root_container
-      - last_edited_by,parent_article,root_container
-      - last_edited_by,parent_container
-      - last_edited_by,parent_container,root_container
-      - last_edited_by,root_container
-      - parent_article
-      - parent_article,parent_container
-      - parent_article,parent_container,root_container
-      - parent_article,root_container
-      - parent_container
-      - parent_container,root_container
-      - permissions
-      - permissions,attachments
-      - permissions,attachments,author
-      - permissions,attachments,author,last_edited_by
-      - permissions,attachments,author,last_edited_by,parent_article
-      - permissions,attachments,author,last_edited_by,parent_article,parent_container
-      - permissions,attachments,author,last_edited_by,parent_article,parent_container,root_container
-      - permissions,attachments,author,last_edited_by,parent_article,root_container
-      - permissions,attachments,author,last_edited_by,parent_container
-      - permissions,attachments,author,last_edited_by,parent_container,root_container
-      - permissions,attachments,author,last_edited_by,root_container
-      - permissions,attachments,author,parent_article
-      - permissions,attachments,author,parent_article,parent_container
-      - permissions,attachments,author,parent_article,parent_container,root_container
-      - permissions,attachments,author,parent_article,root_container
-      - permissions,attachments,author,parent_container
-      - permissions,attachments,author,parent_container,root_container
-      - permissions,attachments,author,root_container
-      - permissions,attachments,last_edited_by
-      - permissions,attachments,last_edited_by,parent_article
-      - permissions,attachments,last_edited_by,parent_article,parent_container
-      - permissions,attachments,last_edited_by,parent_article,parent_container,root_container
-      - permissions,attachments,last_edited_by,parent_article,root_container
-      - permissions,attachments,last_edited_by,parent_container
-      - permissions,attachments,last_edited_by,parent_container,root_container
-      - permissions,attachments,last_edited_by,root_container
-      - permissions,attachments,parent_article
-      - permissions,attachments,parent_article,parent_container
-      - permissions,attachments,parent_article,parent_container,root_container
-      - permissions,attachments,parent_article,root_container
-      - permissions,attachments,parent_container
-      - permissions,attachments,parent_container,root_container
-      - permissions,attachments,root_container
-      - permissions,author
-      - permissions,author,last_edited_by
-      - permissions,author,last_edited_by,parent_article
-      - permissions,author,last_edited_by,parent_article,parent_container
-      - permissions,author,last_edited_by,parent_article,parent_container,root_container
-      - permissions,author,last_edited_by,parent_article,root_container
-      - permissions,author,last_edited_by,parent_container
-      - permissions,author,last_edited_by,parent_container,root_container
-      - permissions,author,last_edited_by,root_container
-      - permissions,author,parent_article
-      - permissions,author,parent_article,parent_container
-      - permissions,author,parent_article,parent_container,root_container
-      - permissions,author,parent_article,root_container
-      - permissions,author,parent_container
-      - permissions,author,parent_container,root_container
-      - permissions,author,root_container
-      - permissions,last_edited_by
-      - permissions,last_edited_by,parent_article
-      - permissions,last_edited_by,parent_article,parent_container
-      - permissions,last_edited_by,parent_article,parent_container,root_container
-      - permissions,last_edited_by,parent_article,root_container
-      - permissions,last_edited_by,parent_container
-      - permissions,last_edited_by,parent_container,root_container
-      - permissions,last_edited_by,root_container
-      - permissions,parent_article
-      - permissions,parent_article,parent_container
-      - permissions,parent_article,parent_container,root_container
-      - permissions,parent_article,root_container
-      - permissions,parent_container
-      - permissions,parent_container,root_container
-      - permissions,root_container
-      - root_container
-      title: ArticlesGetParametersExpand
-    RemoteData:
-      type: object
-      properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
-      required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
-    VisibilityEnum:
-      type: string
-      enum:
-      - PUBLIC
-      - INTERNAL
-      - RESTRICTED
-      description: '* `PUBLIC` - PUBLIC
-
-        * `INTERNAL` - INTERNAL
-
-        * `RESTRICTED` - RESTRICTED'
-      title: VisibilityEnum
-    PaginatedArticleList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Article'
-      title: PaginatedArticleList
-    RolesEnum:
-      type: string
-      enum:
-      - READ
-      - WRITE
-      - OWNER
-      description: '* `READ` - READ
-
-        * `WRITE` - WRITE
-
-        * `OWNER` - OWNER'
-      title: RolesEnum
   securitySchemes:
     tokenAuth:
       type: http

@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: Accounting subpackage_payments API
+  title: Accounting Subpackage Payments API
   version: 1.0.0
 servers:
 - url: https://api.merge.dev/api
@@ -497,91 +497,43 @@ paths:
                 $ref: '#/components/schemas/PaginatedRemoteFieldClassList'
 components:
   schemas:
-    ErrorValidationProblem:
+    ValidationProblemSource:
       type: object
       properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
+        pointer:
           type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
       required:
-      - title
-      - detail
-      - problem_type
-      title: ErrorValidationProblem
-    PaymentLineItem:
+      - pointer
+      title: ValidationProblemSource
+    PaymentTypeEnum:
+      type: string
+      enum:
+      - ACCOUNTS_PAYABLE
+      - ACCOUNTS_RECEIVABLE
+      title: PaymentTypeEnum
+    PaymentFieldMappings:
       type: object
       properties:
-        id:
-          type: string
-          format: uuid
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        applied_amount:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          description: The amount being applied to the transaction.
-        applied_date:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date the payment portion is applied.
-        related_object_id:
-          type: string
-          format: uuid
-          description: The Merge ID of the transaction the payment portion is being applied to.
-        related_object_type:
-          type: string
-          description: 'The type of transaction the payment portion is being applied to. Possible values include: INVOICE, JOURNAL_ENTRY, or CREDIT_NOTE.'
-      description: '# The PaymentLineItem Object
-
-        ### Description
-
-        The `PaymentLineItem` object is an applied-to-line on a `Payment` that can either be a `Invoice`, `CreditNote`, or `JournalEntry`.
-
-
-        ### Usage Example
-
-        `Payment` will have a field called `applied-to-lines` which will be an array of `PaymentLineItemInternalMappingSerializer` objects that can either be a `Invoice`, `CreditNote`, or `JournalEntry`.'
-      title: PaymentLineItem
-    RemoteFieldRequest:
-      type: object
-      properties:
-        remote_field_class:
-          type: string
-          format: uuid
-        value:
+        organization_defined_targets:
           type: object
           additionalProperties:
             description: Any type
-      required:
-      - remote_field_class
-      title: RemoteFieldRequest
-    PaymentRequest:
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: PaymentFieldMappings
+    ItemTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemTypeEnum
+    PatchedPaymentRequest:
       type: object
       properties:
         transaction_date:
@@ -678,7 +630,43 @@ components:
         ### Usage Example
 
         Fetch from the `GET Payment` endpoint and view an invoice''s payment.'
-      title: PaymentRequest
+      title: PatchedPaymentRequest
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    PaymentResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/Payment'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: PaymentResponse
     Payment:
       type: object
       properties:
@@ -800,366 +788,6 @@ components:
 
         Fetch from the `GET Payment` endpoint and view an invoice''s payment.'
       title: Payment
-    ItemTypeEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: ItemTypeEnum
-    ItemFormatEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: ItemFormatEnum
-    PatchedPaymentRequest:
-      type: object
-      properties:
-        transaction_date:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The payment's transaction date.
-        contact:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The supplier, or customer involved in the payment.
-        account:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The supplier’s or customer’s account in which the payment is made.
-        payment_method:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The method which this payment was made by.
-        currency:
-          oneOf:
-          - $ref: '#/components/schemas/TransactionCurrencyEnum'
-          - type: 'null'
-          description: The payment's currency. The currency code in ISO 4217 format.
-        exchange_rate:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          description: The payment's exchange rate.
-        company:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The company the payment belongs to.
-        total_amount:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: The total amount of money being paid to the supplier, or customer, after taxes.
-        type:
-          oneOf:
-          - $ref: '#/components/schemas/PaymentTypeEnum'
-          - type: 'null'
-          description: The type of the invoice.
-        tracking_categories:
-          type: array
-          items:
-            type: string
-            format: uuid
-        accounting_period:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The accounting period that the Payment was generated in.
-        applied_to_lines:
-          type: array
-          items:
-            $ref: '#/components/schemas/PaymentLineItemRequest'
-          description: A list of “Payment Applied to Lines” objects.
-        integration_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        linked_account_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        remote_fields:
-          type: array
-          items:
-            $ref: '#/components/schemas/RemoteFieldRequest'
-      description: '# The Payment Object
-
-        ### Description
-
-        The `Payment` object represents general payments made towards a specific transaction.
-
-
-        ### Usage Example
-
-        Fetch from the `GET Payment` endpoint and view an invoice''s payment.'
-      title: PatchedPaymentRequest
-    PatchedPaymentEndpointRequest:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/PatchedPaymentRequest'
-      required:
-      - model
-      title: PatchedPaymentEndpointRequest
-    PaginatedPaymentList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Payment'
-      title: PaginatedPaymentList
-    PaymentTypeEnum:
-      type: string
-      enum:
-      - ACCOUNTS_PAYABLE
-      - ACCOUNTS_RECEIVABLE
-      title: PaymentTypeEnum
-    PaymentFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: PaymentFieldMappings
-    WarningValidationProblem:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
-          type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
-      required:
-      - title
-      - detail
-      - problem_type
-      title: WarningValidationProblem
-    PaymentEndpointRequest:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/PaymentRequest'
-      required:
-      - model
-      title: PaymentEndpointRequest
-    DebugModeLog:
-      type: object
-      properties:
-        log_id:
-          type: string
-        dashboard_view:
-          type: string
-        log_summary:
-          $ref: '#/components/schemas/DebugModelLogSummary'
-      required:
-      - log_id
-      - dashboard_view
-      - log_summary
-      title: DebugModeLog
-    MetaResponse:
-      type: object
-      properties:
-        request_schema:
-          type: object
-          additionalProperties:
-            description: Any type
-        status:
-          $ref: '#/components/schemas/LinkedAccountStatus'
-        has_conditional_params:
-          type: boolean
-        has_required_linked_account_params:
-          type: boolean
-        remote_fields:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: Remote field values to populate
-      required:
-      - request_schema
-      - has_conditional_params
-      - has_required_linked_account_params
-      title: MetaResponse
-    PaginatedRemoteFieldClassList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/RemoteFieldClass'
-      title: PaginatedRemoteFieldClassList
-    ItemSchema:
-      type: object
-      properties:
-        item_type:
-          $ref: '#/components/schemas/ItemTypeEnum'
-        item_format:
-          $ref: '#/components/schemas/ItemFormatEnum'
-        item_choices:
-          type: array
-          items:
-            type: string
-      title: ItemSchema
-    RemoteData:
-      type: object
-      properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
-      required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
-    ValidationProblemSource:
-      type: object
-      properties:
-        pointer:
-          type: string
-      required:
-      - pointer
-      title: ValidationProblemSource
-    RemoteField:
-      type: object
-      properties:
-        remote_field_class:
-          $ref: '#/components/schemas/RemoteFieldClass'
-        value:
-          type: object
-          additionalProperties:
-            description: Any type
-      required:
-      - remote_field_class
-      title: RemoteField
-    RemoteFieldClass:
-      type: object
-      properties:
-        id:
-          type: string
-        display_name:
-          type: string
-        remote_key_name:
-          type: string
-        description:
-          type: string
-        is_custom:
-          type: boolean
-        is_common_model_field:
-          type: boolean
-        is_required:
-          type: boolean
-        field_type:
-          $ref: '#/components/schemas/FieldTypeEnum'
-        field_format:
-          $ref: '#/components/schemas/FieldFormatEnum'
-        field_choices:
-          type: array
-          items:
-            type: string
-        item_schema:
-          $ref: '#/components/schemas/ItemSchema'
-      title: RemoteFieldClass
-    FieldFormatEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: FieldFormatEnum
-    PaymentsGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - account
-      - accounting_period
-      - applied_to_lines
-      - company
-      - contact
-      - payment_method
-      - tracking_categories
-      title: PaymentsGetParametersExpandSchemaItems
-    DebugModelLogSummary:
-      type: object
-      properties:
-        url:
-          type: string
-        method:
-          type: string
-        status_code:
-          type: integer
-      required:
-      - url
-      - method
-      - status_code
-      title: DebugModelLogSummary
     TransactionCurrencyEnum:
       type: string
       enum:
@@ -1471,6 +1099,257 @@ components:
       - ZWL
       description: The currency code in ISO 4217 format.
       title: TransactionCurrencyEnum
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    FieldFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldFormatEnum
+    PaymentLineItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        applied_amount:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The amount being applied to the transaction.
+        applied_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date the payment portion is applied.
+        related_object_id:
+          type: string
+          format: uuid
+          description: The Merge ID of the transaction the payment portion is being applied to.
+        related_object_type:
+          type: string
+          description: 'The type of transaction the payment portion is being applied to. Possible values include: INVOICE, JOURNAL_ENTRY, or CREDIT_NOTE.'
+      description: '# The PaymentLineItem Object
+
+        ### Description
+
+        The `PaymentLineItem` object is an applied-to-line on a `Payment` that can either be a `Invoice`, `CreditNote`, or `JournalEntry`.
+
+
+        ### Usage Example
+
+        `Payment` will have a field called `applied-to-lines` which will be an array of `PaymentLineItemInternalMappingSerializer` objects that can either be a `Invoice`, `CreditNote`, or `JournalEntry`.'
+      title: PaymentLineItem
+    PaymentEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/PaymentRequest'
+      required:
+      - model
+      title: PaymentEndpointRequest
+    ItemFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemFormatEnum
+    PatchedPaymentEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/PatchedPaymentRequest'
+      required:
+      - model
+      title: PatchedPaymentEndpointRequest
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    RemoteField:
+      type: object
+      properties:
+        remote_field_class:
+          $ref: '#/components/schemas/RemoteFieldClass'
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteField
+    PaymentRequest:
+      type: object
+      properties:
+        transaction_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The payment's transaction date.
+        contact:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The supplier, or customer involved in the payment.
+        account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The supplier’s or customer’s account in which the payment is made.
+        payment_method:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The method which this payment was made by.
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: The payment's currency. The currency code in ISO 4217 format.
+        exchange_rate:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The payment's exchange rate.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the payment belongs to.
+        total_amount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The total amount of money being paid to the supplier, or customer, after taxes.
+        type:
+          oneOf:
+          - $ref: '#/components/schemas/PaymentTypeEnum'
+          - type: 'null'
+          description: The type of the invoice.
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+        accounting_period:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The accounting period that the Payment was generated in.
+        applied_to_lines:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentLineItemRequest'
+          description: A list of “Payment Applied to Lines” objects.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldRequest'
+      description: '# The Payment Object
+
+        ### Description
+
+        The `Payment` object represents general payments made towards a specific transaction.
+
+
+        ### Usage Example
+
+        Fetch from the `GET Payment` endpoint and view an invoice''s payment.'
+      title: PaymentRequest
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
     PaymentLineItemRequest:
       type: object
       properties:
@@ -1525,17 +1404,103 @@ components:
 
         `Payment` will have a field called `applied-to-lines` which will be an array of `PaymentLineItemInternalMappingSerializer` objects that can either be a `Invoice`, `CreditNote`, or `JournalEntry`.'
       title: PaymentLineItemRequest
-    LinkedAccountStatus:
+    PaginatedPaymentList:
       type: object
       properties:
-        linked_account_status:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Payment'
+      title: PaginatedPaymentList
+    RemoteFieldClass:
+      type: object
+      properties:
+        id:
           type: string
-        can_make_request:
+        display_name:
+          type: string
+        remote_key_name:
+          type: string
+        description:
+          type: string
+        is_custom:
           type: boolean
+        is_common_model_field:
+          type: boolean
+        is_required:
+          type: boolean
+        field_type:
+          $ref: '#/components/schemas/FieldTypeEnum'
+        field_format:
+          $ref: '#/components/schemas/FieldFormatEnum'
+        field_choices:
+          type: array
+          items:
+            type: string
+        item_schema:
+          $ref: '#/components/schemas/ItemSchema'
+      title: RemoteFieldClass
+    ItemSchema:
+      type: object
+      properties:
+        item_type:
+          $ref: '#/components/schemas/ItemTypeEnum'
+        item_format:
+          $ref: '#/components/schemas/ItemFormatEnum'
+        item_choices:
+          type: array
+          items:
+            type: string
+      title: ItemSchema
+    PaymentsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - account
+      - accounting_period
+      - applied_to_lines
+      - company
+      - contact
+      - payment_method
+      - tracking_categories
+      title: PaymentsGetParametersExpandSchemaItems
+    PaginatedRemoteFieldClassList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldClass'
+      title: PaginatedRemoteFieldClassList
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
       required:
-      - linked_account_status
-      - can_make_request
-      title: LinkedAccountStatus
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
     FieldTypeEnum:
       type: string
       enum:
@@ -1546,28 +1511,6 @@ components:
       - bool
       - list
       title: FieldTypeEnum
-    PaymentResponse:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/Payment'
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/WarningValidationProblem'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorValidationProblem'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/DebugModeLog'
-      required:
-      - model
-      - warnings
-      - errors
-      title: PaymentResponse
     PaymentsIdGetParametersExpandSchemaItems:
       type: string
       enum:
@@ -1579,6 +1522,63 @@ components:
       - payment_method
       - tracking_categories
       title: PaymentsIdGetParametersExpandSchemaItems
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    RemoteFieldRequest:
+      type: object
+      properties:
+        remote_field_class:
+          type: string
+          format: uuid
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteFieldRequest
   securitySchemes:
     tokenAuth:
       type: http
