@@ -10,8 +10,14 @@ info:
     the underlying OpenAPI description.
   version: 1.0.0
 sourceDescriptions:
-- name: atsApi
-  url: ../openapi/merge-ats-api-openapi.yaml
+- name: subpackageApplicationsApi
+  url: ../openapi/merge-subpackage-applications-api-openapi.yml
+  type: openapi
+- name: subpackageCandidatesApi
+  url: ../openapi/merge-subpackage-candidates-api-openapi.yml
+  type: openapi
+- name: subpackageJobsApi
+  url: ../openapi/merge-subpackage-jobs-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: create-candidate-and-application
@@ -50,7 +56,7 @@ workflows:
   - stepId: createCandidate
     description: >-
       Create the candidate record from the supplied name.
-    operationPath: '{$sourceDescriptions.atsApi.url}#/paths/~1ats~1v1~1candidates/post'
+    operationPath: '{$sourceDescriptions.subpackageCandidatesApi.url}#/paths/~1ats~1v1~1candidates/post'
     parameters:
     - name: Authorization
       in: header
@@ -72,7 +78,7 @@ workflows:
     description: >-
       Resolve the open job to apply to by matching on its code, returning at
       most one match.
-    operationPath: '{$sourceDescriptions.atsApi.url}#/paths/~1ats~1v1~1jobs/get'
+    operationPath: '{$sourceDescriptions.subpackageJobsApi.url}#/paths/~1ats~1v1~1jobs/get'
     parameters:
     - name: code
       in: query
@@ -99,7 +105,7 @@ workflows:
   - stepId: createApplication
     description: >-
       Submit an application linking the new candidate to the resolved job.
-    operationPath: '{$sourceDescriptions.atsApi.url}#/paths/~1ats~1v1~1applications/post'
+    operationPath: '{$sourceDescriptions.subpackageApplicationsApi.url}#/paths/~1ats~1v1~1applications/post'
     parameters:
     - name: Authorization
       in: header

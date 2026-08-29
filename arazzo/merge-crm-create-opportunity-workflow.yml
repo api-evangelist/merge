@@ -11,8 +11,14 @@ info:
     description.
   version: 1.0.0
 sourceDescriptions:
-- name: crmApi
-  url: ../openapi/merge-crm-api-openapi.yaml
+- name: subpackageAccountsApi
+  url: ../openapi/merge-subpackage-accounts-api-openapi.yml
+  type: openapi
+- name: subpackageOpportunitiesApi
+  url: ../openapi/merge-subpackage-opportunities-api-openapi.yml
+  type: openapi
+- name: subpackageStagesApi
+  url: ../openapi/merge-subpackage-stages-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: create-opportunity
@@ -53,7 +59,7 @@ workflows:
     description: >-
       List the pipeline stages and select the one whose name matches the
       supplied stage name.
-    operationPath: '{$sourceDescriptions.crmApi.url}#/paths/~1crm~1v1~1stages/get'
+    operationPath: '{$sourceDescriptions.subpackageStagesApi.url}#/paths/~1crm~1v1~1stages/get'
     parameters:
     - name: Authorization
       in: header
@@ -72,7 +78,7 @@ workflows:
     description: >-
       Resolve the target account by matching on its name, returning at most one
       match.
-    operationPath: '{$sourceDescriptions.crmApi.url}#/paths/~1crm~1v1~1accounts/get'
+    operationPath: '{$sourceDescriptions.subpackageAccountsApi.url}#/paths/~1crm~1v1~1accounts/get'
     parameters:
     - name: name
       in: query
@@ -96,7 +102,7 @@ workflows:
   - stepId: createOpportunity
     description: >-
       Create the opportunity for the resolved account at the resolved stage.
-    operationPath: '{$sourceDescriptions.crmApi.url}#/paths/~1crm~1v1~1opportunities/post'
+    operationPath: '{$sourceDescriptions.subpackageOpportunitiesApi.url}#/paths/~1crm~1v1~1opportunities/post'
     parameters:
     - name: Authorization
       in: header

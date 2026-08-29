@@ -12,8 +12,14 @@ info:
     the underlying OpenAPI description.
   version: 1.0.0
 sourceDescriptions:
-- name: ticketingApi
-  url: ../openapi/merge-ticketing-api-openapi.yaml
+- name: subpackageAccountdetailsApi
+  url: ../openapi/merge-subpackage-accountdetails-api-openapi.yml
+  type: openapi
+- name: subpackageAccounttokenApi
+  url: ../openapi/merge-subpackage-accounttoken-api-openapi.yml
+  type: openapi
+- name: subpackageLinktokenApi
+  url: ../openapi/merge-subpackage-linktoken-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: link-ticketing-account
@@ -51,7 +57,7 @@ workflows:
     description: >-
       Create a single-use Link token scoped to the ticketing category from the
       end user's identifying details.
-    operationPath: '{$sourceDescriptions.ticketingApi.url}#/paths/~1ticketing~1v1~1link-token/post'
+    operationPath: '{$sourceDescriptions.subpackageLinktokenApi.url}#/paths/~1ticketing~1v1~1link-token/post'
     parameters:
     - name: Authorization
       in: header
@@ -73,7 +79,7 @@ workflows:
     description: >-
       Exchange the public token returned by the Merge Link frontend flow for a
       durable account token used on all subsequent data requests.
-    operationPath: '{$sourceDescriptions.ticketingApi.url}#/paths/~1ticketing~1v1~1account-token~1{public_token}/get'
+    operationPath: '{$sourceDescriptions.subpackageAccounttokenApi.url}#/paths/~1ticketing~1v1~1account-token~1{public_token}/get'
     parameters:
     - name: public_token
       in: path
@@ -90,7 +96,7 @@ workflows:
     description: >-
       Read the linked account details to confirm the integration completed and
       surface the connected ticketing platform.
-    operationPath: '{$sourceDescriptions.ticketingApi.url}#/paths/~1ticketing~1v1~1account-details/get'
+    operationPath: '{$sourceDescriptions.subpackageAccountdetailsApi.url}#/paths/~1ticketing~1v1~1account-details/get'
     parameters:
     - name: Authorization
       in: header

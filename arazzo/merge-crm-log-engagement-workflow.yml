@@ -10,8 +10,11 @@ info:
     and executed without opening the underlying OpenAPI description.
   version: 1.0.0
 sourceDescriptions:
-- name: crmApi
-  url: ../openapi/merge-crm-api-openapi.yaml
+- name: subpackageContactsApi
+  url: ../openapi/merge-subpackage-contacts-api-openapi.yml
+  type: openapi
+- name: subpackageEngagementsApi
+  url: ../openapi/merge-subpackage-engagements-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: log-engagement
@@ -54,7 +57,7 @@ workflows:
     description: >-
       Resolve the contact by matching on the supplied email address, returning
       at most one match.
-    operationPath: '{$sourceDescriptions.crmApi.url}#/paths/~1crm~1v1~1contacts/get'
+    operationPath: '{$sourceDescriptions.subpackageContactsApi.url}#/paths/~1crm~1v1~1contacts/get'
     parameters:
     - name: email_addresses
       in: query
@@ -78,7 +81,7 @@ workflows:
   - stepId: createEngagement
     description: >-
       Create the engagement and reference the resolved contact.
-    operationPath: '{$sourceDescriptions.crmApi.url}#/paths/~1crm~1v1~1engagements/post'
+    operationPath: '{$sourceDescriptions.subpackageEngagementsApi.url}#/paths/~1crm~1v1~1engagements/post'
     parameters:
     - name: Authorization
       in: header
@@ -103,7 +106,7 @@ workflows:
   - stepId: confirmEngagement
     description: >-
       Read the created engagement back to confirm it was persisted.
-    operationPath: '{$sourceDescriptions.crmApi.url}#/paths/~1crm~1v1~1engagements~1{id}/get'
+    operationPath: '{$sourceDescriptions.subpackageEngagementsApi.url}#/paths/~1crm~1v1~1engagements~1{id}/get'
     parameters:
     - name: id
       in: path

@@ -11,8 +11,11 @@ info:
     description.
   version: 1.0.0
 sourceDescriptions:
-- name: crmApi
-  url: ../openapi/merge-crm-api-openapi.yaml
+- name: subpackageAccountsApi
+  url: ../openapi/merge-subpackage-accounts-api-openapi.yml
+  type: openapi
+- name: subpackageContactsApi
+  url: ../openapi/merge-subpackage-contacts-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: create-account-and-contact
@@ -54,7 +57,7 @@ workflows:
   - stepId: createAccount
     description: >-
       Create the CRM account from the supplied name and optional firmographics.
-    operationPath: '{$sourceDescriptions.crmApi.url}#/paths/~1crm~1v1~1accounts/post'
+    operationPath: '{$sourceDescriptions.subpackageAccountsApi.url}#/paths/~1crm~1v1~1accounts/post'
     parameters:
     - name: Authorization
       in: header
@@ -76,7 +79,7 @@ workflows:
   - stepId: createContact
     description: >-
       Create a contact linked to the newly created account.
-    operationPath: '{$sourceDescriptions.crmApi.url}#/paths/~1crm~1v1~1contacts/post'
+    operationPath: '{$sourceDescriptions.subpackageContactsApi.url}#/paths/~1crm~1v1~1contacts/post'
     parameters:
     - name: Authorization
       in: header
@@ -99,7 +102,7 @@ workflows:
     description: >-
       Read the created contact back to confirm it was persisted with the
       correct account association.
-    operationPath: '{$sourceDescriptions.crmApi.url}#/paths/~1crm~1v1~1contacts~1{id}/get'
+    operationPath: '{$sourceDescriptions.subpackageContactsApi.url}#/paths/~1crm~1v1~1contacts~1{id}/get'
     parameters:
     - name: id
       in: path

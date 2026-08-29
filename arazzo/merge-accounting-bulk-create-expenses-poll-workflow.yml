@@ -13,8 +13,8 @@ info:
     description.
   version: 1.0.0
 sourceDescriptions:
-- name: accountingApi
-  url: ../openapi/merge-accounting-api-openapi.yaml
+- name: subpackageExpensesApi
+  url: ../openapi/merge-subpackage-expenses-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: bulk-create-expenses-poll
@@ -48,7 +48,7 @@ workflows:
     description: >-
       Submit the batch of expenses for asynchronous creation; the response
       returns only the batch id.
-    operationPath: '{$sourceDescriptions.accountingApi.url}#/paths/~1accounting~1v1~1expenses~1bulk/post'
+    operationPath: '{$sourceDescriptions.subpackageExpensesApi.url}#/paths/~1accounting~1v1~1expenses~1bulk/post'
     parameters:
     - name: Authorization
       in: header
@@ -68,7 +68,7 @@ workflows:
     description: >-
       Poll the batch objects endpoint to read the current overall status of the
       batch.
-    operationPath: '{$sourceDescriptions.accountingApi.url}#/paths/~1accounting~1v1~1expenses~1bulk~1{batch_id}/get'
+    operationPath: '{$sourceDescriptions.subpackageExpensesApi.url}#/paths/~1accounting~1v1~1expenses~1bulk~1{batch_id}/get'
     parameters:
     - name: batch_id
       in: path
@@ -110,7 +110,7 @@ workflows:
     description: >-
       Re-read the completed batch to capture the final object set after a
       successful or partially successful run.
-    operationPath: '{$sourceDescriptions.accountingApi.url}#/paths/~1accounting~1v1~1expenses~1bulk~1{batch_id}/get'
+    operationPath: '{$sourceDescriptions.subpackageExpensesApi.url}#/paths/~1accounting~1v1~1expenses~1bulk~1{batch_id}/get'
     parameters:
     - name: batch_id
       in: path
@@ -133,7 +133,7 @@ workflows:
     description: >-
       Re-read the failed batch to capture the final status and any per-object
       errors for troubleshooting.
-    operationPath: '{$sourceDescriptions.accountingApi.url}#/paths/~1accounting~1v1~1expenses~1bulk~1{batch_id}/get'
+    operationPath: '{$sourceDescriptions.subpackageExpensesApi.url}#/paths/~1accounting~1v1~1expenses~1bulk~1{batch_id}/get'
     parameters:
     - name: batch_id
       in: path

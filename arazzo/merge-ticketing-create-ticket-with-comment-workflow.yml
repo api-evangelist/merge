@@ -10,8 +10,11 @@ info:
     the underlying OpenAPI description.
   version: 1.0.0
 sourceDescriptions:
-- name: ticketingApi
-  url: ../openapi/merge-ticketing-api-openapi.yaml
+- name: subpackageCommentsApi
+  url: ../openapi/merge-subpackage-comments-api-openapi.yml
+  type: openapi
+- name: subpackageTicketsApi
+  url: ../openapi/merge-subpackage-tickets-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: create-ticket-with-comment
@@ -49,7 +52,7 @@ workflows:
   - stepId: createTicket
     description: >-
       Create the ticket from the supplied name, description, and status.
-    operationPath: '{$sourceDescriptions.ticketingApi.url}#/paths/~1ticketing~1v1~1tickets/post'
+    operationPath: '{$sourceDescriptions.subpackageTicketsApi.url}#/paths/~1ticketing~1v1~1tickets/post'
     parameters:
     - name: Authorization
       in: header
@@ -71,7 +74,7 @@ workflows:
   - stepId: addComment
     description: >-
       Post an opening comment onto the newly created ticket.
-    operationPath: '{$sourceDescriptions.ticketingApi.url}#/paths/~1ticketing~1v1~1comments/post'
+    operationPath: '{$sourceDescriptions.subpackageCommentsApi.url}#/paths/~1ticketing~1v1~1comments/post'
     parameters:
     - name: Authorization
       in: header
@@ -92,7 +95,7 @@ workflows:
   - stepId: confirmTicket
     description: >-
       Read the created ticket back to confirm it was persisted.
-    operationPath: '{$sourceDescriptions.ticketingApi.url}#/paths/~1ticketing~1v1~1tickets~1{id}/get'
+    operationPath: '{$sourceDescriptions.subpackageTicketsApi.url}#/paths/~1ticketing~1v1~1tickets~1{id}/get'
     parameters:
     - name: id
       in: path

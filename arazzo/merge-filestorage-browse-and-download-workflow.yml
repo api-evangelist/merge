@@ -10,8 +10,8 @@ info:
     and executed without opening the underlying OpenAPI description.
   version: 1.0.0
 sourceDescriptions:
-- name: fileStorageApi
-  url: ../openapi/merge-file-storage-api-openapi.yaml
+- name: subpackageFilesApi
+  url: ../openapi/merge-subpackage-files-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: browse-and-download
@@ -41,7 +41,7 @@ workflows:
   - stepId: listFiles
     description: >-
       List files on the linked account, optionally scoped to a folder.
-    operationPath: '{$sourceDescriptions.fileStorageApi.url}#/paths/~1filestorage~1v1~1files/get'
+    operationPath: '{$sourceDescriptions.subpackageFilesApi.url}#/paths/~1filestorage~1v1~1files/get'
     parameters:
     - name: folder_id
       in: query
@@ -66,7 +66,7 @@ workflows:
   - stepId: getFile
     description: >-
       Retrieve the metadata for the first file returned by the listing.
-    operationPath: '{$sourceDescriptions.fileStorageApi.url}#/paths/~1filestorage~1v1~1files~1{id}/get'
+    operationPath: '{$sourceDescriptions.subpackageFilesApi.url}#/paths/~1filestorage~1v1~1files~1{id}/get'
     parameters:
     - name: id
       in: path
@@ -86,7 +86,7 @@ workflows:
   - stepId: downloadFile
     description: >-
       Download the binary contents of the resolved file.
-    operationPath: '{$sourceDescriptions.fileStorageApi.url}#/paths/~1filestorage~1v1~1files~1{id}~1download/get'
+    operationPath: '{$sourceDescriptions.subpackageFilesApi.url}#/paths/~1filestorage~1v1~1files~1{id}~1download/get'
     parameters:
     - name: id
       in: path

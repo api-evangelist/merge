@@ -13,11 +13,11 @@ info:
     read and executed without opening the underlying OpenAPI description.
   version: 1.0.0
 sourceDescriptions:
-- name: hrisApi
-  url: ../openapi/merge-hris-api-openapi.yaml
+- name: subpackageIssuesApi
+  url: ../openapi/merge-subpackage-issues-api-openapi.yml
   type: openapi
-- name: crmApi
-  url: ../openapi/merge-crm-api-openapi.yaml
+- name: subpackageSyncstatusApi
+  url: ../openapi/merge-subpackage-syncstatus-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: cross-category-sync-health-check
@@ -45,7 +45,7 @@ workflows:
   - stepId: hrisSyncStatus
     description: >-
       Read the sync status for the HRIS linked account.
-    operationPath: '{$sourceDescriptions.hrisApi.url}#/paths/~1hris~1v1~1sync-status/get'
+    operationPath: '{$sourceDescriptions.subpackageSyncstatusApi.url}#/paths/~1hris~1v1~1sync-status/get'
     parameters:
     - name: Authorization
       in: header
@@ -60,7 +60,7 @@ workflows:
   - stepId: hrisOpenIssues
     description: >-
       List the currently ongoing issues for the HRIS linked account.
-    operationPath: '{$sourceDescriptions.hrisApi.url}#/paths/~1hris~1v1~1issues/get'
+    operationPath: '{$sourceDescriptions.subpackageIssuesApi.url}#/paths/~1hris~1v1~1issues/get'
     parameters:
     - name: status
       in: query
@@ -78,7 +78,7 @@ workflows:
   - stepId: crmSyncStatus
     description: >-
       Read the sync status for the CRM linked account.
-    operationPath: '{$sourceDescriptions.crmApi.url}#/paths/~1crm~1v1~1sync-status/get'
+    operationPath: '{$sourceDescriptions.subpackageSyncstatusApi.url}#/paths/~1crm~1v1~1sync-status/get'
     parameters:
     - name: Authorization
       in: header
@@ -93,7 +93,7 @@ workflows:
   - stepId: crmOpenIssues
     description: >-
       List the currently ongoing issues for the CRM linked account.
-    operationPath: '{$sourceDescriptions.crmApi.url}#/paths/~1crm~1v1~1issues/get'
+    operationPath: '{$sourceDescriptions.subpackageIssuesApi.url}#/paths/~1crm~1v1~1issues/get'
     parameters:
     - name: status
       in: query

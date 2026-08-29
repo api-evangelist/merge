@@ -11,8 +11,11 @@ info:
     description.
   version: 1.0.0
 sourceDescriptions:
-- name: hrisApi
-  url: ../openapi/merge-hris-api-openapi.yaml
+- name: subpackageEmployeesApi
+  url: ../openapi/merge-subpackage-employees-api-openapi.yml
+  type: openapi
+- name: subpackageTimeoffApi
+  url: ../openapi/merge-subpackage-timeoff-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: create-time-off
@@ -64,7 +67,7 @@ workflows:
     description: >-
       Find the employee whose display full name matches the supplied value,
       returning at most one match.
-    operationPath: '{$sourceDescriptions.hrisApi.url}#/paths/~1hris~1v1~1employees/get'
+    operationPath: '{$sourceDescriptions.subpackageEmployeesApi.url}#/paths/~1hris~1v1~1employees/get'
     parameters:
     - name: display_full_name
       in: query
@@ -89,7 +92,7 @@ workflows:
     description: >-
       Create a time off request for the resolved employee using the supplied
       window, type, and amount.
-    operationPath: '{$sourceDescriptions.hrisApi.url}#/paths/~1hris~1v1~1time-off/post'
+    operationPath: '{$sourceDescriptions.subpackageTimeoffApi.url}#/paths/~1hris~1v1~1time-off/post'
     parameters:
     - name: Authorization
       in: header
@@ -115,7 +118,7 @@ workflows:
   - stepId: confirmTimeOff
     description: >-
       Read the created time off request back to confirm it was persisted.
-    operationPath: '{$sourceDescriptions.hrisApi.url}#/paths/~1hris~1v1~1time-off~1{id}/get'
+    operationPath: '{$sourceDescriptions.subpackageTimeoffApi.url}#/paths/~1hris~1v1~1time-off~1{id}/get'
     parameters:
     - name: id
       in: path

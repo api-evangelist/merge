@@ -11,8 +11,11 @@ info:
     description.
   version: 1.0.0
 sourceDescriptions:
-- name: accountingApi
-  url: ../openapi/merge-accounting-api-openapi.yaml
+- name: subpackageContactsApi
+  url: ../openapi/merge-subpackage-contacts-api-openapi.yml
+  type: openapi
+- name: subpackageInvoicesApi
+  url: ../openapi/merge-subpackage-invoices-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: create-contact-and-invoice
@@ -63,7 +66,7 @@ workflows:
   - stepId: createContact
     description: >-
       Create the contact and flag it as a customer.
-    operationPath: '{$sourceDescriptions.accountingApi.url}#/paths/~1accounting~1v1~1contacts/post'
+    operationPath: '{$sourceDescriptions.subpackageContactsApi.url}#/paths/~1accounting~1v1~1contacts/post'
     parameters:
     - name: Authorization
       in: header
@@ -85,7 +88,7 @@ workflows:
   - stepId: createInvoice
     description: >-
       Raise an invoice against the newly created contact.
-    operationPath: '{$sourceDescriptions.accountingApi.url}#/paths/~1accounting~1v1~1invoices/post'
+    operationPath: '{$sourceDescriptions.subpackageInvoicesApi.url}#/paths/~1accounting~1v1~1invoices/post'
     parameters:
     - name: Authorization
       in: header
@@ -112,7 +115,7 @@ workflows:
     description: >-
       Read the created invoice back to confirm it was persisted against the
       contact.
-    operationPath: '{$sourceDescriptions.accountingApi.url}#/paths/~1accounting~1v1~1invoices~1{id}/get'
+    operationPath: '{$sourceDescriptions.subpackageInvoicesApi.url}#/paths/~1accounting~1v1~1invoices~1{id}/get'
     parameters:
     - name: id
       in: path

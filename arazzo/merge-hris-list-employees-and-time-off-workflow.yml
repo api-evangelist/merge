@@ -11,8 +11,11 @@ info:
     executed without opening the underlying OpenAPI description.
   version: 1.0.0
 sourceDescriptions:
-- name: hrisApi
-  url: ../openapi/merge-hris-api-openapi.yaml
+- name: subpackageEmployeesApi
+  url: ../openapi/merge-subpackage-employees-api-openapi.yml
+  type: openapi
+- name: subpackageTimeoffApi
+  url: ../openapi/merge-subpackage-timeoff-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: list-employees-and-time-off
@@ -40,7 +43,7 @@ workflows:
     description: >-
       List employees from the linked HRIS account, returning the paginated
       results envelope.
-    operationPath: '{$sourceDescriptions.hrisApi.url}#/paths/~1hris~1v1~1employees/get'
+    operationPath: '{$sourceDescriptions.subpackageEmployeesApi.url}#/paths/~1hris~1v1~1employees/get'
     parameters:
     - name: Authorization
       in: header
@@ -60,7 +63,7 @@ workflows:
   - stepId: getEmployee
     description: >-
       Retrieve the full record for the first employee returned by the listing.
-    operationPath: '{$sourceDescriptions.hrisApi.url}#/paths/~1hris~1v1~1employees~1{id}/get'
+    operationPath: '{$sourceDescriptions.subpackageEmployeesApi.url}#/paths/~1hris~1v1~1employees~1{id}/get'
     parameters:
     - name: id
       in: path
@@ -80,7 +83,7 @@ workflows:
   - stepId: listTimeOff
     description: >-
       List the time off requests belonging to the resolved employee.
-    operationPath: '{$sourceDescriptions.hrisApi.url}#/paths/~1hris~1v1~1time-off/get'
+    operationPath: '{$sourceDescriptions.subpackageTimeoffApi.url}#/paths/~1hris~1v1~1time-off/get'
     parameters:
     - name: employee_id
       in: query

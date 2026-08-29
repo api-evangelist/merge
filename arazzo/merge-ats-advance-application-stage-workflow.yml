@@ -11,8 +11,11 @@ info:
     underlying OpenAPI description.
   version: 1.0.0
 sourceDescriptions:
-- name: atsApi
-  url: ../openapi/merge-ats-api-openapi.yaml
+- name: subpackageApplicationsApi
+  url: ../openapi/merge-subpackage-applications-api-openapi.yml
+  type: openapi
+- name: subpackageJobinterviewstagesApi
+  url: ../openapi/merge-subpackage-jobinterviewstages-api-openapi.yml
   type: openapi
 workflows:
 - workflowId: advance-application-stage
@@ -45,7 +48,7 @@ workflows:
     description: >-
       List the applications belonging to the candidate and select the first
       one.
-    operationPath: '{$sourceDescriptions.atsApi.url}#/paths/~1ats~1v1~1applications/get'
+    operationPath: '{$sourceDescriptions.subpackageApplicationsApi.url}#/paths/~1ats~1v1~1applications/get'
     parameters:
     - name: candidate_id
       in: query
@@ -71,7 +74,7 @@ workflows:
     description: >-
       Resolve the target interview stage on the application's job by matching on
       the supplied stage name.
-    operationPath: '{$sourceDescriptions.atsApi.url}#/paths/~1ats~1v1~1job-interview-stages/get'
+    operationPath: '{$sourceDescriptions.subpackageJobinterviewstagesApi.url}#/paths/~1ats~1v1~1job-interview-stages/get'
     parameters:
     - name: job_id
       in: query
@@ -92,7 +95,7 @@ workflows:
   - stepId: changeStage
     description: >-
       Move the application into the resolved interview stage.
-    operationPath: '{$sourceDescriptions.atsApi.url}#/paths/~1ats~1v1~1applications~1{id}~1change-stage/post'
+    operationPath: '{$sourceDescriptions.subpackageApplicationsApi.url}#/paths/~1ats~1v1~1applications~1{id}~1change-stage/post'
     parameters:
     - name: id
       in: path
