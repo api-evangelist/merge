@@ -1,0 +1,367 @@
+slug: merge
+provider: Merge
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 38
+edges:
+- tag: subpackage_candidates
+  spec_file: merge-subpackage-candidates-api-openapi.yml
+  capability_id: BC-300.10
+  capability_id_l1: BC-300
+  capability_name: Talent Acquisition Management
+  confidence: 0.94
+  evidence: GET /ats/v1/candidates  list ... POST /ats/v1/candidates  create
+  reason: Applicant tracking system candidate records with create/update, plainly recruiting/hiring data
+    under Talent Acquisition Management.
+- tag: subpackage_opportunities
+  spec_file: merge-subpackage-opportunities-api-openapi.yml
+  capability_id: BC-410.30
+  capability_id_l1: BC-410
+  capability_name: Opportunity & Pipeline Management
+  confidence: 0.93
+  evidence: GET /crm/v1/opportunities list; PATCH /crm/v1/opportunities/{id} partial-update; schemas OpportunityResponse,
+    PatchedOpportunityRequest
+  reason: CRM opportunity CRUD is the deal/opportunity lifecycle — pipeline management.
+- tag: subpackage_interviews
+  spec_file: merge-subpackage-interviews-api-openapi.yml
+  capability_id: BC-300.10
+  capability_id_l1: BC-300
+  capability_name: Talent Acquisition Management
+  confidence: 0.92
+  evidence: 'POST /ats/v1/interviews  create; schemas: ScheduledInterview, ScheduledInterviewStatusEnum,
+    ScheduledInterviewRequest'
+  reason: 'ATS-scoped scheduled interviews for candidates: creating and listing interview records is squarely
+    recruiting/hiring, i.e. Talent Acquisition Management. The ''Accounting'' in the title is the split-spec
+    artefact, not the tag.'
+- tag: subpackage_journalEntries
+  spec_file: merge-subpackage-journalentries-api-openapi.yml
+  capability_id: BC-200.10
+  capability_id_l1: BC-200
+  capability_name: General Ledger Management
+  confidence: 0.92
+  evidence: 'POST /accounting/v1/journal-entries  create; schemas: JournalEntry, JournalLine, JournalEntryRequest'
+  reason: Creating and reading journal entries with journal lines against an accounting system is core
+    general ledger posting, i.e. General Ledger Management.
+- tag: subpackage_jobPostings
+  spec_file: merge-subpackage-jobpostings-api-openapi.yml
+  capability_id: BC-300.10
+  capability_id_l1: BC-300
+  capability_name: Talent Acquisition Management
+  confidence: 0.9
+  evidence: 'GET /ats/v1/job-postings  list; schemas: JobPosting, JobPostingStatusEnum, JobPostingFieldMappings'
+  reason: Job postings under the ATS path are advertised vacancies used for sourcing candidates, a Talent
+    Acquisition Management artefact.
+- tag: subpackage_jobs
+  spec_file: merge-subpackage-jobs-api-openapi.yml
+  capability_id: BC-300.10
+  capability_id_l1: BC-300
+  capability_name: Talent Acquisition Management
+  confidence: 0.9
+  evidence: 'GET /ats/v1/jobs/{job_id}/screening-questions  Screening Questions List; schemas: Job, JobStatusEnum,
+    ScreeningQuestion'
+  reason: ATS 'jobs' are requisitions carrying screening questions for applicants — recruiting/hiring
+    data, not background batch jobs, so Talent Acquisition Management.
+- tag: subpackage_scorecards
+  spec_file: merge-subpackage-scorecards-api-openapi.yml
+  capability_id: BC-300.10
+  capability_id_l1: BC-300
+  capability_name: Talent Acquisition Management
+  confidence: 0.9
+  evidence: 'GET /ats/v1/scorecards  list; schemas: Scorecard, OverallRecommendationEnum'
+  reason: ATS (applicant tracking) scorecards carrying an overall hiring recommendation are interview
+    evaluation records, squarely recruiting/hiring within talent acquisition.
+- tag: subpackage_purchaseOrders
+  spec_file: merge-subpackage-purchaseorders-api-openapi.yml
+  capability_id: BC-500.30
+  capability_id_l1: BC-500
+  capability_name: Purchase Order Management
+  confidence: 0.89
+  evidence: 'POST /accounting/v1/purchase-orders  create; schemas: PurchaseOrderRequest, PurchaseOrderStatusEnum,
+    PurchaseOrderLineItemRequest'
+  reason: Creates and lists purchase orders with status and line items — purchase order management.
+- tag: subpackage_applications
+  spec_file: merge-subpackage-applications-api-openapi.yml
+  capability_id: BC-300.10
+  capability_id_l1: BC-300
+  capability_name: Talent Acquisition Management
+  confidence: 0.88
+  evidence: GET /ats/v1/applications, POST /ats/v1/applications/{id}/change-stage — schemas Application,
+    ScreeningQuestionAnswer, UpdateApplicationStageRequest
+  reason: ATS (applicant tracking) job applications with screening answers and candidate stage transitions
+    — this is recruiting/hiring, i.e. Talent Acquisition, not software 'applications'.
+- tag: subpackage_benefits
+  spec_file: merge-subpackage-benefits-api-openapi.yml
+  capability_id: BC-300.30
+  capability_id_l1: BC-300
+  capability_name: Compensation & Benefits Management
+  confidence: 0.88
+  evidence: 'GET /hris/v1/benefits ... schemas: Benefit, PaginatedBenefitList'
+  reason: HRIS benefits objects read from HR systems; this is benefits administration data, i.e. Compensation
+    & Benefits Management.
+- tag: subpackage_jobInterviewStages
+  spec_file: merge-subpackage-jobinterviewstages-api-openapi.yml
+  capability_id: BC-300.10
+  capability_id_l1: BC-300
+  capability_name: Talent Acquisition Management
+  confidence: 0.88
+  evidence: 'GET /ats/v1/job-interview-stages  list; schemas: JobInterviewStage, PaginatedJobInterviewStageList'
+  reason: ATS interview stages define the hiring pipeline steps for a job requisition — recruiting process
+    data, hence Talent Acquisition Management.
+- tag: subpackage_offers
+  spec_file: merge-subpackage-offers-api-openapi.yml
+  capability_id: BC-300.10
+  capability_id_l1: BC-300
+  capability_name: Talent Acquisition Management
+  confidence: 0.88
+  evidence: GET /ats/v1/offers list; schemas Offer, OfferStatusEnum, OffersGetParametersStatus
+  reason: ATS (applicant tracking) offers with offer status — job offers to candidates, squarely within
+    talent acquisition/hiring.
+- tag: subpackage_employeePayrollRuns
+  spec_file: merge-subpackage-employeepayrollruns-api-openapi.yml
+  capability_id: BC-300.70
+  capability_id_l1: BC-300
+  capability_name: HR Operations Management
+  confidence: 0.85
+  evidence: GET /hris/v1/employee-payroll-runs; schemas Deduction, Earning, Tax, EmployeePayrollRun
+  reason: HRIS payroll run records with earnings, deductions and taxes — payroll administration within
+    HR Operations.
+- tag: subpackage_employerBenefits
+  spec_file: merge-subpackage-employerbenefits-api-openapi.yml
+  capability_id: BC-300.30
+  capability_id_l1: BC-300
+  capability_name: Compensation & Benefits Management
+  confidence: 0.85
+  evidence: GET /hris/v1/employer-benefits; schema BenefitPlanTypeEnum, EmployerBenefit
+  reason: Employer benefit plan data from HRIS — benefits administration.
+- tag: subpackage_incomeStatements
+  spec_file: merge-subpackage-incomestatements-api-openapi.yml
+  capability_id: BC-200.60
+  capability_id_l1: BC-200
+  capability_name: Financial Reporting Management
+  confidence: 0.85
+  evidence: 'GET /accounting/v1/income-statements  list; schemas: IncomeStatement, ReportItem, PaginatedIncomeStatementList'
+  reason: Reads income statement financial reports (with ReportItem line detail) from accounting systems
+    — a financial reporting/consolidation surface, so Financial Reporting Management under Financial Management.
+- tag: subpackage_invoices
+  spec_file: merge-subpackage-invoices-api-openapi.yml
+  capability_id: BC-200
+  capability_id_l1: BC-200
+  capability_name: Financial Management
+  confidence: 0.85
+  evidence: 'GET /accounting/v1/invoices  list; POST /accounting/v1/invoices  create; schemas: InvoiceLineItem,
+    InvoiceStatusEnum, CreditNoteApplyLineForInvoice'
+  reason: Clearly accounting invoice records with line items and credit-note application, so Financial
+    Management. Merge's unified Invoice object covers both receivable and payable invoice types, so I
+    do not pick between AP and AR at L2.
+- tag: subpackage_vendorCredits
+  spec_file: merge-subpackage-vendorcredits-api-openapi.yml
+  capability_id: BC-200.20
+  capability_id_l1: BC-200
+  capability_name: Accounts Payable Management
+  confidence: 0.85
+  evidence: POST /accounting/v1/vendor-credits/{id}/application  Application Create; schemas VendorCredit,
+    ApplyVendorCreditRequest, VendorCreditApplyLineForVendorCredit
+  reason: Creation and application of vendor credits against supplier bills — an accounts payable / vendor
+    accounting function.
+- tag: subpackage_cashFlowStatements
+  spec_file: merge-subpackage-cashflowstatements-api-openapi.yml
+  capability_id: BC-200.60
+  capability_id_l1: BC-200
+  capability_name: Financial Reporting Management
+  confidence: 0.82
+  evidence: 'GET /accounting/v1/cash-flow-statements ... schemas: CashFlowStatement, ReportItem'
+  reason: Reads cash flow statement reports from accounting systems — financial statement reporting, hence
+    Financial Reporting Management.
+- tag: subpackage_payrollRuns
+  spec_file: merge-subpackage-payrollruns-api-openapi.yml
+  capability_id: BC-300.70
+  capability_id_l1: BC-300
+  capability_name: HR Operations Management
+  confidence: 0.82
+  evidence: 'GET /hris/v1/payroll-runs  list; schemas: PayrollRun, RunTypeEnum, RunStateEnum'
+  reason: HRIS payroll run records are payroll administration data, squarely HR Operations Management.
+- tag: subpackage_balanceSheets
+  spec_file: merge-subpackage-balancesheets-api-openapi.yml
+  capability_id: BC-200.60
+  capability_id_l1: BC-200
+  capability_name: Financial Reporting Management
+  confidence: 0.8
+  evidence: GET /accounting/v1/balance-sheets — schemas BalanceSheet, ReportItem, TransactionCurrencyEnum
+  reason: Retrieval of balance sheet financial statements from accounting systems; this is financial reporting/consolidation
+    data.
+- tag: subpackage_creditNotes
+  spec_file: merge-subpackage-creditnotes-api-openapi.yml
+  capability_id: BC-200.30
+  capability_id_l1: BC-200
+  capability_name: Accounts Receivable Management
+  confidence: 0.8
+  evidence: GET/POST /accounting/v1/credit-notes; POST /accounting/v1/credit-notes/{id}/application with
+    schema 'ApplyCreditNoteRequest', 'CreditNoteApplyLineForCreditNote'
+  reason: Accounting credit notes issued to customers and applied against receivable documents — customer
+    invoicing/credit handling, i.e. Accounts Receivable Management. Small residual chance it is treated
+    as AP vendor credits, hence 0.8.
+- tag: subpackage_dependents
+  spec_file: merge-subpackage-dependents-api-openapi.yml
+  capability_id: BC-300
+  capability_id_l1: BC-300
+  capability_name: Human Capital Management
+  confidence: 0.8
+  evidence: GET /hris/v1/dependents; schemas 'Dependent', 'RelationshipEnum', 'GenderEnum'
+  reason: HRIS employee dependent records — clearly employee-lifecycle data (HR records / benefits eligibility).
+    Ambiguity between HR Operations records and Benefits administration, so L1 only.
+- tag: subpackage_employees
+  spec_file: merge-subpackage-employees-api-openapi.yml
+  capability_id: BC-300.70
+  capability_id_l1: BC-300
+  capability_name: HR Operations Management
+  confidence: 0.8
+  evidence: GET /hris/v1/employees; schemas EmploymentStatusEnum, MaritalStatusEnum, PaginatedEmployeeList
+  reason: Read access to employee master records from HRIS systems — employee records maintenance under
+    HR Operations.
+- tag: subpackage_leads
+  spec_file: merge-subpackage-leads-api-openapi.yml
+  capability_id: BC-410.30
+  capability_id_l1: BC-410
+  capability_name: Opportunity & Pipeline Management
+  confidence: 0.8
+  evidence: GET /crm/v1/leads list; POST /crm/v1/leads create; schemas LeadStatusEnum, LeadRequest, PaginatedLeadList
+  reason: CRM lead objects with status, create/list/retrieve — lead lifecycle within sales pipeline management,
+    not a technical construct.
+- tag: subpackage_timeOff
+  spec_file: merge-subpackage-timeoff-api-openapi.yml
+  capability_id: BC-300.70
+  capability_id_l1: BC-300
+  capability_name: HR Operations Management
+  confidence: 0.8
+  evidence: GET /hris/v1/time-off, POST /hris/v1/time-off; schemas TimeOffRequest, TimeOffStatusEnum,
+    RequestTypeEnum
+  reason: HRIS endpoint for employee time-off (leave/absence) requests and their approval status — core
+    HR operations / employee record administration.
+- tag: subpackage_timeOffBalances
+  spec_file: merge-subpackage-timeoffbalances-api-openapi.yml
+  capability_id: BC-300.70
+  capability_id_l1: BC-300
+  capability_name: HR Operations Management
+  confidence: 0.8
+  evidence: GET /hris/v1/time-off-balances; schemas TimeOffBalance, PolicyTypeEnum
+  reason: Reads employee leave balances by policy type from HRIS systems — HR operations administration
+    of employee leave records.
+- tag: subpackage_rejectReasons
+  spec_file: merge-subpackage-rejectreasons-api-openapi.yml
+  capability_id: BC-300.10
+  capability_id_l1: BC-300
+  capability_name: Talent Acquisition Management
+  confidence: 0.78
+  evidence: 'GET /ats/v1/reject-reasons  list; schemas: RejectReason, RejectReasonFieldMappings'
+  reason: ATS path indicates applicant rejection reasons, i.e. recruiting/hiring data within Talent Acquisition
+    Management.
+- tag: subpackage_accountingPeriods
+  spec_file: merge-subpackage-accountingperiods-api-openapi.yml
+  capability_id: BC-200.10
+  capability_id_l1: BC-200
+  capability_name: General Ledger Management
+  confidence: 0.75
+  evidence: GET /accounting/v1/accounting-periods list; schema AccountingPeriod, Status895Enum
+  reason: Exposes accounting periods (open/closed status) from the customer's accounting system — general
+    ledger period management data. Read-only unified access, so confidence moderate.
+- tag: subpackage_employments
+  spec_file: merge-subpackage-employments-api-openapi.yml
+  capability_id: BC-300.70
+  capability_id_l1: BC-300
+  capability_name: HR Operations Management
+  confidence: 0.75
+  evidence: GET /hris/v1/employments; schemas FlsaStatusEnum, PayFrequencyEnum, EmploymentTypeEnum, PayCurrencyEnum
+  reason: Employment records including pay frequency and FLSA status — employee record/payroll-adjacent
+    HR operations data.
+- tag: subpackage_bankInfo
+  spec_file: merge-subpackage-bankinfo-api-openapi.yml
+  capability_id: BC-300.70
+  capability_id_l1: BC-300
+  capability_name: HR Operations Management
+  confidence: 0.72
+  evidence: 'GET /hris/v1/bank-info ... schemas: BankInfo, BankInfoGetParametersAccountType, AccountTypeEnum'
+  reason: HRIS endpoint exposing employee bank account details, which is employee record/payroll administration
+    data rather than corporate treasury; maps to HR Operations Management.
+- tag: subpackage_payGroups
+  spec_file: merge-subpackage-paygroups-api-openapi.yml
+  capability_id: BC-300.70
+  capability_id_l1: BC-300
+  capability_name: HR Operations Management
+  confidence: 0.72
+  evidence: 'GET /hris/v1/pay-groups  list; schemas: PayGroup, PayGroupFieldMappings'
+  reason: HRIS pay-group reference data underpins payroll administration, which sits in HR Operations
+    Management. Read-only reference nature keeps confidence moderate.
+- tag: subpackage_timesheetEntries
+  spec_file: merge-subpackage-timesheetentries-api-openapi.yml
+  capability_id: BC-300.70
+  capability_id_l1: BC-300
+  capability_name: HR Operations Management
+  confidence: 0.72
+  evidence: GET /hris/v1/timesheet-entries; schemas TimesheetEntry, TimesheetEntryRequest
+  reason: HRIS timesheet entry capture (hours worked per employee), which sits in HR operations/payroll
+    administration. Some chance it is intended for project time costing, hence moderate confidence.
+- tag: subpackage_embeddings
+  spec_file: merge-subpackage-embeddings-api-openapi.yml
+  capability_id: BC-610.60
+  capability_id_l1: BC-610
+  capability_name: Artificial Intelligence Management
+  confidence: 0.7
+  evidence: POST /embeddings 'Create Embedding'; schemas 'EmbeddingRequestSchema', 'EmbeddingResponseSchema',
+    'EmbeddingUsage'
+  reason: Model inference endpoint producing vector embeddings via the unified LLM gateway — AI/ML capability
+    delivery. Confidence tempered because it is a raw model-serving primitive rather than model lifecycle
+    governance.
+- tag: subpackage_expenseReports
+  spec_file: merge-subpackage-expensereports-api-openapi.yml
+  capability_id: BC-200
+  capability_id_l1: BC-200
+  capability_name: Financial Management
+  confidence: 0.7
+  evidence: GET /accounting/v1/expense-reports; schemas ExpenseReport, ExpenseReportLine
+  reason: Accounting expense report and line data from ERP systems — financial accounting domain; no expense-management
+    sub-capability fits precisely.
+- tag: subpackage_expenses
+  spec_file: merge-subpackage-expenses-api-openapi.yml
+  capability_id: BC-200
+  capability_id_l1: BC-200
+  capability_name: Financial Management
+  confidence: 0.7
+  evidence: POST /accounting/v1/expenses create; schemas ExpenseLine, ExpenseRequest
+  reason: Creation and retrieval of accounting expense transactions and lines — financial accounting domain,
+    sub-capability unclear.
+- tag: subpackage_payments
+  spec_file: merge-subpackage-payments-api-openapi.yml
+  capability_id: BC-200
+  capability_id_l1: BC-200
+  capability_name: Financial Management
+  confidence: 0.7
+  evidence: 'POST /accounting/v1/payments  create; schemas: Payment, PaymentLineItem, PaymentTypeEnum'
+  reason: Creates and updates accounting payment records with line items — clearly financial accounting,
+    but PaymentTypeEnum spans both inbound and outbound payments so no L2 is claimed.
+- tag: subpackage_stages
+  spec_file: merge-subpackage-stages-api-openapi.yml
+  capability_id: BC-410.30
+  capability_id_l1: BC-410
+  capability_name: Opportunity & Pipeline Management
+  confidence: 0.7
+  evidence: 'GET /crm/v1/stages  list; schemas: Stage, PaginatedStageList'
+  reason: Stages under the CRM vertical of a unified API represent deal/opportunity pipeline stages, supporting
+    opportunity and pipeline management. Objects are metadata-only lists, so confidence is moderate.
+- tag: subpackage_transactions
+  spec_file: merge-subpackage-transactions-api-openapi.yml
+  capability_id: BC-200
+  capability_id_l1: BC-200
+  capability_name: Financial Management
+  confidence: 0.7
+  evidence: GET /accounting/v1/transactions; schemas Transaction, TransactionLineItem, TransactionCurrencyEnum
+  reason: Read access to accounting transactions with line items and currency from connected ledgers —
+    financial accounting records. Which sub-ledger is not specified, so only the L1 is asserted.
