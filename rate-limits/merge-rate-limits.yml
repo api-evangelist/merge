@@ -1,38 +1,32 @@
-specification: API Commons Rate Limits
-specificationVersion: '0.1'
-schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
-provider: Merge
-providerId: merge
-created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-04'
-reconciled: true
-tags:
-  - Rate Limiting
-  - Unified API
-description: Merge rate limits scale with plan.
+# Rate limits transcribed from the provider's own documentation — see provenance. Quoted, not derived.
+generated: '2026-09-20'
+method: searched
+source: https://docs.merge.dev/merge-unified/hris/merge-api-basics/rate-limits
 sources:
-  - https://www.merge.dev/pricing
-  - https://docs.merge.dev/basics/api-limits/
-headers:
-  retryAfter: Retry-After
-responseCodes:
-  throttled: 429
+- https://docs.merge.dev/merge-unified/hris/merge-api-basics/rate-limits
+provenance:
+  tool: planning/api-economics/harvest_ratelimits.py
+  run: 20260920T133210
+  grounding: every limit_text was found verbatim in the fetched page text
+published: true
+note: Limits are per Linked Account (account_token); page notes some endpoints may differ.
+limit_count: 3
 limits:
-  - name: Launch
-    scope: account
-    metric: requests_per_minute
-    limit: 100
-    timeFrame: minute
-  - name: Professional
-    scope: account
-    metric: requests_per_minute
-    limit: 400
-    timeFrame: minute
-  - name: Enterprise
-    scope: account
-    metric: requests_per_minute
-    limit: 600
-    timeFrame: minute
+- name: Launch plan rate limit
+  limit_text: 'Launch: 100 / minute (per Linked Account)'
+  limit: 100
+  window: minute
+  scope: account
+  plan: Launch
+- name: Professional plan rate limit
+  limit_text: 'Professional: 400 / minute (per Linked Account)'
+  limit: 400
+  window: minute
+  scope: account
+  plan: Professional
+- name: Enterprise plan rate limit
+  limit_text: 'Enterprise: 600 / minute (per Linked Account)'
+  limit: 600
+  window: minute
+  scope: account
+  plan: Enterprise
