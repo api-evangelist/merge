@@ -1,167 +1,37 @@
-specification: API Commons Plans
-specificationVersion: '0.1'
-schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
-provider: Merge
-providerId: merge
-created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-22'
-reconciled: true
-tags:
-  - Unified API
-  - Integrations
-  - Agent Handler
-  - Gateway
-description: Merge plans spanning Unified API (Launch / Professional / Enterprise), Agent Handler (consumption-based), and Gateway (margin + BYOK token fee).
+# Pricing transcribed from the provider's own page — see provenance. Numbers are quoted, not derived.
+generated: '2026-09-20'
+method: searched
+source: https://www.merge.dev/pricing/unified
 sources:
-  - https://www.merge.dev/pricing
-  - https://www.merge.dev/merge-agent-handler
-  - https://www.merge.dev/gateway
+- https://www.merge.dev/pricing/unified
+provenance:
+  tool: planning/api-economics/harvest_pricing.py
+  run: 20260920T124425
+  grounding: every price_text was found verbatim in the fetched page text
+audience: developer-api
+pricing_basis: usage-other
+published: true
+note: Launch tier priced per production Linked Account; higher tiers contract-based. Rate limits listed
+  per tier (Launch/Professional/Enterprise).
+plan_count: 3
+currency: USD
 plans:
-  - id: merge-launch
-    name: Launch
-    type: freemium
-    description: Free for first 3 production Linked Accounts; $650/mo for up to 10; $65 per additional.
-    entries:
-      - label: First 3 prod accounts free
-        name: free
-        type: quota
-        metric: account
-        limit: 3
-        timeFrame: month
-        geo: global
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-      - label: $650/mo for up to 10
-        name: tier_10
-        type: subscription
-        metric: month
-        limit: -1
-        timeFrame: month
-        geo: global
-        unit: 1
-        price: '650.00'
-        userMultiplied: false
-      - label: Per additional account
-        name: extra
-        type: metered
-        metric: account
-        limit: -1
-        timeFrame: month
-        geo: global
-        unit: 1
-        price: '65.00'
-        userMultiplied: false
-    elements:
-      - name: Unlimited data usage
-      - name: All production integrations
-      - name: Normalized data with read/write
-      - name: Embedded Merge Link / Magic Link
-      - name: 100 req/min rate limit
-      - name: 3-day log retention
-  - id: merge-professional
-    name: Professional
-    type: paid
-    description: Contract-based pricing.
-    entries:
-      - label: Annual (custom)
-        name: annual
-        type: subscription
-        metric: year
-        limit: -1
-        timeFrame: year
-        geo: global
-        unit: 1
-        price: custom
-        userMultiplied: false
-    elements:
-      - name: Custom fields access
-      - name: Field-level scopes
-      - name: Customizable sync frequencies
-      - name: 60-day sandbox access
-      - name: Go-live support
-      - name: 400 req/min rate limit
-      - name: 30-day log retention
-      - name: Unlimited test Linked Accounts
-      - name: Email + chat support
-  - id: merge-enterprise
-    name: Enterprise
-    type: enterprise
-    description: Contract-based pricing.
-    entries:
-      - label: Annual (custom)
-        name: annual
-        type: subscription
-        metric: year
-        limit: -1
-        timeFrame: year
-        geo: global
-        unit: 1
-        price: custom
-        userMultiplied: false
-    elements:
-      - name: Audit Trail
-      - name: Premium go-live support
-      - name: Unlimited sandbox
-      - name: Dedicated CSM + Slack channel
-      - name: Support and uptime SLAs
-      - name: 600 req/min rate limit
-      - name: 90+ day log retention
-      - name: White-glove onboarding
-  - id: merge-agent-handler
-    name: Agent Handler
-    type: usage-based
-    description: Consumption-based pricing for AI agent tool orchestration, with a free tier allocation and contract pricing for enterprise.
-    entries:
-      - label: Free tier allocation
-        name: free
-        type: quota
-        metric: invocation
-        limit: -1
-        timeFrame: month
-        geo: global
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-      - label: Consumption (contract)
-        name: usage
-        type: metered
-        metric: invocation
-        limit: -1
-        timeFrame: month
-        geo: global
-        unit: 1
-        price: custom
-        userMultiplied: false
-    elements:
-      - name: Pre-built connectors to thousands of enterprise tools
-      - name: MCP server surface for agents
-      - name: Built-in authentication and credential management
-      - name: Data governance with standard entity rules and custom regex rules
-      - name: Tool Packs grouping connectors per agent
-      - name: Registered Users for end-user identity
-  - id: merge-gateway-byok
-    name: Gateway (BYOK)
-    type: usage-based
-    description: Bring-Your-Own-Key Gateway billing — Merge charges $0.05 per million tokens routed when customer supplies upstream LLM provider keys.
-    entries:
-      - label: Per million tokens
-        name: tokens
-        type: metered
-        metric: million-tokens
-        limit: -1
-        timeFrame: month
-        geo: global
-        unit: 1
-        price: '0.05'
-        userMultiplied: false
-    elements:
-      - name: One unified API across OpenAI, Anthropic, Google, Mistral, Cohere, xAI
-      - name: Intelligent routing (cost / latency / quality)
-      - name: Context compression and response caching
-      - name: Spend limits by team, project, or customer tier
-      - name: Request-level logging and audit trail
-      - name: Failover and reliability management
+- name: Launch
+  price_text: $650/month for up to 10 total production Linked Accounts. $65 per Linked Account after.
+  currency: USD
+  period: month
+  unit: Linked Account
+  included_quota: 3 production Linked Accounts for free; 10 production Linked Accounts included, first
+    3 free
+  overage: $65 per Linked Account after
+- name: Professional
+  price_text: Contract-based pricing
+  period: none
+  included_quota: Custom fields, field-level scopes, custom sync frequencies, 60 day sandbox access
+- name: Enterprise
+  price_text: Contract-based pricing
+  period: none
+  included_quota: Audit Trail, premium go-live support, unlimited sandboxes, dedicated account manager,
+    SLAs
+rate_limit_statements:
+- Rate limits 100/min 400/min 600/min
