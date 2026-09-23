@@ -13,7 +13,7 @@ paths:
     get:
       operationId: retrieve
       summary: Retrieve
-      description: Returns an `Address` object with the given `id`.{/* BEGIN_ACCOUNTING_ADDRESS_FETCH_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="GET" data="H4sIAAAAAAAAA+VYa3PaOBT9Kx59ZAAXKGTCzM4OzybZxaRAdpN2MhohXYxAlhxJ5tXpf9+RgUC2zLbbcbpJ95NtWTpXPufeI8mfECUWQqXXqI4IpSqRlssQ5VGkGAhURw3GNBiD8ojEPCARPOmIF2WURyaJY6UtsC4HwcyFhgmqIz8CHUIhkXzCgfmHQT6XFkJNLFfS+I+DC5N0NMojweUcWGM74Otw2+6FXcvfHo0vuLEoj2JijJ1qlYTTATwkYL4B2c1NQATSElFgxBL/CKWgtzCn2txXMBBggbWJJW2wQN3n7iJOrY1N3fenIOJiGr3IYOGD9Im2nAowfrVyXj47rxZ2KGn0X3EofinlZg9jNT7L4ZAKTJJcb0RXwehyGczCt0Hr7SrY3FSDzXwTzOZvcjgkud6oV+2P7ir9dqPUP9EBD2u35380282rIEc3nUowu1sGI1rqjeh8vLmsXL2jy6uL96tgc1futW8qwahTvXqnSv3WwPRaA9VrFIsoj45VRfWPn44bdonT1WCmTaXmjp+j15cRCeGIl60gJOaFOBkLToumUiQR2ShJlqZIVeRHwDjxD3h4+JAQDfh3FariLHYZnDLHlXwkH9VRJ7hoBK1O+2k+NBaECzIWgOpWJ/BFQqP6R0S5XaM8oiqKiVxjLicqfZSWUJdeac7o9eEOm2TM+IIbFzmPNETKAnYyPn3CMbHTQxNnrqAssZBeNYDFpcOtKze7jt3LDY8xVQzQvRv8kHAN7JpoEoEF7eZ8/zl/SoQep1oZNbFeey1JxKnxKrWq10wMl2CM1wJpNRHZKPQYDO+D4UqtivfB8C4YbimhND5fdbq12lkxli9PwDjRdEoMYKWZ4/fHq9TlkkgKHpHM68ewL7VMdLoWxE6Ujk7otQuL8SHmKxHoaUmdEum71VES1mOuWcbs72H/Y4K/albZshmAHSY8raUMyAzAGoeGTbokvMhc/XerARFgjm3nGeymrwkV4HUTN0GvJVTCvM7gOhtFtuB4C45TcNwZXOPCbtX+CSTKtB7eJ5zO022N1wYztyrO1mYO+BiaM3mTLF+nAs+6AB+J0JeCy4zc6QBb2PoTvpmUa82z0uuU4IftWockhKM9ampQjeMDawbauBi42WrsDxO/LW4XleHsZ1AmS3tKpbh0E01nmhXxO8Q9+YsFD8wZeV7yv5XtZ0npP8kCdpt6ntV5a2/xDhtfTNiq/Mb+vzaTt6BVNlw6pJ1Jv3wK/8l6v5fKD2qqvAx/13xQU/Xl35oXQW2mC9j9578Afo+yDlgVAAA=" /></Footer>{/* END_ACCOUNTING_ADDRESS_FETCH_SUPPORTED_FIELDS */}
+      description: Returns an `Address` object with the given `id`.{/* BEGIN_ACCOUNTING_ADDRESS_FETCH_SUPPORTED_FIELDS */}{/* END_ACCOUNTING_ADDRESS_FETCH_SUPPORTED_FIELDS */}
       tags:
       - subpackage_addresses
       parameters:
@@ -68,12 +68,73 @@ paths:
                 $ref: '#/components/schemas/Address'
 components:
   schemas:
-    AddressTypeEnum:
+    Address:
+      type: object
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        type:
+          oneOf:
+          - $ref: '#/components/schemas/AddressTypeEnum'
+          - type: 'null'
+          description: The address type.
+        street_1:
+          type:
+          - string
+          - 'null'
+          description: Line 1 of the address's street.
+        street_2:
+          type:
+          - string
+          - 'null'
+          description: Line 2 of the address's street.
+        city:
+          type:
+          - string
+          - 'null'
+          description: The address's city.
+        state:
+          oneOf:
+          - description: Any type
+          - type: 'null'
+          description: The address's state or region.
+        country_subdivision:
+          type:
+          - string
+          - 'null'
+          description: The address's state or region.
+        country:
+          oneOf:
+          - $ref: '#/components/schemas/CountryEnum'
+          - type: 'null'
+          description: The address's country. The country code in ISO 3166-1 alpha-2 format.
+        zip_code:
+          type:
+          - string
+          - 'null'
+          description: The address's zip code.
+      description: '# The Address Object
+
+        ### Description
+
+        The `Address` object is used to represent a contact''s or company''s address.
+
+
+        ### Usage Example
+
+        Fetch from the `GET CompanyInfo` endpoint and view the company''s addresses.'
+      title: Address
+    AddressesIdGetParametersShowEnumOrigins:
       type: string
       enum:
-      - BILLING
-      - SHIPPING
-      title: AddressTypeEnum
+      - type
+      title: AddressesIdGetParametersShowEnumOrigins
     CountryEnum:
       type: string
       enum:
@@ -328,78 +389,17 @@ components:
       - ZW
       description: The country code in ISO 3166-1 alpha-2 format.
       title: CountryEnum
-    AddressesIdGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - type
-      title: AddressesIdGetParametersShowEnumOrigins
     AddressesIdGetParametersRemoteFields:
       type: string
       enum:
       - type
       title: AddressesIdGetParametersRemoteFields
-    Address:
-      type: object
-      properties:
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        type:
-          oneOf:
-          - $ref: '#/components/schemas/AddressTypeEnum'
-          - type: 'null'
-          description: The address type.
-        street_1:
-          type:
-          - string
-          - 'null'
-          description: Line 1 of the address's street.
-        street_2:
-          type:
-          - string
-          - 'null'
-          description: Line 2 of the address's street.
-        city:
-          type:
-          - string
-          - 'null'
-          description: The address's city.
-        state:
-          oneOf:
-          - description: Any type
-          - type: 'null'
-          description: The address's state or region.
-        country_subdivision:
-          type:
-          - string
-          - 'null'
-          description: The address's state or region.
-        country:
-          oneOf:
-          - $ref: '#/components/schemas/CountryEnum'
-          - type: 'null'
-          description: The address's country. The country code in ISO 3166-1 alpha-2 format.
-        zip_code:
-          type:
-          - string
-          - 'null'
-          description: The address's zip code.
-      description: '# The Address Object
-
-        ### Description
-
-        The `Address` object is used to represent a contact''s or company''s address.
-
-
-        ### Usage Example
-
-        Fetch from the `GET CompanyInfo` endpoint and view the company''s addresses.'
-      title: Address
+    AddressTypeEnum:
+      type: string
+      enum:
+      - BILLING
+      - SHIPPING
+      title: AddressTypeEnum
   securitySchemes:
     tokenAuth:
       type: http

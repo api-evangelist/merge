@@ -70,67 +70,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ValidationErrorCtx:
-      type: object
-      properties: {}
-      title: ValidationErrorCtx
-    PublicVendorsListResponse:
-      type: object
-      properties:
-        object:
-          type: string
-          enum:
-          - list
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/PublicVendor'
-        has_more:
-          type: boolean
-          default: false
-        next_cursor:
-          type:
-          - string
-          - 'null'
-      required:
-      - data
-      description: Paginated response wrapper for `GET /v1/vendors`. Use the `next_cursor` field to page through results when `has_more` is true.
-      title: PublicVendorsListResponse
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-        input:
-          description: Any type
-        ctx:
-          $ref: '#/components/schemas/ValidationErrorCtx'
-      required:
-      - loc
-      - msg
-      - type
-      description: Single field-level validation error. `loc` is the JSON path to the offending field, `msg` is a human-readable explanation, and `type` is a stable machine-readable error code.
-      title: ValidationError
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      description: Standard FastAPI validation error wrapper. Returned with HTTP 422 when the request body or query parameters fail Pydantic validation.
-      title: HTTPValidationError
-    ValidationErrorLocItems:
-      oneOf:
-      - type: string
-      - type: integer
-      title: ValidationErrorLocItems
     PublicVendor:
       type: object
       properties:
@@ -157,6 +96,40 @@ components:
       - availability_status
       description: An execution host that Merge Gateway can route to (e.g. `openai`, `bedrock`, `azure`). Lists the model IDs the vendor can serve plus its ZDR and BYOK support.
       title: PublicVendor
+    ValidationError:
+      type: object
+      properties:
+        loc:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationErrorLocItems'
+        msg:
+          type: string
+        type:
+          type: string
+        input:
+          description: Any type
+        ctx:
+          $ref: '#/components/schemas/ValidationErrorCtx'
+      required:
+      - loc
+      - msg
+      - type
+      description: Single field-level validation error. `loc` is the JSON path to the offending field, `msg` is a human-readable explanation, and `type` is a stable machine-readable error code.
+      title: ValidationError
+    ValidationErrorCtx:
+      type: object
+      properties: {}
+      title: ValidationErrorCtx
+    HTTPValidationError:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+      description: Standard FastAPI validation error wrapper. Returned with HTTP 422 when the request body or query parameters fail Pydantic validation.
+      title: HTTPValidationError
     PublicVendorAvailabilityStatus:
       type: string
       enum:
@@ -164,3 +137,30 @@ components:
       - degraded
       - unavailable
       title: PublicVendorAvailabilityStatus
+    PublicVendorsListResponse:
+      type: object
+      properties:
+        object:
+          type: string
+          enum:
+          - list
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicVendor'
+        has_more:
+          type: boolean
+          default: false
+        next_cursor:
+          type:
+          - string
+          - 'null'
+      required:
+      - data
+      description: Paginated response wrapper for `GET /v1/vendors`. Use the `next_cursor` field to page through results when `has_more` is true.
+      title: PublicVendorsListResponse
+    ValidationErrorLocItems:
+      oneOf:
+      - type: string
+      - type: integer
+      title: ValidationErrorLocItems

@@ -133,7 +133,7 @@ paths:
     get:
       operationId: remote-fields-retrieve
       summary: Remote Fields Retrieve
-      description: Get all remote fields for a Linked Account. Remote fields are third-party fields that are accessible after initial sync if remote_data is enabled. You can use remote fields to override existing Merge fields or map a new Merge field. [Learn more](https://docs.merge.dev/supplemental-data/field-mappings/overview/).
+      description: Get all remote fields for a Linked Account. Remote fields are third-party fields that are accessible after initial sync if remote_data is enabled. You can use remote fields to override existing Merge fields or map a new Merge field. Learn more.
       tags:
       - ''
       parameters:
@@ -172,7 +172,7 @@ paths:
     get:
       operationId: target-fields-retrieve
       summary: Target Fields Retrieve
-      description: Get all organization-wide Target Fields, this will not include any Linked Account specific Target Fields. Organization-wide Target Fields are additional fields appended to the Merge Common Model for all Linked Accounts in a category. [Learn more](https://docs.merge.dev/supplemental-data/field-mappings/target-fields/).
+      description: Get all organization-wide Target Fields, this will not include any Linked Account specific Target Fields. Organization-wide Target Fields are additional fields appended to the Merge Common Model for all Linked Accounts in a category. Learn more.
       tags:
       - ''
       parameters:
@@ -197,20 +197,28 @@ paths:
                 $ref: '#/components/schemas/ExternalTargetFieldAPIResponse'
 components:
   schemas:
+    RemoteEndpointInfo:
+      type: object
+      properties:
+        method:
+          type: string
+        url_path:
+          type: string
+        field_traversal_path:
+          type: array
+          items:
+            description: Any type
+      required:
+      - method
+      - url_path
+      - field_traversal_path
+      title: RemoteEndpointInfo
     RemoteFieldApiCoverage:
       oneOf:
       - type: integer
       - type: number
         format: double
       title: RemoteFieldApiCoverage
-    ValidationProblemSource:
-      type: object
-      properties:
-        pointer:
-          type: string
-      required:
-      - pointer
-      title: ValidationProblemSource
     FieldMappingApiInstanceRemoteField:
       type: object
       properties:
@@ -231,233 +239,6 @@ components:
       - schema
       - remote_endpoint_info
       title: FieldMappingApiInstanceRemoteField
-    DebugModelLogSummary:
-      type: object
-      properties:
-        url:
-          type: string
-        method:
-          type: string
-        status_code:
-          type: integer
-      required:
-      - url
-      - method
-      - status_code
-      title: DebugModelLogSummary
-    ExternalTargetFieldAPI:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-        description:
-          type:
-          - string
-          - 'null'
-        is_mapped:
-          type:
-          - string
-          - 'null'
-      title: ExternalTargetFieldAPI
-    FieldMappingInstanceResponse:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/FieldMappingApiInstance'
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/WarningValidationProblem'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorValidationProblem'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/DebugModeLog'
-      required:
-      - model
-      - warnings
-      - errors
-      title: FieldMappingInstanceResponse
-    ErrorValidationProblem:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
-          type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
-      required:
-      - title
-      - detail
-      - problem_type
-      title: ErrorValidationProblem
-    PatchedEditFieldMappingRequest:
-      type: object
-      properties:
-        remote_field_traversal_path:
-          type: array
-          items:
-            description: Any type
-          description: The field traversal path of the remote field listed when you hit the GET /remote-fields endpoint.
-        remote_method:
-          type: string
-          description: The method of the remote endpoint where the remote field is coming from.
-        remote_url_path:
-          type: string
-          description: The path of the remote endpoint where the remote field is coming from.
-        jmes_path:
-          type: string
-          description: 'DEPRECATED: Use ''advanced_mapping_expression'' instead.'
-        advanced_mapping_expression:
-          type: string
-          description: A JSONata expression used to transform the remote field data.
-      title: PatchedEditFieldMappingRequest
-    FieldMappingApiInstanceRemoteFieldRemoteEndpointInfo:
-      type: object
-      properties:
-        method:
-          type:
-          - string
-          - 'null'
-        url_path:
-          type:
-          - string
-          - 'null'
-        field_traversal_path:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-      required:
-      - method
-      - url_path
-      - field_traversal_path
-      title: FieldMappingApiInstanceRemoteFieldRemoteEndpointInfo
-    ExternalTargetFieldAPIResponse:
-      type: object
-      properties:
-        Benefit:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalTargetFieldAPI'
-        EmployerBenefit:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalTargetFieldAPI'
-        Company:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalTargetFieldAPI'
-        EmployeePayrollRun:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalTargetFieldAPI'
-        Employee:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalTargetFieldAPI'
-        Employment:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalTargetFieldAPI'
-        Location:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalTargetFieldAPI'
-        PayrollRun:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalTargetFieldAPI'
-        Team:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalTargetFieldAPI'
-        TimeOff:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalTargetFieldAPI'
-        TimeOffBalance:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalTargetFieldAPI'
-        BankInfo:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalTargetFieldAPI'
-        PayGroup:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalTargetFieldAPI'
-        Group:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalTargetFieldAPI'
-        Dependent:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalTargetFieldAPI'
-        TimesheetEntry:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalTargetFieldAPI'
-      title: ExternalTargetFieldAPIResponse
-    CreateFieldMappingRequest:
-      type: object
-      properties:
-        target_field_name:
-          type: string
-          description: The name of the target field you want this remote field to map to. Required if organization_wide_target_field is not provided.
-        target_field_description:
-          type: string
-          description: The description of the target field you want this remote field to map to. Required if organization_wide_target_field is not provided.
-        organization_wide_target_field:
-          type: string
-          description: The name or key of an existing Organization-wide target field to map to. When provided, target_field_name and target_field_description are optional.
-        is_integration_wide:
-          type: boolean
-          default: false
-          description: If true, creates an integration-wide field mapping that applies to all Linked Accounts for the integration. Requires organization_wide_target_field.
-        remote_field_traversal_path:
-          type: array
-          items:
-            description: Any type
-          description: The field traversal path of the remote field listed when you hit the GET /remote-fields endpoint.
-        remote_method:
-          type: string
-          description: The method of the remote endpoint where the remote field is coming from.
-        remote_url_path:
-          type: string
-          description: The path of the remote endpoint where the remote field is coming from.
-        common_model_name:
-          type: string
-          description: The name of the Common Model that the remote field corresponds to in a given category.
-        jmes_path:
-          type: string
-          description: 'DEPRECATED: Use ''advanced_mapping_expression'' instead.'
-        advanced_mapping_expression:
-          type: string
-          description: A JSONata expression used to transform the remote field data.
-      required:
-      - remote_field_traversal_path
-      - remote_method
-      - remote_url_path
-      - common_model_name
-      title: CreateFieldMappingRequest
     RemoteFieldAPIResponse:
       type: object
       properties:
@@ -526,6 +307,148 @@ components:
           items:
             $ref: '#/components/schemas/RemoteFieldAPI'
       title: RemoteFieldAPIResponse
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    ExternalTargetFieldAPIResponse:
+      type: object
+      properties:
+        Benefit:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalTargetFieldAPI'
+        EmployerBenefit:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalTargetFieldAPI'
+        Company:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalTargetFieldAPI'
+        EmployeePayrollRun:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalTargetFieldAPI'
+        Employee:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalTargetFieldAPI'
+        Employment:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalTargetFieldAPI'
+        Location:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalTargetFieldAPI'
+        PayrollRun:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalTargetFieldAPI'
+        Team:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalTargetFieldAPI'
+        TimeOff:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalTargetFieldAPI'
+        TimeOffBalance:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalTargetFieldAPI'
+        BankInfo:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalTargetFieldAPI'
+        PayGroup:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalTargetFieldAPI'
+        Group:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalTargetFieldAPI'
+        Dependent:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalTargetFieldAPI'
+        TimesheetEntry:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalTargetFieldAPI'
+      title: ExternalTargetFieldAPIResponse
+    ExternalTargetFieldAPI:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+        description:
+          type:
+          - string
+          - 'null'
+        is_mapped:
+          type:
+          - string
+          - 'null'
+      title: ExternalTargetFieldAPI
+    FieldMappingInstanceResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/FieldMappingApiInstance'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: FieldMappingInstanceResponse
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
     AdvancedMetadata:
       type: object
       properties:
@@ -547,36 +470,174 @@ components:
       required:
       - id
       title: AdvancedMetadata
-    RemoteEndpointInfo:
+    FieldMappingApiInstanceTargetField:
       type: object
       properties:
-        method:
+        name:
           type: string
-        url_path:
+        description:
           type: string
-        field_traversal_path:
+        is_organization_wide:
+          type: boolean
+      required:
+      - name
+      - description
+      - is_organization_wide
+      title: FieldMappingApiInstanceTargetField
+    FieldMappingApiInstance:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        is_integration_wide:
+          type: boolean
+        target_field:
+          oneOf:
+          - $ref: '#/components/schemas/FieldMappingApiInstanceTargetField'
+          - type: 'null'
+        remote_field:
+          oneOf:
+          - $ref: '#/components/schemas/FieldMappingApiInstanceRemoteField'
+          - type: 'null'
+        jmes_path:
+          type:
+          - string
+          - 'null'
+        advanced_mapping_expression:
+          type:
+          - string
+          - 'null'
+      title: FieldMappingApiInstance
+    PatchedEditFieldMappingRequest:
+      type: object
+      properties:
+        remote_field_traversal_path:
           type: array
           items:
             description: Any type
+          description: The field traversal path of the remote field listed when you hit the GET /remote-fields endpoint.
+        remote_method:
+          type: string
+          description: The method of the remote endpoint where the remote field is coming from.
+        remote_url_path:
+          type: string
+          description: The path of the remote endpoint where the remote field is coming from.
+        jmes_path:
+          type: string
+          description: 'DEPRECATED: Use ''advanced_mapping_expression'' instead.'
+        advanced_mapping_expression:
+          type: string
+          description: A JSONata expression used to transform the remote field data.
+      title: PatchedEditFieldMappingRequest
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    FieldMappingApiInstanceRemoteFieldRemoteEndpointInfo:
+      type: object
+      properties:
+        method:
+          type:
+          - string
+          - 'null'
+        url_path:
+          type:
+          - string
+          - 'null'
+        field_traversal_path:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
       required:
       - method
       - url_path
       - field_traversal_path
-      title: RemoteEndpointInfo
-    DebugModeLog:
+      title: FieldMappingApiInstanceRemoteFieldRemoteEndpointInfo
+    CreateFieldMappingRequest:
       type: object
       properties:
-        log_id:
+        target_field_name:
           type: string
-        dashboard_view:
+          description: The name of the target field you want this remote field to map to. Required if organization_wide_target_field is not provided.
+        target_field_description:
           type: string
-        log_summary:
-          $ref: '#/components/schemas/DebugModelLogSummary'
+          description: The description of the target field you want this remote field to map to. Required if organization_wide_target_field is not provided.
+        organization_wide_target_field:
+          type: string
+          description: The name or key of an existing Organization-wide target field to map to. When provided, target_field_name and target_field_description are optional.
+        is_integration_wide:
+          type: boolean
+          default: false
+          description: If true, creates an integration-wide field mapping that applies to all Linked Accounts for the integration. Requires organization_wide_target_field.
+        remote_field_traversal_path:
+          type: array
+          items:
+            description: Any type
+          description: The field traversal path of the remote field listed when you hit the GET /remote-fields endpoint.
+        remote_method:
+          type: string
+          description: The method of the remote endpoint where the remote field is coming from.
+        remote_url_path:
+          type: string
+          description: The path of the remote endpoint where the remote field is coming from.
+        common_model_name:
+          type: string
+          description: The name of the Common Model that the remote field corresponds to in a given category.
+        jmes_path:
+          type: string
+          description: 'DEPRECATED: Use ''advanced_mapping_expression'' instead.'
+        advanced_mapping_expression:
+          type: string
+          description: A JSONata expression used to transform the remote field data.
       required:
-      - log_id
-      - dashboard_view
-      - log_summary
-      title: DebugModeLog
+      - remote_field_traversal_path
+      - remote_method
+      - remote_url_path
+      - common_model_name
+      title: CreateFieldMappingRequest
     RemoteFieldAPI:
       type: object
       properties:
@@ -608,67 +669,6 @@ components:
       - remote_endpoint_info
       - advanced_metadata
       title: RemoteFieldAPI
-    FieldMappingApiInstanceTargetField:
-      type: object
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-        is_organization_wide:
-          type: boolean
-      required:
-      - name
-      - description
-      - is_organization_wide
-      title: FieldMappingApiInstanceTargetField
-    WarningValidationProblem:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
-          type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
-      required:
-      - title
-      - detail
-      - problem_type
-      title: WarningValidationProblem
-    FieldMappingApiInstance:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        is_integration_wide:
-          type: boolean
-        target_field:
-          oneOf:
-          - $ref: '#/components/schemas/FieldMappingApiInstanceTargetField'
-          - type: 'null'
-        remote_field:
-          oneOf:
-          - $ref: '#/components/schemas/FieldMappingApiInstanceRemoteField'
-          - type: 'null'
-        jmes_path:
-          type:
-          - string
-          - 'null'
-        advanced_mapping_expression:
-          type:
-          - string
-          - 'null'
-      title: FieldMappingApiInstance
   securitySchemes:
     tokenAuth:
       type: http

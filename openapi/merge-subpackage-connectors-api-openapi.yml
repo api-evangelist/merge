@@ -69,56 +69,6 @@ paths:
                 $ref: '#/components/schemas/ConnectorDetailPublicResponse'
 components:
   schemas:
-    AuthOptionPublic:
-      type: object
-      properties:
-        type:
-          type: string
-        secrets:
-          type: array
-          items:
-            $ref: '#/components/schemas/SecretSchemaPublic'
-      required:
-      - type
-      - secrets
-      title: AuthOptionPublic
-    PaginatedConnectorDetailPublicResponseList:
-      type: object
-      properties:
-        count:
-          type: integer
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ConnectorDetailPublicResponse'
-      required:
-      - count
-      - results
-      title: PaginatedConnectorDetailPublicResponseList
-    SecretOptionPublic:
-      type: object
-      properties:
-        option_label:
-          type: string
-        value:
-          type: string
-        option_default:
-          type: boolean
-      required:
-      - option_label
-      - value
-      - option_default
-      title: SecretOptionPublic
     SecretSchemaPublic:
       type: object
       properties:
@@ -169,6 +119,19 @@ components:
       - credit_type
       description: Mini version of ConnectorTool serializer that excludes input_schema details.
       title: ConnectorToolMini
+    AuthOptionPublic:
+      type: object
+      properties:
+        type:
+          type: string
+        secrets:
+          type: array
+          items:
+            $ref: '#/components/schemas/SecretSchemaPublic'
+      required:
+      - type
+      - secrets
+      title: AuthOptionPublic
     ConnectorDetailPublicResponse:
       type: object
       properties:
@@ -220,6 +183,43 @@ components:
       - auth_options
       - tools
       title: ConnectorDetailPublicResponse
+    SecretOptionPublic:
+      type: object
+      properties:
+        option_label:
+          type: string
+        value:
+          type: string
+        option_default:
+          type: boolean
+      required:
+      - option_label
+      - value
+      - option_default
+      title: SecretOptionPublic
+    PaginatedConnectorDetailPublicResponseList:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConnectorDetailPublicResponse'
+      required:
+      - count
+      - results
+      title: PaginatedConnectorDetailPublicResponseList
   securitySchemes:
     tokenAuth:
       type: http

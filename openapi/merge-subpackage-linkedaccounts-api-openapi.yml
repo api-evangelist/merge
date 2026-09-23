@@ -876,72 +876,19 @@ components:
       - filestorage
       - knowledgebase
       title: CategoryEnum
-    CategoriesEnum:
+    LinkedAccountsGetParametersCategory:
       type: string
       enum:
-      - hris
-      - ats
       - accounting
-      - ticketing
+      - ats
+      - chat
       - crm
-      - mktg
       - filestorage
+      - hris
       - knowledgebase
-      title: CategoriesEnum
-    AccountDetailsAndActionsStatusEnum:
-      type: string
-      enum:
-      - COMPLETE
-      - INCOMPLETE
-      - RELINK_NEEDED
-      - IDLE
-      title: AccountDetailsAndActionsStatusEnum
-    PaginatedAccountDetailsAndActionsList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/AccountDetailsAndActions'
-      title: PaginatedAccountDetailsAndActionsList
-    AccountDetailsAndActionsIntegration:
-      type: object
-      properties:
-        name:
-          type: string
-        categories:
-          type: array
-          items:
-            $ref: '#/components/schemas/CategoriesEnum'
-        image:
-          type: string
-        square_image:
-          type: string
-        color:
-          type: string
-        slug:
-          type: string
-        passthrough_available:
-          type: boolean
-        available_model_operations:
-          type: array
-          items:
-            $ref: '#/components/schemas/ModelOperation'
-      required:
-      - name
-      - categories
-      - color
-      - slug
-      - passthrough_available
-      title: AccountDetailsAndActionsIntegration
+      - mktg
+      - ticketing
+      title: LinkedAccountsGetParametersCategory
     ModelOperation:
       type: object
       properties:
@@ -975,6 +922,60 @@ components:
 
         View what operations are supported for the `Candidate` endpoint.'
       title: ModelOperation
+    PaginatedAccountDetailsAndActionsList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountDetailsAndActions'
+      title: PaginatedAccountDetailsAndActionsList
+    AccountDetailsAndActionsStatusEnum:
+      type: string
+      enum:
+      - COMPLETE
+      - INCOMPLETE
+      - RELINK_NEEDED
+      - IDLE
+      title: AccountDetailsAndActionsStatusEnum
+    AccountDetailsAndActionsIntegration:
+      type: object
+      properties:
+        name:
+          type: string
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/CategoriesEnum'
+        image:
+          type: string
+        square_image:
+          type: string
+        color:
+          type: string
+        slug:
+          type: string
+        passthrough_available:
+          type: boolean
+        available_model_operations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ModelOperation'
+      required:
+      - name
+      - categories
+      - color
+      - slug
+      - passthrough_available
+      title: AccountDetailsAndActionsIntegration
     AccountDetailsAndActions:
       type: object
       properties:
@@ -1032,19 +1033,18 @@ components:
 
         View a list of your organization''s `LinkedAccount` objects.'
       title: AccountDetailsAndActions
-    LinkedAccountsGetParametersCategory:
+    CategoriesEnum:
       type: string
       enum:
-      - accounting
-      - ats
-      - chat
-      - crm
-      - filestorage
       - hris
-      - knowledgebase
-      - mktg
+      - ats
+      - accounting
       - ticketing
-      title: LinkedAccountsGetParametersCategory
+      - crm
+      - mktg
+      - filestorage
+      - knowledgebase
+      title: CategoriesEnum
     CategoryEnum_2:
       type: string
       enum:
@@ -1072,6 +1072,36 @@ components:
 
         * `knowledgebase` - knowledgebase'
       title: CategoryEnum
+    LinkedAccountsGetParametersCategory_2:
+      type: string
+      enum:
+      - accounting
+      - ats
+      - chat
+      - communication
+      - crm
+      - datawarehouse
+      - filestorage
+      - hris
+      - knowledgebase
+      - mktg
+      - ticketing
+      title: LinkedAccountsGetParametersCategory
+    AccountDetailsAndActionsStatusEnum_2:
+      type: string
+      enum:
+      - COMPLETE
+      - INCOMPLETE
+      - RELINK_NEEDED
+      - IDLE
+      description: '* `COMPLETE` - COMPLETE
+
+        * `INCOMPLETE` - INCOMPLETE
+
+        * `RELINK_NEEDED` - RELINK_NEEDED
+
+        * `IDLE` - IDLE'
+      title: AccountDetailsAndActionsStatusEnum
     CategoriesEnum_2:
       type: string
       enum:
@@ -1099,36 +1129,6 @@ components:
 
         * `knowledgebase` - knowledgebase'
       title: CategoriesEnum
-    AccountDetailsAndActionsStatusEnum_2:
-      type: string
-      enum:
-      - COMPLETE
-      - INCOMPLETE
-      - RELINK_NEEDED
-      - IDLE
-      description: '* `COMPLETE` - COMPLETE
-
-        * `INCOMPLETE` - INCOMPLETE
-
-        * `RELINK_NEEDED` - RELINK_NEEDED
-
-        * `IDLE` - IDLE'
-      title: AccountDetailsAndActionsStatusEnum
-    LinkedAccountsGetParametersCategory_2:
-      type: string
-      enum:
-      - accounting
-      - ats
-      - chat
-      - communication
-      - crm
-      - datawarehouse
-      - filestorage
-      - hris
-      - knowledgebase
-      - mktg
-      - ticketing
-      title: LinkedAccountsGetParametersCategory
   securitySchemes:
     tokenAuth:
       type: http

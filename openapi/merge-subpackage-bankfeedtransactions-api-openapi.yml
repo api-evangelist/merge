@@ -117,7 +117,7 @@ paths:
     post:
       operationId: create
       summary: Create
-      description: Creates a `BankFeedTransaction` object with the given values.{/* BEGIN_ACCOUNTING_BANKFEEDTRANSACTION_CREATE_SUPPORTED_FIELDS */}<Footer><MergeSupportedFieldsByIntegrationWidget requestType="POST" data="H4sIAAAAAAAAA9WTbU8aQRDHv0ozL8lxV0A0kjQNTz4lHFWx0RiyGXaHY+Fu99zdE8X43ZsDqqBUbGLT9uXN/ec/D7/ZB+DoKNLmHmqAnOtMOaki8CDRgmKoQQPV5IBI9Awqi9xJrcADTGWICa0lsdsyeGCzNNXGkTiQFAt7ZGgINQgSMhEVMyWHkkTwnBRI5SgymPva4Cm5OJxngwexVBMS9UXCdruFvLiMvPi0QSytAw9StNaNjM6i0RndZGTf4Zz3FlNCymFcFOgwWHEpmoXNplg+haCYHIkWOmyRo/kalxVHzqW2FgQjilN/Xt0XdBuQCtA4yWOyQbWyX97brxaXLvPqX1kUfykVxjcDPdgrsIjHDLNCp8fvwt7xNBxHO2Fz5y6cXVTD2WQWjiefCyzCQqfXqXZ7V5Vuq17qbhCw893L/e+NVuMkLPBZuxKOr6Zhj5c6PT4ZzI4rJ4d8enJ0ehfOrsqd1kUl7LWrJ4e61G2e2U7zTHfqvg8erFKF2vXDamB5OCG580w6WlcfJxjRylYWODCVxTQbxJL7tuJjgjOtcGp9rpMgISExCMnZ3I3ZmwwN+en8iOcLk1o97Rxq0A6P6mGz3Vo/g/otyhgHMUHNmYxe3THUrgGT/BbAgwGqCRsSCba8D/CAGxLSMW2YoIHMI4IsNzJdvpgU7ymf1erMcGLu+TkxKcCD1YDA+VpWQ+4+Jeh7kN+UNCS+ocGEHJl5Z5sa2lyo/+htgnGaST5paD2xn7oqluqDqDzbFhdc2MWwvNvYK/27fFJtHYmfCP4Ird/q8xfALsnoj2GUOy3p/C9UDCXa0YLE3yf0sucVJizNbe3GoE9KsAHGqDhtFbCnjrboXje3JUHabUqx2N6Gv9ahcW/PsCZ5c4p15bvmWE95e5KFdjnLex55/7H/+AOLJ1dYHwkAAA==" /></Footer>{/* END_ACCOUNTING_BANKFEEDTRANSACTION_CREATE_SUPPORTED_FIELDS */}
+      description: Creates a `BankFeedTransaction` object with the given values.{/* BEGIN_ACCOUNTING_BANKFEEDTRANSACTION_CREATE_SUPPORTED_FIELDS */}{/* END_ACCOUNTING_BANKFEEDTRANSACTION_CREATE_SUPPORTED_FIELDS */}
       tags:
       - subpackage_bankFeedTransactions
       parameters:
@@ -239,42 +239,6 @@ paths:
                 $ref: '#/components/schemas/MetaResponse'
 components:
   schemas:
-    DebugModelLogSummary:
-      type: object
-      properties:
-        url:
-          type: string
-        method:
-          type: string
-        status_code:
-          type: integer
-      required:
-      - url
-      - method
-      - status_code
-      title: DebugModelLogSummary
-    PaginatedBankFeedTransactionList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/BankFeedTransaction'
-      title: PaginatedBankFeedTransactionList
-    CreditOrDebitEnum:
-      type: string
-      enum:
-      - CREDIT
-      - DEBIT
-      title: CreditOrDebitEnum
     BankFeedTransactionResponse:
       type: object
       properties:
@@ -297,20 +261,6 @@ components:
       - warnings
       - errors
       title: BankFeedTransactionResponse
-    DebugModeLog:
-      type: object
-      properties:
-        log_id:
-          type: string
-        dashboard_view:
-          type: string
-        log_summary:
-          $ref: '#/components/schemas/DebugModelLogSummary'
-      required:
-      - log_id
-      - dashboard_view
-      - log_summary
-      title: DebugModeLog
     BankFeedTransactionRequestRequest:
       type: object
       properties:
@@ -388,14 +338,6 @@ components:
 
         Fetch from the `GET BankFeedTransaction` endpoint to view details of a transaction associated with a bank feed account.'
       title: BankFeedTransactionRequestRequest
-    ValidationProblemSource:
-      type: object
-      properties:
-        pointer:
-          type: string
-      required:
-      - pointer
-      title: ValidationProblemSource
     LinkedAccountStatus:
       type: object
       properties:
@@ -407,6 +349,110 @@ components:
       - linked_account_status
       - can_make_request
       title: LinkedAccountStatus
+    BankFeedTransactionEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/BankFeedTransactionRequestRequest'
+      required:
+      - model
+      title: BankFeedTransactionEndpointRequest
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    CreditOrDebitEnum:
+      type: string
+      enum:
+      - CREDIT
+      - DEBIT
+      title: CreditOrDebitEnum
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
     BankFeedTransactionsIdGetParametersExpandSchemaItems:
       type: string
       enum:
@@ -417,14 +463,36 @@ components:
       enum:
       - bank_feed_account
       title: BankFeedTransactionsGetParametersExpandSchemaItems
-    BankFeedTransactionEndpointRequest:
+    DebugModeLog:
       type: object
       properties:
-        model:
-          $ref: '#/components/schemas/BankFeedTransactionRequestRequest'
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
       required:
-      - model
-      title: BankFeedTransactionEndpointRequest
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    PaginatedBankFeedTransactionList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BankFeedTransaction'
+      title: PaginatedBankFeedTransactionList
     BankFeedTransaction:
       type: object
       properties:
@@ -510,74 +578,6 @@ components:
 
         Fetch from the `GET BankFeedTransaction` endpoint to view details of a transaction associated with a bank feed account.'
       title: BankFeedTransaction
-    WarningValidationProblem:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
-          type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
-      required:
-      - title
-      - detail
-      - problem_type
-      title: WarningValidationProblem
-    ErrorValidationProblem:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
-          type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
-      required:
-      - title
-      - detail
-      - problem_type
-      title: ErrorValidationProblem
-    MetaResponse:
-      type: object
-      properties:
-        request_schema:
-          type: object
-          additionalProperties:
-            description: Any type
-        status:
-          $ref: '#/components/schemas/LinkedAccountStatus'
-        has_conditional_params:
-          type: boolean
-        has_required_linked_account_params:
-          type: boolean
-        remote_fields:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: Remote field values to populate
-      required:
-      - request_schema
-      - has_conditional_params
-      - has_required_linked_account_params
-      title: MetaResponse
   securitySchemes:
     tokenAuth:
       type: http

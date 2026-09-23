@@ -43,6 +43,24 @@ paths:
                 $ref: '#/components/schemas/AsyncPostTask'
 components:
   schemas:
+    AsyncPostTaskStatusEnum:
+      type: string
+      enum:
+      - QUEUED
+      - IN_PROGRESS
+      - COMPLETED
+      - FAILURE
+      title: AsyncPostTaskStatusEnum
+    AsyncPostTaskResult:
+      type: object
+      properties:
+        status_code:
+          type: integer
+        response:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: AsyncPostTaskResult
     AsyncPostTask:
       type: object
       properties:
@@ -54,24 +72,6 @@ components:
       - status
       - result
       title: AsyncPostTask
-    AsyncPostTaskResult:
-      type: object
-      properties:
-        status_code:
-          type: integer
-        response:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: AsyncPostTaskResult
-    AsyncPostTaskStatusEnum:
-      type: string
-      enum:
-      - QUEUED
-      - IN_PROGRESS
-      - COMPLETED
-      - FAILURE
-      title: AsyncPostTaskStatusEnum
   securitySchemes:
     tokenAuth:
       type: http

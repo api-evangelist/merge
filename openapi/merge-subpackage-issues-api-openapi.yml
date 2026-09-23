@@ -1151,22 +1151,12 @@ paths:
     - url: https://api-ap.merge.dev/api
 components:
   schemas:
-    PaginatedIssueList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Issue'
-      title: PaginatedIssueList
+    IssueStatusEnum:
+      type: string
+      enum:
+      - ONGOING
+      - RESOLVED
+      title: IssueStatusEnum
     Issue:
       type: object
       properties:
@@ -1201,18 +1191,37 @@ components:
       required:
       - error_description
       title: Issue
-    IssueStatusEnum:
-      type: string
-      enum:
-      - ONGOING
-      - RESOLVED
-      title: IssueStatusEnum
+    PaginatedIssueList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Issue'
+      title: PaginatedIssueList
     IssuesGetParametersStatus:
       type: string
       enum:
       - ONGOING
       - RESOLVED
       title: IssuesGetParametersStatus
+    IssueStatusEnum_2:
+      type: string
+      enum:
+      - ONGOING
+      - RESOLVED
+      description: '* `ONGOING` - ONGOING
+
+        * `RESOLVED` - RESOLVED'
+      title: IssueStatusEnum
     Issue_2:
       type: object
       properties:
@@ -1252,15 +1261,6 @@ components:
       required:
       - error_description
       title: Issue
-    IssueStatusEnum_2:
-      type: string
-      enum:
-      - ONGOING
-      - RESOLVED
-      description: '* `ONGOING` - ONGOING
-
-        * `RESOLVED` - RESOLVED'
-      title: IssueStatusEnum
   securitySchemes:
     tokenAuth:
       type: http

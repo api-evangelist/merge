@@ -305,13 +305,43 @@ paths:
     - url: https://api-ap.merge.dev/api
 components:
   schemas:
-    RequestFormatEnum:
-      type: string
-      enum:
-      - JSON
-      - XML
-      - MULTIPART
-      title: RequestFormatEnum
+    RemoteResponse:
+      type: object
+      properties:
+        method:
+          type: string
+        path:
+          type: string
+        status:
+          type: integer
+        response:
+          description: Any type
+        response_headers:
+          type: object
+          additionalProperties:
+            description: Any type
+        response_type:
+          $ref: '#/components/schemas/ResponseTypeEnum'
+        headers:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - method
+      - path
+      - status
+      - response
+      description: '# The RemoteResponse Object
+
+        ### Description
+
+        The `RemoteResponse` object is used to represent information returned from a third-party endpoint.
+
+
+        ### Usage Example
+
+        View the `RemoteResponse` returned from your `DataPassthrough`.'
+      title: RemoteResponse
     MultipartFormFieldRequest:
       type: object
       properties:
@@ -350,43 +380,19 @@ components:
 
         Create a `MultipartFormField` to define a multipart form entry.'
       title: MultipartFormFieldRequest
-    RemoteResponse:
-      type: object
-      properties:
-        method:
-          type: string
-        path:
-          type: string
-        status:
-          type: integer
-        response:
-          description: Any type
-        response_headers:
-          type: object
-          additionalProperties:
-            description: Any type
-        response_type:
-          $ref: '#/components/schemas/ResponseTypeEnum'
-        headers:
-          type: object
-          additionalProperties:
-            description: Any type
-      required:
-      - method
-      - path
-      - status
-      - response
-      description: '# The RemoteResponse Object
-
-        ### Description
-
-        The `RemoteResponse` object is used to represent information returned from a third-party endpoint.
-
-
-        ### Usage Example
-
-        View the `RemoteResponse` returned from your `DataPassthrough`.'
-      title: RemoteResponse
+    RequestFormatEnum:
+      type: string
+      enum:
+      - JSON
+      - XML
+      - MULTIPART
+      title: RequestFormatEnum
+    ResponseTypeEnum:
+      type: string
+      enum:
+      - JSON
+      - BASE64_GZIP
+      title: ResponseTypeEnum
     EncodingEnum:
       type: string
       enum:
@@ -394,12 +400,17 @@ components:
       - BASE64
       - GZIP_BASE64
       title: EncodingEnum
-    ResponseTypeEnum:
+    MethodEnum:
       type: string
       enum:
-      - JSON
-      - BASE64_GZIP
-      title: ResponseTypeEnum
+      - GET
+      - OPTIONS
+      - HEAD
+      - POST
+      - PUT
+      - PATCH
+      - DELETE
+      title: MethodEnum
     DataPassthroughRequest:
       type: object
       properties:
@@ -453,29 +464,6 @@ components:
 
         Create a `DataPassthrough` to get team hierarchies from your Rippling integration.'
       title: DataPassthroughRequest
-    MethodEnum:
-      type: string
-      enum:
-      - GET
-      - OPTIONS
-      - HEAD
-      - POST
-      - PUT
-      - PATCH
-      - DELETE
-      title: MethodEnum
-    RequestFormatEnum_2:
-      type: string
-      enum:
-      - JSON
-      - XML
-      - MULTIPART
-      description: '* `JSON` - JSON
-
-        * `XML` - XML
-
-        * `MULTIPART` - MULTIPART'
-      title: RequestFormatEnum
     MultipartFormFieldRequest_2:
       type: object
       properties:
@@ -521,6 +509,27 @@ components:
 
         Create a `MultipartFormField` to define a multipart form entry.'
       title: MultipartFormFieldRequest
+    RequestFormatEnum_2:
+      type: string
+      enum:
+      - JSON
+      - XML
+      - MULTIPART
+      description: '* `JSON` - JSON
+
+        * `XML` - XML
+
+        * `MULTIPART` - MULTIPART'
+      title: RequestFormatEnum
+    ResponseTypeEnum_2:
+      type: string
+      enum:
+      - JSON
+      - BASE64_GZIP
+      description: '* `JSON` - JSON
+
+        * `BASE64_GZIP` - BASE64_GZIP'
+      title: ResponseTypeEnum
     EncodingEnum_2:
       type: string
       enum:
@@ -533,15 +542,6 @@ components:
 
         * `GZIP_BASE64` - GZIP_BASE64'
       title: EncodingEnum
-    ResponseTypeEnum_2:
-      type: string
-      enum:
-      - JSON
-      - BASE64_GZIP
-      description: '* `JSON` - JSON
-
-        * `BASE64_GZIP` - BASE64_GZIP'
-      title: ResponseTypeEnum
     MethodEnum_2:
       type: string
       enum:
