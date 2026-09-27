@@ -108,7 +108,7 @@ paths:
     - url: https://api-ap.merge.dev/api
   /tags:
     get:
-      operationId: list
+      operationId: getTags
       summary: List Tags
       description: 'List all available tags.
 
@@ -125,11 +125,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TagsListResponse'
+      x-operation-id-source: normalized
+      x-operation-id-original: list
     servers:
     - url: https://api-gateway.merge.dev
   /ticketing/v1/tags:
     get:
-      operationId: list
+      operationId: getTicketingV1Tags
       summary: List
       description: Returns a list of `Tag` objects.{/* BEGIN_TICKETING_TAG_FETCH_SUPPORTED_FIELDS */}{/* END_TICKETING_TAG_FETCH_SUPPORTED_FIELDS */}
       tags:
@@ -218,6 +220,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaginatedTagList'
+      x-operation-id-source: normalized
+      x-operation-id-original: list
     servers:
     - url: https://api.merge.dev/api
     - url: https://api-eu.merge.dev/api
@@ -273,6 +277,18 @@ paths:
     - url: https://api-ap.merge.dev/api
 components:
   schemas:
+    TagFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: TagFieldMappings
     RemoteData:
       type: object
       properties:
@@ -294,6 +310,22 @@ components:
 
         TODO'
       title: RemoteData
+    PaginatedTagList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+      title: PaginatedTagList
     Tag:
       type: object
       properties:
@@ -338,56 +370,6 @@ components:
 
         Fetch from the `LIST Tags` endpoint and view the tags used within a company.'
       title: Tag
-    PaginatedTagList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Tag'
-      title: PaginatedTagList
-    TagFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: TagFieldMappings
-    TagsListResponse:
-      type: object
-      properties:
-        object:
-          type: string
-          enum:
-          - list
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/TagSchema'
-        has_more:
-          type: boolean
-          default: false
-        next_cursor:
-          type:
-          - string
-          - 'null'
-      required:
-      - data
-      description: Response for GET /v1/tags.
-      title: TagsListResponse
     TagSchema:
       type: object
       properties:
@@ -425,6 +407,28 @@ components:
       - tag_value
       description: A tag available through the gateway.
       title: TagSchema
+    TagsListResponse:
+      type: object
+      properties:
+        object:
+          type: string
+          enum:
+          - list
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/TagSchema'
+        has_more:
+          type: boolean
+          default: false
+        next_cursor:
+          type:
+          - string
+          - 'null'
+      required:
+      - data
+      description: Response for GET /v1/tags.
+      title: TagsListResponse
     Tag_2:
       type: object
       properties:

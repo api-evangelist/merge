@@ -46,7 +46,7 @@ paths:
     - url: https://api-ap.merge.dev/api
   /ats/v1/regenerate-key:
     post:
-      operationId: create
+      operationId: postAtsV1RegenerateKey
       summary: Create
       description: Exchange remote keys.
       tags:
@@ -70,13 +70,15 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/RemoteKeyForRegenerationRequest'
+      x-operation-id-source: normalized
+      x-operation-id-original: create
     servers:
     - url: https://api.merge.dev/api
     - url: https://api-eu.merge.dev/api
     - url: https://api-ap.merge.dev/api
   /regenerate-key:
     post:
-      operationId: create
+      operationId: postRegenerateKey
       summary: Create
       description: Exchange remote keys.
       tags:
@@ -100,13 +102,15 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/RemoteKeyForRegenerationRequest'
+      x-operation-id-source: normalized
+      x-operation-id-original: create
     servers:
     - url: https://api.merge.dev/api/chat/v1
     - url: https://api-eu.merge.dev/api/chat/v1
     - url: https://api-ap.merge.dev/api/chat/v1
   /crm/v1/regenerate-key:
     post:
-      operationId: create
+      operationId: postCrmV1RegenerateKey
       summary: Create
       description: Exchange remote keys.
       tags:
@@ -130,13 +134,15 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/RemoteKeyForRegenerationRequest'
+      x-operation-id-source: normalized
+      x-operation-id-original: create
     servers:
     - url: https://api.merge.dev/api
     - url: https://api-eu.merge.dev/api
     - url: https://api-ap.merge.dev/api
   /filestorage/v1/regenerate-key:
     post:
-      operationId: create
+      operationId: postFilestorageV1RegenerateKey
       summary: Create
       description: Exchange remote keys.
       tags:
@@ -160,13 +166,15 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/RemoteKeyForRegenerationRequest'
+      x-operation-id-source: normalized
+      x-operation-id-original: create
     servers:
     - url: https://api.merge.dev/api
     - url: https://api-eu.merge.dev/api
     - url: https://api-ap.merge.dev/api
   /hris/v1/regenerate-key:
     post:
-      operationId: create
+      operationId: postHrisV1RegenerateKey
       summary: Create
       description: Exchange remote keys.
       tags:
@@ -190,13 +198,15 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/RemoteKeyForRegenerationRequest'
+      x-operation-id-source: normalized
+      x-operation-id-original: create
     servers:
     - url: https://api.merge.dev/api
     - url: https://api-eu.merge.dev/api
     - url: https://api-ap.merge.dev/api
   /knowledgebase/v1/regenerate-key:
     post:
-      operationId: create
+      operationId: postKnowledgebaseV1RegenerateKey
       summary: Create
       description: Exchange remote keys.
       tags:
@@ -220,6 +230,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/RemoteKeyForRegenerationRequest'
+      x-operation-id-source: normalized
+      x-operation-id-original: create
     servers:
     - url: https://api.merge.dev/api
     - url: https://api-eu.merge.dev/api
@@ -227,7 +239,7 @@ paths:
     - url: https://api-ap.merge.dev/api/knowledgebase/v1
   /ticketing/v1/regenerate-key:
     post:
-      operationId: create
+      operationId: postTicketingV1RegenerateKey
       summary: Create
       description: Exchange remote keys.
       tags:
@@ -251,31 +263,14 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/RemoteKeyForRegenerationRequest'
+      x-operation-id-source: normalized
+      x-operation-id-original: create
     servers:
     - url: https://api.merge.dev/api
     - url: https://api-eu.merge.dev/api
     - url: https://api-ap.merge.dev/api
 components:
   schemas:
-    RemoteKeyForRegenerationRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          description: The name of the remote key
-      required:
-      - name
-      description: '# The RemoteKeyForRegeneration Object
-
-        ### Description
-
-        The `RemoteKeyForRegeneration` object is used to exchange an old remote key for a new one
-
-
-        ### Usage Example
-
-        Post a `RemoteKeyForRegeneration` to swap out an old remote key for a new one'
-      title: RemoteKeyForRegenerationRequest
     RemoteKey:
       type: object
       properties:
@@ -297,6 +292,25 @@ components:
 
         Post a `GenerateRemoteKey` to receive a new `RemoteKey`.'
       title: RemoteKey
+    RemoteKeyForRegenerationRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the remote key
+      required:
+      - name
+      description: '# The RemoteKeyForRegeneration Object
+
+        ### Description
+
+        The `RemoteKeyForRegeneration` object is used to exchange an old remote key for a new one
+
+
+        ### Usage Example
+
+        Post a `RemoteKeyForRegeneration` to swap out an old remote key for a new one'
+      title: RemoteKeyForRegenerationRequest
   securitySchemes:
     tokenAuth:
       type: http

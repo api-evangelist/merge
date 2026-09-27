@@ -176,7 +176,7 @@ paths:
     - url: https://api-ap.merge.dev/api/chat/v1
   /filestorage/v1/groups:
     get:
-      operationId: list
+      operationId: getFilestorageV1Groups
       summary: List
       description: Returns a list of `Group` objects.{/* BEGIN_FILESTORAGE_GROUP_FETCH_SUPPORTED_FIELDS */}{/* END_FILESTORAGE_GROUP_FETCH_SUPPORTED_FIELDS */}
       tags:
@@ -273,13 +273,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaginatedGroupList'
+      x-operation-id-source: normalized
+      x-operation-id-original: list
     servers:
     - url: https://api.merge.dev/api
     - url: https://api-eu.merge.dev/api
     - url: https://api-ap.merge.dev/api
   /filestorage/v1/groups/{id}:
     get:
-      operationId: retrieve
+      operationId: getFilestorageV1GroupsById
       summary: Retrieve
       description: Returns a `Group` object with the given `id`.{/* BEGIN_FILESTORAGE_GROUP_FETCH_SUPPORTED_FIELDS */}{/* END_FILESTORAGE_GROUP_FETCH_SUPPORTED_FIELDS */}
       tags:
@@ -330,13 +332,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Group_2'
+      x-operation-id-source: normalized
+      x-operation-id-original: retrieve
     servers:
     - url: https://api.merge.dev/api
     - url: https://api-eu.merge.dev/api
     - url: https://api-ap.merge.dev/api
   /hris/v1/groups:
     get:
-      operationId: list
+      operationId: getHrisV1Groups
       summary: List
       description: Returns a list of `Group` objects.{/* BEGIN_HRIS_GROUP_FETCH_SUPPORTED_FIELDS */}{/* END_HRIS_GROUP_FETCH_SUPPORTED_FIELDS */}
       tags:
@@ -463,13 +467,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaginatedGroupList'
+      x-operation-id-source: normalized
+      x-operation-id-original: list
     servers:
     - url: https://api.merge.dev/api
     - url: https://api-eu.merge.dev/api
     - url: https://api-ap.merge.dev/api
   /hris/v1/groups/{id}:
     get:
-      operationId: retrieve
+      operationId: getHrisV1GroupsById
       summary: Retrieve
       description: Returns a `Group` object with the given `id`.{/* BEGIN_HRIS_GROUP_FETCH_SUPPORTED_FIELDS */}{/* END_HRIS_GROUP_FETCH_SUPPORTED_FIELDS */}
       tags:
@@ -532,6 +538,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Group_3'
+      x-operation-id-source: normalized
+      x-operation-id-original: retrieve
     servers:
     - url: https://api.merge.dev/api
     - url: https://api-eu.merge.dev/api
@@ -575,7 +583,7 @@ paths:
     - url: https://api-ap.merge.dev/api
   /knowledgebase/v1/groups:
     get:
-      operationId: list
+      operationId: getKnowledgebaseV1Groups
       summary: List
       description: Returns a list of `Group` objects.
       tags:
@@ -670,6 +678,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaginatedGroupList'
+      x-operation-id-source: normalized
+      x-operation-id-original: list
     servers:
     - url: https://api.merge.dev/api
     - url: https://api-eu.merge.dev/api
@@ -677,7 +687,7 @@ paths:
     - url: https://api-ap.merge.dev/api/knowledgebase/v1
   /knowledgebase/v1/groups/{id}:
     get:
-      operationId: retrieve
+      operationId: getKnowledgebaseV1GroupsById
       summary: Retrieve
       description: Returns a `Group` object with the given `id`.
       tags:
@@ -726,6 +736,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Group_4'
+      x-operation-id-source: normalized
+      x-operation-id-original: retrieve
     servers:
     - url: https://api.merge.dev/api
     - url: https://api-eu.merge.dev/api
@@ -733,11 +745,27 @@ paths:
     - url: https://api-ap.merge.dev/api/knowledgebase/v1
 components:
   schemas:
-    GroupsGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - users
-      title: GroupsGetParametersExpandSchemaItems
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
     PaginatedGroupList:
       type: object
       properties:
@@ -754,11 +782,28 @@ components:
           items:
             $ref: '#/components/schemas/Group'
       title: PaginatedGroupList
+    GroupsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - users
+      title: GroupsGetParametersExpandSchemaItems
     GroupsIdGetParametersExpandSchemaItems:
       type: string
       enum:
       - users
       title: GroupsIdGetParametersExpandSchemaItems
+    GroupFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: GroupFieldMappings
     Group:
       type: object
       properties:
@@ -823,39 +868,6 @@ components:
 
         Fetch from the `GET /api/chat/v1/groups` endpoint and view their groups.'
       title: Group
-    RemoteData:
-      type: object
-      properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
-      required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
-    GroupFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: GroupFieldMappings
     GroupsGetParametersExpandSchemaItems_2:
       type: string
       enum:
@@ -929,26 +941,54 @@ components:
 
         Fetch from the `GET /api/filestorage/v1/groups` endpoint and view their groups.'
       title: Group
-    GroupsIdGetParametersRemoteFields:
-      type: string
-      enum:
-      - type
-      title: GroupsIdGetParametersRemoteFields
+    groups_typesList_Response_200:
+      type: object
+      properties:
+        types:
+          type: array
+          items:
+            type: string
+          description: List of distinct group types
+      title: groups_typesList_Response_200
     GroupsGetParametersExpandSchemaItems_3:
       type: string
       enum:
       - parent_group
       title: GroupsGetParametersExpandSchemaItems
-    GroupsGetParametersRemoteFields:
-      type: string
-      enum:
-      - type
-      title: GroupsGetParametersRemoteFields
     GroupsIdGetParametersExpandSchemaItems_3:
       type: string
       enum:
       - parent_group
       title: GroupsIdGetParametersExpandSchemaItems
+    GroupsGetParametersRemoteFields:
+      type: string
+      enum:
+      - type
+      title: GroupsGetParametersRemoteFields
+    GroupTypeEnum:
+      type: string
+      enum:
+      - TEAM
+      - DEPARTMENT
+      - COST_CENTER
+      - BUSINESS_UNIT
+      - GROUP
+      title: GroupTypeEnum
+    GroupsIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - type
+      title: GroupsIdGetParametersShowEnumOrigins
+    GroupsGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - type
+      title: GroupsGetParametersShowEnumOrigins
+    GroupsIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - type
+      title: GroupsIdGetParametersRemoteFields
     Group_3:
       type: object
       properties:
@@ -1013,34 +1053,17 @@ components:
 
         Fetch from the `LIST Employee` endpoint and expand groups to view an employee''s groups.'
       title: Group
-    GroupsGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - type
-      title: GroupsGetParametersShowEnumOrigins
-    GroupTypeEnum:
-      type: string
-      enum:
-      - TEAM
-      - DEPARTMENT
-      - COST_CENTER
-      - BUSINESS_UNIT
-      - GROUP
-      title: GroupTypeEnum
-    GroupsIdGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - type
-      title: GroupsIdGetParametersShowEnumOrigins
-    groups_typesList_Response_200:
+    GroupFieldMappings_2:
       type: object
-      properties:
-        types:
-          type: array
-          items:
-            type: string
-          description: List of distinct group types
-      title: groups_typesList_Response_200
+      properties: {}
+      title: GroupFieldMappings
+    GroupsGetParametersExpand:
+      type: string
+      enum:
+      - parent_group
+      - users
+      - users,parent_group
+      title: GroupsGetParametersExpand
     User:
       type: object
       properties:
@@ -1087,17 +1110,6 @@ components:
 
         Fetch from the `GET /api/knowledgebase/users` endpoint and view their users.'
       title: User
-    UserFieldMappings:
-      type: object
-      properties: {}
-      title: UserFieldMappings
-    GroupsIdGetParametersExpand:
-      type: string
-      enum:
-      - parent_group
-      - users
-      - users,parent_group
-      title: GroupsIdGetParametersExpand
     Group_4:
       type: object
       properties:
@@ -1155,17 +1167,17 @@ components:
 
         Fetch from the `GET /api/knowledgebase/groups` endpoint and view their groups.'
       title: Group
-    GroupsGetParametersExpand:
+    GroupsIdGetParametersExpand:
       type: string
       enum:
       - parent_group
       - users
       - users,parent_group
-      title: GroupsGetParametersExpand
-    GroupFieldMappings_2:
+      title: GroupsIdGetParametersExpand
+    UserFieldMappings:
       type: object
       properties: {}
-      title: GroupFieldMappings
+      title: UserFieldMappings
   securitySchemes:
     tokenAuth:
       type: http

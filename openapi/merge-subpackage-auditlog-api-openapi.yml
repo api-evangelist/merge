@@ -69,6 +69,69 @@ paths:
                 $ref: '#/components/schemas/PaginatedAuditLogEventPublicList'
 components:
   schemas:
+    PaginatedAuditLogEventPublicList:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuditLogEventPublic'
+      required:
+      - count
+      - results
+      title: PaginatedAuditLogEventPublicList
+    AuditLogEventPublic:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the audit log event
+        user_name:
+          type: string
+          description: Name of the user who performed the action
+        user_email:
+          type: string
+          description: Email of the user who performed the action
+        role:
+          type:
+          - string
+          - 'null'
+          description: Role of the user at the time of the action
+        ip_address:
+          type: string
+          description: IP address from which the action was performed
+        event_type:
+          type: string
+          description: Type of audit event (e.g., TOOL_PACK_CREATED, USER_UPDATED)
+        event_description:
+          type: string
+          description: Human-readable description of the event
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the event occurred
+      required:
+      - id
+      - user_name
+      - user_email
+      - role
+      - ip_address
+      - event_type
+      - event_description
+      - created_at
+      title: AuditLogEventPublic
     ApiV1AuditLogGetParametersEventType:
       type: string
       enum:
@@ -160,69 +223,6 @@ components:
       - USER_PASSWORD_RESET
       - USER_UPDATED
       title: ApiV1AuditLogGetParametersEventType
-    PaginatedAuditLogEventPublicList:
-      type: object
-      properties:
-        count:
-          type: integer
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/AuditLogEventPublic'
-      required:
-      - count
-      - results
-      title: PaginatedAuditLogEventPublicList
-    AuditLogEventPublic:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the audit log event
-        user_name:
-          type: string
-          description: Name of the user who performed the action
-        user_email:
-          type: string
-          description: Email of the user who performed the action
-        role:
-          type:
-          - string
-          - 'null'
-          description: Role of the user at the time of the action
-        ip_address:
-          type: string
-          description: IP address from which the action was performed
-        event_type:
-          type: string
-          description: Type of audit event (e.g., TOOL_PACK_CREATED, USER_UPDATED)
-        event_description:
-          type: string
-          description: Human-readable description of the event
-        created_at:
-          type: string
-          format: date-time
-          description: Timestamp when the event occurred
-      required:
-      - id
-      - user_name
-      - user_email
-      - role
-      - ip_address
-      - event_type
-      - event_description
-      - created_at
-      title: AuditLogEventPublic
   securitySchemes:
     tokenAuth:
       type: http

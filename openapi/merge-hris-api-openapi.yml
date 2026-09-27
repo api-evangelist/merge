@@ -1,13 +1,13 @@
 openapi: 3.2.0
 info:
-  title: HRIS API
+  title: Hris API
   version: 1.0.0
 servers:
 - url: https://api.merge.dev/api
 - url: https://api-eu.merge.dev/api
 - url: https://api-ap.merge.dev/api
 tags:
-- name: ''
+- name: Hris
 paths:
   /hris/v1/field-mappings:
     post:
@@ -15,7 +15,7 @@ paths:
       summary: Field Mappings Create
       description: Create new Field Mappings that will be available after the next scheduled sync. This will cause the next sync for this Linked Account to sync **ALL** data from start.
       tags:
-      - ''
+      - Hris
       parameters:
       - name: exclude_remote_field_metadata
         in: query
@@ -59,7 +59,7 @@ paths:
       summary: Field Mappings Destroy
       description: Deletes Field Mappings for a Linked Account. All data related to this Field Mapping will be deleted and these changes will be reflected after the next scheduled sync. This will cause the next sync for this Linked Account to sync **ALL** data from start.
       tags:
-      - ''
+      - Hris
       parameters:
       - name: field_mapping_id
         in: path
@@ -91,7 +91,7 @@ paths:
       summary: Field Mappings Partial Update
       description: Create or update existing Field Mappings for a Linked Account. Changes will be reflected after the next scheduled sync. This will cause the next sync for this Linked Account to sync **ALL** data from start.
       tags:
-      - ''
+      - Hris
       parameters:
       - name: field_mapping_id
         in: path
@@ -135,7 +135,7 @@ paths:
       summary: Remote Fields Retrieve
       description: Get all remote fields for a Linked Account. Remote fields are third-party fields that are accessible after initial sync if remote_data is enabled. You can use remote fields to override existing Merge fields or map a new Merge field. Learn more.
       tags:
-      - ''
+      - Hris
       parameters:
       - name: common_models
         in: query
@@ -174,7 +174,7 @@ paths:
       summary: Target Fields Retrieve
       description: Get all organization-wide Target Fields, this will not include any Linked Account specific Target Fields. Organization-wide Target Fields are additional fields appended to the Merge Common Model for all Linked Accounts in a category. Learn more.
       tags:
-      - ''
+      - Hris
       parameters:
       - name: Authorization
         in: header
@@ -197,48 +197,67 @@ paths:
                 $ref: '#/components/schemas/ExternalTargetFieldAPIResponse'
 components:
   schemas:
-    RemoteEndpointInfo:
+    ExternalTargetFieldAPI:
       type: object
       properties:
-        method:
-          type: string
-        url_path:
-          type: string
-        field_traversal_path:
-          type: array
-          items:
-            description: Any type
-      required:
-      - method
-      - url_path
-      - field_traversal_path
-      title: RemoteEndpointInfo
-    RemoteFieldApiCoverage:
-      oneOf:
-      - type: integer
-      - type: number
-        format: double
-      title: RemoteFieldApiCoverage
-    FieldMappingApiInstanceRemoteField:
-      type: object
-      properties:
-        remote_key_name:
+        name:
           type:
           - string
           - 'null'
-        schema:
+        description:
           type:
-          - object
+          - string
           - 'null'
+        is_mapped:
+          type:
+          - string
+          - 'null'
+      title: ExternalTargetFieldAPI
+    RemoteFieldAPI:
+      type: object
+      properties:
+        schema:
+          type: object
           additionalProperties:
             description: Any type
+        remote_key_name:
+          type: string
         remote_endpoint_info:
-          $ref: '#/components/schemas/FieldMappingApiInstanceRemoteFieldRemoteEndpointInfo'
+          $ref: '#/components/schemas/RemoteEndpointInfo'
+        example_values:
+          type:
+          - array
+          - 'null'
+          items:
+            description: Any type
+        advanced_metadata:
+          oneOf:
+          - $ref: '#/components/schemas/AdvancedMetadata'
+          - type: 'null'
+        coverage:
+          oneOf:
+          - $ref: '#/components/schemas/RemoteFieldApiCoverage'
+          - type: 'null'
       required:
-      - remote_key_name
       - schema
+      - remote_key_name
       - remote_endpoint_info
-      title: FieldMappingApiInstanceRemoteField
+      - advanced_metadata
+      title: RemoteFieldAPI
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
     RemoteFieldAPIResponse:
       type: object
       properties:
@@ -307,6 +326,189 @@ components:
           items:
             $ref: '#/components/schemas/RemoteFieldAPI'
       title: RemoteFieldAPIResponse
+    CreateFieldMappingRequest:
+      type: object
+      properties:
+        target_field_name:
+          type: string
+          description: The name of the target field you want this remote field to map to. Required if organization_wide_target_field is not provided.
+        target_field_description:
+          type: string
+          description: The description of the target field you want this remote field to map to. Required if organization_wide_target_field is not provided.
+        organization_wide_target_field:
+          type: string
+          description: The name or key of an existing Organization-wide target field to map to. When provided, target_field_name and target_field_description are optional.
+        is_integration_wide:
+          type: boolean
+          default: false
+          description: If true, creates an integration-wide field mapping that applies to all Linked Accounts for the integration. Requires organization_wide_target_field.
+        remote_field_traversal_path:
+          type: array
+          items:
+            description: Any type
+          description: The field traversal path of the remote field listed when you hit the GET /remote-fields endpoint.
+        remote_method:
+          type: string
+          description: The method of the remote endpoint where the remote field is coming from.
+        remote_url_path:
+          type: string
+          description: The path of the remote endpoint where the remote field is coming from.
+        common_model_name:
+          type: string
+          description: The name of the Common Model that the remote field corresponds to in a given category.
+        jmes_path:
+          type: string
+          description: 'DEPRECATED: Use ''advanced_mapping_expression'' instead.'
+        advanced_mapping_expression:
+          type: string
+          description: A JSONata expression used to transform the remote field data.
+      required:
+      - remote_field_traversal_path
+      - remote_method
+      - remote_url_path
+      - common_model_name
+      title: CreateFieldMappingRequest
+    FieldMappingApiInstance:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        is_integration_wide:
+          type: boolean
+        target_field:
+          oneOf:
+          - $ref: '#/components/schemas/FieldMappingApiInstanceTargetField'
+          - type: 'null'
+        remote_field:
+          oneOf:
+          - $ref: '#/components/schemas/FieldMappingApiInstanceRemoteField'
+          - type: 'null'
+        jmes_path:
+          type:
+          - string
+          - 'null'
+        advanced_mapping_expression:
+          type:
+          - string
+          - 'null'
+      title: FieldMappingApiInstance
+    PatchedEditFieldMappingRequest:
+      type: object
+      properties:
+        remote_field_traversal_path:
+          type: array
+          items:
+            description: Any type
+          description: The field traversal path of the remote field listed when you hit the GET /remote-fields endpoint.
+        remote_method:
+          type: string
+          description: The method of the remote endpoint where the remote field is coming from.
+        remote_url_path:
+          type: string
+          description: The path of the remote endpoint where the remote field is coming from.
+        jmes_path:
+          type: string
+          description: 'DEPRECATED: Use ''advanced_mapping_expression'' instead.'
+        advanced_mapping_expression:
+          type: string
+          description: A JSONata expression used to transform the remote field data.
+      title: PatchedEditFieldMappingRequest
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    FieldMappingApiInstanceTargetField:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        is_organization_wide:
+          type: boolean
+      required:
+      - name
+      - description
+      - is_organization_wide
+      title: FieldMappingApiInstanceTargetField
+    AdvancedMetadata:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        display_name:
+          type: string
+        description:
+          type: string
+        is_required:
+          type: boolean
+        is_custom:
+          type: boolean
+        field_choices:
+          type: array
+          items:
+            description: Any type
+      required:
+      - id
+      title: AdvancedMetadata
+    FieldMappingApiInstanceRemoteFieldRemoteEndpointInfo:
+      type: object
+      properties:
+        method:
+          type:
+          - string
+          - 'null'
+        url_path:
+          type:
+          - string
+          - 'null'
+        field_traversal_path:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+      required:
+      - method
+      - url_path
+      - field_traversal_path
+      title: FieldMappingApiInstanceRemoteFieldRemoteEndpointInfo
+    RemoteEndpointInfo:
+      type: object
+      properties:
+        method:
+          type: string
+        url_path:
+          type: string
+        field_traversal_path:
+          type: array
+          items:
+            description: Any type
+      required:
+      - method
+      - url_path
+      - field_traversal_path
+      title: RemoteEndpointInfo
     WarningValidationProblem:
       type: object
       properties:
@@ -397,22 +599,26 @@ components:
           items:
             $ref: '#/components/schemas/ExternalTargetFieldAPI'
       title: ExternalTargetFieldAPIResponse
-    ExternalTargetFieldAPI:
+    FieldMappingApiInstanceRemoteField:
       type: object
       properties:
-        name:
+        remote_key_name:
           type:
           - string
           - 'null'
-        description:
+        schema:
           type:
-          - string
+          - object
           - 'null'
-        is_mapped:
-          type:
-          - string
-          - 'null'
-      title: ExternalTargetFieldAPI
+          additionalProperties:
+            description: Any type
+        remote_endpoint_info:
+          $ref: '#/components/schemas/FieldMappingApiInstanceRemoteFieldRemoteEndpointInfo'
+      required:
+      - remote_key_name
+      - schema
+      - remote_endpoint_info
+      title: FieldMappingApiInstanceRemoteField
     FieldMappingInstanceResponse:
       type: object
       properties:
@@ -435,101 +641,6 @@ components:
       - warnings
       - errors
       title: FieldMappingInstanceResponse
-    DebugModeLog:
-      type: object
-      properties:
-        log_id:
-          type: string
-        dashboard_view:
-          type: string
-        log_summary:
-          $ref: '#/components/schemas/DebugModelLogSummary'
-      required:
-      - log_id
-      - dashboard_view
-      - log_summary
-      title: DebugModeLog
-    AdvancedMetadata:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        display_name:
-          type: string
-        description:
-          type: string
-        is_required:
-          type: boolean
-        is_custom:
-          type: boolean
-        field_choices:
-          type: array
-          items:
-            description: Any type
-      required:
-      - id
-      title: AdvancedMetadata
-    FieldMappingApiInstanceTargetField:
-      type: object
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-        is_organization_wide:
-          type: boolean
-      required:
-      - name
-      - description
-      - is_organization_wide
-      title: FieldMappingApiInstanceTargetField
-    FieldMappingApiInstance:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        is_integration_wide:
-          type: boolean
-        target_field:
-          oneOf:
-          - $ref: '#/components/schemas/FieldMappingApiInstanceTargetField'
-          - type: 'null'
-        remote_field:
-          oneOf:
-          - $ref: '#/components/schemas/FieldMappingApiInstanceRemoteField'
-          - type: 'null'
-        jmes_path:
-          type:
-          - string
-          - 'null'
-        advanced_mapping_expression:
-          type:
-          - string
-          - 'null'
-      title: FieldMappingApiInstance
-    PatchedEditFieldMappingRequest:
-      type: object
-      properties:
-        remote_field_traversal_path:
-          type: array
-          items:
-            description: Any type
-          description: The field traversal path of the remote field listed when you hit the GET /remote-fields endpoint.
-        remote_method:
-          type: string
-          description: The method of the remote endpoint where the remote field is coming from.
-        remote_url_path:
-          type: string
-          description: The path of the remote endpoint where the remote field is coming from.
-        jmes_path:
-          type: string
-          description: 'DEPRECATED: Use ''advanced_mapping_expression'' instead.'
-        advanced_mapping_expression:
-          type: string
-          description: A JSONata expression used to transform the remote field data.
-      title: PatchedEditFieldMappingRequest
     ErrorValidationProblem:
       type: object
       properties:
@@ -552,123 +663,12 @@ components:
       - detail
       - problem_type
       title: ErrorValidationProblem
-    DebugModelLogSummary:
-      type: object
-      properties:
-        url:
-          type: string
-        method:
-          type: string
-        status_code:
-          type: integer
-      required:
-      - url
-      - method
-      - status_code
-      title: DebugModelLogSummary
-    ValidationProblemSource:
-      type: object
-      properties:
-        pointer:
-          type: string
-      required:
-      - pointer
-      title: ValidationProblemSource
-    FieldMappingApiInstanceRemoteFieldRemoteEndpointInfo:
-      type: object
-      properties:
-        method:
-          type:
-          - string
-          - 'null'
-        url_path:
-          type:
-          - string
-          - 'null'
-        field_traversal_path:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-      required:
-      - method
-      - url_path
-      - field_traversal_path
-      title: FieldMappingApiInstanceRemoteFieldRemoteEndpointInfo
-    CreateFieldMappingRequest:
-      type: object
-      properties:
-        target_field_name:
-          type: string
-          description: The name of the target field you want this remote field to map to. Required if organization_wide_target_field is not provided.
-        target_field_description:
-          type: string
-          description: The description of the target field you want this remote field to map to. Required if organization_wide_target_field is not provided.
-        organization_wide_target_field:
-          type: string
-          description: The name or key of an existing Organization-wide target field to map to. When provided, target_field_name and target_field_description are optional.
-        is_integration_wide:
-          type: boolean
-          default: false
-          description: If true, creates an integration-wide field mapping that applies to all Linked Accounts for the integration. Requires organization_wide_target_field.
-        remote_field_traversal_path:
-          type: array
-          items:
-            description: Any type
-          description: The field traversal path of the remote field listed when you hit the GET /remote-fields endpoint.
-        remote_method:
-          type: string
-          description: The method of the remote endpoint where the remote field is coming from.
-        remote_url_path:
-          type: string
-          description: The path of the remote endpoint where the remote field is coming from.
-        common_model_name:
-          type: string
-          description: The name of the Common Model that the remote field corresponds to in a given category.
-        jmes_path:
-          type: string
-          description: 'DEPRECATED: Use ''advanced_mapping_expression'' instead.'
-        advanced_mapping_expression:
-          type: string
-          description: A JSONata expression used to transform the remote field data.
-      required:
-      - remote_field_traversal_path
-      - remote_method
-      - remote_url_path
-      - common_model_name
-      title: CreateFieldMappingRequest
-    RemoteFieldAPI:
-      type: object
-      properties:
-        schema:
-          type: object
-          additionalProperties:
-            description: Any type
-        remote_key_name:
-          type: string
-        remote_endpoint_info:
-          $ref: '#/components/schemas/RemoteEndpointInfo'
-        example_values:
-          type:
-          - array
-          - 'null'
-          items:
-            description: Any type
-        advanced_metadata:
-          oneOf:
-          - $ref: '#/components/schemas/AdvancedMetadata'
-          - type: 'null'
-        coverage:
-          oneOf:
-          - $ref: '#/components/schemas/RemoteFieldApiCoverage'
-          - type: 'null'
-      required:
-      - schema
-      - remote_key_name
-      - remote_endpoint_info
-      - advanced_metadata
-      title: RemoteFieldAPI
+    RemoteFieldApiCoverage:
+      oneOf:
+      - type: integer
+      - type: number
+        format: double
+      title: RemoteFieldApiCoverage
   securitySchemes:
     tokenAuth:
       type: http

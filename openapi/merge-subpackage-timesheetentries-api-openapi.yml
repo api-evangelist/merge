@@ -295,6 +295,27 @@ components:
       - warnings
       - errors
       title: TimesheetEntryResponse
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
     DebugModelLogSummary:
       type: object
       properties:
@@ -309,29 +330,6 @@ components:
       - method
       - status_code
       title: DebugModelLogSummary
-    LinkedAccountStatus:
-      type: object
-      properties:
-        linked_account_status:
-          type: string
-        can_make_request:
-          type: boolean
-      required:
-      - linked_account_status
-      - can_make_request
-      title: LinkedAccountStatus
-    TimesheetEntryFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: TimesheetEntryFieldMappings
     ValidationProblemSource:
       type: object
       properties:
@@ -340,33 +338,6 @@ components:
       required:
       - pointer
       title: ValidationProblemSource
-    ErrorValidationProblem:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
-          type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
-      required:
-      - title
-      - detail
-      - problem_type
-      title: ErrorValidationProblem
-    TimesheetEntriesIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - employee
-      title: TimesheetEntriesIdGetParametersExpandSchemaItems
     WarningValidationProblem:
       type: object
       properties:
@@ -389,33 +360,6 @@ components:
       - detail
       - problem_type
       title: WarningValidationProblem
-    TimesheetEntriesGetParametersOrderBy:
-      type: string
-      enum:
-      - -start_time
-      - start_time
-      title: TimesheetEntriesGetParametersOrderBy
-    PaginatedTimesheetEntryList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/TimesheetEntry'
-      title: PaginatedTimesheetEntryList
-    TimesheetEntriesGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - employee
-      title: TimesheetEntriesGetParametersExpandSchemaItems
     TimesheetEntryRequest:
       type: object
       properties:
@@ -467,14 +411,6 @@ components:
 
         GET and POST Timesheet Entries'
       title: TimesheetEntryRequest
-    TimesheetEntryEndpointRequest:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/TimesheetEntryRequest'
-      required:
-      - model
-      title: TimesheetEntryEndpointRequest
     DebugModeLog:
       type: object
       properties:
@@ -489,27 +425,44 @@ components:
       - dashboard_view
       - log_summary
       title: DebugModeLog
-    RemoteData:
+    ErrorValidationProblem:
       type: object
       properties:
-        path:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
           type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
       required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    PaginatedTimesheetEntryList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimesheetEntry'
+      title: PaginatedTimesheetEntryList
     MetaResponse:
       type: object
       properties:
@@ -534,6 +487,17 @@ components:
       - has_conditional_params
       - has_required_linked_account_params
       title: MetaResponse
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
     TimesheetEntry:
       type: object
       properties:
@@ -602,6 +566,42 @@ components:
 
         GET and POST Timesheet Entries'
       title: TimesheetEntry
+    TimesheetEntriesGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - employee
+      title: TimesheetEntriesGetParametersExpandSchemaItems
+    TimesheetEntryFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: TimesheetEntryFieldMappings
+    TimesheetEntriesIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - employee
+      title: TimesheetEntriesIdGetParametersExpandSchemaItems
+    TimesheetEntriesGetParametersOrderBy:
+      type: string
+      enum:
+      - -start_time
+      - start_time
+      title: TimesheetEntriesGetParametersOrderBy
+    TimesheetEntryEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/TimesheetEntryRequest'
+      required:
+      - model
+      title: TimesheetEntryEndpointRequest
   securitySchemes:
     tokenAuth:
       type: http

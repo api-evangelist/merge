@@ -61,6 +61,93 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    HTTPValidationError:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+      description: Standard FastAPI validation error wrapper. Returned with HTTP 422 when the request body or query parameters fail Pydantic validation.
+      title: HTTPValidationError
+    ValidationErrorLocItems:
+      oneOf:
+      - type: string
+      - type: integer
+      title: ValidationErrorLocItems
+    ModelPricing:
+      type: object
+      properties:
+        currency:
+          type: string
+          enum:
+          - USD
+        input_per_million:
+          type: number
+          format: double
+        output_per_million:
+          type: number
+          format: double
+      required:
+      - input_per_million
+      - output_per_million
+      description: Pricing information for a model.
+      title: ModelPricing
+    PublicVendorModelCapabilitiesOutputItems:
+      type: string
+      enum:
+      - text
+      - tool_use
+      - embedding
+      title: PublicVendorModelCapabilitiesOutputItems
+    PublicModelAvailabilityStatus:
+      type: string
+      enum:
+      - available
+      - deprecated
+      title: PublicModelAvailabilityStatus
+    PublicVendorModelCapabilities:
+      type: object
+      properties:
+        input:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicVendorModelCapabilitiesInputItems'
+        output:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicVendorModelCapabilitiesOutputItems'
+        supports_tool_calling:
+          type: boolean
+        supports_tool_choice:
+          type: boolean
+          default: false
+        supports_structured_outputs:
+          type: boolean
+        streaming:
+          type: boolean
+      required:
+      - input
+      - output
+      - supports_tool_calling
+      - supports_tool_choice
+      - supports_structured_outputs
+      - streaming
+      description: Per-route capability flags. Lists supported input/output content types (text, image, document, tool_use) and feature support (tool calling, tool choice, structured outputs, streaming).
+      title: PublicVendorModelCapabilities
+    Models_list_Response_200:
+      oneOf:
+      - $ref: '#/components/schemas/PublicModelsListResponse'
+      - $ref: '#/components/schemas/PublicModel'
+      title: Models_list_Response_200
+    PublicVendorModelCapabilitiesInputItems:
+      type: string
+      enum:
+      - text
+      - image
+      - document
+      - embedding
+      title: PublicVendorModelCapabilitiesInputItems
     PublicModelsListResponse:
       type: object
       properties:
@@ -83,6 +170,27 @@ components:
       - data
       description: Paginated response wrapper for `GET /v1/models`. Use the `next_cursor` field to page through results when `has_more` is true.
       title: PublicModelsListResponse
+    ValidationError:
+      type: object
+      properties:
+        loc:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationErrorLocItems'
+        msg:
+          type: string
+        type:
+          type: string
+        input:
+          description: Any type
+        ctx:
+          $ref: '#/components/schemas/ValidationErrorCtx'
+      required:
+      - loc
+      - msg
+      - type
+      description: Single field-level validation error. `loc` is the JSON path to the offending field, `msg` is a human-readable explanation, and `type` is a stable machine-readable error code.
+      title: ValidationError
     PublicVendorModelInfo:
       type: object
       properties:
@@ -108,13 +216,6 @@ components:
       - pricing
       description: Per-vendor execution metadata for a model - context window, max output tokens, capabilities, pricing, and availability. A single `PublicModel` carries one of these for each vendor that can execute it.
       title: PublicVendorModelInfo
-    PublicVendorModelCapabilitiesOutputItems:
-      type: string
-      enum:
-      - text
-      - tool_use
-      - embedding
-      title: PublicVendorModelCapabilitiesOutputItems
     PublicModel:
       type: object
       properties:
@@ -149,114 +250,13 @@ components:
       - availability_status
       description: A canonical model in Merge Gateway's catalog. Identified by `model` (fully-qualified provider/model ID) and exposes the set of `vendors` that can execute it, each with its own capabilities, context window, pricing, and ZDR flag.
       title: PublicModel
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-        input:
-          description: Any type
-        ctx:
-          $ref: '#/components/schemas/ValidationErrorCtx'
-      required:
-      - loc
-      - msg
-      - type
-      description: Single field-level validation error. `loc` is the JSON path to the offending field, `msg` is a human-readable explanation, and `type` is a stable machine-readable error code.
-      title: ValidationError
-    PublicModelAvailabilityStatus:
-      type: string
-      enum:
-      - available
-      - deprecated
-      title: PublicModelAvailabilityStatus
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      description: Standard FastAPI validation error wrapper. Returned with HTTP 422 when the request body or query parameters fail Pydantic validation.
-      title: HTTPValidationError
-    ValidationErrorCtx:
-      type: object
-      properties: {}
-      title: ValidationErrorCtx
-    Models_list_Response_200:
-      oneOf:
-      - $ref: '#/components/schemas/PublicModelsListResponse'
-      - $ref: '#/components/schemas/PublicModel'
-      title: Models_list_Response_200
     PublicVendorModelInfoAvailabilityStatus:
       type: string
       enum:
       - available
       - deprecated
       title: PublicVendorModelInfoAvailabilityStatus
-    ModelPricing:
+    ValidationErrorCtx:
       type: object
-      properties:
-        currency:
-          type: string
-          enum:
-          - USD
-        input_per_million:
-          type: number
-          format: double
-        output_per_million:
-          type: number
-          format: double
-      required:
-      - input_per_million
-      - output_per_million
-      description: Pricing information for a model.
-      title: ModelPricing
-    PublicVendorModelCapabilitiesInputItems:
-      type: string
-      enum:
-      - text
-      - image
-      - document
-      - embedding
-      title: PublicVendorModelCapabilitiesInputItems
-    ValidationErrorLocItems:
-      oneOf:
-      - type: string
-      - type: integer
-      title: ValidationErrorLocItems
-    PublicVendorModelCapabilities:
-      type: object
-      properties:
-        input:
-          type: array
-          items:
-            $ref: '#/components/schemas/PublicVendorModelCapabilitiesInputItems'
-        output:
-          type: array
-          items:
-            $ref: '#/components/schemas/PublicVendorModelCapabilitiesOutputItems'
-        supports_tool_calling:
-          type: boolean
-        supports_tool_choice:
-          type: boolean
-          default: false
-        supports_structured_outputs:
-          type: boolean
-        streaming:
-          type: boolean
-      required:
-      - input
-      - output
-      - supports_tool_calling
-      - supports_tool_choice
-      - supports_structured_outputs
-      - streaming
-      description: Per-route capability flags. Lists supported input/output content types (text, image, document, tool_use) and feature support (tool calling, tool choice, structured outputs, streaming).
-      title: PublicVendorModelCapabilities
+      properties: {}
+      title: ValidationErrorCtx

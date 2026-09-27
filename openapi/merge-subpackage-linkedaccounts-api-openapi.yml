@@ -119,7 +119,7 @@ paths:
     - url: https://api-ap.merge.dev/api
   /ats/v1/linked-accounts:
     get:
-      operationId: list
+      operationId: getAtsV1LinkedAccounts
       summary: List
       description: List linked accounts for your organization.
       tags:
@@ -216,13 +216,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaginatedAccountDetailsAndActionsList'
+      x-operation-id-source: normalized
+      x-operation-id-original: list
     servers:
     - url: https://api.merge.dev/api
     - url: https://api-eu.merge.dev/api
     - url: https://api-ap.merge.dev/api
   /linked-accounts:
     get:
-      operationId: list
+      operationId: getLinkedAccounts
       summary: List
       description: List linked accounts for your organization.
       tags:
@@ -319,13 +321,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaginatedAccountDetailsAndActionsList'
+      x-operation-id-source: normalized
+      x-operation-id-original: list
     servers:
     - url: https://api.merge.dev/api/chat/v1
     - url: https://api-eu.merge.dev/api/chat/v1
     - url: https://api-ap.merge.dev/api/chat/v1
   /crm/v1/linked-accounts:
     get:
-      operationId: list
+      operationId: getCrmV1LinkedAccounts
       summary: List
       description: List linked accounts for your organization.
       tags:
@@ -422,13 +426,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaginatedAccountDetailsAndActionsList'
+      x-operation-id-source: normalized
+      x-operation-id-original: list
     servers:
     - url: https://api.merge.dev/api
     - url: https://api-eu.merge.dev/api
     - url: https://api-ap.merge.dev/api
   /filestorage/v1/linked-accounts:
     get:
-      operationId: list
+      operationId: getFilestorageV1LinkedAccounts
       summary: List
       description: List linked accounts for your organization.
       tags:
@@ -525,13 +531,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaginatedAccountDetailsAndActionsList'
+      x-operation-id-source: normalized
+      x-operation-id-original: list
     servers:
     - url: https://api.merge.dev/api
     - url: https://api-eu.merge.dev/api
     - url: https://api-ap.merge.dev/api
   /hris/v1/linked-accounts:
     get:
-      operationId: list
+      operationId: getHrisV1LinkedAccounts
       summary: List
       description: List linked accounts for your organization.
       tags:
@@ -628,13 +636,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaginatedAccountDetailsAndActionsList'
+      x-operation-id-source: normalized
+      x-operation-id-original: list
     servers:
     - url: https://api.merge.dev/api
     - url: https://api-eu.merge.dev/api
     - url: https://api-ap.merge.dev/api
   /knowledgebase/v1/linked-accounts:
     get:
-      operationId: list
+      operationId: getKnowledgebaseV1LinkedAccounts
       summary: List
       description: List linked accounts for your organization.
       tags:
@@ -754,6 +764,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaginatedAccountDetailsAndActionsList'
+      x-operation-id-source: normalized
+      x-operation-id-original: list
     servers:
     - url: https://api.merge.dev/api
     - url: https://api-eu.merge.dev/api
@@ -761,7 +773,7 @@ paths:
     - url: https://api-ap.merge.dev/api/knowledgebase/v1
   /ticketing/v1/linked-accounts:
     get:
-      operationId: list
+      operationId: getTicketingV1LinkedAccounts
       summary: List
       description: List linked accounts for your organization.
       tags:
@@ -858,37 +870,52 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaginatedAccountDetailsAndActionsList'
+      x-operation-id-source: normalized
+      x-operation-id-original: list
     servers:
     - url: https://api.merge.dev/api
     - url: https://api-eu.merge.dev/api
     - url: https://api-ap.merge.dev/api
 components:
   schemas:
-    CategoryEnum:
+    AccountDetailsAndActionsStatusEnum:
       type: string
       enum:
-      - hris
-      - ats
-      - accounting
-      - ticketing
-      - crm
-      - mktg
-      - filestorage
-      - knowledgebase
-      title: CategoryEnum
-    LinkedAccountsGetParametersCategory:
-      type: string
-      enum:
-      - accounting
-      - ats
-      - chat
-      - crm
-      - filestorage
-      - hris
-      - knowledgebase
-      - mktg
-      - ticketing
-      title: LinkedAccountsGetParametersCategory
+      - COMPLETE
+      - INCOMPLETE
+      - RELINK_NEEDED
+      - IDLE
+      title: AccountDetailsAndActionsStatusEnum
+    AccountDetailsAndActionsIntegration:
+      type: object
+      properties:
+        name:
+          type: string
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/CategoriesEnum'
+        image:
+          type: string
+        square_image:
+          type: string
+        color:
+          type: string
+        slug:
+          type: string
+        passthrough_available:
+          type: boolean
+        available_model_operations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ModelOperation'
+      required:
+      - name
+      - categories
+      - color
+      - slug
+      - passthrough_available
+      title: AccountDetailsAndActionsIntegration
     ModelOperation:
       type: object
       properties:
@@ -938,44 +965,31 @@ components:
           items:
             $ref: '#/components/schemas/AccountDetailsAndActions'
       title: PaginatedAccountDetailsAndActionsList
-    AccountDetailsAndActionsStatusEnum:
+    LinkedAccountsGetParametersCategory:
       type: string
       enum:
-      - COMPLETE
-      - INCOMPLETE
-      - RELINK_NEEDED
-      - IDLE
-      title: AccountDetailsAndActionsStatusEnum
-    AccountDetailsAndActionsIntegration:
-      type: object
-      properties:
-        name:
-          type: string
-        categories:
-          type: array
-          items:
-            $ref: '#/components/schemas/CategoriesEnum'
-        image:
-          type: string
-        square_image:
-          type: string
-        color:
-          type: string
-        slug:
-          type: string
-        passthrough_available:
-          type: boolean
-        available_model_operations:
-          type: array
-          items:
-            $ref: '#/components/schemas/ModelOperation'
-      required:
-      - name
-      - categories
-      - color
-      - slug
-      - passthrough_available
-      title: AccountDetailsAndActionsIntegration
+      - accounting
+      - ats
+      - chat
+      - crm
+      - filestorage
+      - hris
+      - knowledgebase
+      - mktg
+      - ticketing
+      title: LinkedAccountsGetParametersCategory
+    CategoryEnum:
+      type: string
+      enum:
+      - hris
+      - ats
+      - accounting
+      - ticketing
+      - crm
+      - mktg
+      - filestorage
+      - knowledgebase
+      title: CategoryEnum
     AccountDetailsAndActions:
       type: object
       properties:
@@ -1045,6 +1059,36 @@ components:
       - filestorage
       - knowledgebase
       title: CategoriesEnum
+    AccountDetailsAndActionsStatusEnum_2:
+      type: string
+      enum:
+      - COMPLETE
+      - INCOMPLETE
+      - RELINK_NEEDED
+      - IDLE
+      description: '* `COMPLETE` - COMPLETE
+
+        * `INCOMPLETE` - INCOMPLETE
+
+        * `RELINK_NEEDED` - RELINK_NEEDED
+
+        * `IDLE` - IDLE'
+      title: AccountDetailsAndActionsStatusEnum
+    LinkedAccountsGetParametersCategory_2:
+      type: string
+      enum:
+      - accounting
+      - ats
+      - chat
+      - communication
+      - crm
+      - datawarehouse
+      - filestorage
+      - hris
+      - knowledgebase
+      - mktg
+      - ticketing
+      title: LinkedAccountsGetParametersCategory
     CategoryEnum_2:
       type: string
       enum:
@@ -1072,36 +1116,6 @@ components:
 
         * `knowledgebase` - knowledgebase'
       title: CategoryEnum
-    LinkedAccountsGetParametersCategory_2:
-      type: string
-      enum:
-      - accounting
-      - ats
-      - chat
-      - communication
-      - crm
-      - datawarehouse
-      - filestorage
-      - hris
-      - knowledgebase
-      - mktg
-      - ticketing
-      title: LinkedAccountsGetParametersCategory
-    AccountDetailsAndActionsStatusEnum_2:
-      type: string
-      enum:
-      - COMPLETE
-      - INCOMPLETE
-      - RELINK_NEEDED
-      - IDLE
-      description: '* `COMPLETE` - COMPLETE
-
-        * `INCOMPLETE` - INCOMPLETE
-
-        * `RELINK_NEEDED` - RELINK_NEEDED
-
-        * `IDLE` - IDLE'
-      title: AccountDetailsAndActionsStatusEnum
     CategoriesEnum_2:
       type: string
       enum:

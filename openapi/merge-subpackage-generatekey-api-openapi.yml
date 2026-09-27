@@ -46,7 +46,7 @@ paths:
     - url: https://api-ap.merge.dev/api
   /ats/v1/generate-key:
     post:
-      operationId: create
+      operationId: postAtsV1GenerateKey
       summary: Create
       description: Create a remote key.
       tags:
@@ -70,13 +70,15 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/GenerateRemoteKeyRequest'
+      x-operation-id-source: normalized
+      x-operation-id-original: create
     servers:
     - url: https://api.merge.dev/api
     - url: https://api-eu.merge.dev/api
     - url: https://api-ap.merge.dev/api
   /generate-key:
     post:
-      operationId: create
+      operationId: postGenerateKey
       summary: Create
       description: Create a remote key.
       tags:
@@ -100,13 +102,15 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/GenerateRemoteKeyRequest'
+      x-operation-id-source: normalized
+      x-operation-id-original: create
     servers:
     - url: https://api.merge.dev/api/chat/v1
     - url: https://api-eu.merge.dev/api/chat/v1
     - url: https://api-ap.merge.dev/api/chat/v1
   /crm/v1/generate-key:
     post:
-      operationId: create
+      operationId: postCrmV1GenerateKey
       summary: Create
       description: Create a remote key.
       tags:
@@ -130,13 +134,15 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/GenerateRemoteKeyRequest'
+      x-operation-id-source: normalized
+      x-operation-id-original: create
     servers:
     - url: https://api.merge.dev/api
     - url: https://api-eu.merge.dev/api
     - url: https://api-ap.merge.dev/api
   /filestorage/v1/generate-key:
     post:
-      operationId: create
+      operationId: postFilestorageV1GenerateKey
       summary: Create
       description: Create a remote key.
       tags:
@@ -160,13 +166,15 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/GenerateRemoteKeyRequest'
+      x-operation-id-source: normalized
+      x-operation-id-original: create
     servers:
     - url: https://api.merge.dev/api
     - url: https://api-eu.merge.dev/api
     - url: https://api-ap.merge.dev/api
   /hris/v1/generate-key:
     post:
-      operationId: create
+      operationId: postHrisV1GenerateKey
       summary: Create
       description: Create a remote key.
       tags:
@@ -190,13 +198,15 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/GenerateRemoteKeyRequest'
+      x-operation-id-source: normalized
+      x-operation-id-original: create
     servers:
     - url: https://api.merge.dev/api
     - url: https://api-eu.merge.dev/api
     - url: https://api-ap.merge.dev/api
   /knowledgebase/v1/generate-key:
     post:
-      operationId: create
+      operationId: postKnowledgebaseV1GenerateKey
       summary: Create
       description: Create a remote key.
       tags:
@@ -220,6 +230,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/GenerateRemoteKeyRequest'
+      x-operation-id-source: normalized
+      x-operation-id-original: create
     servers:
     - url: https://api.merge.dev/api
     - url: https://api-eu.merge.dev/api
@@ -227,7 +239,7 @@ paths:
     - url: https://api-ap.merge.dev/api/knowledgebase/v1
   /ticketing/v1/generate-key:
     post:
-      operationId: create
+      operationId: postTicketingV1GenerateKey
       summary: Create
       description: Create a remote key.
       tags:
@@ -251,12 +263,33 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/GenerateRemoteKeyRequest'
+      x-operation-id-source: normalized
+      x-operation-id-original: create
     servers:
     - url: https://api.merge.dev/api
     - url: https://api-eu.merge.dev/api
     - url: https://api-ap.merge.dev/api
 components:
   schemas:
+    GenerateRemoteKeyRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the remote key
+      required:
+      - name
+      description: '# The GenerateRemoteKey Object
+
+        ### Description
+
+        The `GenerateRemoteKey` object is used to represent a request for a new remote key.
+
+
+        ### Usage Example
+
+        Post a `GenerateRemoteKey` to create a new remote key.'
+      title: GenerateRemoteKeyRequest
     RemoteKey:
       type: object
       properties:
@@ -278,25 +311,6 @@ components:
 
         Post a `GenerateRemoteKey` to receive a new `RemoteKey`.'
       title: RemoteKey
-    GenerateRemoteKeyRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          description: The name of the remote key
-      required:
-      - name
-      description: '# The GenerateRemoteKey Object
-
-        ### Description
-
-        The `GenerateRemoteKey` object is used to represent a request for a new remote key.
-
-
-        ### Usage Example
-
-        Post a `GenerateRemoteKey` to create a new remote key.'
-      title: GenerateRemoteKeyRequest
   securitySchemes:
     tokenAuth:
       type: http

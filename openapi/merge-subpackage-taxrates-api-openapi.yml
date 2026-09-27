@@ -175,12 +175,27 @@ paths:
                 $ref: '#/components/schemas/TaxRate'
 components:
   schemas:
-    ComponentTypeEnum:
-      type: string
-      enum:
-      - SALES
-      - PURCHASE
-      title: ComponentTypeEnum
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
     TaxRateFieldMappings:
       type: object
       properties:
@@ -193,17 +208,6 @@ components:
           additionalProperties:
             description: Any type
       title: TaxRateFieldMappings
-    Status7d1Enum:
-      type: string
-      enum:
-      - ACTIVE
-      - ARCHIVED
-      title: Status7d1Enum
-    TaxRatesGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - company
-      title: TaxRatesGetParametersExpandSchemaItems
     TaxRate:
       type: object
       properties:
@@ -311,6 +315,28 @@ components:
           items:
             $ref: '#/components/schemas/TaxRate'
       title: PaginatedTaxRateList
+    TaxRatesIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - company
+      title: TaxRatesIdGetParametersExpandSchemaItems
+    ComponentTypeEnum:
+      type: string
+      enum:
+      - SALES
+      - PURCHASE
+      title: ComponentTypeEnum
+    TaxRatesGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - company
+      title: TaxRatesGetParametersExpandSchemaItems
+    Status7d1Enum:
+      type: string
+      enum:
+      - ACTIVE
+      - ARCHIVED
+      title: Status7d1Enum
     TaxComponent:
       type: object
       properties:
@@ -365,32 +391,6 @@ components:
 
         Fetch from the `LIST TaxRates` endpoint and view tax components relevant to a tax rate.'
       title: TaxComponent
-    RemoteData:
-      type: object
-      properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
-      required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
-    TaxRatesIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - company
-      title: TaxRatesIdGetParametersExpandSchemaItems
   securitySchemes:
     tokenAuth:
       type: http

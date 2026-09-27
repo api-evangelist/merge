@@ -203,39 +203,7 @@ paths:
                 $ref: '#/components/schemas/EmployeePayrollRun'
 components:
   schemas:
-    TaxFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: TaxFieldMappings
-    EarningFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: EarningFieldMappings
-    EarningTypeEnum:
-      type: string
-      enum:
-      - SALARY
-      - REIMBURSEMENT
-      - OVERTIME
-      - BONUS
-      title: EarningTypeEnum
-    Deduction:
+    Tax:
       type: object
       properties:
         id:
@@ -263,25 +231,24 @@ components:
           type:
           - string
           - 'null'
-          description: The deduction's name.
-        employee_deduction:
+          description: The tax's name.
+        amount:
           type:
           - number
           - 'null'
           format: double
-          description: The amount of money that is withheld from an employee's gross pay by the employee.
-        company_deduction:
+          description: The tax amount.
+        employer_tax:
           type:
-          - number
+          - boolean
           - 'null'
-          format: double
-          description: The amount of money that is withheld on behalf of an employee by the company.
+          description: Whether or not the employer is responsible for paying the tax.
         remote_was_deleted:
           type: boolean
           description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
         field_mappings:
           oneOf:
-          - $ref: '#/components/schemas/DeductionFieldMappings'
+          - $ref: '#/components/schemas/TaxFieldMappings'
           - type: 'null'
         remote_data:
           type:
@@ -289,23 +256,50 @@ components:
           - 'null'
           items:
             $ref: '#/components/schemas/RemoteData'
-      description: '# The Deduction Object
+      description: '# The Tax Object
 
         ### Description
 
-        The `Deduction` object is used to represent an array of the wages withheld from total earnings for the purpose of paying taxes.
+        The `Tax` object is used to represent an array of the tax deductions for a given employee''s payroll run.
 
 
         ### Usage Example
 
-        Fetch from the `LIST Deductions` endpoint and filter by `ID` to show all deductions.'
-      title: Deduction
+        Fetch from the `LIST Taxes` endpoint and filter by `ID` to show all taxes.'
+      title: Tax
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
     EmployeePayrollRunsIdGetParametersExpandSchemaItems:
       type: string
       enum:
       - employee
       - payroll_run
       title: EmployeePayrollRunsIdGetParametersExpandSchemaItems
+    EmployeePayrollRunsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - employee
+      - payroll_run
+      title: EmployeePayrollRunsGetParametersExpandSchemaItems
     Earning:
       type: object
       properties:
@@ -393,13 +387,7 @@ components:
           additionalProperties:
             description: Any type
       title: DeductionFieldMappings
-    EmployeePayrollRunsGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - employee
-      - payroll_run
-      title: EmployeePayrollRunsGetParametersExpandSchemaItems
-    Tax:
+    Deduction:
       type: object
       properties:
         id:
@@ -427,24 +415,25 @@ components:
           type:
           - string
           - 'null'
-          description: The tax's name.
-        amount:
+          description: The deduction's name.
+        employee_deduction:
           type:
           - number
           - 'null'
           format: double
-          description: The tax amount.
-        employer_tax:
+          description: The amount of money that is withheld from an employee's gross pay by the employee.
+        company_deduction:
           type:
-          - boolean
+          - number
           - 'null'
-          description: Whether or not the employer is responsible for paying the tax.
+          format: double
+          description: The amount of money that is withheld on behalf of an employee by the company.
         remote_was_deleted:
           type: boolean
           description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
         field_mappings:
           oneOf:
-          - $ref: '#/components/schemas/TaxFieldMappings'
+          - $ref: '#/components/schemas/DeductionFieldMappings'
           - type: 'null'
         remote_data:
           type:
@@ -452,17 +441,25 @@ components:
           - 'null'
           items:
             $ref: '#/components/schemas/RemoteData'
-      description: '# The Tax Object
+      description: '# The Deduction Object
 
         ### Description
 
-        The `Tax` object is used to represent an array of the tax deductions for a given employee''s payroll run.
+        The `Deduction` object is used to represent an array of the wages withheld from total earnings for the purpose of paying taxes.
 
 
         ### Usage Example
 
-        Fetch from the `LIST Taxes` endpoint and filter by `ID` to show all taxes.'
-      title: Tax
+        Fetch from the `LIST Deductions` endpoint and filter by `ID` to show all deductions.'
+      title: Deduction
+    EarningTypeEnum:
+      type: string
+      enum:
+      - SALARY
+      - REIMBURSEMENT
+      - OVERTIME
+      - BONUS
+      title: EarningTypeEnum
     EmployeePayrollRun:
       type: object
       properties:
@@ -560,27 +557,30 @@ components:
 
         Fetch from the `LIST EmployeePayrollRun` endpoint and filter by `ID` to show all employee payroll runs.'
       title: EmployeePayrollRun
-    RemoteData:
+    TaxFieldMappings:
       type: object
       properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
-      required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: TaxFieldMappings
+    EarningFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: EarningFieldMappings
     EmployeePayrollRunFieldMappings:
       type: object
       properties:

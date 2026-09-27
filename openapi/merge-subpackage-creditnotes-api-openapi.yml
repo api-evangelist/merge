@@ -409,6 +409,679 @@ paths:
                 $ref: '#/components/schemas/MetaResponse'
 components:
   schemas:
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    CreditNoteEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/CreditNoteRequest'
+      required:
+      - model
+      title: CreditNoteEndpointRequest
+    CreditNotesGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - status
+      - status,type
+      - type
+      title: CreditNotesGetParametersShowEnumOrigins
+    CreditNote:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        transaction_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The credit note's transaction date.
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/CreditNoteStatusEnum'
+          - type: 'null'
+          description: The credit note's status.
+        number:
+          type:
+          - string
+          - 'null'
+          description: The credit note's number.
+        contact:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The credit note's contact.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the credit note belongs to.
+        exchange_rate:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The credit note's exchange rate.
+        total_amount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The credit note's total amount.
+        remaining_credit:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The amount of value remaining in the credit note that the customer can use.
+        inclusive_of_tax:
+          type:
+          - boolean
+          - 'null'
+          description: If the transaction is inclusive or exclusive of tax. `True` if inclusive, `False` if exclusive.
+        line_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreditNoteLineItem'
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: The credit note's currency. The currency code in ISO 4217 format.
+        remote_created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's credit note was created.
+        remote_updated_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's credit note was updated.
+        payments:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Array of `Payment` object IDs
+        applied_payments:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: A list of the Payment Applied to Lines common models related to a given Invoice, Credit Note, or Journal Entry.
+        accounting_period:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The accounting period that the CreditNote was generated in.
+        applied_to_lines:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreditNoteApplyLineForCreditNote'
+          description: A list of the CreditNote Applied to Lines common models related to a given Credit Note
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/CreditNoteFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The CreditNote Object
+
+        ### Description
+
+        A `CreditNote` is transaction issued to a customer, indicating a reduction or cancellation of the amount owed by the customer. It is most generally used as an adjustment note used to rectify errors, returns, or overpayments related to a sales transaction. A `CreditNote` can be applied to *Accounts Receivable* Invoices to decrease the overall amount of the Invoice.
+
+
+        ### Usage Example
+
+        Fetch from the `LIST CreditNotes` endpoint and view a company''s credit notes.'
+      title: CreditNote
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    CreditNoteRequest:
+      type: object
+      properties:
+        transaction_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The credit note's transaction date.
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/CreditNoteStatusEnum'
+          - type: 'null'
+          description: The credit note's status.
+        number:
+          type:
+          - string
+          - 'null'
+          description: The credit note's number.
+        contact:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The credit note's contact.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the credit note belongs to.
+        exchange_rate:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The credit note's exchange rate.
+        total_amount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The credit note's total amount.
+        remaining_credit:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The amount of value remaining in the credit note that the customer can use.
+        inclusive_of_tax:
+          type:
+          - boolean
+          - 'null'
+          description: If the transaction is inclusive or exclusive of tax. `True` if inclusive, `False` if exclusive.
+        line_items:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/CreditNoteLineItemRequest'
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: The credit note's currency. The currency code in ISO 4217 format.
+        payments:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Array of `Payment` object IDs
+        applied_payments:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: A list of the Payment Applied to Lines common models related to a given Invoice, Credit Note, or Journal Entry.
+        accounting_period:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The accounting period that the CreditNote was generated in.
+        applied_to_lines:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreditNoteApplyLineForCreditNoteRequest'
+          description: A list of the CreditNote Applied to Lines common models related to a given Credit Note
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The CreditNote Object
+
+        ### Description
+
+        A `CreditNote` is transaction issued to a customer, indicating a reduction or cancellation of the amount owed by the customer. It is most generally used as an adjustment note used to rectify errors, returns, or overpayments related to a sales transaction. A `CreditNote` can be applied to *Accounts Receivable* Invoices to decrease the overall amount of the Invoice.
+
+
+        ### Usage Example
+
+        Fetch from the `LIST CreditNotes` endpoint and view a company''s credit notes.'
+      title: CreditNoteRequest
+    CreditNoteFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: CreditNoteFieldMappings
+    CreditNoteLineItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        item:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+          description: The credit note line item's name.
+        description:
+          type:
+          - string
+          - 'null'
+          description: The description of the item that is owed.
+        quantity:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The credit note line item's quantity.
+        memo:
+          type:
+          - string
+          - 'null'
+          description: The credit note line item's memo.
+        unit_price:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The credit note line item's unit price.
+        tax_rate:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The tax rate that applies to this line item.
+        total_line_amount:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The credit note line item's total.
+        tracking_category:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The credit note line item's associated tracking category.
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: The credit note line item's associated tracking categories.
+        account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The credit note line item's account.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the credit note belongs to.
+        contact:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The credit note's contact.
+        project:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+      description: '# The CreditNoteLineItem Object
+
+        ### Description
+
+        The `CreditNoteLineItem` object is used to represent a credit note''s line items.
+
+
+        ### Usage Example
+
+        Fetch from the `GET CreditNote` endpoint and view the credit note''s line items.'
+      title: CreditNoteLineItem
+    CreditNotesIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - status
+      - status,type
+      - type
+      title: CreditNotesIdGetParametersRemoteFields
+    PatchedCreditNoteEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/CreditNoteRequest'
+      required:
+      - model
+      title: PatchedCreditNoteEndpointRequest
+    CreditNoteApplyLineForCreditNote:
+      type: object
+      properties:
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        invoice:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        applied_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Date that the credit note is applied to the invoice.
+        applied_amount:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The amount of the Credit Note applied to the invoice.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+      description: '# The CreditNoteApplyLine Object
+
+        ### Description
+
+        The `CreditNoteApplyLine` is attached to the CreditNote model.
+
+
+        ### Usage Example
+
+        Fetch from the `GET CreditNote` endpoint and view the invoice''s applied to lines.'
+      title: CreditNoteApplyLineForCreditNote
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    CreditNotesGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - accounting_period
+      - applied_payments
+      - company
+      - contact
+      - line_items
+      - payments
+      - tracking_categories
+      title: CreditNotesGetParametersExpandSchemaItems
+    CreditNotesIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - accounting_period
+      - applied_payments
+      - company
+      - contact
+      - line_items
+      - payments
+      - tracking_categories
+      title: CreditNotesIdGetParametersExpandSchemaItems
+    CreditNoteLineItemRequest:
+      type: object
+      properties:
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        item:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+          description: The credit note line item's name.
+        description:
+          type:
+          - string
+          - 'null'
+          description: The description of the item that is owed.
+        quantity:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The credit note line item's quantity.
+        memo:
+          type:
+          - string
+          - 'null'
+          description: The credit note line item's memo.
+        unit_price:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The credit note line item's unit price.
+        tax_rate:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The tax rate that applies to this line item.
+        total_line_amount:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The credit note line item's total.
+        tracking_category:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The credit note line item's associated tracking category.
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: The credit note line item's associated tracking categories.
+        account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The credit note line item's account.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the credit note belongs to.
+        contact:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The credit note's contact.
+        project:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The CreditNoteLineItem Object
+
+        ### Description
+
+        The `CreditNoteLineItem` object is used to represent a credit note''s line items.
+
+
+        ### Usage Example
+
+        Fetch from the `GET CreditNote` endpoint and view the credit note''s line items.'
+      title: CreditNoteLineItemRequest
     TransactionCurrencyEnum:
       type: string
       enum:
@@ -720,181 +1393,17 @@ components:
       - ZWL
       description: The currency code in ISO 4217 format.
       title: TransactionCurrencyEnum
-    CreditNotesIdGetParametersRemoteFields:
-      type: string
-      enum:
-      - status
-      - status,type
-      - type
-      title: CreditNotesIdGetParametersRemoteFields
-    PaginatedCreditNoteList:
+    LinkedAccountStatus:
       type: object
       properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/CreditNote'
-      title: PaginatedCreditNoteList
-    CreditNotesIdGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - status
-      - status,type
-      - type
-      title: CreditNotesIdGetParametersShowEnumOrigins
-    CreditNoteLineItem:
-      type: object
-      properties:
-        id:
+        linked_account_status:
           type: string
-          format: uuid
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        item:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        name:
-          type:
-          - string
-          - 'null'
-          description: The credit note line item's name.
-        description:
-          type:
-          - string
-          - 'null'
-          description: The description of the item that is owed.
-        quantity:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          description: The credit note line item's quantity.
-        memo:
-          type:
-          - string
-          - 'null'
-          description: The credit note line item's memo.
-        unit_price:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          description: The credit note line item's unit price.
-        tax_rate:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The tax rate that applies to this line item.
-        total_line_amount:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          description: The credit note line item's total.
-        tracking_category:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The credit note line item's associated tracking category.
-        tracking_categories:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: The credit note line item's associated tracking categories.
-        account:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The credit note line item's account.
-        company:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The company the credit note belongs to.
-        contact:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The credit note's contact.
-        project:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        remote_was_deleted:
+        can_make_request:
           type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-      description: '# The CreditNoteLineItem Object
-
-        ### Description
-
-        The `CreditNoteLineItem` object is used to represent a credit note''s line items.
-
-
-        ### Usage Example
-
-        Fetch from the `GET CreditNote` endpoint and view the credit note''s line items.'
-      title: CreditNoteLineItem
-    CreditNoteResponse:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/CreditNote'
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/WarningValidationProblem'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorValidationProblem'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/DebugModeLog'
       required:
-      - model
-      - warnings
-      - errors
-      title: CreditNoteResponse
-    CreditNotesIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - accounting_period
-      - applied_payments
-      - company
-      - contact
-      - line_items
-      - payments
-      - tracking_categories
-      title: CreditNotesIdGetParametersExpandSchemaItems
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
     CreditNotesGetParametersRemoteFields:
       type: string
       enum:
@@ -902,342 +1411,6 @@ components:
       - status,type
       - type
       title: CreditNotesGetParametersRemoteFields
-    WarningValidationProblem:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
-          type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
-      required:
-      - title
-      - detail
-      - problem_type
-      title: WarningValidationProblem
-    DebugModeLog:
-      type: object
-      properties:
-        log_id:
-          type: string
-        dashboard_view:
-          type: string
-        log_summary:
-          $ref: '#/components/schemas/DebugModelLogSummary'
-      required:
-      - log_id
-      - dashboard_view
-      - log_summary
-      title: DebugModeLog
-    RemoteData:
-      type: object
-      properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
-      required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
-    CreditNoteLineItemRequest:
-      type: object
-      properties:
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        item:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        name:
-          type:
-          - string
-          - 'null'
-          description: The credit note line item's name.
-        description:
-          type:
-          - string
-          - 'null'
-          description: The description of the item that is owed.
-        quantity:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          description: The credit note line item's quantity.
-        memo:
-          type:
-          - string
-          - 'null'
-          description: The credit note line item's memo.
-        unit_price:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          description: The credit note line item's unit price.
-        tax_rate:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The tax rate that applies to this line item.
-        total_line_amount:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          description: The credit note line item's total.
-        tracking_category:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The credit note line item's associated tracking category.
-        tracking_categories:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: The credit note line item's associated tracking categories.
-        account:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The credit note line item's account.
-        company:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The company the credit note belongs to.
-        contact:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The credit note's contact.
-        project:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        integration_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        linked_account_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-      description: '# The CreditNoteLineItem Object
-
-        ### Description
-
-        The `CreditNoteLineItem` object is used to represent a credit note''s line items.
-
-
-        ### Usage Example
-
-        Fetch from the `GET CreditNote` endpoint and view the credit note''s line items.'
-      title: CreditNoteLineItemRequest
-    CreditNoteFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: CreditNoteFieldMappings
-    ApplyCreditNoteRequest:
-      type: object
-      properties:
-        invoice:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The invoice to apply the credit note to.
-        applied_date:
-          type: string
-          format: date-time
-          description: Date that the credit note is applied to the invoice.
-        applied_amount:
-          type: string
-          format: decimal
-          description: The amount of credit applied to the invoice.
-      required:
-      - invoice
-      - applied_date
-      - applied_amount
-      title: ApplyCreditNoteRequest
-    CreditNoteRequest:
-      type: object
-      properties:
-        transaction_date:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The credit note's transaction date.
-        status:
-          oneOf:
-          - $ref: '#/components/schemas/CreditNoteStatusEnum'
-          - type: 'null'
-          description: The credit note's status.
-        number:
-          type:
-          - string
-          - 'null'
-          description: The credit note's number.
-        contact:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The credit note's contact.
-        company:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The company the credit note belongs to.
-        exchange_rate:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          description: The credit note's exchange rate.
-        total_amount:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: The credit note's total amount.
-        remaining_credit:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: The amount of value remaining in the credit note that the customer can use.
-        inclusive_of_tax:
-          type:
-          - boolean
-          - 'null'
-          description: If the transaction is inclusive or exclusive of tax. `True` if inclusive, `False` if exclusive.
-        line_items:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/CreditNoteLineItemRequest'
-        tracking_categories:
-          type: array
-          items:
-            type: string
-            format: uuid
-        currency:
-          oneOf:
-          - $ref: '#/components/schemas/TransactionCurrencyEnum'
-          - type: 'null'
-          description: The credit note's currency. The currency code in ISO 4217 format.
-        payments:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: Array of `Payment` object IDs
-        applied_payments:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: A list of the Payment Applied to Lines common models related to a given Invoice, Credit Note, or Journal Entry.
-        accounting_period:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The accounting period that the CreditNote was generated in.
-        applied_to_lines:
-          type: array
-          items:
-            $ref: '#/components/schemas/CreditNoteApplyLineForCreditNoteRequest'
-          description: A list of the CreditNote Applied to Lines common models related to a given Credit Note
-        integration_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        linked_account_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-      description: '# The CreditNote Object
-
-        ### Description
-
-        A `CreditNote` is transaction issued to a customer, indicating a reduction or cancellation of the amount owed by the customer. It is most generally used as an adjustment note used to rectify errors, returns, or overpayments related to a sales transaction. A `CreditNote` can be applied to *Accounts Receivable* Invoices to decrease the overall amount of the Invoice.
-
-
-        ### Usage Example
-
-        Fetch from the `LIST CreditNotes` endpoint and view a company''s credit notes.'
-      title: CreditNoteRequest
-    CreditNotesGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - accounting_period
-      - applied_payments
-      - company
-      - contact
-      - line_items
-      - payments
-      - tracking_categories
-      title: CreditNotesGetParametersExpandSchemaItems
-    PatchedCreditNoteEndpointRequest:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/CreditNoteRequest'
-      required:
-      - model
-      title: PatchedCreditNoteEndpointRequest
     CreditNoteApplyLineForCreditNoteRequest:
       type: object
       properties:
@@ -1286,157 +1459,28 @@ components:
 
         Fetch from the `GET CreditNote` endpoint and view the invoice''s applied to lines.'
       title: CreditNoteApplyLineForCreditNoteRequest
-    CreditNote:
+    WarningValidationProblem:
       type: object
       properties:
-        id:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
           type: string
-          format: uuid
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
+        detail:
           type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
+        problem_type:
           type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        transaction_date:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The credit note's transaction date.
-        status:
-          oneOf:
-          - $ref: '#/components/schemas/CreditNoteStatusEnum'
-          - type: 'null'
-          description: The credit note's status.
-        number:
-          type:
-          - string
-          - 'null'
-          description: The credit note's number.
-        contact:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The credit note's contact.
-        company:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The company the credit note belongs to.
-        exchange_rate:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          description: The credit note's exchange rate.
-        total_amount:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: The credit note's total amount.
-        remaining_credit:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: The amount of value remaining in the credit note that the customer can use.
-        inclusive_of_tax:
-          type:
-          - boolean
-          - 'null'
-          description: If the transaction is inclusive or exclusive of tax. `True` if inclusive, `False` if exclusive.
-        line_items:
-          type: array
-          items:
-            $ref: '#/components/schemas/CreditNoteLineItem'
-        tracking_categories:
-          type: array
-          items:
-            type: string
-            format: uuid
-        currency:
-          oneOf:
-          - $ref: '#/components/schemas/TransactionCurrencyEnum'
-          - type: 'null'
-          description: The credit note's currency. The currency code in ISO 4217 format.
-        remote_created_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: When the third party's credit note was created.
-        remote_updated_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: When the third party's credit note was updated.
-        payments:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: Array of `Payment` object IDs
-        applied_payments:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: A list of the Payment Applied to Lines common models related to a given Invoice, Credit Note, or Journal Entry.
-        accounting_period:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The accounting period that the CreditNote was generated in.
-        applied_to_lines:
-          type: array
-          items:
-            $ref: '#/components/schemas/CreditNoteApplyLineForCreditNote'
-          description: A list of the CreditNote Applied to Lines common models related to a given Credit Note
-        remote_was_deleted:
+        block_merge_link:
           type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-        field_mappings:
-          oneOf:
-          - $ref: '#/components/schemas/CreditNoteFieldMappings'
-          - type: 'null'
-        remote_data:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/RemoteData'
-      description: '# The CreditNote Object
-
-        ### Description
-
-        A `CreditNote` is transaction issued to a customer, indicating a reduction or cancellation of the amount owed by the customer. It is most generally used as an adjustment note used to rectify errors, returns, or overpayments related to a sales transaction. A `CreditNote` can be applied to *Accounts Receivable* Invoices to decrease the overall amount of the Invoice.
-
-
-        ### Usage Example
-
-        Fetch from the `LIST CreditNotes` endpoint and view a company''s credit notes.'
-      title: CreditNote
-    CreditNoteEndpointRequest:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/CreditNoteRequest'
+        raw_error:
+          type: string
+        error_code:
+          type: integer
       required:
-      - model
-      title: CreditNoteEndpointRequest
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
     ErrorValidationProblem:
       type: object
       properties:
@@ -1459,93 +1503,6 @@ components:
       - detail
       - problem_type
       title: ErrorValidationProblem
-    DebugModelLogSummary:
-      type: object
-      properties:
-        url:
-          type: string
-        method:
-          type: string
-        status_code:
-          type: integer
-      required:
-      - url
-      - method
-      - status_code
-      title: DebugModelLogSummary
-    ValidationProblemSource:
-      type: object
-      properties:
-        pointer:
-          type: string
-      required:
-      - pointer
-      title: ValidationProblemSource
-    LinkedAccountStatus:
-      type: object
-      properties:
-        linked_account_status:
-          type: string
-        can_make_request:
-          type: boolean
-      required:
-      - linked_account_status
-      - can_make_request
-      title: LinkedAccountStatus
-    CreditNoteApplyLineForCreditNote:
-      type: object
-      properties:
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        invoice:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        applied_date:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Date that the credit note is applied to the invoice.
-        applied_amount:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          description: The amount of the Credit Note applied to the invoice.
-        remote_was_deleted:
-          type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-      description: '# The CreditNoteApplyLine Object
-
-        ### Description
-
-        The `CreditNoteApplyLine` is attached to the CreditNote model.
-
-
-        ### Usage Example
-
-        Fetch from the `GET CreditNote` endpoint and view the invoice''s applied to lines.'
-      title: CreditNoteApplyLineForCreditNote
-    CreditNotesGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - status
-      - status,type
-      - type
-      title: CreditNotesGetParametersShowEnumOrigins
     CreditNoteStatusEnum:
       type: string
       enum:
@@ -1553,30 +1510,73 @@ components:
       - AUTHORIZED
       - PAID
       title: CreditNoteStatusEnum
-    MetaResponse:
+    ApplyCreditNoteRequest:
       type: object
       properties:
-        request_schema:
-          type: object
-          additionalProperties:
-            description: Any type
-        status:
-          $ref: '#/components/schemas/LinkedAccountStatus'
-        has_conditional_params:
-          type: boolean
-        has_required_linked_account_params:
-          type: boolean
-        remote_fields:
+        invoice:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The invoice to apply the credit note to.
+        applied_date:
+          type: string
+          format: date-time
+          description: Date that the credit note is applied to the invoice.
+        applied_amount:
+          type: string
+          format: decimal
+          description: The amount of credit applied to the invoice.
+      required:
+      - invoice
+      - applied_date
+      - applied_amount
+      title: ApplyCreditNoteRequest
+    CreditNoteResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/CreditNote'
+        warnings:
           type: array
           items:
-            type: string
-            format: uuid
-          description: Remote field values to populate
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
       required:
-      - request_schema
-      - has_conditional_params
-      - has_required_linked_account_params
-      title: MetaResponse
+      - model
+      - warnings
+      - errors
+      title: CreditNoteResponse
+    PaginatedCreditNoteList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreditNote'
+      title: PaginatedCreditNoteList
+    CreditNotesIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - status
+      - status,type
+      - type
+      title: CreditNotesIdGetParametersShowEnumOrigins
   securitySchemes:
     tokenAuth:
       type: http

@@ -103,7 +103,7 @@ paths:
     - url: https://ah-api.merge.dev
   /ats/v1/link-token:
     post:
-      operationId: create
+      operationId: postAtsV1LinkToken
       summary: Create
       description: Creates a link token to be used when linking a new end user. The link token expires after single use.
       tags:
@@ -127,13 +127,15 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/EndUserDetailsRequest'
+      x-operation-id-source: normalized
+      x-operation-id-original: create
     servers:
     - url: https://api.merge.dev/api
     - url: https://api-eu.merge.dev/api
     - url: https://api-ap.merge.dev/api
   /link-token:
     post:
-      operationId: create
+      operationId: postLinkToken
       summary: Create
       description: Creates a link token to be used when linking a new end user. The link token expires after single use.
       tags:
@@ -157,13 +159,15 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/EndUserDetailsRequest'
+      x-operation-id-source: normalized
+      x-operation-id-original: create
     servers:
     - url: https://api.merge.dev/api/chat/v1
     - url: https://api-eu.merge.dev/api/chat/v1
     - url: https://api-ap.merge.dev/api/chat/v1
   /crm/v1/link-token:
     post:
-      operationId: create
+      operationId: postCrmV1LinkToken
       summary: Create
       description: Creates a link token to be used when linking a new end user. The link token expires after single use.
       tags:
@@ -187,13 +191,15 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/EndUserDetailsRequest'
+      x-operation-id-source: normalized
+      x-operation-id-original: create
     servers:
     - url: https://api.merge.dev/api
     - url: https://api-eu.merge.dev/api
     - url: https://api-ap.merge.dev/api
   /filestorage/v1/link-token:
     post:
-      operationId: create
+      operationId: postFilestorageV1LinkToken
       summary: Create
       description: Creates a link token to be used when linking a new end user. The link token expires after single use.
       tags:
@@ -217,13 +223,15 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/EndUserDetailsRequest'
+      x-operation-id-source: normalized
+      x-operation-id-original: create
     servers:
     - url: https://api.merge.dev/api
     - url: https://api-eu.merge.dev/api
     - url: https://api-ap.merge.dev/api
   /hris/v1/link-token:
     post:
-      operationId: create
+      operationId: postHrisV1LinkToken
       summary: Create
       description: Creates a link token to be used when linking a new end user. The link token expires after single use.
       tags:
@@ -247,13 +255,15 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/EndUserDetailsRequest'
+      x-operation-id-source: normalized
+      x-operation-id-original: create
     servers:
     - url: https://api.merge.dev/api
     - url: https://api-eu.merge.dev/api
     - url: https://api-ap.merge.dev/api
   /knowledgebase/v1/link-token:
     post:
-      operationId: create
+      operationId: postKnowledgebaseV1LinkToken
       summary: Create
       description: Creates a link token to be used when linking a new end user.
       tags:
@@ -277,6 +287,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/EndUserDetailsRequest_2'
+      x-operation-id-source: normalized
+      x-operation-id-original: create
     servers:
     - url: https://api.merge.dev/api
     - url: https://api-eu.merge.dev/api
@@ -284,7 +296,7 @@ paths:
     - url: https://api-ap.merge.dev/api/knowledgebase/v1
   /ticketing/v1/link-token:
     post:
-      operationId: create
+      operationId: postTicketingV1LinkToken
       summary: Create
       description: Creates a link token to be used when linking a new end user. The link token expires after single use.
       tags:
@@ -308,6 +320,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/EndUserDetailsRequest'
+      x-operation-id-source: normalized
+      x-operation-id-original: create
     servers:
     - url: https://api.merge.dev/api
     - url: https://api-eu.merge.dev/api
@@ -320,54 +334,11 @@ components:
       - en
       - de
       title: LanguageEnum
-    CategoriesEnum:
+    CompletedAccountInitialScreenEnum:
       type: string
       enum:
-      - hris
-      - ats
-      - accounting
-      - ticketing
-      - crm
-      - mktg
-      - filestorage
-      - knowledgebase
-      title: CategoriesEnum
-    LinkToken:
-      type: object
-      properties:
-        link_token:
-          type: string
-        integration_name:
-          type: string
-        magic_link_url:
-          type: string
-      required:
-      - link_token
-      title: LinkToken
-    CommonModelScopesBodyRequest:
-      type: object
-      properties:
-        model_id:
-          type: string
-        enabled_actions:
-          type: array
-          items:
-            $ref: '#/components/schemas/EnabledActionsEnum'
-        disabled_fields:
-          type: array
-          items:
-            type: string
-      required:
-      - model_id
-      - enabled_actions
-      - disabled_fields
-      title: CommonModelScopesBodyRequest
-    EnabledActionsEnum:
-      type: string
-      enum:
-      - READ
-      - WRITE
-      title: EnabledActionsEnum
+      - SELECTIVE_SYNC
+      title: CompletedAccountInitialScreenEnum
     FieldPermissionDeserializerRequest:
       type: object
       properties:
@@ -380,6 +351,12 @@ components:
           items:
             description: Any type
       title: FieldPermissionDeserializerRequest
+    ModelPermissionDeserializerRequest:
+      type: object
+      properties:
+        is_enabled:
+          type: boolean
+      title: ModelPermissionDeserializerRequest
     EndUserDetailsRequest:
       type: object
       properties:
@@ -479,17 +456,18 @@ components:
       - end_user_origin_id
       - categories
       title: EndUserDetailsRequest
-    ModelPermissionDeserializerRequest:
+    LinkToken:
       type: object
       properties:
-        is_enabled:
-          type: boolean
-      title: ModelPermissionDeserializerRequest
-    CompletedAccountInitialScreenEnum:
-      type: string
-      enum:
-      - SELECTIVE_SYNC
-      title: CompletedAccountInitialScreenEnum
+        link_token:
+          type: string
+        integration_name:
+          type: string
+        magic_link_url:
+          type: string
+      required:
+      - link_token
+      title: LinkToken
     IndividualCommonModelScopeDeserializerRequest:
       type: object
       properties:
@@ -504,6 +482,42 @@ components:
       required:
       - model_name
       title: IndividualCommonModelScopeDeserializerRequest
+    CommonModelScopesBodyRequest:
+      type: object
+      properties:
+        model_id:
+          type: string
+        enabled_actions:
+          type: array
+          items:
+            $ref: '#/components/schemas/EnabledActionsEnum'
+        disabled_fields:
+          type: array
+          items:
+            type: string
+      required:
+      - model_id
+      - enabled_actions
+      - disabled_fields
+      title: CommonModelScopesBodyRequest
+    CategoriesEnum:
+      type: string
+      enum:
+      - hris
+      - ats
+      - accounting
+      - ticketing
+      - crm
+      - mktg
+      - filestorage
+      - knowledgebase
+      title: CategoriesEnum
+    EnabledActionsEnum:
+      type: string
+      enum:
+      - READ
+      - WRITE
+      title: EnabledActionsEnum
     linkToken_createForRegisteredUser_Response_201:
       type: object
       properties:
@@ -522,42 +536,12 @@ components:
 
         * `de` - de'
       title: LanguageEnum
-    CategoriesEnum_2:
+    CompletedAccountInitialScreenEnum_2:
       type: string
       enum:
-      - hris
-      - ats
-      - accounting
-      - ticketing
-      - crm
-      - mktg
-      - filestorage
-      - knowledgebase
-      description: '* `hris` - hris
-
-        * `ats` - ats
-
-        * `accounting` - accounting
-
-        * `ticketing` - ticketing
-
-        * `crm` - crm
-
-        * `mktg` - mktg
-
-        * `filestorage` - filestorage
-
-        * `knowledgebase` - knowledgebase'
-      title: CategoriesEnum
-    EnabledActionsEnum_2:
-      type: string
-      enum:
-      - READ
-      - WRITE
-      description: '* `READ` - READ
-
-        * `WRITE` - WRITE'
-      title: EnabledActionsEnum
+      - SELECTIVE_SYNC
+      description: '* `SELECTIVE_SYNC` - SELECTIVE_SYNC'
+      title: CompletedAccountInitialScreenEnum
     EndUserDetailsRequest_2:
       type: object
       properties:
@@ -661,12 +645,42 @@ components:
       - end_user_origin_id
       - categories
       title: EndUserDetailsRequest
-    CompletedAccountInitialScreenEnum_2:
+    CategoriesEnum_2:
       type: string
       enum:
-      - SELECTIVE_SYNC
-      description: '* `SELECTIVE_SYNC` - SELECTIVE_SYNC'
-      title: CompletedAccountInitialScreenEnum
+      - hris
+      - ats
+      - accounting
+      - ticketing
+      - crm
+      - mktg
+      - filestorage
+      - knowledgebase
+      description: '* `hris` - hris
+
+        * `ats` - ats
+
+        * `accounting` - accounting
+
+        * `ticketing` - ticketing
+
+        * `crm` - crm
+
+        * `mktg` - mktg
+
+        * `filestorage` - filestorage
+
+        * `knowledgebase` - knowledgebase'
+      title: CategoriesEnum
+    EnabledActionsEnum_2:
+      type: string
+      enum:
+      - READ
+      - WRITE
+      description: '* `READ` - READ
+
+        * `WRITE` - WRITE'
+      title: EnabledActionsEnum
   securitySchemes:
     tokenAuth:
       type: http

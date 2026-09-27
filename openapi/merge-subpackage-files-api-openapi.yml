@@ -451,128 +451,6 @@ paths:
                 $ref: '#/components/schemas/MetaResponse'
 components:
   schemas:
-    FileStorageFileEndpointRequest:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/FileRequest'
-      required:
-      - model
-      title: FileStorageFileEndpointRequest
-    TypeEnum:
-      type: string
-      enum:
-      - USER
-      - GROUP
-      - COMPANY
-      - ANYONE
-      title: TypeEnum
-    DownloadRequestMeta:
-      type: object
-      properties:
-        id:
-          type: string
-        url:
-          type: string
-        method:
-          type: string
-        headers:
-          type: object
-          additionalProperties:
-            description: Any type
-      required:
-      - id
-      - url
-      - method
-      - headers
-      title: DownloadRequestMeta
-    PaginatedFileList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/File'
-      title: PaginatedFileList
-    FileFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: FileFieldMappings
-    FilesIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - drive
-      - folder
-      - permissions
-      title: FilesIdGetParametersExpandSchemaItems
-    FilesDownloadRequestMetaGetParametersOrderBy:
-      type: string
-      enum:
-      - -created_at
-      - -modified_at
-      - created_at
-      - modified_at
-      title: FilesDownloadRequestMetaGetParametersOrderBy
-    WarningValidationProblem:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
-          type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
-      required:
-      - title
-      - detail
-      - problem_type
-      title: WarningValidationProblem
-    FilesGetParametersOrderBy:
-      type: string
-      enum:
-      - -created_at
-      - -modified_at
-      - created_at
-      - modified_at
-      title: FilesGetParametersOrderBy
-    DebugModeLog:
-      type: object
-      properties:
-        log_id:
-          type: string
-        dashboard_view:
-          type: string
-        log_summary:
-          $ref: '#/components/schemas/DebugModelLogSummary'
-      required:
-      - log_id
-      - dashboard_view
-      - log_summary
-      title: DebugModeLog
     RemoteData:
       type: object
       properties:
@@ -594,78 +472,7 @@ components:
 
         TODO'
       title: RemoteData
-    PaginatedDownloadRequestMetaList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/DownloadRequestMeta'
-      title: PaginatedDownloadRequestMetaList
-    PermissionRequest:
-      type: object
-      properties:
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        user:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The user that is granted this permission. This will only be populated if the type is `USER`.
-        group:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The group that is granted this permission. This will only be populated if the type is `GROUP`.
-        type:
-          oneOf:
-          - $ref: '#/components/schemas/TypeEnum'
-          - type: 'null'
-          description: Denotes what type of people have access to the file.
-        roles:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/RolesEnum'
-          description: 'The permissions that the user or group has for the File or Folder. It is possible for a user or group to have multiple roles, such as viewing & uploading. Possible values include: `READ`, `WRITE`, `OWNER`. In cases where there is no clear mapping, the original value passed through will be returned.'
-        integration_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        linked_account_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-      description: '# The Permission Object
-
-        ### Description
-
-        The Permission object is used to represent a user''s or group''s access to a File or Folder. Permissions are unexpanded by default.
-
-
-        ### Usage Example
-
-        Fetch from the `GET Files` or `GET Folders` endpoint. Permissions are unexpanded by default. Use the query param `expand=permissions` to see more details.'
-      title: PermissionRequest
-    PermissionFieldMappings:
+    FileFieldMappings:
       type: object
       properties:
         organization_defined_targets:
@@ -676,145 +483,7 @@ components:
           type: object
           additionalProperties:
             description: Any type
-      title: PermissionFieldMappings
-    FileStorageFileResponse:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/File'
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/WarningValidationProblem'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorValidationProblem'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/DebugModeLog'
-      required:
-      - model
-      - warnings
-      - errors
-      title: FileStorageFileResponse
-    Permission:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        user:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The user that is granted this permission. This will only be populated if the type is `USER`.
-        group:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The group that is granted this permission. This will only be populated if the type is `GROUP`.
-        type:
-          oneOf:
-          - $ref: '#/components/schemas/TypeEnum'
-          - type: 'null'
-          description: Denotes what type of people have access to the file.
-        roles:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/RolesEnum'
-          description: 'The permissions that the user or group has for the File or Folder. It is possible for a user or group to have multiple roles, such as viewing & uploading. Possible values include: `READ`, `WRITE`, `OWNER`. In cases where there is no clear mapping, the original value passed through will be returned.'
-        remote_was_deleted:
-          type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-        field_mappings:
-          oneOf:
-          - $ref: '#/components/schemas/PermissionFieldMappings'
-          - type: 'null'
-      description: '# The Permission Object
-
-        ### Description
-
-        The Permission object is used to represent a user''s or group''s access to a File or Folder. Permissions are unexpanded by default.
-
-
-        ### Usage Example
-
-        Fetch from the `GET Files` or `GET Folders` endpoint. Permissions are unexpanded by default. Use the query param `expand=permissions` to see more details.'
-      title: Permission
-    ErrorValidationProblem:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
-          type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
-      required:
-      - title
-      - detail
-      - problem_type
-      title: ErrorValidationProblem
-    DebugModelLogSummary:
-      type: object
-      properties:
-        url:
-          type: string
-        method:
-          type: string
-        status_code:
-          type: integer
-      required:
-      - url
-      - method
-      - status_code
-      title: DebugModelLogSummary
-    LinkedAccountStatus:
-      type: object
-      properties:
-        linked_account_status:
-          type: string
-        can_make_request:
-          type: boolean
-      required:
-      - linked_account_status
-      - can_make_request
-      title: LinkedAccountStatus
-    ValidationProblemSource:
-      type: object
-      properties:
-        pointer:
-          type: string
-      required:
-      - pointer
-      title: ValidationProblemSource
+      title: FileFieldMappings
     FileRequest:
       type: object
       properties:
@@ -894,13 +563,6 @@ components:
 
         Fetch from the `GET /api/filestorage/v1/files` endpoint and view their files.'
       title: FileRequest
-    RolesEnum:
-      type: string
-      enum:
-      - READ
-      - WRITE
-      - OWNER
-      title: RolesEnum
     FilesGetParametersExpandSchemaItems:
       type: string
       enum:
@@ -908,6 +570,57 @@ components:
       - folder
       - permissions
       title: FilesGetParametersExpandSchemaItems
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    FilesIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - drive
+      - folder
+      - permissions
+      title: FilesIdGetParametersExpandSchemaItems
+    TypeEnum:
+      type: string
+      enum:
+      - USER
+      - GROUP
+      - COMPANY
+      - ANYONE
+      title: TypeEnum
+    FileStorageFileEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/FileRequest'
+      required:
+      - model
+      title: FileStorageFileEndpointRequest
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
     File:
       type: object
       properties:
@@ -1040,6 +753,293 @@ components:
       - has_conditional_params
       - has_required_linked_account_params
       title: MetaResponse
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    Permission:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        user:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The user that is granted this permission. This will only be populated if the type is `USER`.
+        group:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The group that is granted this permission. This will only be populated if the type is `GROUP`.
+        type:
+          oneOf:
+          - $ref: '#/components/schemas/TypeEnum'
+          - type: 'null'
+          description: Denotes what type of people have access to the file.
+        roles:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RolesEnum'
+          description: 'The permissions that the user or group has for the File or Folder. It is possible for a user or group to have multiple roles, such as viewing & uploading. Possible values include: `READ`, `WRITE`, `OWNER`. In cases where there is no clear mapping, the original value passed through will be returned.'
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/PermissionFieldMappings'
+          - type: 'null'
+      description: '# The Permission Object
+
+        ### Description
+
+        The Permission object is used to represent a user''s or group''s access to a File or Folder. Permissions are unexpanded by default.
+
+
+        ### Usage Example
+
+        Fetch from the `GET Files` or `GET Folders` endpoint. Permissions are unexpanded by default. Use the query param `expand=permissions` to see more details.'
+      title: Permission
+    FilesGetParametersOrderBy:
+      type: string
+      enum:
+      - -created_at
+      - -modified_at
+      - created_at
+      - modified_at
+      title: FilesGetParametersOrderBy
+    RolesEnum:
+      type: string
+      enum:
+      - READ
+      - WRITE
+      - OWNER
+      title: RolesEnum
+    PaginatedDownloadRequestMetaList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/DownloadRequestMeta'
+      title: PaginatedDownloadRequestMetaList
+    PermissionFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: PermissionFieldMappings
+    PaginatedFileList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/File'
+      title: PaginatedFileList
+    FilesDownloadRequestMetaGetParametersOrderBy:
+      type: string
+      enum:
+      - -created_at
+      - -modified_at
+      - created_at
+      - modified_at
+      title: FilesDownloadRequestMetaGetParametersOrderBy
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    FileStorageFileResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/File'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: FileStorageFileResponse
+    PermissionRequest:
+      type: object
+      properties:
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        user:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The user that is granted this permission. This will only be populated if the type is `USER`.
+        group:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The group that is granted this permission. This will only be populated if the type is `GROUP`.
+        type:
+          oneOf:
+          - $ref: '#/components/schemas/TypeEnum'
+          - type: 'null'
+          description: Denotes what type of people have access to the file.
+        roles:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RolesEnum'
+          description: 'The permissions that the user or group has for the File or Folder. It is possible for a user or group to have multiple roles, such as viewing & uploading. Possible values include: `READ`, `WRITE`, `OWNER`. In cases where there is no clear mapping, the original value passed through will be returned.'
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The Permission Object
+
+        ### Description
+
+        The Permission object is used to represent a user''s or group''s access to a File or Folder. Permissions are unexpanded by default.
+
+
+        ### Usage Example
+
+        Fetch from the `GET Files` or `GET Folders` endpoint. Permissions are unexpanded by default. Use the query param `expand=permissions` to see more details.'
+      title: PermissionRequest
+    DownloadRequestMeta:
+      type: object
+      properties:
+        id:
+          type: string
+        url:
+          type: string
+        method:
+          type: string
+        headers:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - id
+      - url
+      - method
+      - headers
+      title: DownloadRequestMeta
   securitySchemes:
     tokenAuth:
       type: http

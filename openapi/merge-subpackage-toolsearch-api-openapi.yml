@@ -49,18 +49,24 @@ paths:
               $ref: '#/components/schemas/ToolSearchRequest'
 components:
   schemas:
-    toolSearch_searchTools_Response_200:
+    ToolSearchRequest:
       type: object
       properties:
-        tools:
-          type: array
-          items:
-            $ref: '#/components/schemas/ApiV1ToolPacksToolPackIdRegisteredUsersRegisteredUserIdSearchPostResponsesContentApplicationJsonSchemaToolsItems'
-        total_results:
-          type: integer
         intent:
           type: string
-      title: toolSearch_searchTools_Response_200
+          description: User's intent or what they want to accomplish
+        connector_slugs:
+          type: array
+          items:
+            type: string
+          description: Optional list of connector slugs to filter the search
+        max_results:
+          type: integer
+          default: 10
+          description: Maximum number of results to return
+      required:
+      - intent
+      title: ToolSearchRequest
     ? ApiV1ToolPacksToolPackIdRegisteredUsersRegisteredUserIdSearchPostResponsesContentApplicationJsonSchemaToolsItemsInputSchema
     : type: object
       properties: {}
@@ -84,24 +90,18 @@ components:
         reasoning:
           type: string
       title: ApiV1ToolPacksToolPackIdRegisteredUsersRegisteredUserIdSearchPostResponsesContentApplicationJsonSchemaToolsItems
-    ToolSearchRequest:
+    toolSearch_searchTools_Response_200:
       type: object
       properties:
-        intent:
-          type: string
-          description: User's intent or what they want to accomplish
-        connector_slugs:
+        tools:
           type: array
           items:
-            type: string
-          description: Optional list of connector slugs to filter the search
-        max_results:
+            $ref: '#/components/schemas/ApiV1ToolPacksToolPackIdRegisteredUsersRegisteredUserIdSearchPostResponsesContentApplicationJsonSchemaToolsItems'
+        total_results:
           type: integer
-          default: 10
-          description: Maximum number of results to return
-      required:
-      - intent
-      title: ToolSearchRequest
+        intent:
+          type: string
+      title: toolSearch_searchTools_Response_200
   securitySchemes:
     tokenAuth:
       type: http

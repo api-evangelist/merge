@@ -385,6 +385,490 @@ paths:
                 $ref: '#/components/schemas/MetaResponse'
 components:
   schemas:
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    VendorCreditsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - accounting_period
+      - company
+      - lines
+      - tracking_categories
+      - vendor
+      title: VendorCreditsGetParametersExpandSchemaItems
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    VendorCreditLine:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        net_amount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The full value of the credit.
+        tracking_category:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The line's associated tracking category.
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: The vendor credit line item's associated tracking categories.
+        description:
+          type:
+          - string
+          - 'null'
+          description: The line's description.
+        account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The line's account.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the line belongs to.
+        project:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        contact:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        tax_rate:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The tax rate that applies to this line item.
+        exchange_rate:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The vendor credit line item's exchange rate.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+      description: '# The VendorCreditLine Object
+
+        ### Description
+
+        The `VendorCreditLine` object is used to represent a vendor credit''s line items.
+
+
+        ### Usage Example
+
+        Fetch from the `GET VendorCredit` endpoint and view the vendor credit''s line items.'
+      title: VendorCreditLine
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    VendorCreditEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/VendorCreditRequest'
+      required:
+      - model
+      title: VendorCreditEndpointRequest
+    PatchedVendorCreditRequest:
+      type: object
+      properties:
+        number:
+          type:
+          - string
+          - 'null'
+          description: The vendor credit's number.
+        transaction_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The vendor credit's transaction date.
+        vendor:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The vendor that owes the gift or refund.
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: The vendor credit's currency. The currency code in ISO 4217 format.
+        exchange_rate:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The vendor credit's exchange rate.
+        inclusive_of_tax:
+          type:
+          - boolean
+          - 'null'
+          description: If the transaction is inclusive or exclusive of tax. `True` if inclusive, `False` if exclusive.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the vendor credit belongs to.
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The VendorCredit Object
+
+        ### Description
+
+        A `VendorCredit` is transaction issued by a vendor to the accounting company, indicating a reduction or cancellation of the amount owed to the vendor. It is most generally used as an adjustment note used to rectify errors, returns, or overpayments related to a purchasing transaction. A `VendorCredit` can be applied to `Accounts Payable` Invoices to decrease the overall amount of the `Invoice`.
+
+
+        ### Usage Example
+
+        Fetch from the `GET VendorCredit` endpoint and view a company''s vendor credits.'
+      title: PatchedVendorCreditRequest
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    VendorCreditRequest:
+      type: object
+      properties:
+        number:
+          type:
+          - string
+          - 'null'
+          description: The vendor credit's number.
+        transaction_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The vendor credit's transaction date.
+        vendor:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The vendor that owes the gift or refund.
+        total_amount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The vendor credit's total amount.
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: The vendor credit's currency. The currency code in ISO 4217 format.
+        exchange_rate:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The vendor credit's exchange rate.
+        inclusive_of_tax:
+          type:
+          - boolean
+          - 'null'
+          description: If the transaction is inclusive or exclusive of tax. `True` if inclusive, `False` if exclusive.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the vendor credit belongs to.
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+        applied_to_lines:
+          type: array
+          items:
+            $ref: '#/components/schemas/VendorCreditApplyLineForVendorCreditRequest'
+          description: A list of VendorCredit Applied to Lines objects.
+        accounting_period:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The accounting period that the VendorCredit was generated in.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The VendorCredit Object
+
+        ### Description
+
+        A `VendorCredit` is transaction issued by a vendor to the accounting company, indicating a reduction or cancellation of the amount owed to the vendor. It is most generally used as an adjustment note used to rectify errors, returns, or overpayments related to a purchasing transaction. A `VendorCredit` can be applied to `Accounts Payable` Invoices to decrease the overall amount of the `Invoice`.
+
+
+        ### Usage Example
+
+        Fetch from the `GET VendorCredit` endpoint and view a company''s vendor credits.'
+      title: VendorCreditRequest
+    VendorCreditResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/VendorCredit'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: VendorCreditResponse
+    VendorCredit:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        number:
+          type:
+          - string
+          - 'null'
+          description: The vendor credit's number.
+        transaction_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The vendor credit's transaction date.
+        vendor:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The vendor that owes the gift or refund.
+        total_amount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The vendor credit's total amount.
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: The vendor credit's currency. The currency code in ISO 4217 format.
+        exchange_rate:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The vendor credit's exchange rate.
+        inclusive_of_tax:
+          type:
+          - boolean
+          - 'null'
+          description: If the transaction is inclusive or exclusive of tax. `True` if inclusive, `False` if exclusive.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the vendor credit belongs to.
+        lines:
+          type: array
+          items:
+            $ref: '#/components/schemas/VendorCreditLine'
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+        applied_to_lines:
+          type: array
+          items:
+            $ref: '#/components/schemas/VendorCreditApplyLineForVendorCredit'
+          description: A list of VendorCredit Applied to Lines objects.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        accounting_period:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The accounting period that the VendorCredit was generated in.
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/VendorCreditFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The VendorCredit Object
+
+        ### Description
+
+        A `VendorCredit` is transaction issued by a vendor to the accounting company, indicating a reduction or cancellation of the amount owed to the vendor. It is most generally used as an adjustment note used to rectify errors, returns, or overpayments related to a purchasing transaction. A `VendorCredit` can be applied to `Accounts Payable` Invoices to decrease the overall amount of the `Invoice`.
+
+
+        ### Usage Example
+
+        Fetch from the `GET VendorCredit` endpoint and view a company''s vendor credits.'
+      title: VendorCredit
+    VendorCreditsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - accounting_period
+      - company
+      - lines
+      - tracking_categories
+      - vendor
+      title: VendorCreditsIdGetParametersExpandSchemaItems
     TransactionCurrencyEnum:
       type: string
       enum:
@@ -696,6 +1180,17 @@ components:
       - ZWL
       description: The currency code in ISO 4217 format.
       title: TransactionCurrencyEnum
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
     PatchedVendorCreditEndpointRequest:
       type: object
       properties:
@@ -704,212 +1199,6 @@ components:
       required:
       - model
       title: PatchedVendorCreditEndpointRequest
-    PaginatedVendorCreditList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/VendorCredit'
-      title: PaginatedVendorCreditList
-    VendorCredit:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        number:
-          type:
-          - string
-          - 'null'
-          description: The vendor credit's number.
-        transaction_date:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The vendor credit's transaction date.
-        vendor:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The vendor that owes the gift or refund.
-        total_amount:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: The vendor credit's total amount.
-        currency:
-          oneOf:
-          - $ref: '#/components/schemas/TransactionCurrencyEnum'
-          - type: 'null'
-          description: The vendor credit's currency. The currency code in ISO 4217 format.
-        exchange_rate:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          description: The vendor credit's exchange rate.
-        inclusive_of_tax:
-          type:
-          - boolean
-          - 'null'
-          description: If the transaction is inclusive or exclusive of tax. `True` if inclusive, `False` if exclusive.
-        company:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The company the vendor credit belongs to.
-        lines:
-          type: array
-          items:
-            $ref: '#/components/schemas/VendorCreditLine'
-        tracking_categories:
-          type: array
-          items:
-            type: string
-            format: uuid
-        applied_to_lines:
-          type: array
-          items:
-            $ref: '#/components/schemas/VendorCreditApplyLineForVendorCredit'
-          description: A list of VendorCredit Applied to Lines objects.
-        remote_was_deleted:
-          type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-        accounting_period:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The accounting period that the VendorCredit was generated in.
-        field_mappings:
-          oneOf:
-          - $ref: '#/components/schemas/VendorCreditFieldMappings'
-          - type: 'null'
-        remote_data:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/RemoteData'
-      description: '# The VendorCredit Object
-
-        ### Description
-
-        A `VendorCredit` is transaction issued by a vendor to the accounting company, indicating a reduction or cancellation of the amount owed to the vendor. It is most generally used as an adjustment note used to rectify errors, returns, or overpayments related to a purchasing transaction. A `VendorCredit` can be applied to `Accounts Payable` Invoices to decrease the overall amount of the `Invoice`.
-
-
-        ### Usage Example
-
-        Fetch from the `GET VendorCredit` endpoint and view a company''s vendor credits.'
-      title: VendorCredit
-    PatchedVendorCreditRequest:
-      type: object
-      properties:
-        number:
-          type:
-          - string
-          - 'null'
-          description: The vendor credit's number.
-        transaction_date:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The vendor credit's transaction date.
-        vendor:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The vendor that owes the gift or refund.
-        currency:
-          oneOf:
-          - $ref: '#/components/schemas/TransactionCurrencyEnum'
-          - type: 'null'
-          description: The vendor credit's currency. The currency code in ISO 4217 format.
-        exchange_rate:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          description: The vendor credit's exchange rate.
-        inclusive_of_tax:
-          type:
-          - boolean
-          - 'null'
-          description: If the transaction is inclusive or exclusive of tax. `True` if inclusive, `False` if exclusive.
-        company:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The company the vendor credit belongs to.
-        tracking_categories:
-          type: array
-          items:
-            type: string
-            format: uuid
-        integration_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        linked_account_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-      description: '# The VendorCredit Object
-
-        ### Description
-
-        A `VendorCredit` is transaction issued by a vendor to the accounting company, indicating a reduction or cancellation of the amount owed to the vendor. It is most generally used as an adjustment note used to rectify errors, returns, or overpayments related to a purchasing transaction. A `VendorCredit` can be applied to `Accounts Payable` Invoices to decrease the overall amount of the `Invoice`.
-
-
-        ### Usage Example
-
-        Fetch from the `GET VendorCredit` endpoint and view a company''s vendor credits.'
-      title: PatchedVendorCreditRequest
-    VendorCreditFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: VendorCreditFieldMappings
     WarningValidationProblem:
       type: object
       properties:
@@ -932,240 +1221,44 @@ components:
       - detail
       - problem_type
       title: WarningValidationProblem
-    VendorCreditResponse:
+    PaginatedVendorCreditList:
       type: object
       properties:
-        model:
-          $ref: '#/components/schemas/VendorCredit'
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/WarningValidationProblem'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorValidationProblem'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/DebugModeLog'
-      required:
-      - model
-      - warnings
-      - errors
-      title: VendorCreditResponse
-    VendorCreditRequest:
-      type: object
-      properties:
-        number:
+        next:
           type:
           - string
           - 'null'
-          description: The vendor credit's number.
-        transaction_date:
+        previous:
           type:
           - string
           - 'null'
-          format: date-time
-          description: The vendor credit's transaction date.
-        vendor:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/VendorCredit'
+      title: PaginatedVendorCreditList
+    ApplyVendorCreditRequest:
+      type: object
+      properties:
+        invoice:
           type:
           - string
           - 'null'
           format: uuid
-          description: The vendor that owes the gift or refund.
-        total_amount:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: The vendor credit's total amount.
-        currency:
-          oneOf:
-          - $ref: '#/components/schemas/TransactionCurrencyEnum'
-          - type: 'null'
-          description: The vendor credit's currency. The currency code in ISO 4217 format.
-        exchange_rate:
-          type:
-          - string
-          - 'null'
+          description: The invoice to apply the vendor credit to.
+        applied_date:
+          type: string
+          format: date-time
+          description: Date that the vendor credit is applied to the invoice.
+        applied_amount:
+          type: string
           format: decimal
-          description: The vendor credit's exchange rate.
-        inclusive_of_tax:
-          type:
-          - boolean
-          - 'null'
-          description: If the transaction is inclusive or exclusive of tax. `True` if inclusive, `False` if exclusive.
-        company:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The company the vendor credit belongs to.
-        tracking_categories:
-          type: array
-          items:
-            type: string
-            format: uuid
-        applied_to_lines:
-          type: array
-          items:
-            $ref: '#/components/schemas/VendorCreditApplyLineForVendorCreditRequest'
-          description: A list of VendorCredit Applied to Lines objects.
-        accounting_period:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The accounting period that the VendorCredit was generated in.
-        integration_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        linked_account_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-      description: '# The VendorCredit Object
-
-        ### Description
-
-        A `VendorCredit` is transaction issued by a vendor to the accounting company, indicating a reduction or cancellation of the amount owed to the vendor. It is most generally used as an adjustment note used to rectify errors, returns, or overpayments related to a purchasing transaction. A `VendorCredit` can be applied to `Accounts Payable` Invoices to decrease the overall amount of the `Invoice`.
-
-
-        ### Usage Example
-
-        Fetch from the `GET VendorCredit` endpoint and view a company''s vendor credits.'
-      title: VendorCreditRequest
-    VendorCreditLine:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        net_amount:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: The full value of the credit.
-        tracking_category:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The line's associated tracking category.
-        tracking_categories:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: The vendor credit line item's associated tracking categories.
-        description:
-          type:
-          - string
-          - 'null'
-          description: The line's description.
-        account:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The line's account.
-        company:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The company the line belongs to.
-        project:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        contact:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        tax_rate:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The tax rate that applies to this line item.
-        exchange_rate:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          description: The vendor credit line item's exchange rate.
-        remote_was_deleted:
-          type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-      description: '# The VendorCreditLine Object
-
-        ### Description
-
-        The `VendorCreditLine` object is used to represent a vendor credit''s line items.
-
-
-        ### Usage Example
-
-        Fetch from the `GET VendorCredit` endpoint and view the vendor credit''s line items.'
-      title: VendorCreditLine
-    DebugModeLog:
-      type: object
-      properties:
-        log_id:
-          type: string
-        dashboard_view:
-          type: string
-        log_summary:
-          $ref: '#/components/schemas/DebugModelLogSummary'
+          description: The amount of vendor credit applied to the invoice.
       required:
-      - log_id
-      - dashboard_view
-      - log_summary
-      title: DebugModeLog
-    RemoteData:
-      type: object
-      properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
-      required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
+      - invoice
+      - applied_date
+      - applied_amount
+      title: ApplyVendorCreditRequest
     VendorCreditApplyLineForVendorCredit:
       type: object
       properties:
@@ -1213,23 +1306,6 @@ components:
 
         Fetch from the `GET VendorCredit` endpoint and view the vendor credit''s applied to lines.'
       title: VendorCreditApplyLineForVendorCredit
-    VendorCreditEndpointRequest:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/VendorCreditRequest'
-      required:
-      - model
-      title: VendorCreditEndpointRequest
-    VendorCreditsIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - accounting_period
-      - company
-      - lines
-      - tracking_categories
-      - vendor
-      title: VendorCreditsIdGetParametersExpandSchemaItems
     ErrorValidationProblem:
       type: object
       properties:
@@ -1252,6 +1328,18 @@ components:
       - detail
       - problem_type
       title: ErrorValidationProblem
+    VendorCreditFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: VendorCreditFieldMappings
     VendorCreditApplyLineForVendorCreditRequest:
       type: object
       properties:
@@ -1300,94 +1388,6 @@ components:
 
         Fetch from the `GET VendorCredit` endpoint and view the vendor credit''s applied to lines.'
       title: VendorCreditApplyLineForVendorCreditRequest
-    LinkedAccountStatus:
-      type: object
-      properties:
-        linked_account_status:
-          type: string
-        can_make_request:
-          type: boolean
-      required:
-      - linked_account_status
-      - can_make_request
-      title: LinkedAccountStatus
-    DebugModelLogSummary:
-      type: object
-      properties:
-        url:
-          type: string
-        method:
-          type: string
-        status_code:
-          type: integer
-      required:
-      - url
-      - method
-      - status_code
-      title: DebugModelLogSummary
-    ValidationProblemSource:
-      type: object
-      properties:
-        pointer:
-          type: string
-      required:
-      - pointer
-      title: ValidationProblemSource
-    ApplyVendorCreditRequest:
-      type: object
-      properties:
-        invoice:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The invoice to apply the vendor credit to.
-        applied_date:
-          type: string
-          format: date-time
-          description: Date that the vendor credit is applied to the invoice.
-        applied_amount:
-          type: string
-          format: decimal
-          description: The amount of vendor credit applied to the invoice.
-      required:
-      - invoice
-      - applied_date
-      - applied_amount
-      title: ApplyVendorCreditRequest
-    VendorCreditsGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - accounting_period
-      - company
-      - lines
-      - tracking_categories
-      - vendor
-      title: VendorCreditsGetParametersExpandSchemaItems
-    MetaResponse:
-      type: object
-      properties:
-        request_schema:
-          type: object
-          additionalProperties:
-            description: Any type
-        status:
-          $ref: '#/components/schemas/LinkedAccountStatus'
-        has_conditional_params:
-          type: boolean
-        has_required_linked_account_params:
-          type: boolean
-        remote_fields:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: Remote field values to populate
-      required:
-      - request_schema
-      - has_conditional_params
-      - has_required_linked_account_params
-      title: MetaResponse
   securitySchemes:
     tokenAuth:
       type: http

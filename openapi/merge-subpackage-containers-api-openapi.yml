@@ -180,34 +180,28 @@ paths:
                 $ref: '#/components/schemas/Container'
 components:
   schemas:
-    VisibilityEnum:
-      type: string
-      enum:
-      - PUBLIC
-      - INTERNAL
-      - RESTRICTED
-      description: '* `PUBLIC` - PUBLIC
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
 
-        * `INTERNAL` - INTERNAL
+        ### Description
 
-        * `RESTRICTED` - RESTRICTED'
-      title: VisibilityEnum
-    Status3c6Enum:
-      type: string
-      enum:
-      - DRAFT
-      - PUBLISHED
-      - ARCHIVED
-      - TRASH
-      description: '* `DRAFT` - DRAFT
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
 
-        * `PUBLISHED` - PUBLISHED
 
-        * `ARCHIVED` - ARCHIVED
+        ### Usage Example
 
-        * `TRASH` - TRASH'
-      title: Status3c6Enum
-    ContainersGetParametersExpand:
+        TODO'
+      title: RemoteData
+    ContainersIdGetParametersExpand:
       type: string
       enum:
       - parent_article
@@ -217,7 +211,7 @@ components:
       - permissions,parent_article
       - permissions,parent_article,parent_container
       - permissions,parent_container
-      title: ContainersGetParametersExpand
+      title: ContainersIdGetParametersExpand
     ContainersGetParametersType:
       type: string
       enum:
@@ -229,21 +223,6 @@ components:
       - SECTION
       - SPACE
       title: ContainersGetParametersType
-    PermissionTypeEnum:
-      type: string
-      enum:
-      - USER
-      - GROUP
-      - COMPANY
-      - ANYONE
-      description: '* `USER` - USER
-
-        * `GROUP` - GROUP
-
-        * `COMPANY` - COMPANY
-
-        * `ANYONE` - ANYONE'
-      title: PermissionTypeEnum
     PaginatedContainerList:
       type: object
       properties:
@@ -260,33 +239,10 @@ components:
           items:
             $ref: '#/components/schemas/Container'
       title: PaginatedContainerList
-    ContainersIdGetParametersExpand:
-      type: string
-      enum:
-      - parent_article
-      - parent_article,parent_container
-      - parent_container
-      - permissions
-      - permissions,parent_article
-      - permissions,parent_article,parent_container
-      - permissions,parent_container
-      title: ContainersIdGetParametersExpand
-    PermissionFieldMappings:
+    ContainerFieldMappings:
       type: object
       properties: {}
-      title: PermissionFieldMappings
-    RolesEnum:
-      type: string
-      enum:
-      - READ
-      - WRITE
-      - OWNER
-      description: '* `READ` - READ
-
-        * `WRITE` - WRITE
-
-        * `OWNER` - OWNER'
-      title: RolesEnum
+      title: ContainerFieldMappings
     Container:
       type: object
       properties:
@@ -416,6 +372,73 @@ components:
 
         Fetch from the `GET /api/knowledgebase/containers` endpoint and view their containers.'
       title: Container
+    PermissionFieldMappings:
+      type: object
+      properties: {}
+      title: PermissionFieldMappings
+    VisibilityEnum:
+      type: string
+      enum:
+      - PUBLIC
+      - INTERNAL
+      - RESTRICTED
+      description: '* `PUBLIC` - PUBLIC
+
+        * `INTERNAL` - INTERNAL
+
+        * `RESTRICTED` - RESTRICTED'
+      title: VisibilityEnum
+    Status3c6Enum:
+      type: string
+      enum:
+      - DRAFT
+      - PUBLISHED
+      - ARCHIVED
+      - TRASH
+      description: '* `DRAFT` - DRAFT
+
+        * `PUBLISHED` - PUBLISHED
+
+        * `ARCHIVED` - ARCHIVED
+
+        * `TRASH` - TRASH'
+      title: Status3c6Enum
+    PermissionTypeEnum:
+      type: string
+      enum:
+      - USER
+      - GROUP
+      - COMPANY
+      - ANYONE
+      description: '* `USER` - USER
+
+        * `GROUP` - GROUP
+
+        * `COMPANY` - COMPANY
+
+        * `ANYONE` - ANYONE'
+      title: PermissionTypeEnum
+    ContainerTypeEnum:
+      type: string
+      enum:
+      - FOLDER
+      - SPACE
+      - COLLECTION
+      - SECTION
+      - CATEGORY
+      - DATABASE
+      description: '* `FOLDER` - FOLDER
+
+        * `SPACE` - SPACE
+
+        * `COLLECTION` - COLLECTION
+
+        * `SECTION` - SECTION
+
+        * `CATEGORY` - CATEGORY
+
+        * `DATABASE` - DATABASE'
+      title: ContainerTypeEnum
     Permission:
       type: object
       properties:
@@ -481,52 +504,29 @@ components:
 
         ### Usage Example'
       title: Permission
-    RemoteData:
-      type: object
-      properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
-      required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
-    ContainerTypeEnum:
+    RolesEnum:
       type: string
       enum:
-      - FOLDER
-      - SPACE
-      - COLLECTION
-      - SECTION
-      - CATEGORY
-      - DATABASE
-      description: '* `FOLDER` - FOLDER
+      - READ
+      - WRITE
+      - OWNER
+      description: '* `READ` - READ
 
-        * `SPACE` - SPACE
+        * `WRITE` - WRITE
 
-        * `COLLECTION` - COLLECTION
-
-        * `SECTION` - SECTION
-
-        * `CATEGORY` - CATEGORY
-
-        * `DATABASE` - DATABASE'
-      title: ContainerTypeEnum
-    ContainerFieldMappings:
-      type: object
-      properties: {}
-      title: ContainerFieldMappings
+        * `OWNER` - OWNER'
+      title: RolesEnum
+    ContainersGetParametersExpand:
+      type: string
+      enum:
+      - parent_article
+      - parent_article,parent_container
+      - parent_container
+      - permissions
+      - permissions,parent_article
+      - permissions,parent_article,parent_container
+      - permissions,parent_container
+      title: ContainersGetParametersExpand
   securitySchemes:
     tokenAuth:
       type: http

@@ -175,6 +175,49 @@ paths:
                 $ref: '#/components/schemas/Project'
 components:
   schemas:
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    PaginatedProjectList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Project'
+      title: PaginatedProjectList
+    ProjectsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - company
+      - contact
+      title: ProjectsIdGetParametersExpandSchemaItems
     Project:
       type: object
       properties:
@@ -237,55 +280,6 @@ components:
 
         Fetch from the `GET Project` endpoint and view project information.'
       title: Project
-    PaginatedProjectList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Project'
-      title: PaginatedProjectList
-    ProjectsGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - company
-      - contact
-      title: ProjectsGetParametersExpandSchemaItems
-    ProjectsIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - company
-      - contact
-      title: ProjectsIdGetParametersExpandSchemaItems
-    RemoteData:
-      type: object
-      properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
-      required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
     ProjectFieldMappings:
       type: object
       properties:
@@ -298,6 +292,12 @@ components:
           additionalProperties:
             description: Any type
       title: ProjectFieldMappings
+    ProjectsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - company
+      - contact
+      title: ProjectsGetParametersExpandSchemaItems
   securitySchemes:
     tokenAuth:
       type: http

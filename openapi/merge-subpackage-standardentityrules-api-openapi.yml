@@ -238,7 +238,7 @@ paths:
           description: Successful response
 components:
   schemas:
-    StandardEntityOverridePutInputInboundAction:
+    StandardEntityOverridePutInputOutboundAction:
       type: string
       enum:
       - BLOCK
@@ -252,59 +252,7 @@ components:
         * `LOG` - LOG
 
         * `NONE` - NONE'
-      title: StandardEntityOverridePutInputInboundAction
-    StandardEntityRulePutInput:
-      type: object
-      properties:
-        is_active:
-          type: boolean
-        inbound_action:
-          $ref: '#/components/schemas/StandardEntityRulePutInputInboundAction'
-          description: '* `BLOCK` - BLOCK
-
-            * `REDACT` - REDACT
-
-            * `LOG` - LOG
-
-            * `NONE` - NONE'
-        outbound_action:
-          $ref: '#/components/schemas/StandardEntityRulePutInputOutboundAction'
-          description: '* `BLOCK` - BLOCK
-
-            * `REDACT` - REDACT
-
-            * `LOG` - LOG
-
-            * `NONE` - NONE'
-      required:
-      - is_active
-      - inbound_action
-      - outbound_action
-      description: Input serializer for PUT /standard-entity-rules/<entity_type>/. All fields required.
-      title: StandardEntityRulePutInput
-    PaginatedPublicCombinedSecurityRuleList:
-      type: object
-      properties:
-        count:
-          type: integer
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/PublicCombinedSecurityRule'
-      required:
-      - count
-      - results
-      title: PaginatedPublicCombinedSecurityRuleList
+      title: StandardEntityOverridePutInputOutboundAction
     StandardEntityRuleResponseOutboundAction:
       type: string
       enum:
@@ -356,13 +304,13 @@ components:
       - defined_at
       description: Standard entity rule for an organization.
       title: StandardEntityRuleResponse
-    StandardEntityOverridePutInput:
+    StandardEntityRulePutInput:
       type: object
       properties:
         is_active:
           type: boolean
         inbound_action:
-          $ref: '#/components/schemas/StandardEntityOverridePutInputInboundAction'
+          $ref: '#/components/schemas/StandardEntityRulePutInputInboundAction'
           description: '* `BLOCK` - BLOCK
 
             * `REDACT` - REDACT
@@ -371,7 +319,7 @@ components:
 
             * `NONE` - NONE'
         outbound_action:
-          $ref: '#/components/schemas/StandardEntityOverridePutInputOutboundAction'
+          $ref: '#/components/schemas/StandardEntityRulePutInputOutboundAction'
           description: '* `BLOCK` - BLOCK
 
             * `REDACT` - REDACT
@@ -383,8 +331,31 @@ components:
       - is_active
       - inbound_action
       - outbound_action
-      description: Input serializer for PUT /tool-packs/<id>/standard-entity-rules/<entity_type>/.
-      title: StandardEntityOverridePutInput
+      description: Input serializer for PUT /standard-entity-rules/<entity_type>/. All fields required.
+      title: StandardEntityRulePutInput
+    PaginatedStandardEntityRuleResponseList:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/StandardEntityRuleResponse'
+      required:
+      - count
+      - results
+      title: PaginatedStandardEntityRuleResponseList
     StandardEntityRulePutInputInboundAction:
       type: string
       enum:
@@ -400,6 +371,44 @@ components:
 
         * `NONE` - NONE'
       title: StandardEntityRulePutInputInboundAction
+    StandardEntityOverridePutInputInboundAction:
+      type: string
+      enum:
+      - BLOCK
+      - REDACT
+      - LOG
+      - NONE
+      description: '* `BLOCK` - BLOCK
+
+        * `REDACT` - REDACT
+
+        * `LOG` - LOG
+
+        * `NONE` - NONE'
+      title: StandardEntityOverridePutInputInboundAction
+    PaginatedPublicCombinedSecurityRuleList:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicCombinedSecurityRule'
+      required:
+      - count
+      - results
+      title: PaginatedPublicCombinedSecurityRuleList
     PublicCombinedSecurityRule:
       type: object
       properties:
@@ -445,44 +454,35 @@ components:
 
         * `NONE` - NONE'
       title: StandardEntityRulePutInputOutboundAction
-    StandardEntityOverridePutInputOutboundAction:
-      type: string
-      enum:
-      - BLOCK
-      - REDACT
-      - LOG
-      - NONE
-      description: '* `BLOCK` - BLOCK
-
-        * `REDACT` - REDACT
-
-        * `LOG` - LOG
-
-        * `NONE` - NONE'
-      title: StandardEntityOverridePutInputOutboundAction
-    PaginatedStandardEntityRuleResponseList:
+    StandardEntityOverridePutInput:
       type: object
       properties:
-        count:
-          type: integer
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/StandardEntityRuleResponse'
+        is_active:
+          type: boolean
+        inbound_action:
+          $ref: '#/components/schemas/StandardEntityOverridePutInputInboundAction'
+          description: '* `BLOCK` - BLOCK
+
+            * `REDACT` - REDACT
+
+            * `LOG` - LOG
+
+            * `NONE` - NONE'
+        outbound_action:
+          $ref: '#/components/schemas/StandardEntityOverridePutInputOutboundAction'
+          description: '* `BLOCK` - BLOCK
+
+            * `REDACT` - REDACT
+
+            * `LOG` - LOG
+
+            * `NONE` - NONE'
       required:
-      - count
-      - results
-      title: PaginatedStandardEntityRuleResponseList
+      - is_active
+      - inbound_action
+      - outbound_action
+      description: Input serializer for PUT /tool-packs/<id>/standard-entity-rules/<entity_type>/.
+      title: StandardEntityOverridePutInput
   securitySchemes:
     tokenAuth:
       type: http

@@ -69,6 +69,80 @@ paths:
                 $ref: '#/components/schemas/ConnectorDetailPublicResponse'
 components:
   schemas:
+    ConnectorDetailPublicResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the Connector
+        name:
+          type: string
+          description: Name of the Connector
+        slug:
+          type: string
+          description: Slug identifier for the Connector
+        description:
+          type: string
+          description: Description of what the Connector does
+        source_url:
+          type:
+          - string
+          - 'null'
+          description: URL to the Connector's source website
+        logo_url:
+          type: string
+          description: URL to the Connector's logo image
+        categories:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: Categories this connector belongs to
+        auth_options:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuthOptionPublic'
+          description: Authentication options available for this connector
+        tools:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConnectorToolMini'
+          description: List of available tools for this connector
+      required:
+      - id
+      - name
+      - slug
+      - description
+      - source_url
+      - logo_url
+      - categories
+      - auth_options
+      - tools
+      title: ConnectorDetailPublicResponse
+    PaginatedConnectorDetailPublicResponseList:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConnectorDetailPublicResponse'
+      required:
+      - count
+      - results
+      title: PaginatedConnectorDetailPublicResponseList
     SecretSchemaPublic:
       type: object
       properties:
@@ -132,57 +206,6 @@ components:
       - type
       - secrets
       title: AuthOptionPublic
-    ConnectorDetailPublicResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the Connector
-        name:
-          type: string
-          description: Name of the Connector
-        slug:
-          type: string
-          description: Slug identifier for the Connector
-        description:
-          type: string
-          description: Description of what the Connector does
-        source_url:
-          type:
-          - string
-          - 'null'
-          description: URL to the Connector's source website
-        logo_url:
-          type: string
-          description: URL to the Connector's logo image
-        categories:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-          description: Categories this connector belongs to
-        auth_options:
-          type: array
-          items:
-            $ref: '#/components/schemas/AuthOptionPublic'
-          description: Authentication options available for this connector
-        tools:
-          type: array
-          items:
-            $ref: '#/components/schemas/ConnectorToolMini'
-          description: List of available tools for this connector
-      required:
-      - id
-      - name
-      - slug
-      - description
-      - source_url
-      - logo_url
-      - categories
-      - auth_options
-      - tools
-      title: ConnectorDetailPublicResponse
     SecretOptionPublic:
       type: object
       properties:
@@ -197,29 +220,6 @@ components:
       - value
       - option_default
       title: SecretOptionPublic
-    PaginatedConnectorDetailPublicResponseList:
-      type: object
-      properties:
-        count:
-          type: integer
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ConnectorDetailPublicResponse'
-      required:
-      - count
-      - results
-      title: PaginatedConnectorDetailPublicResponseList
   securitySchemes:
     tokenAuth:
       type: http

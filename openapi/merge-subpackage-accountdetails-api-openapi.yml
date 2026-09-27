@@ -47,7 +47,7 @@ paths:
     - url: https://api-ap.merge.dev/api
   /ats/v1/account-details:
     get:
-      operationId: retrieve
+      operationId: getAtsV1AccountDetails
       summary: Retrieve
       description: Get details for a linked account.
       tags:
@@ -72,13 +72,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AccountDetails'
+      x-operation-id-source: normalized
+      x-operation-id-original: retrieve
     servers:
     - url: https://api.merge.dev/api
     - url: https://api-eu.merge.dev/api
     - url: https://api-ap.merge.dev/api
   /account-details:
     get:
-      operationId: retrieve
+      operationId: getAccountDetails
       summary: Retrieve
       description: Get details for a linked account.
       tags:
@@ -103,13 +105,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AccountDetails'
+      x-operation-id-source: normalized
+      x-operation-id-original: retrieve
     servers:
     - url: https://api.merge.dev/api/chat/v1
     - url: https://api-eu.merge.dev/api/chat/v1
     - url: https://api-ap.merge.dev/api/chat/v1
   /crm/v1/account-details:
     get:
-      operationId: retrieve
+      operationId: getCrmV1AccountDetails
       summary: Retrieve
       description: Get details for a linked account.
       tags:
@@ -134,13 +138,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AccountDetails'
+      x-operation-id-source: normalized
+      x-operation-id-original: retrieve
     servers:
     - url: https://api.merge.dev/api
     - url: https://api-eu.merge.dev/api
     - url: https://api-ap.merge.dev/api
   /filestorage/v1/account-details:
     get:
-      operationId: retrieve
+      operationId: getFilestorageV1AccountDetails
       summary: Retrieve
       description: Get details for a linked account.
       tags:
@@ -165,13 +171,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AccountDetails'
+      x-operation-id-source: normalized
+      x-operation-id-original: retrieve
     servers:
     - url: https://api.merge.dev/api
     - url: https://api-eu.merge.dev/api
     - url: https://api-ap.merge.dev/api
   /hris/v1/account-details:
     get:
-      operationId: retrieve
+      operationId: getHrisV1AccountDetails
       summary: Retrieve
       description: Get details for a linked account.
       tags:
@@ -196,13 +204,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AccountDetails'
+      x-operation-id-source: normalized
+      x-operation-id-original: retrieve
     servers:
     - url: https://api.merge.dev/api
     - url: https://api-eu.merge.dev/api
     - url: https://api-ap.merge.dev/api
   /knowledgebase/v1/account-details:
     get:
-      operationId: retrieve
+      operationId: getKnowledgebaseV1AccountDetails
       summary: Retrieve
       description: Get details for a linked account.
       tags:
@@ -227,6 +237,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AccountDetails_2'
+      x-operation-id-source: normalized
+      x-operation-id-original: retrieve
     servers:
     - url: https://api.merge.dev/api
     - url: https://api-eu.merge.dev/api
@@ -234,7 +246,7 @@ paths:
     - url: https://api-ap.merge.dev/api/knowledgebase/v1
   /ticketing/v1/account-details:
     get:
-      operationId: retrieve
+      operationId: getTicketingV1AccountDetails
       summary: Retrieve
       description: Get details for a linked account.
       tags:
@@ -259,24 +271,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AccountDetails'
+      x-operation-id-source: normalized
+      x-operation-id-original: retrieve
     servers:
     - url: https://api.merge.dev/api
     - url: https://api-eu.merge.dev/api
     - url: https://api-ap.merge.dev/api
 components:
   schemas:
-    CategoryEnum:
-      type: string
-      enum:
-      - hris
-      - ats
-      - accounting
-      - ticketing
-      - crm
-      - mktg
-      - filestorage
-      - knowledgebase
-      title: CategoryEnum
     AccountDetails:
       type: object
       properties:
@@ -325,7 +327,7 @@ components:
           - string
           - 'null'
       title: AccountDetails
-    CategoryEnum_2:
+    CategoryEnum:
       type: string
       enum:
       - hris
@@ -336,21 +338,6 @@ components:
       - mktg
       - filestorage
       - knowledgebase
-      description: '* `hris` - hris
-
-        * `ats` - ats
-
-        * `accounting` - accounting
-
-        * `ticketing` - ticketing
-
-        * `crm` - crm
-
-        * `mktg` - mktg
-
-        * `filestorage` - filestorage
-
-        * `knowledgebase` - knowledgebase'
       title: CategoryEnum
     AccountDetails_2:
       type: object
@@ -392,6 +379,33 @@ components:
           format: date-time
           description: The time at which account completes the linking flow.
       title: AccountDetails
+    CategoryEnum_2:
+      type: string
+      enum:
+      - hris
+      - ats
+      - accounting
+      - ticketing
+      - crm
+      - mktg
+      - filestorage
+      - knowledgebase
+      description: '* `hris` - hris
+
+        * `ats` - ats
+
+        * `accounting` - accounting
+
+        * `ticketing` - ticketing
+
+        * `crm` - crm
+
+        * `mktg` - mktg
+
+        * `filestorage` - filestorage
+
+        * `knowledgebase` - knowledgebase'
+      title: CategoryEnum
   securitySchemes:
     tokenAuth:
       type: http

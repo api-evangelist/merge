@@ -263,102 +263,11 @@ paths:
                 $ref: '#/components/schemas/MetaResponse'
 components:
   schemas:
-    ActivityResponse:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/Activity'
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/WarningValidationProblem'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorValidationProblem'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/DebugModeLog'
-      required:
-      - model
-      - warnings
-      - errors
-      title: ActivityResponse
-    ActivitiesGetParametersRemoteFields:
-      type: string
-      enum:
-      - activity_type
-      - activity_type,visibility
-      - visibility
-      title: ActivitiesGetParametersRemoteFields
     ActivitiesGetParametersExpandSchemaItems:
       type: string
       enum:
       - user
       title: ActivitiesGetParametersExpandSchemaItems
-    ActivitiesGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - activity_type
-      - activity_type,visibility
-      - visibility
-      title: ActivitiesGetParametersShowEnumOrigins
-    VisibilityEnum:
-      type: string
-      enum:
-      - ADMIN_ONLY
-      - PUBLIC
-      - PRIVATE
-      title: VisibilityEnum
-    ActivitiesIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - user
-      title: ActivitiesIdGetParametersExpandSchemaItems
-    WarningValidationProblem:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
-          type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
-      required:
-      - title
-      - detail
-      - problem_type
-      title: WarningValidationProblem
-    ActivitiesIdGetParametersRemoteFields:
-      type: string
-      enum:
-      - activity_type
-      - activity_type,visibility
-      - visibility
-      title: ActivitiesIdGetParametersRemoteFields
-    DebugModeLog:
-      type: object
-      properties:
-        log_id:
-          type: string
-        dashboard_view:
-          type: string
-        log_summary:
-          $ref: '#/components/schemas/DebugModelLogSummary'
-      required:
-      - log_id
-      - dashboard_view
-      - log_summary
-      title: DebugModeLog
     RemoteData:
       type: object
       properties:
@@ -380,20 +289,13 @@ components:
 
         TODO'
       title: RemoteData
-    ActivitiesIdGetParametersShowEnumOrigins:
+    VisibilityEnum:
       type: string
       enum:
-      - activity_type
-      - activity_type,visibility
-      - visibility
-      title: ActivitiesIdGetParametersShowEnumOrigins
-    ActivityTypeEnum:
-      type: string
-      enum:
-      - NOTE
-      - EMAIL
-      - OTHER
-      title: ActivityTypeEnum
+      - ADMIN_ONLY
+      - PUBLIC
+      - PRIVATE
+      title: VisibilityEnum
     ActivityEndpointRequest:
       type: object
       properties:
@@ -405,6 +307,108 @@ components:
       - model
       - remote_user_id
       title: ActivityEndpointRequest
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    ActivitiesIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - activity_type
+      - activity_type,visibility
+      - visibility
+      title: ActivitiesIdGetParametersRemoteFields
+    ActivityFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: ActivityFieldMappings
+    ActivityTypeEnum:
+      type: string
+      enum:
+      - NOTE
+      - EMAIL
+      - OTHER
+      title: ActivityTypeEnum
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    PaginatedActivityList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Activity'
+      title: PaginatedActivityList
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
     ActivityRequest:
       type: object
       properties:
@@ -461,18 +465,80 @@ components:
 
         Fetch from the `LIST Activities` endpoint and filter by `ID` to show all activities.'
       title: ActivityRequest
-    ActivityFieldMappings:
+    LinkedAccountStatus:
       type: object
       properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: ActivityFieldMappings
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    ActivitiesGetParametersRemoteFields:
+      type: string
+      enum:
+      - activity_type
+      - activity_type,visibility
+      - visibility
+      title: ActivitiesGetParametersRemoteFields
+    ActivitiesGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - activity_type
+      - activity_type,visibility
+      - visibility
+      title: ActivitiesGetParametersShowEnumOrigins
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    ActivityResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/Activity'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: ActivityResponse
+    ActivitiesIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - user
+      title: ActivitiesIdGetParametersExpandSchemaItems
     ErrorValidationProblem:
       type: object
       properties:
@@ -495,55 +561,6 @@ components:
       - detail
       - problem_type
       title: ErrorValidationProblem
-    DebugModelLogSummary:
-      type: object
-      properties:
-        url:
-          type: string
-        method:
-          type: string
-        status_code:
-          type: integer
-      required:
-      - url
-      - method
-      - status_code
-      title: DebugModelLogSummary
-    LinkedAccountStatus:
-      type: object
-      properties:
-        linked_account_status:
-          type: string
-        can_make_request:
-          type: boolean
-      required:
-      - linked_account_status
-      - can_make_request
-      title: LinkedAccountStatus
-    ValidationProblemSource:
-      type: object
-      properties:
-        pointer:
-          type: string
-      required:
-      - pointer
-      title: ValidationProblemSource
-    PaginatedActivityList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Activity'
-      title: PaginatedActivityList
     Activity:
       type: object
       properties:
@@ -623,30 +640,13 @@ components:
 
         Fetch from the `LIST Activities` endpoint and filter by `ID` to show all activities.'
       title: Activity
-    MetaResponse:
-      type: object
-      properties:
-        request_schema:
-          type: object
-          additionalProperties:
-            description: Any type
-        status:
-          $ref: '#/components/schemas/LinkedAccountStatus'
-        has_conditional_params:
-          type: boolean
-        has_required_linked_account_params:
-          type: boolean
-        remote_fields:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: Remote field values to populate
-      required:
-      - request_schema
-      - has_conditional_params
-      - has_required_linked_account_params
-      title: MetaResponse
+    ActivitiesIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - activity_type
+      - activity_type,visibility
+      - visibility
+      title: ActivitiesIdGetParametersShowEnumOrigins
   securitySchemes:
     tokenAuth:
       type: http

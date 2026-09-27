@@ -276,6 +276,268 @@ paths:
                 $ref: '#/components/schemas/Collection'
 components:
   schemas:
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    PaginatedCollectionList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Collection'
+      title: PaginatedCollectionList
+    CollectionsIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - collection_type
+      title: CollectionsIdGetParametersShowEnumOrigins
+    CollectionsGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - collection_type
+      title: CollectionsGetParametersShowEnumOrigins
+    CollectionAccessLevelEnum:
+      type: string
+      enum:
+      - PRIVATE
+      - COMPANY
+      - PUBLIC
+      - PARENT_COLLECTION
+      title: CollectionAccessLevelEnum
+    CollectionsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - parent_collection
+      - permissions
+      title: CollectionsIdGetParametersExpandSchemaItems
+    CollectionFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: CollectionFieldMappings
+    CollectionsIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - collection_type
+      title: CollectionsIdGetParametersRemoteFields
+    Permission:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        effect:
+          oneOf:
+          - $ref: '#/components/schemas/EffectEnum'
+          - type: 'null'
+          description: Outcome of this permission rule for matching users.
+        actions:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/ActionsEnum'
+          description: Operations that this permission applies to. If the entity inherits permission from a parent entity, then this should be an empty array. In that case, the entity would inherit the parent entity’s actions.
+        applied_to_users:
+          type: array
+          items:
+            type: string
+            format: uuid
+        applied_to_roles:
+          type: array
+          items:
+            type: string
+            format: uuid
+        applied_to_teams:
+          type: array
+          items:
+            type: string
+            format: uuid
+        applied_to_collections:
+          type: array
+          items:
+            type: string
+            format: uuid
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/PermissionFieldMappings'
+          - type: 'null'
+      description: '# The Permission Object
+
+        ### Description
+
+        The `Permission` object is used to represent permissions that can be applied to users, roles, teams, collections, and tickets.
+
+
+        ### Usage Example
+
+        TODO'
+      title: Permission
+    CollectionTypeEnum:
+      type: string
+      enum:
+      - LIST
+      - PROJECT
+      title: CollectionTypeEnum
+    CollectionsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - parent_collection
+      - permissions
+      title: CollectionsGetParametersExpandSchemaItems
+    CollectionsCollectionIdViewersGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - team
+      - user
+      title: CollectionsCollectionIdViewersGetParametersExpandSchemaItems
+    Viewer:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        team:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The Team this Viewer belongs to.
+        user:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The User this Viewer belongs to.
+      description: '# The Viewer Object
+
+        ### Description
+
+        The `Viewer` object is used to represent a User or Team within a company.
+
+
+        ### Usage Example
+
+        TODO'
+      title: Viewer
+    PermissionFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: PermissionFieldMappings
+    ActionsEnum:
+      type: string
+      enum:
+      - VIEW
+      - CREATE
+      - EDIT
+      - DELETE
+      title: ActionsEnum
+    CollectionsGetParametersRemoteFields:
+      type: string
+      enum:
+      - collection_type
+      title: CollectionsGetParametersRemoteFields
+    PaginatedViewerList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Viewer'
+      title: PaginatedViewerList
+    EffectEnum:
+      type: string
+      enum:
+      - ALLOWED
+      - DENIED
+      - INHERITED
+      title: EffectEnum
+    CollectionsGetParametersCollectionType:
+      type: string
+      enum:
+      - ''
+      - LIST
+      - PROJECT
+      title: CollectionsGetParametersCollectionType
     Collection:
       type: object
       properties:
@@ -367,268 +629,6 @@ components:
 
         TODO'
       title: Collection
-    CollectionsGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - parent_collection
-      - permissions
-      title: CollectionsGetParametersExpandSchemaItems
-    ActionsEnum:
-      type: string
-      enum:
-      - VIEW
-      - CREATE
-      - EDIT
-      - DELETE
-      title: ActionsEnum
-    CollectionsCollectionIdViewersGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - team
-      - user
-      title: CollectionsCollectionIdViewersGetParametersExpandSchemaItems
-    CollectionsGetParametersRemoteFields:
-      type: string
-      enum:
-      - collection_type
-      title: CollectionsGetParametersRemoteFields
-    EffectEnum:
-      type: string
-      enum:
-      - ALLOWED
-      - DENIED
-      - INHERITED
-      title: EffectEnum
-    CollectionsGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - collection_type
-      title: CollectionsGetParametersShowEnumOrigins
-    CollectionFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: CollectionFieldMappings
-    CollectionsIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - parent_collection
-      - permissions
-      title: CollectionsIdGetParametersExpandSchemaItems
-    PaginatedCollectionList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Collection'
-      title: PaginatedCollectionList
-    RemoteData:
-      type: object
-      properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
-      required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
-    PaginatedViewerList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Viewer'
-      title: PaginatedViewerList
-    PermissionFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: PermissionFieldMappings
-    Permission:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        effect:
-          oneOf:
-          - $ref: '#/components/schemas/EffectEnum'
-          - type: 'null'
-          description: Outcome of this permission rule for matching users.
-        actions:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/ActionsEnum'
-          description: Operations that this permission applies to. If the entity inherits permission from a parent entity, then this should be an empty array. In that case, the entity would inherit the parent entity’s actions.
-        applied_to_users:
-          type: array
-          items:
-            type: string
-            format: uuid
-        applied_to_roles:
-          type: array
-          items:
-            type: string
-            format: uuid
-        applied_to_teams:
-          type: array
-          items:
-            type: string
-            format: uuid
-        applied_to_collections:
-          type: array
-          items:
-            type: string
-            format: uuid
-        remote_was_deleted:
-          type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-        field_mappings:
-          oneOf:
-          - $ref: '#/components/schemas/PermissionFieldMappings'
-          - type: 'null'
-      description: '# The Permission Object
-
-        ### Description
-
-        The `Permission` object is used to represent permissions that can be applied to users, roles, teams, collections, and tickets.
-
-
-        ### Usage Example
-
-        TODO'
-      title: Permission
-    CollectionsIdGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - collection_type
-      title: CollectionsIdGetParametersShowEnumOrigins
-    CollectionsIdGetParametersRemoteFields:
-      type: string
-      enum:
-      - collection_type
-      title: CollectionsIdGetParametersRemoteFields
-    Viewer:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        team:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The Team this Viewer belongs to.
-        user:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The User this Viewer belongs to.
-      description: '# The Viewer Object
-
-        ### Description
-
-        The `Viewer` object is used to represent a User or Team within a company.
-
-
-        ### Usage Example
-
-        TODO'
-      title: Viewer
-    CollectionAccessLevelEnum:
-      type: string
-      enum:
-      - PRIVATE
-      - COMPANY
-      - PUBLIC
-      - PARENT_COLLECTION
-      title: CollectionAccessLevelEnum
-    CollectionsGetParametersCollectionType:
-      type: string
-      enum:
-      - ''
-      - LIST
-      - PROJECT
-      title: CollectionsGetParametersCollectionType
-    CollectionTypeEnum:
-      type: string
-      enum:
-      - LIST
-      - PROJECT
-      title: CollectionTypeEnum
   securitySchemes:
     tokenAuth:
       type: http

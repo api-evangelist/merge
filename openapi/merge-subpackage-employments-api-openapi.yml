@@ -199,18 +199,50 @@ paths:
                 $ref: '#/components/schemas/Employment'
 components:
   schemas:
-    EmploymentFieldMappings:
+    EmploymentTypeEnum:
+      type: string
+      enum:
+      - FULL_TIME
+      - PART_TIME
+      - INTERN
+      - CONTRACTOR
+      - FREELANCE
+      title: EmploymentTypeEnum
+    EmploymentsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - employee
+      - pay_group
+      title: EmploymentsGetParametersExpandSchemaItems
+    RemoteData:
       type: object
       properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: EmploymentFieldMappings
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    FlsaStatusEnum:
+      type: string
+      enum:
+      - EXEMPT
+      - SALARIED_NONEXEMPT
+      - NONEXEMPT
+      - OWNER
+      title: FlsaStatusEnum
     PayCurrencyEnum:
       type: string
       enum:
@@ -522,12 +554,135 @@ components:
       - ZWL
       description: The currency code in ISO 4217 format.
       title: PayCurrencyEnum
+    EmploymentsIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - employment_type
+      - employment_type,flsa_status
+      - employment_type,flsa_status,pay_frequency
+      - employment_type,flsa_status,pay_frequency,pay_period
+      - employment_type,flsa_status,pay_period
+      - employment_type,pay_frequency
+      - employment_type,pay_frequency,pay_period
+      - employment_type,pay_period
+      - flsa_status
+      - flsa_status,pay_frequency
+      - flsa_status,pay_frequency,pay_period
+      - flsa_status,pay_period
+      - pay_frequency
+      - pay_frequency,pay_period
+      - pay_period
+      title: EmploymentsIdGetParametersShowEnumOrigins
     EmploymentsIdGetParametersExpandSchemaItems:
       type: string
       enum:
       - employee
       - pay_group
       title: EmploymentsIdGetParametersExpandSchemaItems
+    PaginatedEmploymentList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Employment'
+      title: PaginatedEmploymentList
+    EmploymentFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: EmploymentFieldMappings
+    EmploymentsGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - employment_type
+      - employment_type,flsa_status
+      - employment_type,flsa_status,pay_frequency
+      - employment_type,flsa_status,pay_frequency,pay_period
+      - employment_type,flsa_status,pay_period
+      - employment_type,pay_frequency
+      - employment_type,pay_frequency,pay_period
+      - employment_type,pay_period
+      - flsa_status
+      - flsa_status,pay_frequency
+      - flsa_status,pay_frequency,pay_period
+      - flsa_status,pay_period
+      - pay_frequency
+      - pay_frequency,pay_period
+      - pay_period
+      title: EmploymentsGetParametersShowEnumOrigins
+    EmploymentsGetParametersRemoteFields:
+      type: string
+      enum:
+      - employment_type
+      - employment_type,flsa_status
+      - employment_type,flsa_status,pay_frequency
+      - employment_type,flsa_status,pay_frequency,pay_period
+      - employment_type,flsa_status,pay_period
+      - employment_type,pay_frequency
+      - employment_type,pay_frequency,pay_period
+      - employment_type,pay_period
+      - flsa_status
+      - flsa_status,pay_frequency
+      - flsa_status,pay_frequency,pay_period
+      - flsa_status,pay_period
+      - pay_frequency
+      - pay_frequency,pay_period
+      - pay_period
+      title: EmploymentsGetParametersRemoteFields
+    EmploymentsGetParametersOrderBy:
+      type: string
+      enum:
+      - -effective_date
+      - effective_date
+      title: EmploymentsGetParametersOrderBy
+    PayPeriodEnum:
+      type: string
+      enum:
+      - HOUR
+      - DAY
+      - WEEK
+      - EVERY_TWO_WEEKS
+      - SEMIMONTHLY
+      - MONTH
+      - QUARTER
+      - EVERY_SIX_MONTHS
+      - YEAR
+      title: PayPeriodEnum
+    EmploymentsIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - employment_type
+      - employment_type,flsa_status
+      - employment_type,flsa_status,pay_frequency
+      - employment_type,flsa_status,pay_frequency,pay_period
+      - employment_type,flsa_status,pay_period
+      - employment_type,pay_frequency
+      - employment_type,pay_frequency,pay_period
+      - employment_type,pay_period
+      - flsa_status
+      - flsa_status,pay_frequency
+      - flsa_status,pay_frequency,pay_period
+      - flsa_status,pay_period
+      - pay_frequency
+      - pay_frequency,pay_period
+      - pay_period
+      title: EmploymentsIdGetParametersRemoteFields
     Employment:
       type: object
       properties:
@@ -628,161 +783,6 @@ components:
 
         Fetch from the `LIST Employments` endpoint and filter by `ID` to show all employees.'
       title: Employment
-    EmploymentsIdGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - employment_type
-      - employment_type,flsa_status
-      - employment_type,flsa_status,pay_frequency
-      - employment_type,flsa_status,pay_frequency,pay_period
-      - employment_type,flsa_status,pay_period
-      - employment_type,pay_frequency
-      - employment_type,pay_frequency,pay_period
-      - employment_type,pay_period
-      - flsa_status
-      - flsa_status,pay_frequency
-      - flsa_status,pay_frequency,pay_period
-      - flsa_status,pay_period
-      - pay_frequency
-      - pay_frequency,pay_period
-      - pay_period
-      title: EmploymentsIdGetParametersShowEnumOrigins
-    EmploymentsGetParametersOrderBy:
-      type: string
-      enum:
-      - -effective_date
-      - effective_date
-      title: EmploymentsGetParametersOrderBy
-    PaginatedEmploymentList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Employment'
-      title: PaginatedEmploymentList
-    EmploymentsGetParametersRemoteFields:
-      type: string
-      enum:
-      - employment_type
-      - employment_type,flsa_status
-      - employment_type,flsa_status,pay_frequency
-      - employment_type,flsa_status,pay_frequency,pay_period
-      - employment_type,flsa_status,pay_period
-      - employment_type,pay_frequency
-      - employment_type,pay_frequency,pay_period
-      - employment_type,pay_period
-      - flsa_status
-      - flsa_status,pay_frequency
-      - flsa_status,pay_frequency,pay_period
-      - flsa_status,pay_period
-      - pay_frequency
-      - pay_frequency,pay_period
-      - pay_period
-      title: EmploymentsGetParametersRemoteFields
-    EmploymentsIdGetParametersRemoteFields:
-      type: string
-      enum:
-      - employment_type
-      - employment_type,flsa_status
-      - employment_type,flsa_status,pay_frequency
-      - employment_type,flsa_status,pay_frequency,pay_period
-      - employment_type,flsa_status,pay_period
-      - employment_type,pay_frequency
-      - employment_type,pay_frequency,pay_period
-      - employment_type,pay_period
-      - flsa_status
-      - flsa_status,pay_frequency
-      - flsa_status,pay_frequency,pay_period
-      - flsa_status,pay_period
-      - pay_frequency
-      - pay_frequency,pay_period
-      - pay_period
-      title: EmploymentsIdGetParametersRemoteFields
-    EmploymentsGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - employee
-      - pay_group
-      title: EmploymentsGetParametersExpandSchemaItems
-    EmploymentsGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - employment_type
-      - employment_type,flsa_status
-      - employment_type,flsa_status,pay_frequency
-      - employment_type,flsa_status,pay_frequency,pay_period
-      - employment_type,flsa_status,pay_period
-      - employment_type,pay_frequency
-      - employment_type,pay_frequency,pay_period
-      - employment_type,pay_period
-      - flsa_status
-      - flsa_status,pay_frequency
-      - flsa_status,pay_frequency,pay_period
-      - flsa_status,pay_period
-      - pay_frequency
-      - pay_frequency,pay_period
-      - pay_period
-      title: EmploymentsGetParametersShowEnumOrigins
-    EmploymentTypeEnum:
-      type: string
-      enum:
-      - FULL_TIME
-      - PART_TIME
-      - INTERN
-      - CONTRACTOR
-      - FREELANCE
-      title: EmploymentTypeEnum
-    PayPeriodEnum:
-      type: string
-      enum:
-      - HOUR
-      - DAY
-      - WEEK
-      - EVERY_TWO_WEEKS
-      - SEMIMONTHLY
-      - MONTH
-      - QUARTER
-      - EVERY_SIX_MONTHS
-      - YEAR
-      title: PayPeriodEnum
-    RemoteData:
-      type: object
-      properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
-      required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
-    FlsaStatusEnum:
-      type: string
-      enum:
-      - EXEMPT
-      - SALARIED_NONEXEMPT
-      - NONEXEMPT
-      - OWNER
-      title: FlsaStatusEnum
     PayFrequencyEnum:
       type: string
       enum:

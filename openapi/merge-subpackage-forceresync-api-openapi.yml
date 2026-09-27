@@ -49,7 +49,7 @@ paths:
     - url: https://api-ap.merge.dev/api
   /ats/v1/sync-status/resync:
     post:
-      operationId: sync-status-resync-create
+      operationId: postAtsV1SyncStatusResync
       summary: Sync Status Resync Create
       description: Force re-sync of all models. This endpoint is available for monthly, quarterly, and highest sync frequency customers on the Professional or Enterprise plans. Doing so will consume a sync credit for the relevant linked account. Force re-syncs can also be triggered manually in the Merge Dashboard and is available for all customers.
       tags:
@@ -76,13 +76,15 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/SyncStatus'
+      x-operation-id-source: normalized
+      x-operation-id-original: sync-status-resync-create
     servers:
     - url: https://api.merge.dev/api
     - url: https://api-eu.merge.dev/api
     - url: https://api-ap.merge.dev/api
   /sync-status/resync:
     post:
-      operationId: sync-status-resync-create
+      operationId: postSyncStatusResync
       summary: Sync Status Resync Create
       description: Force re-sync of all models. This endpoint is available for monthly, quarterly, and highest sync frequency customers on the Professional or Enterprise plans. Doing so will consume a sync credit for the relevant linked account. Force re-syncs can also be triggered manually in the Merge Dashboard and is available for all customers.
       tags:
@@ -109,13 +111,15 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/SyncStatus'
+      x-operation-id-source: normalized
+      x-operation-id-original: sync-status-resync-create
     servers:
     - url: https://api.merge.dev/api/chat/v1
     - url: https://api-eu.merge.dev/api/chat/v1
     - url: https://api-ap.merge.dev/api/chat/v1
   /crm/v1/sync-status/resync:
     post:
-      operationId: sync-status-resync-create
+      operationId: postCrmV1SyncStatusResync
       summary: Sync Status Resync Create
       description: Force re-sync of all models. This endpoint is available for monthly, quarterly, and highest sync frequency customers on the Professional or Enterprise plans. Doing so will consume a sync credit for the relevant linked account. Force re-syncs can also be triggered manually in the Merge Dashboard and is available for all customers.
       tags:
@@ -142,13 +146,15 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/SyncStatus'
+      x-operation-id-source: normalized
+      x-operation-id-original: sync-status-resync-create
     servers:
     - url: https://api.merge.dev/api
     - url: https://api-eu.merge.dev/api
     - url: https://api-ap.merge.dev/api
   /filestorage/v1/sync-status/resync:
     post:
-      operationId: sync-status-resync-create
+      operationId: postFilestorageV1SyncStatusResync
       summary: Sync Status Resync Create
       description: Force re-sync of all models. This endpoint is available for monthly, quarterly, and highest sync frequency customers on the Professional or Enterprise plans. Doing so will consume a sync credit for the relevant linked account. Force re-syncs can also be triggered manually in the Merge Dashboard and is available for all customers.
       tags:
@@ -175,13 +181,15 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/SyncStatus'
+      x-operation-id-source: normalized
+      x-operation-id-original: sync-status-resync-create
     servers:
     - url: https://api.merge.dev/api
     - url: https://api-eu.merge.dev/api
     - url: https://api-ap.merge.dev/api
   /hris/v1/sync-status/resync:
     post:
-      operationId: sync-status-resync-create
+      operationId: postHrisV1SyncStatusResync
       summary: Sync Status Resync Create
       description: Force re-sync of all models. This endpoint is available for monthly, quarterly, and highest sync frequency customers on the Professional or Enterprise plans. Doing so will consume a sync credit for the relevant linked account. Force re-syncs can also be triggered manually in the Merge Dashboard and is available for all customers.
       tags:
@@ -208,13 +216,15 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/SyncStatus'
+      x-operation-id-source: normalized
+      x-operation-id-original: sync-status-resync-create
     servers:
     - url: https://api.merge.dev/api
     - url: https://api-eu.merge.dev/api
     - url: https://api-ap.merge.dev/api
   /knowledgebase/v1/sync-status/resync:
     post:
-      operationId: sync-status-resync-create
+      operationId: postKnowledgebaseV1SyncStatusResync
       summary: Sync Status Resync Create
       description: Force re-sync of all models. This endpoint is available for monthly, quarterly, and highest sync frequency customers on the Professional or Enterprise plans. Doing so will consume a sync credit for the relevant linked account. Force re-syncs can also be triggered manually in the Merge Dashboard and is available for all customers.
       tags:
@@ -241,6 +251,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/SyncStatus'
+      x-operation-id-source: normalized
+      x-operation-id-original: sync-status-resync-create
     servers:
     - url: https://api.merge.dev/api
     - url: https://api-eu.merge.dev/api
@@ -248,7 +260,7 @@ paths:
     - url: https://api-ap.merge.dev/api/knowledgebase/v1
   /ticketing/v1/sync-status/resync:
     post:
-      operationId: sync-status-resync-create
+      operationId: postTicketingV1SyncStatusResync
       summary: Sync Status Resync Create
       description: Force re-sync of all models. This endpoint is available for monthly, quarterly, and highest sync frequency customers on the Professional or Enterprise plans. Doing so will consume a sync credit for the relevant linked account. Force re-syncs can also be triggered manually in the Merge Dashboard and is available for all customers.
       tags:
@@ -275,22 +287,14 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/SyncStatus'
+      x-operation-id-source: normalized
+      x-operation-id-original: sync-status-resync-create
     servers:
     - url: https://api.merge.dev/api
     - url: https://api-eu.merge.dev/api
     - url: https://api-ap.merge.dev/api
 components:
   schemas:
-    StatusFd5Enum:
-      type: string
-      enum:
-      - SYNCING
-      - DONE
-      - FAILED
-      - DISABLED
-      - PAUSED
-      - PARTIALLY_SYNCED
-      title: StatusFd5Enum
     LastSyncResultEnum:
       type: string
       enum:
@@ -301,12 +305,16 @@ components:
       - PAUSED
       - PARTIALLY_SYNCED
       title: LastSyncResultEnum
-    SelectiveSyncConfigurationsUsageEnum:
+    StatusFd5Enum:
       type: string
       enum:
-      - IN_NEXT_SYNC
-      - IN_LAST_SYNC
-      title: SelectiveSyncConfigurationsUsageEnum
+      - SYNCING
+      - DONE
+      - FAILED
+      - DISABLED
+      - PAUSED
+      - PARTIALLY_SYNCED
+      title: StatusFd5Enum
     SyncStatus:
       type: object
       properties:
@@ -347,27 +355,12 @@ components:
 
         View the `SyncStatus` for an account to see how recently its models were synced.'
       title: SyncStatus
-    StatusFd5Enum_2:
+    SelectiveSyncConfigurationsUsageEnum:
       type: string
       enum:
-      - SYNCING
-      - DONE
-      - FAILED
-      - DISABLED
-      - PAUSED
-      - PARTIALLY_SYNCED
-      description: '* `SYNCING` - SYNCING
-
-        * `DONE` - DONE
-
-        * `FAILED` - FAILED
-
-        * `DISABLED` - DISABLED
-
-        * `PAUSED` - PAUSED
-
-        * `PARTIALLY_SYNCED` - PARTIALLY_SYNCED'
-      title: StatusFd5Enum
+      - IN_NEXT_SYNC
+      - IN_LAST_SYNC
+      title: SelectiveSyncConfigurationsUsageEnum
     LastSyncResultEnum_2:
       type: string
       enum:
@@ -389,6 +382,27 @@ components:
 
         * `PARTIALLY_SYNCED` - PARTIALLY_SYNCED'
       title: LastSyncResultEnum
+    StatusFd5Enum_2:
+      type: string
+      enum:
+      - SYNCING
+      - DONE
+      - FAILED
+      - DISABLED
+      - PAUSED
+      - PARTIALLY_SYNCED
+      description: '* `SYNCING` - SYNCING
+
+        * `DONE` - DONE
+
+        * `FAILED` - FAILED
+
+        * `DISABLED` - DISABLED
+
+        * `PAUSED` - PAUSED
+
+        * `PARTIALLY_SYNCED` - PARTIALLY_SYNCED'
+      title: StatusFd5Enum
     SelectiveSyncConfigurationsUsageEnum_2:
       type: string
       enum:

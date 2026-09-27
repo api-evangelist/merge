@@ -208,30 +208,6 @@ paths:
                 $ref: '#/components/schemas/Offer'
 components:
   schemas:
-    OfferStatusEnum:
-      type: string
-      enum:
-      - DRAFT
-      - APPROVAL-SENT
-      - APPROVED
-      - SENT
-      - SENT-MANUALLY
-      - OPENED
-      - DENIED
-      - SIGNED
-      - DEPRECATED
-      title: OfferStatusEnum
-    OffersIdGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - status
-      title: OffersIdGetParametersShowEnumOrigins
-    OffersIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - application
-      - creator
-      title: OffersIdGetParametersExpandSchemaItems
     OffersGetParametersStatus:
       type: string
       enum:
@@ -245,12 +221,72 @@ components:
       - SENT-MANUALLY
       - SIGNED
       title: OffersGetParametersStatus
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
     OffersGetParametersExpandSchemaItems:
       type: string
       enum:
       - application
       - creator
       title: OffersGetParametersExpandSchemaItems
+    OfferStatusEnum:
+      type: string
+      enum:
+      - DRAFT
+      - APPROVAL-SENT
+      - APPROVED
+      - SENT
+      - SENT-MANUALLY
+      - OPENED
+      - DENIED
+      - SIGNED
+      - DEPRECATED
+      title: OfferStatusEnum
+    OffersGetParametersRemoteFields:
+      type: string
+      enum:
+      - status
+      title: OffersGetParametersRemoteFields
+    OffersIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - status
+      title: OffersIdGetParametersShowEnumOrigins
+    PaginatedOfferList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Offer'
+      title: PaginatedOfferList
     Offer:
       type: object
       properties:
@@ -334,27 +370,22 @@ components:
 
         Fetch from the `LIST Offers` endpoint and filter by `ID` to show all offers.'
       title: Offer
-    PaginatedOfferList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Offer'
-      title: PaginatedOfferList
-    OffersGetParametersRemoteFields:
+    OffersIdGetParametersRemoteFields:
       type: string
       enum:
       - status
-      title: OffersGetParametersRemoteFields
+      title: OffersIdGetParametersRemoteFields
+    OffersIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - application
+      - creator
+      title: OffersIdGetParametersExpandSchemaItems
+    OffersGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - status
+      title: OffersGetParametersShowEnumOrigins
     OfferFieldMappings:
       type: object
       properties:
@@ -367,37 +398,6 @@ components:
           additionalProperties:
             description: Any type
       title: OfferFieldMappings
-    RemoteData:
-      type: object
-      properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
-      required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
-    OffersGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - status
-      title: OffersGetParametersShowEnumOrigins
-    OffersIdGetParametersRemoteFields:
-      type: string
-      enum:
-      - status
-      title: OffersIdGetParametersRemoteFields
   securitySchemes:
     tokenAuth:
       type: http

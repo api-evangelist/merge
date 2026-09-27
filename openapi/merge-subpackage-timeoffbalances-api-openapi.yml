@@ -202,6 +202,58 @@ paths:
                 $ref: '#/components/schemas/TimeOffBalance'
 components:
   schemas:
+    TimeOffBalancesGetParametersRemoteFields:
+      type: string
+      enum:
+      - policy_type
+      title: TimeOffBalancesGetParametersRemoteFields
+    TimeOffBalancesIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - policy_type
+      title: TimeOffBalancesIdGetParametersShowEnumOrigins
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    PaginatedTimeOffBalanceList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimeOffBalance'
+      title: PaginatedTimeOffBalanceList
+    TimeOffBalancesIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - policy_type
+      title: TimeOffBalancesIdGetParametersRemoteFields
     TimeOffBalance:
       type: object
       properties:
@@ -273,6 +325,21 @@ components:
       enum:
       - employee
       title: TimeOffBalancesIdGetParametersExpandSchemaItems
+    PolicyTypeEnum:
+      type: string
+      enum:
+      - VACATION
+      - SICK
+      - PERSONAL
+      - JURY_DUTY
+      - VOLUNTEER
+      - BEREAVEMENT
+      title: PolicyTypeEnum
+    TimeOffBalancesGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - policy_type
+      title: TimeOffBalancesGetParametersShowEnumOrigins
     TimeOffBalanceFieldMappings:
       type: object
       properties:
@@ -300,73 +367,6 @@ components:
       - VACATION
       - VOLUNTEER
       title: TimeOffBalancesGetParametersPolicyType
-    PolicyTypeEnum:
-      type: string
-      enum:
-      - VACATION
-      - SICK
-      - PERSONAL
-      - JURY_DUTY
-      - VOLUNTEER
-      - BEREAVEMENT
-      title: PolicyTypeEnum
-    TimeOffBalancesIdGetParametersRemoteFields:
-      type: string
-      enum:
-      - policy_type
-      title: TimeOffBalancesIdGetParametersRemoteFields
-    RemoteData:
-      type: object
-      properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
-      required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
-    PaginatedTimeOffBalanceList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/TimeOffBalance'
-      title: PaginatedTimeOffBalanceList
-    TimeOffBalancesIdGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - policy_type
-      title: TimeOffBalancesIdGetParametersShowEnumOrigins
-    TimeOffBalancesGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - policy_type
-      title: TimeOffBalancesGetParametersShowEnumOrigins
-    TimeOffBalancesGetParametersRemoteFields:
-      type: string
-      enum:
-      - policy_type
-      title: TimeOffBalancesGetParametersRemoteFields
   securitySchemes:
     tokenAuth:
       type: http

@@ -147,6 +147,22 @@ paths:
                 $ref: '#/components/schemas/PayGroup'
 components:
   schemas:
+    PaginatedPayGroupList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PayGroup'
+      title: PaginatedPayGroupList
     RemoteData:
       type: object
       properties:
@@ -168,18 +184,6 @@ components:
 
         TODO'
       title: RemoteData
-    PayGroupFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: PayGroupFieldMappings
     PayGroup:
       type: object
       properties:
@@ -228,22 +232,18 @@ components:
 
         Fetch from the `LIST PayGroup` endpoint and filter by `ID` to show all pay group information.'
       title: PayGroup
-    PaginatedPayGroupList:
+    PayGroupFieldMappings:
       type: object
       properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/PayGroup'
-      title: PaginatedPayGroupList
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: PayGroupFieldMappings
   securitySchemes:
     tokenAuth:
       type: http

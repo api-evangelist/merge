@@ -257,7 +257,67 @@ paths:
                 $ref: '#/components/schemas/MetaResponse'
 components:
   schemas:
-    ErrorValidationProblem:
+    CardinalityEnum:
+      type: string
+      enum:
+      - ONE_TO_ONE
+      - MANY_TO_ONE
+      - MANY_TO_MANY
+      - ONE_TO_MANY
+      title: CardinalityEnum
+    ObjectClassDescriptionRequest:
+      type: object
+      properties:
+        id:
+          type: string
+        origin_type:
+          $ref: '#/components/schemas/OriginTypeEnum'
+      required:
+      - id
+      - origin_type
+      title: ObjectClassDescriptionRequest
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    AssociationSubType:
+      type: object
+      properties:
+        id:
+          type:
+          - string
+          - 'null'
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        origin_type:
+          type:
+          - string
+          - 'null'
+      title: AssociationSubType
+    OriginTypeEnum:
+      type: string
+      enum:
+      - CUSTOM_OBJECT
+      - COMMON_MODEL
+      - REMOTE_ONLY_MODEL
+      title: OriginTypeEnum
+    WarningValidationProblem:
       type: object
       properties:
         source:
@@ -278,67 +338,7 @@ components:
       - title
       - detail
       - problem_type
-      title: ErrorValidationProblem
-    DebugModelLogSummary:
-      type: object
-      properties:
-        url:
-          type: string
-        method:
-          type: string
-        status_code:
-          type: integer
-      required:
-      - url
-      - method
-      - status_code
-      title: DebugModelLogSummary
-    LinkedAccountStatus:
-      type: object
-      properties:
-        linked_account_status:
-          type: string
-        can_make_request:
-          type: boolean
-      required:
-      - linked_account_status
-      - can_make_request
-      title: LinkedAccountStatus
-    ValidationProblemSource:
-      type: object
-      properties:
-        pointer:
-          type: string
-      required:
-      - pointer
-      title: ValidationProblemSource
-    CRMAssociationTypeResponse:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/AssociationType'
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/WarningValidationProblem'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorValidationProblem'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/DebugModeLog'
-      required:
-      - model
-      - warnings
-      - errors
-      title: CRMAssociationTypeResponse
-    CustomObjectClassesCustomObjectClassIdAssociationTypesGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - target_object_classes
-      title: CustomObjectClassesCustomObjectClassIdAssociationTypesGetParametersExpandSchemaItems
+      title: WarningValidationProblem
     AssociationTypeRequestRequest:
       type: object
       properties:
@@ -362,7 +362,37 @@ components:
       - target_object_classes
       - remote_key_name
       title: AssociationTypeRequestRequest
-    WarningValidationProblem:
+    CRMAssociationTypeResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/AssociationType'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: CRMAssociationTypeResponse
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    ErrorValidationProblem:
       type: object
       properties:
         source:
@@ -383,15 +413,12 @@ components:
       - title
       - detail
       - problem_type
-      title: WarningValidationProblem
-    CardinalityEnum:
+      title: ErrorValidationProblem
+    CustomObjectClassesCustomObjectClassIdAssociationTypesGetParametersExpandSchemaItems:
       type: string
       enum:
-      - ONE_TO_ONE
-      - MANY_TO_ONE
-      - MANY_TO_MANY
-      - ONE_TO_MANY
-      title: CardinalityEnum
+      - target_object_classes
+      title: CustomObjectClassesCustomObjectClassIdAssociationTypesGetParametersExpandSchemaItems
     AssociationType:
       type: object
       properties:
@@ -444,68 +471,6 @@ components:
 
         TODO'
       title: AssociationType
-    PaginatedAssociationTypeList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/AssociationType'
-      title: PaginatedAssociationTypeList
-    OriginTypeEnum:
-      type: string
-      enum:
-      - CUSTOM_OBJECT
-      - COMMON_MODEL
-      - REMOTE_ONLY_MODEL
-      title: OriginTypeEnum
-    CRMAssociationTypeEndpointRequest:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/AssociationTypeRequestRequest'
-      required:
-      - model
-      title: CRMAssociationTypeEndpointRequest
-    ObjectClassDescriptionRequest:
-      type: object
-      properties:
-        id:
-          type: string
-        origin_type:
-          $ref: '#/components/schemas/OriginTypeEnum'
-      required:
-      - id
-      - origin_type
-      title: ObjectClassDescriptionRequest
-    AssociationSubType:
-      type: object
-      properties:
-        id:
-          type:
-          - string
-          - 'null'
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        origin_type:
-          type:
-          - string
-          - 'null'
-      title: AssociationSubType
     DebugModeLog:
       type: object
       properties:
@@ -520,11 +485,6 @@ components:
       - dashboard_view
       - log_summary
       title: DebugModeLog
-    CustomObjectClassesCustomObjectClassIdAssociationTypesIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - target_object_classes
-      title: CustomObjectClassesCustomObjectClassIdAssociationTypesIdGetParametersExpandSchemaItems
     MetaResponse:
       type: object
       properties:
@@ -549,6 +509,46 @@ components:
       - has_conditional_params
       - has_required_linked_account_params
       title: MetaResponse
+    CustomObjectClassesCustomObjectClassIdAssociationTypesIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - target_object_classes
+      title: CustomObjectClassesCustomObjectClassIdAssociationTypesIdGetParametersExpandSchemaItems
+    CRMAssociationTypeEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/AssociationTypeRequestRequest'
+      required:
+      - model
+      title: CRMAssociationTypeEndpointRequest
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    PaginatedAssociationTypeList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssociationType'
+      title: PaginatedAssociationTypeList
   securitySchemes:
     tokenAuth:
       type: http

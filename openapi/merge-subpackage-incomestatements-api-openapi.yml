@@ -169,6 +169,221 @@ paths:
                 $ref: '#/components/schemas/IncomeStatement'
 components:
   schemas:
+    IncomeStatementsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - company
+      title: IncomeStatementsIdGetParametersExpandSchemaItems
+    IncomeStatementFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: IncomeStatementFieldMappings
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    IncomeStatement:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The income statement's name.
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: The income statement's currency. The currency code in ISO 4217 format.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the income statement belongs to.
+        start_period:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The income statement's start period.
+        end_period:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The income statement's end period.
+        income:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportItem'
+        cost_of_sales:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportItem'
+        gross_profit:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The revenue minus the cost of sale.
+        operating_expenses:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportItem'
+        net_operating_income:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The revenue minus the operating expenses.
+        non_operating_expenses:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportItem'
+        net_income:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The gross profit minus the total expenses.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/IncomeStatementFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The IncomeStatement Object
+
+        ### Description
+
+        The `IncomeStatement` object is used to represent a company’s income, the cost of sales, operating expenses, and other non-operating expenses. The object also includes other important values like gross profit, gross operating profit, and net income. This represents a period of time (month, quarter, or year).
+
+
+        ### Usage Example
+
+        Fetch from the `GET IncomeStatement` endpoint and view a company''s income statement for a given period.'
+      title: IncomeStatement
+    PaginatedIncomeStatementList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/IncomeStatement'
+      title: PaginatedIncomeStatementList
+    IncomeStatementsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - company
+      title: IncomeStatementsGetParametersExpandSchemaItems
+    ReportItem:
+      type: object
+      properties:
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The report item's name.
+        value:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The report item's value.
+        sub_items:
+          type: object
+          additionalProperties:
+            description: Any type
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the report item belongs to.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+      description: '# The ReportItem Object
+
+        ### Description
+
+        The `ReportItem` object is used to represent a report item for a Balance Sheet, Cash Flow Statement or Profit and Loss Report.
+
+
+        ### Usage Example
+
+        Fetch from the `GET BalanceSheet` endpoint and view the balance sheet''s report items.'
+      title: ReportItem
     TransactionCurrencyEnum:
       type: string
       enum:
@@ -480,221 +695,6 @@ components:
       - ZWL
       description: The currency code in ISO 4217 format.
       title: TransactionCurrencyEnum
-    PaginatedIncomeStatementList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/IncomeStatement'
-      title: PaginatedIncomeStatementList
-    IncomeStatement:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        name:
-          type:
-          - string
-          - 'null'
-          description: The income statement's name.
-        currency:
-          oneOf:
-          - $ref: '#/components/schemas/TransactionCurrencyEnum'
-          - type: 'null'
-          description: The income statement's currency. The currency code in ISO 4217 format.
-        company:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The company the income statement belongs to.
-        start_period:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The income statement's start period.
-        end_period:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The income statement's end period.
-        income:
-          type: array
-          items:
-            $ref: '#/components/schemas/ReportItem'
-        cost_of_sales:
-          type: array
-          items:
-            $ref: '#/components/schemas/ReportItem'
-        gross_profit:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: The revenue minus the cost of sale.
-        operating_expenses:
-          type: array
-          items:
-            $ref: '#/components/schemas/ReportItem'
-        net_operating_income:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: The revenue minus the operating expenses.
-        non_operating_expenses:
-          type: array
-          items:
-            $ref: '#/components/schemas/ReportItem'
-        net_income:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: The gross profit minus the total expenses.
-        remote_was_deleted:
-          type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-        field_mappings:
-          oneOf:
-          - $ref: '#/components/schemas/IncomeStatementFieldMappings'
-          - type: 'null'
-        remote_data:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/RemoteData'
-      description: '# The IncomeStatement Object
-
-        ### Description
-
-        The `IncomeStatement` object is used to represent a company’s income, the cost of sales, operating expenses, and other non-operating expenses. The object also includes other important values like gross profit, gross operating profit, and net income. This represents a period of time (month, quarter, or year).
-
-
-        ### Usage Example
-
-        Fetch from the `GET IncomeStatement` endpoint and view a company''s income statement for a given period.'
-      title: IncomeStatement
-    IncomeStatementsIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - company
-      title: IncomeStatementsIdGetParametersExpandSchemaItems
-    IncomeStatementFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: IncomeStatementFieldMappings
-    ReportItem:
-      type: object
-      properties:
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        name:
-          type:
-          - string
-          - 'null'
-          description: The report item's name.
-        value:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: The report item's value.
-        sub_items:
-          type: object
-          additionalProperties:
-            description: Any type
-        company:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The company the report item belongs to.
-        remote_was_deleted:
-          type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-      description: '# The ReportItem Object
-
-        ### Description
-
-        The `ReportItem` object is used to represent a report item for a Balance Sheet, Cash Flow Statement or Profit and Loss Report.
-
-
-        ### Usage Example
-
-        Fetch from the `GET BalanceSheet` endpoint and view the balance sheet''s report items.'
-      title: ReportItem
-    IncomeStatementsGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - company
-      title: IncomeStatementsGetParametersExpandSchemaItems
-    RemoteData:
-      type: object
-      properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
-      required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
   securitySchemes:
     tokenAuth:
       type: http

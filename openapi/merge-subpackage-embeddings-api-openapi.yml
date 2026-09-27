@@ -37,79 +37,6 @@ paths:
               $ref: '#/components/schemas/EmbeddingRequestSchema'
 components:
   schemas:
-    EmbeddingUsage:
-      type: object
-      properties:
-        prompt_tokens:
-          type: integer
-        total_tokens:
-          type: integer
-      required:
-      - prompt_tokens
-      - total_tokens
-      description: Token usage for embeddings.
-      title: EmbeddingUsage
-    ValidationError:
-      type: object
-      properties:
-        loc:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationErrorLocItems'
-        msg:
-          type: string
-        type:
-          type: string
-        input:
-          description: Any type
-        ctx:
-          $ref: '#/components/schemas/ValidationErrorCtx'
-      required:
-      - loc
-      - msg
-      - type
-      description: Single field-level validation error. `loc` is the JSON path to the offending field, `msg` is a human-readable explanation, and `type` is a stable machine-readable error code.
-      title: ValidationError
-    ValidationErrorCtx:
-      type: object
-      properties: {}
-      title: ValidationErrorCtx
-    HTTPValidationError:
-      type: object
-      properties:
-        detail:
-          type: array
-          items:
-            $ref: '#/components/schemas/ValidationError'
-      description: Standard FastAPI validation error wrapper. Returned with HTTP 422 when the request body or query parameters fail Pydantic validation.
-      title: HTTPValidationError
-    EmbeddingDataSchema:
-      type: object
-      properties:
-        object:
-          type: string
-          enum:
-          - embedding
-        embedding:
-          type: array
-          items:
-            type: number
-            format: double
-        index:
-          type: integer
-      required:
-      - embedding
-      - index
-      description: Single embedding result.
-      title: EmbeddingDataSchema
-    EmbeddingRequestSchemaInput:
-      oneOf:
-      - type: string
-      - type: array
-        items:
-          type: string
-      description: Text to embed
-      title: EmbeddingRequestSchemaInput
     EmbeddingResponseSchema:
       type: object
       properties:
@@ -131,6 +58,15 @@ components:
       - usage
       description: Response body for POST /v1/embeddings.
       title: EmbeddingResponseSchema
+    HTTPValidationError:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+      description: Standard FastAPI validation error wrapper. Returned with HTTP 422 when the request body or query parameters fail Pydantic validation.
+      title: HTTPValidationError
     ValidationErrorLocItems:
       oneOf:
       - type: string
@@ -160,3 +96,67 @@ components:
       - input
       description: Request body for POST /v1/embeddings.
       title: EmbeddingRequestSchema
+    EmbeddingUsage:
+      type: object
+      properties:
+        prompt_tokens:
+          type: integer
+        total_tokens:
+          type: integer
+      required:
+      - prompt_tokens
+      - total_tokens
+      description: Token usage for embeddings.
+      title: EmbeddingUsage
+    EmbeddingRequestSchemaInput:
+      oneOf:
+      - type: string
+      - type: array
+        items:
+          type: string
+      description: Text to embed
+      title: EmbeddingRequestSchemaInput
+    EmbeddingDataSchema:
+      type: object
+      properties:
+        object:
+          type: string
+          enum:
+          - embedding
+        embedding:
+          type: array
+          items:
+            type: number
+            format: double
+        index:
+          type: integer
+      required:
+      - embedding
+      - index
+      description: Single embedding result.
+      title: EmbeddingDataSchema
+    ValidationError:
+      type: object
+      properties:
+        loc:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationErrorLocItems'
+        msg:
+          type: string
+        type:
+          type: string
+        input:
+          description: Any type
+        ctx:
+          $ref: '#/components/schemas/ValidationErrorCtx'
+      required:
+      - loc
+      - msg
+      - type
+      description: Single field-level validation error. `loc` is the JSON path to the offending field, `msg` is a human-readable explanation, and `type` is a stable machine-readable error code.
+      title: ValidationError
+    ValidationErrorCtx:
+      type: object
+      properties: {}
+      title: ValidationErrorCtx
