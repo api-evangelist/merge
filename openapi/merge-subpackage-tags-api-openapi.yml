@@ -289,27 +289,6 @@ components:
           additionalProperties:
             description: Any type
       title: TagFieldMappings
-    RemoteData:
-      type: object
-      properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
-      required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
     PaginatedTagList:
       type: object
       properties:
@@ -370,6 +349,49 @@ components:
 
         Fetch from the `LIST Tags` endpoint and view the tags used within a company.'
       title: Tag
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    TagsListResponse:
+      type: object
+      properties:
+        object:
+          type: string
+          enum:
+          - list
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/TagSchema'
+        has_more:
+          type: boolean
+          default: false
+        next_cursor:
+          type:
+          - string
+          - 'null'
+      required:
+      - data
+      description: Response for GET /v1/tags.
+      title: TagsListResponse
     TagSchema:
       type: object
       properties:
@@ -407,28 +429,6 @@ components:
       - tag_value
       description: A tag available through the gateway.
       title: TagSchema
-    TagsListResponse:
-      type: object
-      properties:
-        object:
-          type: string
-          enum:
-          - list
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/TagSchema'
-        has_more:
-          type: boolean
-          default: false
-        next_cursor:
-          type:
-          - string
-          - 'null'
-      required:
-      - data
-      description: Response for GET /v1/tags.
-      title: TagsListResponse
     Tag_2:
       type: object
       properties:

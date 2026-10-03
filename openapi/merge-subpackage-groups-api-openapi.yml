@@ -745,27 +745,6 @@ paths:
     - url: https://api-ap.merge.dev/api/knowledgebase/v1
 components:
   schemas:
-    RemoteData:
-      type: object
-      properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
-      required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
     PaginatedGroupList:
       type: object
       properties:
@@ -787,23 +766,6 @@ components:
       enum:
       - users
       title: GroupsGetParametersExpandSchemaItems
-    GroupsIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - users
-      title: GroupsIdGetParametersExpandSchemaItems
-    GroupFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: GroupFieldMappings
     Group:
       type: object
       properties:
@@ -868,18 +830,50 @@ components:
 
         Fetch from the `GET /api/chat/v1/groups` endpoint and view their groups.'
       title: Group
+    GroupFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: GroupFieldMappings
+    GroupsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - users
+      title: GroupsIdGetParametersExpandSchemaItems
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
     GroupsGetParametersExpandSchemaItems_2:
       type: string
       enum:
       - child_groups
       - users
       title: GroupsGetParametersExpandSchemaItems
-    GroupsIdGetParametersExpandSchemaItems_2:
-      type: string
-      enum:
-      - child_groups
-      - users
-      title: GroupsIdGetParametersExpandSchemaItems
     Group_2:
       type: object
       properties:
@@ -941,6 +935,17 @@ components:
 
         Fetch from the `GET /api/filestorage/v1/groups` endpoint and view their groups.'
       title: Group
+    GroupsIdGetParametersExpandSchemaItems_2:
+      type: string
+      enum:
+      - child_groups
+      - users
+      title: GroupsIdGetParametersExpandSchemaItems
+    GroupsIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - type
+      title: GroupsIdGetParametersShowEnumOrigins
     groups_typesList_Response_200:
       type: object
       properties:
@@ -950,16 +955,6 @@ components:
             type: string
           description: List of distinct group types
       title: groups_typesList_Response_200
-    GroupsGetParametersExpandSchemaItems_3:
-      type: string
-      enum:
-      - parent_group
-      title: GroupsGetParametersExpandSchemaItems
-    GroupsIdGetParametersExpandSchemaItems_3:
-      type: string
-      enum:
-      - parent_group
-      title: GroupsIdGetParametersExpandSchemaItems
     GroupsGetParametersRemoteFields:
       type: string
       enum:
@@ -974,21 +969,11 @@ components:
       - BUSINESS_UNIT
       - GROUP
       title: GroupTypeEnum
-    GroupsIdGetParametersShowEnumOrigins:
+    GroupsGetParametersExpandSchemaItems_3:
       type: string
       enum:
-      - type
-      title: GroupsIdGetParametersShowEnumOrigins
-    GroupsGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - type
-      title: GroupsGetParametersShowEnumOrigins
-    GroupsIdGetParametersRemoteFields:
-      type: string
-      enum:
-      - type
-      title: GroupsIdGetParametersRemoteFields
+      - parent_group
+      title: GroupsGetParametersExpandSchemaItems
     Group_3:
       type: object
       properties:
@@ -1053,63 +1038,32 @@ components:
 
         Fetch from the `LIST Employee` endpoint and expand groups to view an employee''s groups.'
       title: Group
-    GroupFieldMappings_2:
+    GroupsIdGetParametersExpandSchemaItems_3:
+      type: string
+      enum:
+      - parent_group
+      title: GroupsIdGetParametersExpandSchemaItems
+    GroupsGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - type
+      title: GroupsGetParametersShowEnumOrigins
+    GroupsIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - type
+      title: GroupsIdGetParametersRemoteFields
+    UserFieldMappings:
       type: object
       properties: {}
-      title: GroupFieldMappings
-    GroupsGetParametersExpand:
+      title: UserFieldMappings
+    GroupsIdGetParametersExpand:
       type: string
       enum:
       - parent_group
       - users
       - users,parent_group
-      title: GroupsGetParametersExpand
-    User:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        name:
-          type:
-          - string
-          - 'null'
-          description: The user's name.
-        email_address:
-          type:
-          - string
-          - 'null'
-          description: The user's email address.
-        remote_was_deleted:
-          type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-        field_mappings:
-          oneOf:
-          - $ref: '#/components/schemas/UserFieldMappings'
-          - type: 'null'
-      description: '# The User Object
-
-        ### Description
-
-        The `User` object is used to represent a user within the Knowledge Base account.
-
-        ### Usage Example
-
-        Fetch from the `GET /api/knowledgebase/users` endpoint and view their users.'
-      title: User
+      title: GroupsIdGetParametersExpand
     Group_4:
       type: object
       properties:
@@ -1167,17 +1121,63 @@ components:
 
         Fetch from the `GET /api/knowledgebase/groups` endpoint and view their groups.'
       title: Group
-    GroupsIdGetParametersExpand:
+    GroupFieldMappings_2:
+      type: object
+      properties: {}
+      title: GroupFieldMappings
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The user's name.
+        email_address:
+          type:
+          - string
+          - 'null'
+          description: The user's email address.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/UserFieldMappings'
+          - type: 'null'
+      description: '# The User Object
+
+        ### Description
+
+        The `User` object is used to represent a user within the Knowledge Base account.
+
+        ### Usage Example
+
+        Fetch from the `GET /api/knowledgebase/users` endpoint and view their users.'
+      title: User
+    GroupsGetParametersExpand:
       type: string
       enum:
       - parent_group
       - users
       - users,parent_group
-      title: GroupsIdGetParametersExpand
-    UserFieldMappings:
-      type: object
-      properties: {}
-      title: UserFieldMappings
+      title: GroupsGetParametersExpand
   securitySchemes:
     tokenAuth:
       type: http

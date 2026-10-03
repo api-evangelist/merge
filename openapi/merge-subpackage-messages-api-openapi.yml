@@ -235,6 +235,34 @@ paths:
                 $ref: '#/components/schemas/PaginatedMessageList'
 components:
   schemas:
+    PaginatedMessageList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+      title: PaginatedMessageList
+    MessagesGetParametersOrderBy:
+      type: string
+      enum:
+      - -remote_created_at
+      - remote_created_at
+      title: MessagesGetParametersOrderBy
+    MessagesMessageIdRepliesGetParametersOrderBy:
+      type: string
+      enum:
+      - -remote_created_at
+      - remote_created_at
+      title: MessagesMessageIdRepliesGetParametersOrderBy
     Message:
       type: object
       properties:
@@ -313,34 +341,6 @@ components:
 
         Fetch from the `GET /api/chat/v1/messages` endpoint and view their message.'
       title: Message
-    MessagesGetParametersOrderBy:
-      type: string
-      enum:
-      - -remote_created_at
-      - remote_created_at
-      title: MessagesGetParametersOrderBy
-    PaginatedMessageList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Message'
-      title: PaginatedMessageList
-    MessagesMessageIdRepliesGetParametersOrderBy:
-      type: string
-      enum:
-      - -remote_created_at
-      - remote_created_at
-      title: MessagesMessageIdRepliesGetParametersOrderBy
   securitySchemes:
     tokenAuth:
       type: http

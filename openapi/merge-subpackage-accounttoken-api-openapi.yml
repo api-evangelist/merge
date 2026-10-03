@@ -534,6 +534,58 @@ paths:
     - url: https://api-ap.merge.dev/api
 components:
   schemas:
+    AccountToken:
+      type: object
+      properties:
+        account_token:
+          type: string
+        integration:
+          $ref: '#/components/schemas/AccountIntegration'
+        id:
+          type: string
+      required:
+      - account_token
+      - integration
+      - id
+      title: AccountToken
+    AccountIntegrationCategoryBetaStatus:
+      type: object
+      properties: {}
+      description: Category or categories this integration is in beta status for.
+      title: AccountIntegrationCategoryBetaStatus
+    RegenerateAccountToken:
+      type: object
+      properties:
+        linked_account_id:
+          type: string
+        account_token:
+          type: string
+      required:
+      - linked_account_id
+      - account_token
+      description: '# The RegenerateAccountToken Object
+
+        ### Description
+
+        The `RegenerateAccountToken` object is used to exchange an old account token for a new one.
+
+
+        ### Usage Example
+
+        Post to receive a new `RegenerateAccountToken`.'
+      title: RegenerateAccountToken
+    CategoriesEnum:
+      type: string
+      enum:
+      - hris
+      - ats
+      - accounting
+      - ticketing
+      - crm
+      - mktg
+      - filestorage
+      - knowledgebase
+      title: CategoriesEnum
     AccountIntegration:
       type: object
       properties:
@@ -583,58 +635,6 @@ components:
       required:
       - name
       title: AccountIntegration
-    RegenerateAccountToken:
-      type: object
-      properties:
-        linked_account_id:
-          type: string
-        account_token:
-          type: string
-      required:
-      - linked_account_id
-      - account_token
-      description: '# The RegenerateAccountToken Object
-
-        ### Description
-
-        The `RegenerateAccountToken` object is used to exchange an old account token for a new one.
-
-
-        ### Usage Example
-
-        Post to receive a new `RegenerateAccountToken`.'
-      title: RegenerateAccountToken
-    AccountToken:
-      type: object
-      properties:
-        account_token:
-          type: string
-        integration:
-          $ref: '#/components/schemas/AccountIntegration'
-        id:
-          type: string
-      required:
-      - account_token
-      - integration
-      - id
-      title: AccountToken
-    AccountIntegrationCategoryBetaStatus:
-      type: object
-      properties: {}
-      description: Category or categories this integration is in beta status for.
-      title: AccountIntegrationCategoryBetaStatus
-    CategoriesEnum:
-      type: string
-      enum:
-      - hris
-      - ats
-      - accounting
-      - ticketing
-      - crm
-      - mktg
-      - filestorage
-      - knowledgebase
-      title: CategoriesEnum
     CategoriesEnum_2:
       type: string
       enum:

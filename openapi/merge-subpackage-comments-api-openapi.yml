@@ -246,6 +246,110 @@ paths:
                 $ref: '#/components/schemas/MetaResponse'
 components:
   schemas:
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    CommentRequest:
+      type: object
+      properties:
+        user:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The author of the Comment, if the author is a User. If the third party does not support specifying an author, we will append "[Posted on behalf of {name}]" to the comment.
+        contact:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The author of the Comment, if the author is a Contact.If the third party does not support specifying an author, we will append "[Posted on behalf of {name}]" to the comment.
+        body:
+          type:
+          - string
+          - 'null'
+          description: The comment's text body.
+        html_body:
+          type:
+          - string
+          - 'null'
+          description: The comment's text body formatted as html.
+        ticket:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: 'The ticket associated with the comment. '
+        is_private:
+          type:
+          - boolean
+          - 'null'
+          description: Whether or not the comment is internal.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The Comment Object
+
+        ### Description
+
+        The `Comment` object is used to represent a comment on a ticket.
+
+
+        ### Usage Example
+
+        TODO'
+      title: CommentRequest
+    CommentFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: CommentFieldMappings
     CommentsGetParametersExpandSchemaItems:
       type: string
       enum:
@@ -253,27 +357,83 @@ components:
       - ticket
       - user
       title: CommentsGetParametersExpandSchemaItems
-    RemoteData:
+    PaginatedCommentList:
       type: object
       properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Comment'
+      title: PaginatedCommentList
+    CommentEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/CommentRequest'
       required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
+      - model
+      title: CommentEndpointRequest
+    CommentsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - contact
+      - ticket
+      - user
+      title: CommentsIdGetParametersExpandSchemaItems
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
     Comment:
       type: object
       properties:
@@ -356,6 +516,41 @@ components:
 
         TODO'
       title: Comment
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
     CommentResponse:
       type: object
       properties:
@@ -378,107 +573,6 @@ components:
       - warnings
       - errors
       title: CommentResponse
-    DebugModelLogSummary:
-      type: object
-      properties:
-        url:
-          type: string
-        method:
-          type: string
-        status_code:
-          type: integer
-      required:
-      - url
-      - method
-      - status_code
-      title: DebugModelLogSummary
-    CommentsIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - contact
-      - ticket
-      - user
-      title: CommentsIdGetParametersExpandSchemaItems
-    CommentFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: CommentFieldMappings
-    ValidationProblemSource:
-      type: object
-      properties:
-        pointer:
-          type: string
-      required:
-      - pointer
-      title: ValidationProblemSource
-    WarningValidationProblem:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
-          type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
-      required:
-      - title
-      - detail
-      - problem_type
-      title: WarningValidationProblem
-    PaginatedCommentList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Comment'
-      title: PaginatedCommentList
-    CommentEndpointRequest:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/CommentRequest'
-      required:
-      - model
-      title: CommentEndpointRequest
-    DebugModeLog:
-      type: object
-      properties:
-        log_id:
-          type: string
-        dashboard_view:
-          type: string
-        log_summary:
-          $ref: '#/components/schemas/DebugModelLogSummary'
-      required:
-      - log_id
-      - dashboard_view
-      - log_summary
-      title: DebugModeLog
     ErrorValidationProblem:
       type: object
       properties:
@@ -501,100 +595,6 @@ components:
       - detail
       - problem_type
       title: ErrorValidationProblem
-    MetaResponse:
-      type: object
-      properties:
-        request_schema:
-          type: object
-          additionalProperties:
-            description: Any type
-        status:
-          $ref: '#/components/schemas/LinkedAccountStatus'
-        has_conditional_params:
-          type: boolean
-        has_required_linked_account_params:
-          type: boolean
-        remote_fields:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: Remote field values to populate
-      required:
-      - request_schema
-      - has_conditional_params
-      - has_required_linked_account_params
-      title: MetaResponse
-    CommentRequest:
-      type: object
-      properties:
-        user:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The author of the Comment, if the author is a User. If the third party does not support specifying an author, we will append "[Posted on behalf of {name}]" to the comment.
-        contact:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The author of the Comment, if the author is a Contact.If the third party does not support specifying an author, we will append "[Posted on behalf of {name}]" to the comment.
-        body:
-          type:
-          - string
-          - 'null'
-          description: The comment's text body.
-        html_body:
-          type:
-          - string
-          - 'null'
-          description: The comment's text body formatted as html.
-        ticket:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: 'The ticket associated with the comment. '
-        is_private:
-          type:
-          - boolean
-          - 'null'
-          description: Whether or not the comment is internal.
-        integration_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        linked_account_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-      description: '# The Comment Object
-
-        ### Description
-
-        The `Comment` object is used to represent a comment on a ticket.
-
-
-        ### Usage Example
-
-        TODO'
-      title: CommentRequest
-    LinkedAccountStatus:
-      type: object
-      properties:
-        linked_account_status:
-          type: string
-        can_make_request:
-          type: boolean
-      required:
-      - linked_account_status
-      - can_make_request
-      title: LinkedAccountStatus
   securitySchemes:
     tokenAuth:
       type: http

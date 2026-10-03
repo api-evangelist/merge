@@ -273,6 +273,50 @@ paths:
                 $ref: '#/components/schemas/MetaResponse'
 components:
   schemas:
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    TimesheetEntriesGetParametersOrderBy:
+      type: string
+      enum:
+      - -start_time
+      - start_time
+      title: TimesheetEntriesGetParametersOrderBy
+    TimesheetEntriesGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - employee
+      title: TimesheetEntriesGetParametersExpandSchemaItems
     TimesheetEntryResponse:
       type: object
       properties:
@@ -295,49 +339,134 @@ components:
       - warnings
       - errors
       title: TimesheetEntryResponse
-    RemoteData:
+    TimesheetEntry:
       type: object
       properties:
-        path:
+        id:
           type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
-      required:
-      - path
-      description: '# The RemoteData Object
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        employee:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The employee the timesheet entry is for.
+        hours_worked:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The number of hours logged by the employee.
+        start_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The time at which the employee started work.
+        end_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The time at which the employee ended work.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/TimesheetEntryFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The Timesheet Entry Object
 
         ### Description
 
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+        The `Timesheet Entry` object is used to track coverage for hours worked by an ''Employee''.
+
 
 
         ### Usage Example
 
-        TODO'
-      title: RemoteData
-    DebugModelLogSummary:
+        GET and POST Timesheet Entries'
+      title: TimesheetEntry
+    PaginatedTimesheetEntryList:
       type: object
       properties:
-        url:
-          type: string
-        method:
-          type: string
-        status_code:
-          type: integer
-      required:
-      - url
-      - method
-      - status_code
-      title: DebugModelLogSummary
-    ValidationProblemSource:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimesheetEntry'
+      title: PaginatedTimesheetEntryList
+    TimesheetEntryEndpointRequest:
       type: object
       properties:
-        pointer:
-          type: string
+        model:
+          $ref: '#/components/schemas/TimesheetEntryRequest'
       required:
-      - pointer
-      title: ValidationProblemSource
+      - model
+      title: TimesheetEntryEndpointRequest
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    TimesheetEntryFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: TimesheetEntryFieldMappings
     WarningValidationProblem:
       type: object
       properties:
@@ -411,20 +540,46 @@ components:
 
         GET and POST Timesheet Entries'
       title: TimesheetEntryRequest
-    DebugModeLog:
+    DebugModelLogSummary:
       type: object
       properties:
-        log_id:
+        url:
           type: string
-        dashboard_view:
+        method:
           type: string
-        log_summary:
-          $ref: '#/components/schemas/DebugModelLogSummary'
+        status_code:
+          type: integer
       required:
-      - log_id
-      - dashboard_view
-      - log_summary
-      title: DebugModeLog
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    TimesheetEntriesIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - employee
+      title: TimesheetEntriesIdGetParametersExpandSchemaItems
     ErrorValidationProblem:
       type: object
       properties:
@@ -447,161 +602,6 @@ components:
       - detail
       - problem_type
       title: ErrorValidationProblem
-    PaginatedTimesheetEntryList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/TimesheetEntry'
-      title: PaginatedTimesheetEntryList
-    MetaResponse:
-      type: object
-      properties:
-        request_schema:
-          type: object
-          additionalProperties:
-            description: Any type
-        status:
-          $ref: '#/components/schemas/LinkedAccountStatus'
-        has_conditional_params:
-          type: boolean
-        has_required_linked_account_params:
-          type: boolean
-        remote_fields:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: Remote field values to populate
-      required:
-      - request_schema
-      - has_conditional_params
-      - has_required_linked_account_params
-      title: MetaResponse
-    LinkedAccountStatus:
-      type: object
-      properties:
-        linked_account_status:
-          type: string
-        can_make_request:
-          type: boolean
-      required:
-      - linked_account_status
-      - can_make_request
-      title: LinkedAccountStatus
-    TimesheetEntry:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        employee:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The employee the timesheet entry is for.
-        hours_worked:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: The number of hours logged by the employee.
-        start_time:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The time at which the employee started work.
-        end_time:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The time at which the employee ended work.
-        remote_was_deleted:
-          type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-        field_mappings:
-          oneOf:
-          - $ref: '#/components/schemas/TimesheetEntryFieldMappings'
-          - type: 'null'
-        remote_data:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/RemoteData'
-      description: '# The Timesheet Entry Object
-
-        ### Description
-
-        The `Timesheet Entry` object is used to track coverage for hours worked by an ''Employee''.
-
-
-
-        ### Usage Example
-
-        GET and POST Timesheet Entries'
-      title: TimesheetEntry
-    TimesheetEntriesGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - employee
-      title: TimesheetEntriesGetParametersExpandSchemaItems
-    TimesheetEntryFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: TimesheetEntryFieldMappings
-    TimesheetEntriesIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - employee
-      title: TimesheetEntriesIdGetParametersExpandSchemaItems
-    TimesheetEntriesGetParametersOrderBy:
-      type: string
-      enum:
-      - -start_time
-      - start_time
-      title: TimesheetEntriesGetParametersOrderBy
-    TimesheetEntryEndpointRequest:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/TimesheetEntryRequest'
-      required:
-      - model
-      title: TimesheetEntryEndpointRequest
   securitySchemes:
     tokenAuth:
       type: http

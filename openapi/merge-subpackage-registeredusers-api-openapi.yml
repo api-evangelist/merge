@@ -156,61 +156,6 @@ paths:
               $ref: '#/components/schemas/PatchedRegisteredUserPublicRequest'
 components:
   schemas:
-    SharedCredentialGroup:
-      type: object
-      properties:
-        origin_company_id:
-          type:
-          - string
-          - 'null'
-          description: Unique identifier for the company of the Registered User
-        origin_company_name:
-          type:
-          - string
-          - 'null'
-          description: The human readable name of the company of the Registered User
-        custom_groupings:
-          type: object
-          additionalProperties:
-            type: string
-          description: Optional identifier / grouping that you can provide to further segment Registered Users
-      title: SharedCredentialGroup
-    RegisteredUserPublicRequestUserType:
-      type: string
-      enum:
-      - HUMAN
-      - SYSTEM
-      default: HUMAN
-      description: 'ENUM of `HUMAN` or `SYSTEM`
-
-
-        * `HUMAN` - HUMAN
-
-        * `SYSTEM` - SYSTEM'
-      title: RegisteredUserPublicRequestUserType
-    PaginatedRegisteredUserPublicResponseList:
-      type: object
-      properties:
-        count:
-          type: integer
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/RegisteredUserPublicResponse'
-      required:
-      - count
-      - results
-      title: PaginatedRegisteredUserPublicResponseList
     PatchedRegisteredUserPublicRequest:
       type: object
       properties:
@@ -236,35 +181,19 @@ components:
 
             * `SYSTEM` - SYSTEM'
       title: PatchedRegisteredUserPublicRequest
-    RegisteredUserPublicRequest:
-      type: object
-      properties:
-        id:
-          type: string
-        origin_user_id:
-          type: string
-          description: Unique identifier for Registered User
-        origin_user_name:
-          type: string
-          description: The human readable name of Registered User
-        shared_credential_group:
-          $ref: '#/components/schemas/SharedCredentialGroup'
-          description: Object used to identify which the groupings a Registered User is part of and can share credentials across.
-        user_type:
-          oneOf:
-          - $ref: '#/components/schemas/RegisteredUserPublicRequestUserType'
-          - type: 'null'
-          description: 'ENUM of `HUMAN` or `SYSTEM`
+    PatchedRegisteredUserPublicRequestUserType:
+      type: string
+      enum:
+      - HUMAN
+      - SYSTEM
+      default: HUMAN
+      description: 'ENUM of `HUMAN` or `SYSTEM`
 
 
-            * `HUMAN` - HUMAN
+        * `HUMAN` - HUMAN
 
-            * `SYSTEM` - SYSTEM'
-      required:
-      - id
-      - origin_user_id
-      - origin_user_name
-      title: RegisteredUserPublicRequest
+        * `SYSTEM` - SYSTEM'
+      title: PatchedRegisteredUserPublicRequestUserType
     RegisteredUserPublicResponse:
       type: object
       properties:
@@ -301,7 +230,30 @@ components:
       - shared_credential_group
       - authenticated_connectors
       title: RegisteredUserPublicResponse
-    PatchedRegisteredUserPublicRequestUserType:
+    PaginatedRegisteredUserPublicResponseList:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RegisteredUserPublicResponse'
+      required:
+      - count
+      - results
+      title: PaginatedRegisteredUserPublicResponseList
+    RegisteredUserPublicRequestUserType:
       type: string
       enum:
       - HUMAN
@@ -313,7 +265,55 @@ components:
         * `HUMAN` - HUMAN
 
         * `SYSTEM` - SYSTEM'
-      title: PatchedRegisteredUserPublicRequestUserType
+      title: RegisteredUserPublicRequestUserType
+    RegisteredUserPublicRequest:
+      type: object
+      properties:
+        id:
+          type: string
+        origin_user_id:
+          type: string
+          description: Unique identifier for Registered User
+        origin_user_name:
+          type: string
+          description: The human readable name of Registered User
+        shared_credential_group:
+          $ref: '#/components/schemas/SharedCredentialGroup'
+          description: Object used to identify which the groupings a Registered User is part of and can share credentials across.
+        user_type:
+          oneOf:
+          - $ref: '#/components/schemas/RegisteredUserPublicRequestUserType'
+          - type: 'null'
+          description: 'ENUM of `HUMAN` or `SYSTEM`
+
+
+            * `HUMAN` - HUMAN
+
+            * `SYSTEM` - SYSTEM'
+      required:
+      - id
+      - origin_user_id
+      - origin_user_name
+      title: RegisteredUserPublicRequest
+    SharedCredentialGroup:
+      type: object
+      properties:
+        origin_company_id:
+          type:
+          - string
+          - 'null'
+          description: Unique identifier for the company of the Registered User
+        origin_company_name:
+          type:
+          - string
+          - 'null'
+          description: The human readable name of the company of the Registered User
+        custom_groupings:
+          type: object
+          additionalProperties:
+            type: string
+          description: Optional identifier / grouping that you can provide to further segment Registered Users
+      title: SharedCredentialGroup
   securitySchemes:
     tokenAuth:
       type: http

@@ -279,56 +279,7 @@ paths:
                 $ref: '#/components/schemas/PaginatedScreeningQuestionList'
 components:
   schemas:
-    RemoteData:
-      type: object
-      properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
-      required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
-    JobFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: JobFieldMappings
-    PaginatedScreeningQuestionList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ScreeningQuestion'
-      title: PaginatedScreeningQuestionList
-    JobsGetParametersExpandSchemaItems:
+    JobsIdGetParametersExpandSchemaItems:
       type: string
       enum:
       - departments
@@ -336,26 +287,7 @@ components:
       - job_postings
       - offices
       - recruiters
-      title: JobsGetParametersExpandSchemaItems
-    JobsGetParametersStatus:
-      type: string
-      enum:
-      - ARCHIVED
-      - CLOSED
-      - DRAFT
-      - OPEN
-      - PENDING
-      title: JobsGetParametersStatus
-    JobsGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - status
-      title: JobsGetParametersShowEnumOrigins
-    JobsIdGetParametersRemoteFields:
-      type: string
-      enum:
-      - status
-      title: JobsIdGetParametersRemoteFields
+      title: JobsIdGetParametersExpandSchemaItems
     PaginatedJobList:
       type: object
       properties:
@@ -372,206 +304,6 @@ components:
           items:
             $ref: '#/components/schemas/Job'
       title: PaginatedJobList
-    JobsIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - departments
-      - hiring_managers
-      - job_postings
-      - offices
-      - recruiters
-      title: JobsIdGetParametersExpandSchemaItems
-    Url:
-      type: object
-      properties:
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        value:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The site's url.
-        url_type:
-          oneOf:
-          - $ref: '#/components/schemas/UrlTypeEnum'
-          - type: 'null'
-          description: The type of site.
-        remote_was_deleted:
-          type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-      description: '# The Url Object
-
-        ### Description
-
-        The `Url` object is used to represent hyperlinks associated with the parent model.
-
-        ### Usage Example
-
-        Fetch from the `GET Candidate` endpoint and view their website urls.'
-      title: Url
-    ScreeningQuestionTypeEnum:
-      type: string
-      enum:
-      - DATE
-      - FILE
-      - SINGLE_SELECT
-      - MULTI_SELECT
-      - SINGLE_LINE_TEXT
-      - MULTI_LINE_TEXT
-      - NUMERIC
-      - BOOLEAN
-      title: ScreeningQuestionTypeEnum
-    JobsIdGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - status
-      title: JobsIdGetParametersShowEnumOrigins
-    JobTypeEnum:
-      type: string
-      enum:
-      - POSTING
-      - REQUISITION
-      - PROFILE
-      title: JobTypeEnum
-    ScreeningQuestion:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        job:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The job associated with the screening question.
-        description:
-          type:
-          - string
-          - 'null'
-          description: The description of the screening question
-        title:
-          type:
-          - string
-          - 'null'
-          description: The title of the screening question
-        type:
-          oneOf:
-          - $ref: '#/components/schemas/ScreeningQuestionTypeEnum'
-          - type: 'null'
-          description: The data type for the screening question.
-        required:
-          type:
-          - boolean
-          - 'null'
-          description: Whether or not the screening question is required.
-        options:
-          type: array
-          items:
-            $ref: '#/components/schemas/ScreeningQuestionOption'
-        remote_was_deleted:
-          type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-      description: '# The ScreeningQuestion Object
-
-        ### Description
-
-        The `ScreeningQuestion` object is used to represent questions asked to screen candidates for a job.
-
-
-        ### Usage Example
-
-        TODO'
-      title: ScreeningQuestion
-    JobsGetParametersRemoteFields:
-      type: string
-      enum:
-      - status
-      title: JobsGetParametersRemoteFields
-    ScreeningQuestionOption:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        label:
-          type:
-          - string
-          - 'null'
-          description: Available response options
-        remote_was_deleted:
-          type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-      description: '# The ScreeningQuestionOption Object
-
-        ### Description
-
-        The `ScreeningQuestionOption` object is used to represent options for a `ScreeningQuestion` object
-
-
-        ### Usage Example
-
-        TODO'
-      title: ScreeningQuestionOption
-    UrlTypeEnum:
-      type: string
-      enum:
-      - PERSONAL
-      - COMPANY
-      - PORTFOLIO
-      - BLOG
-      - SOCIAL_MEDIA
-      - OTHER
-      - JOB_POSTING
-      title: UrlTypeEnum
-    JobsJobIdScreeningQuestionsGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - job
-      - options
-      title: JobsJobIdScreeningQuestionsGetParametersExpandSchemaItems
-    JobStatusEnum:
-      type: string
-      enum:
-      - OPEN
-      - CLOSED
-      - DRAFT
-      - ARCHIVED
-      - PENDING
-      title: JobStatusEnum
     Job:
       type: object
       properties:
@@ -690,6 +422,274 @@ components:
 
         Fetch from the `LIST Jobs` endpoint to show all job postings.'
       title: Job
+    ScreeningQuestion:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        job:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The job associated with the screening question.
+        description:
+          type:
+          - string
+          - 'null'
+          description: The description of the screening question
+        title:
+          type:
+          - string
+          - 'null'
+          description: The title of the screening question
+        type:
+          oneOf:
+          - $ref: '#/components/schemas/ScreeningQuestionTypeEnum'
+          - type: 'null'
+          description: The data type for the screening question.
+        required:
+          type:
+          - boolean
+          - 'null'
+          description: Whether or not the screening question is required.
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScreeningQuestionOption'
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+      description: '# The ScreeningQuestion Object
+
+        ### Description
+
+        The `ScreeningQuestion` object is used to represent questions asked to screen candidates for a job.
+
+
+        ### Usage Example
+
+        TODO'
+      title: ScreeningQuestion
+    Url:
+      type: object
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        value:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The site's url.
+        url_type:
+          oneOf:
+          - $ref: '#/components/schemas/UrlTypeEnum'
+          - type: 'null'
+          description: The type of site.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+      description: '# The Url Object
+
+        ### Description
+
+        The `Url` object is used to represent hyperlinks associated with the parent model.
+
+        ### Usage Example
+
+        Fetch from the `GET Candidate` endpoint and view their website urls.'
+      title: Url
+    UrlTypeEnum:
+      type: string
+      enum:
+      - PERSONAL
+      - COMPANY
+      - PORTFOLIO
+      - BLOG
+      - SOCIAL_MEDIA
+      - OTHER
+      - JOB_POSTING
+      title: UrlTypeEnum
+    ScreeningQuestionOption:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        label:
+          type:
+          - string
+          - 'null'
+          description: Available response options
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+      description: '# The ScreeningQuestionOption Object
+
+        ### Description
+
+        The `ScreeningQuestionOption` object is used to represent options for a `ScreeningQuestion` object
+
+
+        ### Usage Example
+
+        TODO'
+      title: ScreeningQuestionOption
+    JobsGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - status
+      title: JobsGetParametersShowEnumOrigins
+    JobsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - departments
+      - hiring_managers
+      - job_postings
+      - offices
+      - recruiters
+      title: JobsGetParametersExpandSchemaItems
+    PaginatedScreeningQuestionList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScreeningQuestion'
+      title: PaginatedScreeningQuestionList
+    JobTypeEnum:
+      type: string
+      enum:
+      - POSTING
+      - REQUISITION
+      - PROFILE
+      title: JobTypeEnum
+    ScreeningQuestionTypeEnum:
+      type: string
+      enum:
+      - DATE
+      - FILE
+      - SINGLE_SELECT
+      - MULTI_SELECT
+      - SINGLE_LINE_TEXT
+      - MULTI_LINE_TEXT
+      - NUMERIC
+      - BOOLEAN
+      title: ScreeningQuestionTypeEnum
+    JobStatusEnum:
+      type: string
+      enum:
+      - OPEN
+      - CLOSED
+      - DRAFT
+      - ARCHIVED
+      - PENDING
+      title: JobStatusEnum
+    JobsIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - status
+      title: JobsIdGetParametersRemoteFields
+    JobsGetParametersStatus:
+      type: string
+      enum:
+      - ARCHIVED
+      - CLOSED
+      - DRAFT
+      - OPEN
+      - PENDING
+      title: JobsGetParametersStatus
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    JobsGetParametersRemoteFields:
+      type: string
+      enum:
+      - status
+      title: JobsGetParametersRemoteFields
+    JobsJobIdScreeningQuestionsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - job
+      - options
+      title: JobsJobIdScreeningQuestionsGetParametersExpandSchemaItems
+    JobFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: JobFieldMappings
+    JobsIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - status
+      title: JobsIdGetParametersShowEnumOrigins
   securitySchemes:
     tokenAuth:
       type: http

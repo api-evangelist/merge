@@ -234,107 +234,6 @@ paths:
                 $ref: '#/components/schemas/PaginatedRemoteFieldClassList'
 components:
   schemas:
-    EngagementType:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        activity_type:
-          oneOf:
-          - $ref: '#/components/schemas/ActivityTypeEnum'
-          - type: 'null'
-          description: The engagement type's activity type.
-        name:
-          type:
-          - string
-          - 'null'
-          description: The engagement type's name.
-        remote_fields:
-          type: array
-          items:
-            $ref: '#/components/schemas/RemoteField'
-      description: '# The Engagement Type Object
-
-        ### Description
-
-        The `Engagement Type` object is used to represent an interaction activity. A given `Engagement` typically has an `Engagement Type` object represented in the engagement_type field.
-
-        ### Usage Example
-
-        TODO'
-      title: EngagementType
-    RemoteField:
-      type: object
-      properties:
-        remote_field_class:
-          $ref: '#/components/schemas/RemoteFieldClass'
-        value:
-          type: object
-          additionalProperties:
-            description: Any type
-      required:
-      - remote_field_class
-      title: RemoteField
-    ItemFormatEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: ItemFormatEnum
-    PaginatedEngagementTypeList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/EngagementType'
-      title: PaginatedEngagementTypeList
-    FieldFormatEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: FieldFormatEnum
-    FieldTypeEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: FieldTypeEnum
     RemoteFieldClass:
       type: object
       properties:
@@ -379,6 +278,87 @@ components:
           items:
             $ref: '#/components/schemas/RemoteFieldClass'
       title: PaginatedRemoteFieldClassList
+    EngagementType:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        activity_type:
+          oneOf:
+          - $ref: '#/components/schemas/ActivityTypeEnum'
+          - type: 'null'
+          description: The engagement type's activity type.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The engagement type's name.
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteField'
+      description: '# The Engagement Type Object
+
+        ### Description
+
+        The `Engagement Type` object is used to represent an interaction activity. A given `Engagement` typically has an `Engagement Type` object represented in the engagement_type field.
+
+        ### Usage Example
+
+        TODO'
+      title: EngagementType
+    PaginatedEngagementTypeList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/EngagementType'
+      title: PaginatedEngagementTypeList
+    RemoteField:
+      type: object
+      properties:
+        remote_field_class:
+          $ref: '#/components/schemas/RemoteFieldClass'
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteField
+    FieldTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldTypeEnum
     ItemSchema:
       type: object
       properties:
@@ -391,6 +371,33 @@ components:
           items:
             type: string
       title: ItemSchema
+    ItemFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemFormatEnum
+    FieldFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldFormatEnum
+    ActivityTypeEnum:
+      type: string
+      enum:
+      - CALL
+      - MEETING
+      - EMAIL
+      title: ActivityTypeEnum
     ItemTypeEnum:
       type: string
       enum:
@@ -401,13 +408,6 @@ components:
       - bool
       - list
       title: ItemTypeEnum
-    ActivityTypeEnum:
-      type: string
-      enum:
-      - CALL
-      - MEETING
-      - EMAIL
-      title: ActivityTypeEnum
   securitySchemes:
     tokenAuth:
       type: http

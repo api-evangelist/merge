@@ -202,37 +202,21 @@ paths:
                 $ref: '#/components/schemas/TimeOffBalance'
 components:
   schemas:
-    TimeOffBalancesGetParametersRemoteFields:
-      type: string
-      enum:
-      - policy_type
-      title: TimeOffBalancesGetParametersRemoteFields
     TimeOffBalancesIdGetParametersShowEnumOrigins:
       type: string
       enum:
       - policy_type
       title: TimeOffBalancesIdGetParametersShowEnumOrigins
-    RemoteData:
-      type: object
-      properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
-      required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
+    PolicyTypeEnum:
+      type: string
+      enum:
+      - VACATION
+      - SICK
+      - PERSONAL
+      - JURY_DUTY
+      - VOLUNTEER
+      - BEREAVEMENT
+      title: PolicyTypeEnum
     PaginatedTimeOffBalanceList:
       type: object
       properties:
@@ -249,11 +233,11 @@ components:
           items:
             $ref: '#/components/schemas/TimeOffBalance'
       title: PaginatedTimeOffBalanceList
-    TimeOffBalancesIdGetParametersRemoteFields:
+    TimeOffBalancesIdGetParametersExpandSchemaItems:
       type: string
       enum:
-      - policy_type
-      title: TimeOffBalancesIdGetParametersRemoteFields
+      - employee
+      title: TimeOffBalancesIdGetParametersExpandSchemaItems
     TimeOffBalance:
       type: object
       properties:
@@ -320,26 +304,26 @@ components:
 
         Fetch from the `LIST TimeOffBalances` endpoint and filter by `ID` to show all time off balances.'
       title: TimeOffBalance
-    TimeOffBalancesIdGetParametersExpandSchemaItems:
+    TimeOffBalancesGetParametersExpandSchemaItems:
       type: string
       enum:
       - employee
-      title: TimeOffBalancesIdGetParametersExpandSchemaItems
-    PolicyTypeEnum:
-      type: string
-      enum:
-      - VACATION
-      - SICK
-      - PERSONAL
-      - JURY_DUTY
-      - VOLUNTEER
-      - BEREAVEMENT
-      title: PolicyTypeEnum
-    TimeOffBalancesGetParametersShowEnumOrigins:
+      title: TimeOffBalancesGetParametersExpandSchemaItems
+    TimeOffBalancesGetParametersRemoteFields:
       type: string
       enum:
       - policy_type
-      title: TimeOffBalancesGetParametersShowEnumOrigins
+      title: TimeOffBalancesGetParametersRemoteFields
+    TimeOffBalancesGetParametersPolicyType:
+      type: string
+      enum:
+      - BEREAVEMENT
+      - JURY_DUTY
+      - PERSONAL
+      - SICK
+      - VACATION
+      - VOLUNTEER
+      title: TimeOffBalancesGetParametersPolicyType
     TimeOffBalanceFieldMappings:
       type: object
       properties:
@@ -352,21 +336,37 @@ components:
           additionalProperties:
             description: Any type
       title: TimeOffBalanceFieldMappings
-    TimeOffBalancesGetParametersExpandSchemaItems:
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    TimeOffBalancesGetParametersShowEnumOrigins:
       type: string
       enum:
-      - employee
-      title: TimeOffBalancesGetParametersExpandSchemaItems
-    TimeOffBalancesGetParametersPolicyType:
+      - policy_type
+      title: TimeOffBalancesGetParametersShowEnumOrigins
+    TimeOffBalancesIdGetParametersRemoteFields:
       type: string
       enum:
-      - BEREAVEMENT
-      - JURY_DUTY
-      - PERSONAL
-      - SICK
-      - VACATION
-      - VOLUNTEER
-      title: TimeOffBalancesGetParametersPolicyType
+      - policy_type
+      title: TimeOffBalancesIdGetParametersRemoteFields
   securitySchemes:
     tokenAuth:
       type: http

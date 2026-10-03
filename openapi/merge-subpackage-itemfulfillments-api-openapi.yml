@@ -411,104 +411,6 @@ paths:
                 $ref: '#/components/schemas/BatchObjectsResponse'
 components:
   schemas:
-    RemoteData:
-      type: object
-      properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
-      required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
-    PaginatedItemFulfillmentList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ItemFulfillment'
-      title: PaginatedItemFulfillmentList
-    BatchObjectsResponseStatusEnum:
-      type: string
-      enum:
-      - ENQUEUED
-      - IN_PROGRESS
-      - PARTIAL_SUCCESS
-      - SUCCESS
-      - FAILED
-      - RATE_LIMITED
-      title: BatchObjectsResponseStatusEnum
-    BatchObject:
-      type: object
-      properties:
-        item_id:
-          type: string
-        status:
-          $ref: '#/components/schemas/BatchObjectStatusEnum'
-          description: 'Possible per-object statuses:
-
-
-            * `PENDING` - This object has not been processed yet
-
-            * `SUCCESS` - This object was successfully POSTed
-
-            * `FAILURE` - This object was not successfully POSTed'
-        response:
-          $ref: '#/components/schemas/BatchObjectItemResponse'
-      required:
-      - item_id
-      - status
-      description: Individual batch object with status
-      title: BatchObject
-    DebugModeLog:
-      type: object
-      properties:
-        log_id:
-          type: string
-        dashboard_view:
-          type: string
-        log_summary:
-          $ref: '#/components/schemas/DebugModelLogSummary'
-      required:
-      - log_id
-      - dashboard_view
-      - log_summary
-      title: DebugModeLog
-    FieldTypeEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: FieldTypeEnum
-    ItemFulfillmentsGetParametersRemoteFields:
-      type: string
-      enum:
-      - status
-      title: ItemFulfillmentsGetParametersRemoteFields
     PaginatedRemoteFieldClassList:
       type: object
       properties:
@@ -525,43 +427,47 @@ components:
           items:
             $ref: '#/components/schemas/RemoteFieldClass'
       title: PaginatedRemoteFieldClassList
-    ItemFulfillmentsIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - company
-      - customer
-      - lines
-      - sales_order
-      title: ItemFulfillmentsIdGetParametersExpandSchemaItems
-    ItemFulfillmentsIdGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - status
-      title: ItemFulfillmentsIdGetParametersShowEnumOrigins
-    ItemFulfillmentBulkRequest:
+    ItemFulfillmentEndpointRequest:
       type: object
       properties:
-        batch_items:
+        model:
+          $ref: '#/components/schemas/ItemFulfillmentRequestRequest'
+      required:
+      - model
+      title: ItemFulfillmentEndpointRequest
+    PaginatedItemFulfillmentList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
           type: array
           items:
-            $ref: '#/components/schemas/ItemFulfillmentBatchItemRequest'
-      required:
-      - batch_items
-      title: ItemFulfillmentBulkRequest
-    DebugModelLogSummary:
+            $ref: '#/components/schemas/ItemFulfillment'
+      title: PaginatedItemFulfillmentList
+    BatchObjectStatusEnum:
+      type: string
+      enum:
+      - PENDING
+      - SUCCESS
+      - FAILURE
+      title: BatchObjectStatusEnum
+    BatchObjectItemResponse:
       type: object
       properties:
-        url:
+        merge_common_model_id:
           type: string
-        method:
+          format: uuid
+        error_message:
           type: string
-        status_code:
-          type: integer
-      required:
-      - url
-      - method
-      - status_code
-      title: DebugModelLogSummary
+      description: Response for individual items within a batch
+      title: BatchObjectItemResponse
     ItemFulfillmentResponse:
       type: object
       properties:
@@ -584,122 +490,26 @@ components:
       - warnings
       - errors
       title: ItemFulfillmentResponse
-    ItemFulfillmentLine:
+    RemoteField:
       type: object
       properties:
-        id:
-          type: string
-          format: uuid
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        item:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        sales_order_line:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        quantity:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          description: The amount of item being delivered.
-        tracking_categories:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: The dimensions or classification tags.
-        remote_created_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: When the third party's item fulfillment line item was created.
-        remote_updated_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: When the third party's item fulfillment line item was updated.
-        remote_was_deleted:
-          type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-        remote_fields:
-          type: array
-          items:
-            $ref: '#/components/schemas/RemoteField'
-      description: '# The ItemFulfillmentLine Object
-
-        ### Description
-
-        The `ItemFulfillmentLine` object represents the specific quantity of a particular product or service that has actually been shipped or delivered against its corresponding order line.
-
-
-        ### Usage Example
-
-        Fetch from the `GET ItemFulfillment` endpoint and view a company''s item fulfillment lines.'
-      title: ItemFulfillmentLine
-    BatchObjectsResponse:
-      type: object
-      properties:
-        batch_id:
-          type: string
-          format: uuid
-          description: The ID of the batch.
-        status:
-          $ref: '#/components/schemas/BatchObjectsResponseStatusEnum'
-          description: 'Possible overall statuses:
-
-
-            * `ENQUEUED` - The request has been received and a task has been enqueued for processing
-
-            * `IN_PROGRESS` - The enqueued task is being processed
-
-            * `PARTIAL_SUCCESS` - The task has been processed, but not all objects were written successfully
-
-            * `SUCCESS` - The task has been processed, and all objects were written successfully
-
-            * `FAILED` - The task has been processed, but ran into an error while processing
-
-            * `RATE_LIMITED` - The request was received but ran into rate limits while processing. The rate limited objects are being retried.'
-        total_count:
-          type: integer
-          description: The total number of objects in the batch.
-        objects:
-          type: array
-          items:
-            $ref: '#/components/schemas/BatchObject'
+        remote_field_class:
+          $ref: '#/components/schemas/RemoteFieldClass'
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
       required:
-      - batch_id
-      - status
-      - total_count
-      - objects
-      description: Response serializer for GET bulk/{batch_id} - returns batch status and objects
-      title: BatchObjectsResponse
-    ItemFulfillmentStatusEnum:
+      - remote_field_class
+      title: RemoteField
+    ItemFulfillmentsGetParametersExpandSchemaItems:
       type: string
       enum:
-      - DRAFT
-      - IN_PROGRESS
-      - SHIPPED
-      - CANCELLED
-      title: ItemFulfillmentStatusEnum
+      - company
+      - customer
+      - lines
+      - sales_order
+      title: ItemFulfillmentsGetParametersExpandSchemaItems
     ItemFulfillment:
       type: object
       properties:
@@ -797,14 +607,188 @@ components:
 
         Fetch from the `LIST ItemFulfillments` endpoint and view a company''s item fulfillments.'
       title: ItemFulfillment
-    ValidationProblemSource:
+    ItemFulfillmentsIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - status
+      title: ItemFulfillmentsIdGetParametersShowEnumOrigins
+    ItemFulfillmentsIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - status
+      title: ItemFulfillmentsIdGetParametersRemoteFields
+    FieldFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldFormatEnum
+    DebugModeLog:
       type: object
       properties:
-        pointer:
+        log_id:
           type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
       required:
-      - pointer
-      title: ValidationProblemSource
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    BatchObjectsResponse:
+      type: object
+      properties:
+        batch_id:
+          type: string
+          format: uuid
+          description: The ID of the batch.
+        status:
+          $ref: '#/components/schemas/BatchObjectsResponseStatusEnum'
+          description: 'Possible overall statuses:
+
+
+            * `ENQUEUED` - The request has been received and a task has been enqueued for processing
+
+            * `IN_PROGRESS` - The enqueued task is being processed
+
+            * `PARTIAL_SUCCESS` - The task has been processed, but not all objects were written successfully
+
+            * `SUCCESS` - The task has been processed, and all objects were written successfully
+
+            * `FAILED` - The task has been processed, but ran into an error while processing
+
+            * `RATE_LIMITED` - The request was received but ran into rate limits while processing. The rate limited objects are being retried.'
+        total_count:
+          type: integer
+          description: The total number of objects in the batch.
+        objects:
+          type: array
+          items:
+            $ref: '#/components/schemas/BatchObject'
+      required:
+      - batch_id
+      - status
+      - total_count
+      - objects
+      description: Response serializer for GET bulk/{batch_id} - returns batch status and objects
+      title: BatchObjectsResponse
+    ItemFulfillmentLine:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        item:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        sales_order_line:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        quantity:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The amount of item being delivered.
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: The dimensions or classification tags.
+        remote_created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's item fulfillment line item was created.
+        remote_updated_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's item fulfillment line item was updated.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteField'
+      description: '# The ItemFulfillmentLine Object
+
+        ### Description
+
+        The `ItemFulfillmentLine` object represents the specific quantity of a particular product or service that has actually been shipped or delivered against its corresponding order line.
+
+
+        ### Usage Example
+
+        Fetch from the `GET ItemFulfillment` endpoint and view a company''s item fulfillment lines.'
+      title: ItemFulfillmentLine
+    ItemFulfillmentsGetParametersRemoteFields:
+      type: string
+      enum:
+      - status
+      title: ItemFulfillmentsGetParametersRemoteFields
+    RemoteFieldRequest:
+      type: object
+      properties:
+        remote_field_class:
+          type: string
+          format: uuid
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteFieldRequest
+    BatchObject:
+      type: object
+      properties:
+        item_id:
+          type: string
+        status:
+          $ref: '#/components/schemas/BatchObjectStatusEnum'
+          description: 'Possible per-object statuses:
+
+
+            * `PENDING` - This object has not been processed yet
+
+            * `SUCCESS` - This object was successfully POSTed
+
+            * `FAILURE` - This object was not successfully POSTed'
+        response:
+          $ref: '#/components/schemas/BatchObjectItemResponse'
+      required:
+      - item_id
+      - status
+      description: Individual batch object with status
+      title: BatchObject
     ItemSchema:
       type: object
       properties:
@@ -817,16 +801,89 @@ components:
           items:
             type: string
       title: ItemSchema
-    ItemTypeEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: ItemTypeEnum
+    AsyncBulkCreateResponse:
+      type: object
+      properties:
+        batch_id:
+          type: string
+          format: uuid
+          description: The ID of the batch.
+      required:
+      - batch_id
+      description: Response serializer for POST bulk create - returns only batch_id
+      title: AsyncBulkCreateResponse
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    ItemFulfillmentBulkRequest:
+      type: object
+      properties:
+        batch_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemFulfillmentBatchItemRequest'
+      required:
+      - batch_items
+      title: ItemFulfillmentBulkRequest
+    ItemFulfillmentBatchItemRequest:
+      type: object
+      properties:
+        item_id:
+          type: string
+          description: The third-party item ID for this model in the bulk create request
+        payload:
+          $ref: '#/components/schemas/ItemFulfillmentRequestRequest'
+      required:
+      - item_id
+      - payload
+      title: ItemFulfillmentBatchItemRequest
+    RemoteFieldClass:
+      type: object
+      properties:
+        id:
+          type: string
+        display_name:
+          type: string
+        remote_key_name:
+          type: string
+        description:
+          type: string
+        is_custom:
+          type: boolean
+        is_common_model_field:
+          type: boolean
+        is_required:
+          type: boolean
+        field_type:
+          $ref: '#/components/schemas/FieldTypeEnum'
+        field_format:
+          $ref: '#/components/schemas/FieldFormatEnum'
+        field_choices:
+          type: array
+          items:
+            type: string
+        item_schema:
+          $ref: '#/components/schemas/ItemSchema'
+      title: RemoteFieldClass
     ItemFulfillmentFieldMappings:
       type: object
       properties:
@@ -839,25 +896,74 @@ components:
           additionalProperties:
             description: Any type
       title: ItemFulfillmentFieldMappings
-    RemoteField:
+    ItemFulfillmentRequestRequest:
       type: object
       properties:
-        remote_field_class:
-          $ref: '#/components/schemas/RemoteFieldClass'
-        value:
-          type: object
+        sales_order:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The ID of the sales order that the item fulfillment originated from.
+        fulfillment_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date the fulfillment was created.
+        customer:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The customer associated with the item fulfillment.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The subsidiary associated with the fulfillment.
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/ItemFulfillmentStatusEnum'
+          - type: 'null'
+          description: The status of the item fulfillment.
+        memo:
+          type:
+          - string
+          - 'null'
+          description: Comment attached to the fulfillment.
+        lines:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemFulfillmentLineRequest'
+        integration_params:
+          type:
+          - object
+          - 'null'
           additionalProperties:
             description: Any type
-      required:
-      - remote_field_class
-      title: RemoteField
-    BatchObjectStatusEnum:
-      type: string
-      enum:
-      - PENDING
-      - SUCCESS
-      - FAILURE
-      title: BatchObjectStatusEnum
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldRequest'
+      description: '# The ItemFulfillment Object
+
+        ### Description
+
+        The `ItemFulfillment` object represents the recorded shipment or delivery of some or all items on an associated sales order.
+
+
+        ### Usage Example
+
+        Fetch from the `LIST ItemFulfillments` endpoint and view a company''s item fulfillments.'
+      title: ItemFulfillmentRequestRequest
     ItemFormatEnum:
       type: string
       enum:
@@ -868,6 +974,32 @@ components:
       - bool
       - list
       title: ItemFormatEnum
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    ItemFulfillmentsGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - status
+      title: ItemFulfillmentsGetParametersShowEnumOrigins
     ItemFulfillmentLineRequest:
       type: object
       properties:
@@ -937,156 +1069,50 @@ components:
 
         Fetch from the `GET ItemFulfillment` endpoint and view a company''s item fulfillment lines.'
       title: ItemFulfillmentLineRequest
-    ItemFulfillmentBatchItemRequest:
+    ValidationProblemSource:
       type: object
       properties:
-        item_id:
+        pointer:
           type: string
-          description: The third-party item ID for this model in the bulk create request
-        payload:
-          $ref: '#/components/schemas/ItemFulfillmentRequestRequest'
       required:
-      - item_id
-      - payload
-      title: ItemFulfillmentBatchItemRequest
-    ItemFulfillmentRequestRequest:
-      type: object
-      properties:
-        sales_order:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The ID of the sales order that the item fulfillment originated from.
-        fulfillment_date:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date the fulfillment was created.
-        customer:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The customer associated with the item fulfillment.
-        company:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The subsidiary associated with the fulfillment.
-        status:
-          oneOf:
-          - $ref: '#/components/schemas/ItemFulfillmentStatusEnum'
-          - type: 'null'
-          description: The status of the item fulfillment.
-        memo:
-          type:
-          - string
-          - 'null'
-          description: Comment attached to the fulfillment.
-        lines:
-          type: array
-          items:
-            $ref: '#/components/schemas/ItemFulfillmentLineRequest'
-        integration_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        linked_account_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        remote_fields:
-          type: array
-          items:
-            $ref: '#/components/schemas/RemoteFieldRequest'
-      description: '# The ItemFulfillment Object
-
-        ### Description
-
-        The `ItemFulfillment` object represents the recorded shipment or delivery of some or all items on an associated sales order.
-
-
-        ### Usage Example
-
-        Fetch from the `LIST ItemFulfillments` endpoint and view a company''s item fulfillments.'
-      title: ItemFulfillmentRequestRequest
-    RemoteFieldClass:
-      type: object
-      properties:
-        id:
-          type: string
-        display_name:
-          type: string
-        remote_key_name:
-          type: string
-        description:
-          type: string
-        is_custom:
-          type: boolean
-        is_common_model_field:
-          type: boolean
-        is_required:
-          type: boolean
-        field_type:
-          $ref: '#/components/schemas/FieldTypeEnum'
-        field_format:
-          $ref: '#/components/schemas/FieldFormatEnum'
-        field_choices:
-          type: array
-          items:
-            type: string
-        item_schema:
-          $ref: '#/components/schemas/ItemSchema'
-      title: RemoteFieldClass
-    ItemFulfillmentEndpointRequest:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/ItemFulfillmentRequestRequest'
-      required:
-      - model
-      title: ItemFulfillmentEndpointRequest
-    RemoteFieldRequest:
-      type: object
-      properties:
-        remote_field_class:
-          type: string
-          format: uuid
-        value:
-          type: object
-          additionalProperties:
-            description: Any type
-      required:
-      - remote_field_class
-      title: RemoteFieldRequest
-    AsyncBulkCreateResponse:
-      type: object
-      properties:
-        batch_id:
-          type: string
-          format: uuid
-          description: The ID of the batch.
-      required:
-      - batch_id
-      description: Response serializer for POST bulk create - returns only batch_id
-      title: AsyncBulkCreateResponse
-    ItemFulfillmentsIdGetParametersRemoteFields:
+      - pointer
+      title: ValidationProblemSource
+    ItemFulfillmentsIdGetParametersExpandSchemaItems:
       type: string
       enum:
-      - status
-      title: ItemFulfillmentsIdGetParametersRemoteFields
-    ItemFulfillmentsGetParametersShowEnumOrigins:
+      - company
+      - customer
+      - lines
+      - sales_order
+      title: ItemFulfillmentsIdGetParametersExpandSchemaItems
+    ItemFulfillmentStatusEnum:
       type: string
       enum:
-      - status
-      title: ItemFulfillmentsGetParametersShowEnumOrigins
+      - DRAFT
+      - IN_PROGRESS
+      - SHIPPED
+      - CANCELLED
+      title: ItemFulfillmentStatusEnum
+    BatchObjectsResponseStatusEnum:
+      type: string
+      enum:
+      - ENQUEUED
+      - IN_PROGRESS
+      - PARTIAL_SUCCESS
+      - SUCCESS
+      - FAILED
+      - RATE_LIMITED
+      title: BatchObjectsResponseStatusEnum
+    FieldTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldTypeEnum
     WarningValidationProblem:
       type: object
       properties:
@@ -1109,29 +1135,21 @@ components:
       - detail
       - problem_type
       title: WarningValidationProblem
-    ErrorValidationProblem:
+    DebugModelLogSummary:
       type: object
       properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
+        url:
           type: string
-        detail:
+        method:
           type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
+        status_code:
           type: integer
       required:
-      - title
-      - detail
-      - problem_type
-      title: ErrorValidationProblem
-    FieldFormatEnum:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    ItemTypeEnum:
       type: string
       enum:
       - string
@@ -1140,25 +1158,7 @@ components:
       - datetime
       - bool
       - list
-      title: FieldFormatEnum
-    ItemFulfillmentsGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - company
-      - customer
-      - lines
-      - sales_order
-      title: ItemFulfillmentsGetParametersExpandSchemaItems
-    BatchObjectItemResponse:
-      type: object
-      properties:
-        merge_common_model_id:
-          type: string
-          format: uuid
-        error_message:
-          type: string
-      description: Response for individual items within a batch
-      title: BatchObjectItemResponse
+      title: ItemTypeEnum
   securitySchemes:
     tokenAuth:
       type: http

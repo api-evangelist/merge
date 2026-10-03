@@ -353,137 +353,6 @@ paths:
                 $ref: '#/components/schemas/PaginatedRemoteFieldClassList'
 components:
   schemas:
-    TaskRequest:
-      type: object
-      properties:
-        subject:
-          type:
-          - string
-          - 'null'
-          description: The task's subject.
-        content:
-          type:
-          - string
-          - 'null'
-          description: The task's content.
-        owner:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The task's owner.
-        account:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The task's account.
-        opportunity:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The task's opportunity.
-        contact:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The task's contact.
-        completed_date:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: When the task is completed.
-        due_date:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: When the task is due.
-        status:
-          oneOf:
-          - $ref: '#/components/schemas/TaskStatusEnum'
-          - type: 'null'
-          description: The task's status.
-        task_url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The task's URL in the remote system.
-        integration_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        linked_account_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        remote_fields:
-          type: array
-          items:
-            $ref: '#/components/schemas/RemoteFieldRequest'
-      description: '# The Task Object
-
-        ### Description
-
-        The `Task` object is used to represent a task, such as a to-do item.
-
-        ### Usage Example
-
-        TODO'
-      title: TaskRequest
-    RemoteData:
-      type: object
-      properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
-      required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
-    DebugModeLog:
-      type: object
-      properties:
-        log_id:
-          type: string
-        dashboard_view:
-          type: string
-        log_summary:
-          $ref: '#/components/schemas/DebugModelLogSummary'
-      required:
-      - log_id
-      - dashboard_view
-      - log_summary
-      title: DebugModeLog
-    FieldTypeEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: FieldTypeEnum
     PaginatedRemoteFieldClassList:
       type: object
       properties:
@@ -500,116 +369,6 @@ components:
           items:
             $ref: '#/components/schemas/RemoteFieldClass'
       title: PaginatedRemoteFieldClassList
-    DebugModelLogSummary:
-      type: object
-      properties:
-        url:
-          type: string
-        method:
-          type: string
-        status_code:
-          type: integer
-      required:
-      - url
-      - method
-      - status_code
-      title: DebugModelLogSummary
-    TasksIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - account
-      - contact
-      - opportunity
-      - owner
-      title: TasksIdGetParametersExpandSchemaItems
-    MetaResponse:
-      type: object
-      properties:
-        request_schema:
-          type: object
-          additionalProperties:
-            description: Any type
-        status:
-          $ref: '#/components/schemas/LinkedAccountStatus'
-        has_conditional_params:
-          type: boolean
-        has_required_linked_account_params:
-          type: boolean
-        remote_fields:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: Remote field values to populate
-      required:
-      - request_schema
-      - has_conditional_params
-      - has_required_linked_account_params
-      title: MetaResponse
-    ValidationProblemSource:
-      type: object
-      properties:
-        pointer:
-          type: string
-      required:
-      - pointer
-      title: ValidationProblemSource
-    ItemSchema:
-      type: object
-      properties:
-        item_type:
-          $ref: '#/components/schemas/ItemTypeEnum'
-        item_format:
-          $ref: '#/components/schemas/ItemFormatEnum'
-        item_choices:
-          type: array
-          items:
-            type: string
-      title: ItemSchema
-    ItemTypeEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: ItemTypeEnum
-    RemoteField:
-      type: object
-      properties:
-        remote_field_class:
-          $ref: '#/components/schemas/RemoteFieldClass'
-        value:
-          type: object
-          additionalProperties:
-            description: Any type
-      required:
-      - remote_field_class
-      title: RemoteField
-    TaskResponse:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/Task'
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/WarningValidationProblem'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorValidationProblem'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/DebugModeLog'
-      required:
-      - model
-      - warnings
-      - errors
-      title: TaskResponse
     TaskFieldMappings:
       type: object
       properties:
@@ -622,22 +381,18 @@ components:
           additionalProperties:
             description: Any type
       title: TaskFieldMappings
-    TaskStatusEnum:
-      type: string
-      enum:
-      - OPEN
-      - CLOSED
-      title: TaskStatusEnum
-    ItemFormatEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: ItemFormatEnum
+    RemoteField:
+      type: object
+      properties:
+        remote_field_class:
+          $ref: '#/components/schemas/RemoteFieldClass'
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteField
     Task:
       type: object
       properties:
@@ -741,6 +496,217 @@ components:
 
         TODO'
       title: Task
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    FieldFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldFormatEnum
+    TaskRequest:
+      type: object
+      properties:
+        subject:
+          type:
+          - string
+          - 'null'
+          description: The task's subject.
+        content:
+          type:
+          - string
+          - 'null'
+          description: The task's content.
+        owner:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The task's owner.
+        account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The task's account.
+        opportunity:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The task's opportunity.
+        contact:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The task's contact.
+        completed_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the task is completed.
+        due_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the task is due.
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/TaskStatusEnum'
+          - type: 'null'
+          description: The task's status.
+        task_url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The task's URL in the remote system.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldRequest'
+      description: '# The Task Object
+
+        ### Description
+
+        The `Task` object is used to represent a task, such as a to-do item.
+
+        ### Usage Example
+
+        TODO'
+      title: TaskRequest
+    TaskStatusEnum:
+      type: string
+      enum:
+      - OPEN
+      - CLOSED
+      title: TaskStatusEnum
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    TasksGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - account
+      - contact
+      - opportunity
+      - owner
+      title: TasksGetParametersExpandSchemaItems
+    TaskEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/TaskRequest'
+      required:
+      - model
+      title: TaskEndpointRequest
+    RemoteFieldRequest:
+      type: object
+      properties:
+        remote_field_class:
+          type: string
+          format: uuid
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteFieldRequest
+    ItemSchema:
+      type: object
+      properties:
+        item_type:
+          $ref: '#/components/schemas/ItemTypeEnum'
+        item_format:
+          $ref: '#/components/schemas/ItemFormatEnum'
+        item_choices:
+          type: array
+          items:
+            type: string
+      title: ItemSchema
+    TasksIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - account
+      - contact
+      - opportunity
+      - owner
+      title: TasksIdGetParametersExpandSchemaItems
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
     RemoteFieldClass:
       type: object
       properties:
@@ -769,19 +735,67 @@ components:
         item_schema:
           $ref: '#/components/schemas/ItemSchema'
       title: RemoteFieldClass
-    RemoteFieldRequest:
+    TaskResponse:
       type: object
       properties:
-        remote_field_class:
-          type: string
-          format: uuid
-        value:
-          type: object
-          additionalProperties:
-            description: Any type
+        model:
+          $ref: '#/components/schemas/Task'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
       required:
-      - remote_field_class
-      title: RemoteFieldRequest
+      - model
+      - warnings
+      - errors
+      title: TaskResponse
+    ItemFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemFormatEnum
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
     LinkedAccountStatus:
       type: object
       properties:
@@ -809,22 +823,16 @@ components:
           items:
             $ref: '#/components/schemas/Task'
       title: PaginatedTaskList
-    TasksGetParametersExpandSchemaItems:
+    FieldTypeEnum:
       type: string
       enum:
-      - account
-      - contact
-      - opportunity
-      - owner
-      title: TasksGetParametersExpandSchemaItems
-    TaskEndpointRequest:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/TaskRequest'
-      required:
-      - model
-      title: TaskEndpointRequest
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldTypeEnum
     WarningValidationProblem:
       type: object
       properties:
@@ -847,29 +855,21 @@ components:
       - detail
       - problem_type
       title: WarningValidationProblem
-    ErrorValidationProblem:
+    DebugModelLogSummary:
       type: object
       properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
+        url:
           type: string
-        detail:
+        method:
           type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
+        status_code:
           type: integer
       required:
-      - title
-      - detail
-      - problem_type
-      title: ErrorValidationProblem
-    FieldFormatEnum:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    ItemTypeEnum:
       type: string
       enum:
       - string
@@ -878,7 +878,7 @@ components:
       - datetime
       - bool
       - list
-      title: FieldFormatEnum
+      title: ItemTypeEnum
   securitySchemes:
     tokenAuth:
       type: http

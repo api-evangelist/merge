@@ -409,42 +409,6 @@ paths:
                 $ref: '#/components/schemas/MetaResponse'
 components:
   schemas:
-    RemoteData:
-      type: object
-      properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
-      required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
-    CreditNoteEndpointRequest:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/CreditNoteRequest'
-      required:
-      - model
-      title: CreditNoteEndpointRequest
-    CreditNotesGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - status
-      - status,type
-      - type
-      title: CreditNotesGetParametersShowEnumOrigins
     CreditNote:
       type: object
       properties:
@@ -588,20 +552,196 @@ components:
 
         Fetch from the `LIST CreditNotes` endpoint and view a company''s credit notes.'
       title: CreditNote
-    DebugModeLog:
+    CreditNoteApplyLineForCreditNoteRequest:
       type: object
       properties:
-        log_id:
-          type: string
-        dashboard_view:
-          type: string
-        log_summary:
-          $ref: '#/components/schemas/DebugModelLogSummary'
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        invoice:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        applied_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Date that the credit note is applied to the invoice.
+        applied_amount:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The amount of the Credit Note applied to the invoice.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The CreditNoteApplyLine Object
+
+        ### Description
+
+        The `CreditNoteApplyLine` is attached to the CreditNote model.
+
+
+        ### Usage Example
+
+        Fetch from the `GET CreditNote` endpoint and view the invoice''s applied to lines.'
+      title: CreditNoteApplyLineForCreditNoteRequest
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
       required:
-      - log_id
-      - dashboard_view
-      - log_summary
-      title: DebugModeLog
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    CreditNoteLineItemRequest:
+      type: object
+      properties:
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        item:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+          description: The credit note line item's name.
+        description:
+          type:
+          - string
+          - 'null'
+          description: The description of the item that is owed.
+        quantity:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The credit note line item's quantity.
+        memo:
+          type:
+          - string
+          - 'null'
+          description: The credit note line item's memo.
+        unit_price:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The credit note line item's unit price.
+        tax_rate:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The tax rate that applies to this line item.
+        total_line_amount:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The credit note line item's total.
+        tracking_category:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The credit note line item's associated tracking category.
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: The credit note line item's associated tracking categories.
+        account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The credit note line item's account.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the credit note belongs to.
+        contact:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The credit note's contact.
+        project:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The CreditNoteLineItem Object
+
+        ### Description
+
+        The `CreditNoteLineItem` object is used to represent a credit note''s line items.
+
+
+        ### Usage Example
+
+        Fetch from the `GET CreditNote` endpoint and view the credit note''s line items.'
+      title: CreditNoteLineItemRequest
+    CreditNoteEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/CreditNoteRequest'
+      required:
+      - model
+      title: CreditNoteEndpointRequest
     CreditNoteRequest:
       type: object
       properties:
@@ -718,18 +858,31 @@ components:
 
         Fetch from the `LIST CreditNotes` endpoint and view a company''s credit notes.'
       title: CreditNoteRequest
-    CreditNoteFieldMappings:
+    DebugModeLog:
       type: object
       properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: CreditNoteFieldMappings
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    CreditNotesGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - accounting_period
+      - applied_payments
+      - company
+      - contact
+      - line_items
+      - payments
+      - tracking_categories
+      title: CreditNotesGetParametersExpandSchemaItems
     CreditNoteLineItem:
       type: object
       properties:
@@ -842,13 +995,17 @@ components:
 
         Fetch from the `GET CreditNote` endpoint and view the credit note''s line items.'
       title: CreditNoteLineItem
-    CreditNotesIdGetParametersRemoteFields:
+    CreditNotesIdGetParametersExpandSchemaItems:
       type: string
       enum:
-      - status
-      - status,type
-      - type
-      title: CreditNotesIdGetParametersRemoteFields
+      - accounting_period
+      - applied_payments
+      - company
+      - contact
+      - line_items
+      - payments
+      - tracking_categories
+      title: CreditNotesIdGetParametersExpandSchemaItems
     PatchedCreditNoteEndpointRequest:
       type: object
       properties:
@@ -857,6 +1014,50 @@ components:
       required:
       - model
       title: PatchedCreditNoteEndpointRequest
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    CreditNoteResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/CreditNote'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: CreditNoteResponse
     CreditNoteApplyLineForCreditNote:
       type: object
       properties:
@@ -904,44 +1105,56 @@ components:
 
         Fetch from the `GET CreditNote` endpoint and view the invoice''s applied to lines.'
       title: CreditNoteApplyLineForCreditNote
-    DebugModelLogSummary:
+    ApplyCreditNoteRequest:
       type: object
       properties:
-        url:
+        invoice:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The invoice to apply the credit note to.
+        applied_date:
           type: string
-        method:
+          format: date-time
+          description: Date that the credit note is applied to the invoice.
+        applied_amount:
           type: string
-        status_code:
-          type: integer
+          format: decimal
+          description: The amount of credit applied to the invoice.
       required:
-      - url
-      - method
-      - status_code
-      title: DebugModelLogSummary
-    MetaResponse:
+      - invoice
+      - applied_date
+      - applied_amount
+      title: ApplyCreditNoteRequest
+    CreditNotesGetParametersRemoteFields:
+      type: string
+      enum:
+      - status
+      - status,type
+      - type
+      title: CreditNotesGetParametersRemoteFields
+    RemoteData:
       type: object
       properties:
-        request_schema:
-          type: object
-          additionalProperties:
-            description: Any type
-        status:
-          $ref: '#/components/schemas/LinkedAccountStatus'
-        has_conditional_params:
-          type: boolean
-        has_required_linked_account_params:
-          type: boolean
-        remote_fields:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: Remote field values to populate
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
       required:
-      - request_schema
-      - has_conditional_params
-      - has_required_linked_account_params
-      title: MetaResponse
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
     ValidationProblemSource:
       type: object
       properties:
@@ -950,138 +1163,38 @@ components:
       required:
       - pointer
       title: ValidationProblemSource
-    CreditNotesGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - accounting_period
-      - applied_payments
-      - company
-      - contact
-      - line_items
-      - payments
-      - tracking_categories
-      title: CreditNotesGetParametersExpandSchemaItems
-    CreditNotesIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - accounting_period
-      - applied_payments
-      - company
-      - contact
-      - line_items
-      - payments
-      - tracking_categories
-      title: CreditNotesIdGetParametersExpandSchemaItems
-    CreditNoteLineItemRequest:
+    LinkedAccountStatus:
       type: object
       properties:
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        item:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        name:
-          type:
-          - string
-          - 'null'
-          description: The credit note line item's name.
-        description:
-          type:
-          - string
-          - 'null'
-          description: The description of the item that is owed.
-        quantity:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          description: The credit note line item's quantity.
-        memo:
-          type:
-          - string
-          - 'null'
-          description: The credit note line item's memo.
-        unit_price:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          description: The credit note line item's unit price.
-        tax_rate:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The tax rate that applies to this line item.
-        total_line_amount:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          description: The credit note line item's total.
-        tracking_category:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The credit note line item's associated tracking category.
-        tracking_categories:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: The credit note line item's associated tracking categories.
-        account:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The credit note line item's account.
-        company:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The company the credit note belongs to.
-        contact:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The credit note's contact.
-        project:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        integration_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        linked_account_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-      description: '# The CreditNoteLineItem Object
-
-        ### Description
-
-        The `CreditNoteLineItem` object is used to represent a credit note''s line items.
-
-
-        ### Usage Example
-
-        Fetch from the `GET CreditNote` endpoint and view the credit note''s line items.'
-      title: CreditNoteLineItemRequest
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    CreditNotesGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - status
+      - status,type
+      - type
+      title: CreditNotesGetParametersShowEnumOrigins
+    CreditNoteStatusEnum:
+      type: string
+      enum:
+      - SUBMITTED
+      - AUTHORIZED
+      - PAID
+      title: CreditNoteStatusEnum
+    CreditNotesIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - status
+      - status,type
+      - type
+      title: CreditNotesIdGetParametersRemoteFields
     TransactionCurrencyEnum:
       type: string
       enum:
@@ -1393,72 +1506,34 @@ components:
       - ZWL
       description: The currency code in ISO 4217 format.
       title: TransactionCurrencyEnum
-    LinkedAccountStatus:
+    CreditNoteFieldMappings:
       type: object
       properties:
-        linked_account_status:
-          type: string
-        can_make_request:
-          type: boolean
-      required:
-      - linked_account_status
-      - can_make_request
-      title: LinkedAccountStatus
-    CreditNotesGetParametersRemoteFields:
-      type: string
-      enum:
-      - status
-      - status,type
-      - type
-      title: CreditNotesGetParametersRemoteFields
-    CreditNoteApplyLineForCreditNoteRequest:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: CreditNoteFieldMappings
+    PaginatedCreditNoteList:
       type: object
       properties:
-        remote_id:
+        next:
           type:
           - string
           - 'null'
-          description: The third-party API ID of the matching object.
-        invoice:
+        previous:
           type:
           - string
           - 'null'
-          format: uuid
-        applied_date:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Date that the credit note is applied to the invoice.
-        applied_amount:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          description: The amount of the Credit Note applied to the invoice.
-        integration_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        linked_account_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-      description: '# The CreditNoteApplyLine Object
-
-        ### Description
-
-        The `CreditNoteApplyLine` is attached to the CreditNote model.
-
-
-        ### Usage Example
-
-        Fetch from the `GET CreditNote` endpoint and view the invoice''s applied to lines.'
-      title: CreditNoteApplyLineForCreditNoteRequest
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreditNote'
+      title: PaginatedCreditNoteList
     WarningValidationProblem:
       type: object
       properties:
@@ -1481,95 +1556,6 @@ components:
       - detail
       - problem_type
       title: WarningValidationProblem
-    ErrorValidationProblem:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
-          type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
-      required:
-      - title
-      - detail
-      - problem_type
-      title: ErrorValidationProblem
-    CreditNoteStatusEnum:
-      type: string
-      enum:
-      - SUBMITTED
-      - AUTHORIZED
-      - PAID
-      title: CreditNoteStatusEnum
-    ApplyCreditNoteRequest:
-      type: object
-      properties:
-        invoice:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The invoice to apply the credit note to.
-        applied_date:
-          type: string
-          format: date-time
-          description: Date that the credit note is applied to the invoice.
-        applied_amount:
-          type: string
-          format: decimal
-          description: The amount of credit applied to the invoice.
-      required:
-      - invoice
-      - applied_date
-      - applied_amount
-      title: ApplyCreditNoteRequest
-    CreditNoteResponse:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/CreditNote'
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/WarningValidationProblem'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorValidationProblem'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/DebugModeLog'
-      required:
-      - model
-      - warnings
-      - errors
-      title: CreditNoteResponse
-    PaginatedCreditNoteList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/CreditNote'
-      title: PaginatedCreditNoteList
     CreditNotesIdGetParametersShowEnumOrigins:
       type: string
       enum:
@@ -1577,6 +1563,20 @@ components:
       - status,type
       - type
       title: CreditNotesIdGetParametersShowEnumOrigins
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
   securitySchemes:
     tokenAuth:
       type: http

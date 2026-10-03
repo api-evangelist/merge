@@ -756,24 +756,6 @@ paths:
     - url: https://api-ap.merge.dev/api
 components:
   schemas:
-    ModelPermissionDeserializer:
-      type: object
-      properties:
-        is_enabled:
-          type: boolean
-      title: ModelPermissionDeserializer
-    FieldPermissionDeserializerRequest:
-      type: object
-      properties:
-        enabled_fields:
-          type: array
-          items:
-            description: Any type
-        disabled_fields:
-          type: array
-          items:
-            description: Any type
-      title: FieldPermissionDeserializerRequest
     FieldPermissionDeserializer:
       type: object
       properties:
@@ -786,12 +768,26 @@ components:
           items:
             description: Any type
       title: FieldPermissionDeserializer
-    ModelPermissionDeserializerRequest:
+    IndividualCommonModelScopeDeserializerRequest:
+      type: object
+      properties:
+        model_name:
+          type: string
+        model_permissions:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/ModelPermissionDeserializerRequest'
+        field_permissions:
+          $ref: '#/components/schemas/FieldPermissionDeserializerRequest'
+      required:
+      - model_name
+      title: IndividualCommonModelScopeDeserializerRequest
+    ModelPermissionDeserializer:
       type: object
       properties:
         is_enabled:
           type: boolean
-      title: ModelPermissionDeserializerRequest
+      title: ModelPermissionDeserializer
     IndividualCommonModelScopeDeserializer:
       type: object
       properties:
@@ -817,20 +813,12 @@ components:
       required:
       - common_models
       title: CommonModelScopeAPI
-    IndividualCommonModelScopeDeserializerRequest:
+    ModelPermissionDeserializerRequest:
       type: object
       properties:
-        model_name:
-          type: string
-        model_permissions:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/ModelPermissionDeserializerRequest'
-        field_permissions:
-          $ref: '#/components/schemas/FieldPermissionDeserializerRequest'
-      required:
-      - model_name
-      title: IndividualCommonModelScopeDeserializerRequest
+        is_enabled:
+          type: boolean
+      title: ModelPermissionDeserializerRequest
     LinkedAccountCommonModelScopeDeserializerRequest:
       type: object
       properties:
@@ -842,6 +830,18 @@ components:
       required:
       - common_models
       title: LinkedAccountCommonModelScopeDeserializerRequest
+    FieldPermissionDeserializerRequest:
+      type: object
+      properties:
+        enabled_fields:
+          type: array
+          items:
+            description: Any type
+        disabled_fields:
+          type: array
+          items:
+            description: Any type
+      title: FieldPermissionDeserializerRequest
   securitySchemes:
     tokenAuth:
       type: http

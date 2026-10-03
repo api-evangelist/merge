@@ -220,48 +220,6 @@ components:
 
         Fetch from the `GET BalanceSheet` endpoint and view the balance sheet''s report items.'
       title: ReportItem
-    RemoteData:
-      type: object
-      properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
-      required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
-    PaginatedBalanceSheetList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/BalanceSheet'
-      title: PaginatedBalanceSheetList
-    BalanceSheetsGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - company
-      title: BalanceSheetsGetParametersExpandSchemaItems
     BalanceSheetsIdGetParametersExpandSchemaItems:
       type: string
       enum:
@@ -368,6 +326,11 @@ components:
           additionalProperties:
             description: Any type
       title: BalanceSheetFieldMappings
+    BalanceSheetsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - company
+      title: BalanceSheetsGetParametersExpandSchemaItems
     TransactionCurrencyEnum:
       type: string
       enum:
@@ -679,6 +642,43 @@ components:
       - ZWL
       description: The currency code in ISO 4217 format.
       title: TransactionCurrencyEnum
+    PaginatedBalanceSheetList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BalanceSheet'
+      title: PaginatedBalanceSheetList
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
   securitySchemes:
     tokenAuth:
       type: http

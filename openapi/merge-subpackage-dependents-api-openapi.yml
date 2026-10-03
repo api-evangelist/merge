@@ -165,6 +165,22 @@ paths:
                 $ref: '#/components/schemas/Dependent'
 components:
   schemas:
+    GenderEnum:
+      type: string
+      enum:
+      - MALE
+      - FEMALE
+      - NON-BINARY
+      - OTHER
+      - PREFER_NOT_TO_DISCLOSE
+      title: GenderEnum
+    RelationshipEnum:
+      type: string
+      enum:
+      - CHILD
+      - SPOUSE
+      - DOMESTIC_PARTNER
+      title: RelationshipEnum
     RemoteData:
       type: object
       properties:
@@ -186,15 +202,6 @@ components:
 
         TODO'
       title: RemoteData
-    GenderEnum:
-      type: string
-      enum:
-      - MALE
-      - FEMALE
-      - NON-BINARY
-      - OTHER
-      - PREFER_NOT_TO_DISCLOSE
-      title: GenderEnum
     DependentFieldMappings:
       type: object
       properties:
@@ -207,29 +214,6 @@ components:
           additionalProperties:
             description: Any type
       title: DependentFieldMappings
-    PaginatedDependentList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Dependent'
-      title: PaginatedDependentList
-    RelationshipEnum:
-      type: string
-      enum:
-      - CHILD
-      - SPOUSE
-      - DOMESTIC_PARTNER
-      title: RelationshipEnum
     Dependent:
       type: object
       properties:
@@ -331,6 +315,22 @@ components:
 
         Fetch from the `LIST Dependents` endpoint and filter by `ID` to show all dependents.'
       title: Dependent
+    PaginatedDependentList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Dependent'
+      title: PaginatedDependentList
   securitySchemes:
     tokenAuth:
       type: http

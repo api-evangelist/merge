@@ -69,6 +69,23 @@ paths:
                 $ref: '#/components/schemas/ConnectorDetailPublicResponse'
 components:
   schemas:
+    ConnectorToolMini:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        credit_type:
+          type: string
+      required:
+      - name
+      - description
+      - credit_type
+      description: Mini version of ConnectorTool serializer that excludes input_schema details.
+      title: ConnectorToolMini
     ConnectorDetailPublicResponse:
       type: object
       properties:
@@ -176,36 +193,6 @@ components:
       - field_type
       - options
       title: SecretSchemaPublic
-    ConnectorToolMini:
-      type: object
-      properties:
-        name:
-          type: string
-        description:
-          type:
-          - string
-          - 'null'
-        credit_type:
-          type: string
-      required:
-      - name
-      - description
-      - credit_type
-      description: Mini version of ConnectorTool serializer that excludes input_schema details.
-      title: ConnectorToolMini
-    AuthOptionPublic:
-      type: object
-      properties:
-        type:
-          type: string
-        secrets:
-          type: array
-          items:
-            $ref: '#/components/schemas/SecretSchemaPublic'
-      required:
-      - type
-      - secrets
-      title: AuthOptionPublic
     SecretOptionPublic:
       type: object
       properties:
@@ -220,6 +207,19 @@ components:
       - value
       - option_default
       title: SecretOptionPublic
+    AuthOptionPublic:
+      type: object
+      properties:
+        type:
+          type: string
+        secrets:
+          type: array
+          items:
+            $ref: '#/components/schemas/SecretSchemaPublic'
+      required:
+      - type
+      - secrets
+      title: AuthOptionPublic
   securitySchemes:
     tokenAuth:
       type: http

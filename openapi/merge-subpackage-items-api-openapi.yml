@@ -351,63 +351,39 @@ paths:
                 $ref: '#/components/schemas/MetaResponse'
 components:
   schemas:
-    RemoteData:
+    ItemsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - company
+      - purchase_account
+      - purchase_tax_rate
+      - sales_account
+      - sales_tax_rate
+      title: ItemsGetParametersExpandSchemaItems
+    MetaResponse:
       type: object
       properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
       required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
-    DebugModeLog:
-      type: object
-      properties:
-        log_id:
-          type: string
-        dashboard_view:
-          type: string
-        log_summary:
-          $ref: '#/components/schemas/DebugModelLogSummary'
-      required:
-      - log_id
-      - dashboard_view
-      - log_summary
-      title: DebugModeLog
-    DebugModelLogSummary:
-      type: object
-      properties:
-        url:
-          type: string
-        method:
-          type: string
-        status_code:
-          type: integer
-      required:
-      - url
-      - method
-      - status_code
-      title: DebugModelLogSummary
-    ItemEndpointRequest:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/ItemRequestRequest'
-      required:
-      - model
-      title: ItemEndpointRequest
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
     Item:
       type: object
       properties:
@@ -514,6 +490,131 @@ components:
 
         Fetch from the `LIST Items` endpoint and view a company''s items.'
       title: Item
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    PaginatedItemList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Item'
+      title: PaginatedItemList
+    Type2bbEnum:
+      type: string
+      enum:
+      - INVENTORY
+      - NON_INVENTORY
+      - SERVICE
+      - UNKNOWN
+      title: Type2bbEnum
+    ItemResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/Item'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: ItemResponse
+    ItemsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - company
+      - purchase_account
+      - purchase_tax_rate
+      - sales_account
+      - sales_tax_rate
+      title: ItemsIdGetParametersExpandSchemaItems
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    ItemFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: ItemFieldMappings
+    PatchedItemEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/PatchedItemRequestRequest'
+      required:
+      - model
+      title: PatchedItemEndpointRequest
+    ItemEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/ItemRequestRequest'
+      required:
+      - model
+      title: ItemEndpointRequest
+    Status7d1Enum:
+      type: string
+      enum:
+      - ACTIVE
+      - ARCHIVED
+      title: Status7d1Enum
     ItemRequestRequest:
       type: object
       properties:
@@ -597,38 +698,42 @@ components:
 
         Fetch from the `LIST Items` endpoint and view a company''s items.'
       title: ItemRequestRequest
-    Type2bbEnum:
+    ItemsGetParametersShowEnumOrigins:
       type: string
       enum:
-      - INVENTORY
-      - NON_INVENTORY
-      - SERVICE
-      - UNKNOWN
-      title: Type2bbEnum
-    MetaResponse:
+      - status
+      title: ItemsGetParametersShowEnumOrigins
+    RemoteData:
       type: object
       properties:
-        request_schema:
-          type: object
-          additionalProperties:
-            description: Any type
-        status:
-          $ref: '#/components/schemas/LinkedAccountStatus'
-        has_conditional_params:
-          type: boolean
-        has_required_linked_account_params:
-          type: boolean
-        remote_fields:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: Remote field values to populate
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
       required:
-      - request_schema
-      - has_conditional_params
-      - has_required_linked_account_params
-      title: MetaResponse
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    ItemsIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - status
+      title: ItemsIdGetParametersShowEnumOrigins
+    ItemsIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - status
+      title: ItemsIdGetParametersRemoteFields
     ValidationProblemSource:
       type: object
       properties:
@@ -720,37 +825,6 @@ components:
 
         Fetch from the `LIST Items` endpoint and view a company''s items.'
       title: PatchedItemRequestRequest
-    ItemsGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - company
-      - purchase_account
-      - purchase_tax_rate
-      - sales_account
-      - sales_tax_rate
-      title: ItemsGetParametersExpandSchemaItems
-    PaginatedItemList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Item'
-      title: PaginatedItemList
-    Status7d1Enum:
-      type: string
-      enum:
-      - ACTIVE
-      - ARCHIVED
-      title: Status7d1Enum
     LinkedAccountStatus:
       type: object
       properties:
@@ -762,15 +836,6 @@ components:
       - linked_account_status
       - can_make_request
       title: LinkedAccountStatus
-    ItemsIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - company
-      - purchase_account
-      - purchase_tax_rate
-      - sales_account
-      - sales_tax_rate
-      title: ItemsIdGetParametersExpandSchemaItems
     WarningValidationProblem:
       type: object
       properties:
@@ -793,90 +858,25 @@ components:
       - detail
       - problem_type
       title: WarningValidationProblem
-    ItemsGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - status
-      title: ItemsGetParametersShowEnumOrigins
-    ItemsIdGetParametersRemoteFields:
-      type: string
-      enum:
-      - status
-      title: ItemsIdGetParametersRemoteFields
-    ErrorValidationProblem:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
-          type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
-      required:
-      - title
-      - detail
-      - problem_type
-      title: ErrorValidationProblem
-    ItemFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: ItemFieldMappings
-    ItemsIdGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - status
-      title: ItemsIdGetParametersShowEnumOrigins
-    PatchedItemEndpointRequest:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/PatchedItemRequestRequest'
-      required:
-      - model
-      title: PatchedItemEndpointRequest
     ItemsGetParametersRemoteFields:
       type: string
       enum:
       - status
       title: ItemsGetParametersRemoteFields
-    ItemResponse:
+    DebugModelLogSummary:
       type: object
       properties:
-        model:
-          $ref: '#/components/schemas/Item'
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/WarningValidationProblem'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorValidationProblem'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/DebugModeLog'
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
       required:
-      - model
-      - warnings
-      - errors
-      title: ItemResponse
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
   securitySchemes:
     tokenAuth:
       type: http

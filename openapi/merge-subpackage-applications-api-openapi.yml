@@ -332,39 +332,273 @@ paths:
                 $ref: '#/components/schemas/MetaResponse'
 components:
   schemas:
-    RemoteData:
+    ApplicationResponse:
       type: object
       properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
+        model:
+          $ref: '#/components/schemas/Application'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
       required:
-      - path
-      description: '# The RemoteData Object
+      - model
+      - warnings
+      - errors
+      title: ApplicationResponse
+    ApplicationRequest:
+      type: object
+      properties:
+        candidate:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The candidate applying.
+        job:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The job being applied for.
+        applied_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the application was submitted.
+        rejected_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the application was rejected.
+        offers:
+          type: array
+          items:
+            type: string
+            format: uuid
+        source:
+          type:
+          - string
+          - 'null'
+          description: The application's source.
+        credited_to:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The user credited for this application.
+        screening_question_answers:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScreeningQuestionAnswerRequest'
+        current_stage:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The application's current stage.
+        reject_reason:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The application's reason for rejection.
+        remote_template_id:
+          type:
+          - string
+          - 'null'
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The Application Object
 
         ### Description
 
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+        The Application Object is used to represent a candidate''s journey through a particular Job''s recruiting process. If a Candidate applies for multiple Jobs, there will be a separate Application for each Job if the third-party integration allows it.
+
+
+        ### Usage Example
+
+        Fetch from the `LIST Applications` endpoint and filter by `ID` to show all applications.'
+      title: ApplicationRequest
+    ScreeningQuestionAnswerRequest:
+      type: object
+      properties:
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        question:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The screening question associated with the candidate’s answer. To determine the data type of the answer, you can expand on the screening question by adding `screening_question_answers.question` to the `expand` query parameter.
+        answer:
+          type:
+          - string
+          - 'null'
+          description: The candidate’s response to the screening question.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The ScreeningQuestionAnswer Object
+
+        ### Description
+
+        The `ScreeningQuestionAnswer` object is used to represent candidate responses to a screening question, for a specific application.
 
 
         ### Usage Example
 
         TODO'
-      title: RemoteData
-    UpdateApplicationStageRequest:
+      title: ScreeningQuestionAnswerRequest
+    MetaResponse:
       type: object
       properties:
-        job_interview_stage:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    ScreeningQuestionAnswer:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        question:
           type:
           - string
           - 'null'
           format: uuid
-          description: The interview stage to move the application to.
+          description: The screening question associated with the candidate’s answer. To determine the data type of the answer, you can expand on the screening question by adding `screening_question_answers.question` to the `expand` query parameter.
+        answer:
+          type:
+          - string
+          - 'null'
+          description: The candidate’s response to the screening question.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+      description: '# The ScreeningQuestionAnswer Object
+
+        ### Description
+
+        The `ScreeningQuestionAnswer` object is used to represent candidate responses to a screening question, for a specific application.
+
+
+        ### Usage Example
+
+        TODO'
+      title: ScreeningQuestionAnswer
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    ApplicationsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - candidate
+      - credited_to
+      - current_stage
+      - job
+      - offers
+      - reject_reason
+      - screening_question_answers
+      - screening_question_answers.question
+      title: ApplicationsIdGetParametersExpandSchemaItems
+    ApplicationEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/ApplicationRequest'
         remote_user_id:
           type: string
-      title: UpdateApplicationStageRequest
+      required:
+      - model
+      - remote_user_id
+      title: ApplicationEndpointRequest
+    ApplicationsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - candidate
+      - credited_to
+      - current_stage
+      - job
+      - offers
+      - reject_reason
+      - screening_question_answers
+      - screening_question_answers.question
+      title: ApplicationsGetParametersExpandSchemaItems
     Application:
       type: object
       properties:
@@ -464,300 +698,6 @@ components:
 
         Fetch from the `LIST Applications` endpoint and filter by `ID` to show all applications.'
       title: Application
-    DebugModeLog:
-      type: object
-      properties:
-        log_id:
-          type: string
-        dashboard_view:
-          type: string
-        log_summary:
-          $ref: '#/components/schemas/DebugModelLogSummary'
-      required:
-      - log_id
-      - dashboard_view
-      - log_summary
-      title: DebugModeLog
-    ApplicationResponse:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/Application'
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/WarningValidationProblem'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorValidationProblem'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/DebugModeLog'
-      required:
-      - model
-      - warnings
-      - errors
-      title: ApplicationResponse
-    DebugModelLogSummary:
-      type: object
-      properties:
-        url:
-          type: string
-        method:
-          type: string
-        status_code:
-          type: integer
-      required:
-      - url
-      - method
-      - status_code
-      title: DebugModelLogSummary
-    ApplicationRequest:
-      type: object
-      properties:
-        candidate:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The candidate applying.
-        job:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The job being applied for.
-        applied_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: When the application was submitted.
-        rejected_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: When the application was rejected.
-        offers:
-          type: array
-          items:
-            type: string
-            format: uuid
-        source:
-          type:
-          - string
-          - 'null'
-          description: The application's source.
-        credited_to:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The user credited for this application.
-        screening_question_answers:
-          type: array
-          items:
-            $ref: '#/components/schemas/ScreeningQuestionAnswerRequest'
-        current_stage:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The application's current stage.
-        reject_reason:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The application's reason for rejection.
-        remote_template_id:
-          type:
-          - string
-          - 'null'
-        integration_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        linked_account_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-      description: '# The Application Object
-
-        ### Description
-
-        The Application Object is used to represent a candidate''s journey through a particular Job''s recruiting process. If a Candidate applies for multiple Jobs, there will be a separate Application for each Job if the third-party integration allows it.
-
-
-        ### Usage Example
-
-        Fetch from the `LIST Applications` endpoint and filter by `ID` to show all applications.'
-      title: ApplicationRequest
-    MetaResponse:
-      type: object
-      properties:
-        request_schema:
-          type: object
-          additionalProperties:
-            description: Any type
-        status:
-          $ref: '#/components/schemas/LinkedAccountStatus'
-        has_conditional_params:
-          type: boolean
-        has_required_linked_account_params:
-          type: boolean
-        remote_fields:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: Remote field values to populate
-      required:
-      - request_schema
-      - has_conditional_params
-      - has_required_linked_account_params
-      title: MetaResponse
-    ValidationProblemSource:
-      type: object
-      properties:
-        pointer:
-          type: string
-      required:
-      - pointer
-      title: ValidationProblemSource
-    ScreeningQuestionAnswerRequest:
-      type: object
-      properties:
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        question:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The screening question associated with the candidate’s answer. To determine the data type of the answer, you can expand on the screening question by adding `screening_question_answers.question` to the `expand` query parameter.
-        answer:
-          type:
-          - string
-          - 'null'
-          description: The candidate’s response to the screening question.
-        integration_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        linked_account_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-      description: '# The ScreeningQuestionAnswer Object
-
-        ### Description
-
-        The `ScreeningQuestionAnswer` object is used to represent candidate responses to a screening question, for a specific application.
-
-
-        ### Usage Example
-
-        TODO'
-      title: ScreeningQuestionAnswerRequest
-    ApplicationsIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - candidate
-      - credited_to
-      - current_stage
-      - job
-      - offers
-      - reject_reason
-      - screening_question_answers
-      - screening_question_answers.question
-      title: ApplicationsIdGetParametersExpandSchemaItems
-    ApplicationEndpointRequest:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/ApplicationRequest'
-        remote_user_id:
-          type: string
-      required:
-      - model
-      - remote_user_id
-      title: ApplicationEndpointRequest
-    ApplicationFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: ApplicationFieldMappings
-    PaginatedApplicationList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Application'
-      title: PaginatedApplicationList
-    LinkedAccountStatus:
-      type: object
-      properties:
-        linked_account_status:
-          type: string
-        can_make_request:
-          type: boolean
-      required:
-      - linked_account_status
-      - can_make_request
-      title: LinkedAccountStatus
-    WarningValidationProblem:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
-          type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
-      required:
-      - title
-      - detail
-      - problem_type
-      title: WarningValidationProblem
     ErrorValidationProblem:
       type: object
       properties:
@@ -780,62 +720,122 @@ components:
       - detail
       - problem_type
       title: ErrorValidationProblem
-    ApplicationsGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - candidate
-      - credited_to
-      - current_stage
-      - job
-      - offers
-      - reject_reason
-      - screening_question_answers
-      - screening_question_answers.question
-      title: ApplicationsGetParametersExpandSchemaItems
-    ScreeningQuestionAnswer:
+    UpdateApplicationStageRequest:
       type: object
       properties:
-        id:
-          type: string
-          format: uuid
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        question:
+        job_interview_stage:
           type:
           - string
           - 'null'
           format: uuid
-          description: The screening question associated with the candidate’s answer. To determine the data type of the answer, you can expand on the screening question by adding `screening_question_answers.question` to the `expand` query parameter.
-        answer:
-          type:
-          - string
-          - 'null'
-          description: The candidate’s response to the screening question.
-        remote_was_deleted:
-          type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-      description: '# The ScreeningQuestionAnswer Object
+          description: The interview stage to move the application to.
+        remote_user_id:
+          type: string
+      title: UpdateApplicationStageRequest
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
 
         ### Description
 
-        The `ScreeningQuestionAnswer` object is used to represent candidate responses to a screening question, for a specific application.
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
 
 
         ### Usage Example
 
         TODO'
-      title: ScreeningQuestionAnswer
+      title: RemoteData
+    PaginatedApplicationList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Application'
+      title: PaginatedApplicationList
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    ApplicationFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: ApplicationFieldMappings
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
   securitySchemes:
     tokenAuth:
       type: http

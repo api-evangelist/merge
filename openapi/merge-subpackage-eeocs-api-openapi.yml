@@ -193,7 +193,12 @@ paths:
                 $ref: '#/components/schemas/EEOC'
 components:
   schemas:
-    EeocsIdGetParametersShowEnumOrigins:
+    EeocsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - candidate
+      title: EeocsIdGetParametersExpandSchemaItems
+    EeocsGetParametersRemoteFields:
       type: string
       enum:
       - disability_status
@@ -211,28 +216,16 @@ components:
       - race
       - race,veteran_status
       - veteran_status
-      title: EeocsIdGetParametersShowEnumOrigins
-    RemoteData:
-      type: object
-      properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
-      required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
+      title: EeocsGetParametersRemoteFields
+    GenderEnum:
+      type: string
+      enum:
+      - MALE
+      - FEMALE
+      - NON-BINARY
+      - OTHER
+      - DECLINE_TO_SELF_IDENTIFY
+      title: GenderEnum
     EEOC:
       type: object
       properties:
@@ -333,58 +326,6 @@ components:
       - race,veteran_status
       - veteran_status
       title: EeocsGetParametersShowEnumOrigins
-    GenderEnum:
-      type: string
-      enum:
-      - MALE
-      - FEMALE
-      - NON-BINARY
-      - OTHER
-      - DECLINE_TO_SELF_IDENTIFY
-      title: GenderEnum
-    EeocsIdGetParametersRemoteFields:
-      type: string
-      enum:
-      - disability_status
-      - disability_status,gender
-      - disability_status,gender,race
-      - disability_status,gender,race,veteran_status
-      - disability_status,gender,veteran_status
-      - disability_status,race
-      - disability_status,race,veteran_status
-      - disability_status,veteran_status
-      - gender
-      - gender,race
-      - gender,race,veteran_status
-      - gender,veteran_status
-      - race
-      - race,veteran_status
-      - veteran_status
-      title: EeocsIdGetParametersRemoteFields
-    VeteranStatusEnum:
-      type: string
-      enum:
-      - I_AM_NOT_A_PROTECTED_VETERAN
-      - I_IDENTIFY_AS_ONE_OR_MORE_OF_THE_CLASSIFICATIONS_OF_A_PROTECTED_VETERAN
-      - I_DONT_WISH_TO_ANSWER
-      title: VeteranStatusEnum
-    EeocsGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - candidate
-      title: EeocsGetParametersExpandSchemaItems
-    EeocFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: EeocFieldMappings
     PaginatedEEOCList:
       type: object
       properties:
@@ -413,12 +354,7 @@ components:
       - TWO_OR_MORE_RACES
       - DECLINE_TO_SELF_IDENTIFY
       title: RaceEnum
-    EeocsIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - candidate
-      title: EeocsIdGetParametersExpandSchemaItems
-    EeocsGetParametersRemoteFields:
+    EeocsIdGetParametersRemoteFields:
       type: string
       enum:
       - disability_status
@@ -436,7 +372,71 @@ components:
       - race
       - race,veteran_status
       - veteran_status
-      title: EeocsGetParametersRemoteFields
+      title: EeocsIdGetParametersRemoteFields
+    EeocsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - candidate
+      title: EeocsGetParametersExpandSchemaItems
+    VeteranStatusEnum:
+      type: string
+      enum:
+      - I_AM_NOT_A_PROTECTED_VETERAN
+      - I_IDENTIFY_AS_ONE_OR_MORE_OF_THE_CLASSIFICATIONS_OF_A_PROTECTED_VETERAN
+      - I_DONT_WISH_TO_ANSWER
+      title: VeteranStatusEnum
+    EeocFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: EeocFieldMappings
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    EeocsIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - disability_status
+      - disability_status,gender
+      - disability_status,gender,race
+      - disability_status,gender,race,veteran_status
+      - disability_status,gender,veteran_status
+      - disability_status,race
+      - disability_status,race,veteran_status
+      - disability_status,veteran_status
+      - gender
+      - gender,race
+      - gender,race,veteran_status
+      - gender,veteran_status
+      - race
+      - race,veteran_status
+      - veteran_status
+      title: EeocsIdGetParametersShowEnumOrigins
   securitySchemes:
     tokenAuth:
       type: http

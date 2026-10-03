@@ -964,49 +964,156 @@ paths:
     - url: https://api-ap.merge.dev/api
 components:
   schemas:
-    RemoteData:
+    ValidationProblemSource:
       type: object
       properties:
-        path:
+        pointer:
           type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
       required:
-      - path
-      description: '# The RemoteData Object
+      - pointer
+      title: ValidationProblemSource
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    AccountingAttachmentRequest:
+      type: object
+      properties:
+        file_name:
+          type:
+          - string
+          - 'null'
+          description: The attachment's name.
+        file_url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The attachment's url.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the accounting attachment belongs to.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The Accounting Attachment Object
 
         ### Description
 
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+        The `AccountingAttachment` object is used to represent a company''s attachments.
 
 
         ### Usage Example
 
-        TODO'
-      title: RemoteData
-    AccountingAttachmentEndpointRequest:
+        Fetch from the `LIST AccountingAttachments` endpoint and view a company''s attachments.'
+      title: AccountingAttachmentRequest
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    AccountingAttachmentFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: AccountingAttachmentFieldMappings
+    PaginatedAccountingAttachmentList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountingAttachment'
+      title: PaginatedAccountingAttachmentList
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    AccountingAttachmentResponse:
       type: object
       properties:
         model:
-          $ref: '#/components/schemas/AccountingAttachmentRequest'
+          $ref: '#/components/schemas/AccountingAttachment'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
       required:
       - model
-      title: AccountingAttachmentEndpointRequest
-    DebugModelLogSummary:
-      type: object
-      properties:
-        url:
-          type: string
-        method:
-          type: string
-        status_code:
-          type: integer
-      required:
-      - url
-      - method
-      - status_code
-      title: DebugModelLogSummary
+      - warnings
+      - errors
+      title: AccountingAttachmentResponse
     WarningValidationProblem:
       type: object
       properties:
@@ -1029,28 +1136,6 @@ components:
       - detail
       - problem_type
       title: WarningValidationProblem
-    ErrorValidationProblem:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
-          type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
-      required:
-      - title
-      - detail
-      - problem_type
-      title: ErrorValidationProblem
     AccountingAttachment:
       type: object
       properties:
@@ -1111,172 +1196,76 @@ components:
 
         Fetch from the `LIST AccountingAttachments` endpoint and view a company''s attachments.'
       title: AccountingAttachment
-    AccountingAttachmentFieldMappings:
+    DebugModelLogSummary:
       type: object
       properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: AccountingAttachmentFieldMappings
-    DebugModeLog:
-      type: object
-      properties:
-        log_id:
+        url:
           type: string
-        dashboard_view:
+        method:
           type: string
-        log_summary:
-          $ref: '#/components/schemas/DebugModelLogSummary'
+        status_code:
+          type: integer
       required:
-      - log_id
-      - dashboard_view
-      - log_summary
-      title: DebugModeLog
-    MetaResponse:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    RemoteData:
       type: object
       properties:
-        request_schema:
-          type: object
-          additionalProperties:
-            description: Any type
-        status:
-          $ref: '#/components/schemas/LinkedAccountStatus'
-        has_conditional_params:
-          type: boolean
-        has_required_linked_account_params:
-          type: boolean
-        remote_fields:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: Remote field values to populate
-      required:
-      - request_schema
-      - has_conditional_params
-      - has_required_linked_account_params
-      title: MetaResponse
-    AccountingAttachmentResponse:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/AccountingAttachment'
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/WarningValidationProblem'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorValidationProblem'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/DebugModeLog'
-      required:
-      - model
-      - warnings
-      - errors
-      title: AccountingAttachmentResponse
-    ValidationProblemSource:
-      type: object
-      properties:
-        pointer:
+        path:
           type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
       required:
-      - pointer
-      title: ValidationProblemSource
-    LinkedAccountStatus:
-      type: object
-      properties:
-        linked_account_status:
-          type: string
-        can_make_request:
-          type: boolean
-      required:
-      - linked_account_status
-      - can_make_request
-      title: LinkedAccountStatus
-    AccountingAttachmentRequest:
-      type: object
-      properties:
-        file_name:
-          type:
-          - string
-          - 'null'
-          description: The attachment's name.
-        file_url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The attachment's url.
-        company:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The company the accounting attachment belongs to.
-        integration_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        linked_account_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-      description: '# The Accounting Attachment Object
+      - path
+      description: '# The RemoteData Object
 
         ### Description
 
-        The `AccountingAttachment` object is used to represent a company''s attachments.
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
 
 
         ### Usage Example
 
-        Fetch from the `LIST AccountingAttachments` endpoint and view a company''s attachments.'
-      title: AccountingAttachmentRequest
-    PaginatedAccountingAttachmentList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/AccountingAttachment'
-      title: PaginatedAccountingAttachmentList
-    AttachmentsIdGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - attachment_type
-      title: AttachmentsIdGetParametersShowEnumOrigins
-    AttachmentEndpointRequest:
+        TODO'
+      title: RemoteData
+    AccountingAttachmentEndpointRequest:
       type: object
       properties:
         model:
-          $ref: '#/components/schemas/AttachmentRequest'
-        remote_user_id:
-          type: string
+          $ref: '#/components/schemas/AccountingAttachmentRequest'
       required:
       - model
-      - remote_user_id
-      title: AttachmentEndpointRequest
+      title: AccountingAttachmentEndpointRequest
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    AttachmentsIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - attachment_type
+      title: AttachmentsIdGetParametersRemoteFields
     Attachment:
       type: object
       properties:
@@ -1340,24 +1329,6 @@ components:
 
         Fetch from the `LIST Attachments` endpoint and view attachments accessible by a company.'
       title: Attachment
-    AttachmentsIdGetParametersRemoteFields:
-      type: string
-      enum:
-      - attachment_type
-      title: AttachmentsIdGetParametersRemoteFields
-    AttachmentsGetParametersRemoteFields:
-      type: string
-      enum:
-      - attachment_type
-      title: AttachmentsGetParametersRemoteFields
-    AttachmentTypeEnum:
-      type: string
-      enum:
-      - RESUME
-      - COVER_LETTER
-      - OFFER_LETTER
-      - OTHER
-      title: AttachmentTypeEnum
     AttachmentResponse:
       type: object
       properties:
@@ -1380,21 +1351,22 @@ components:
       - warnings
       - errors
       title: AttachmentResponse
+    AttachmentEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/AttachmentRequest'
+        remote_user_id:
+          type: string
+      required:
+      - model
+      - remote_user_id
+      title: AttachmentEndpointRequest
     AttachmentsIdGetParametersExpandSchemaItems:
       type: string
       enum:
       - candidate
       title: AttachmentsIdGetParametersExpandSchemaItems
-    AttachmentsGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - attachment_type
-      title: AttachmentsGetParametersShowEnumOrigins
-    AttachmentsGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - candidate
-      title: AttachmentsGetParametersExpandSchemaItems
     AttachmentFieldMappings:
       type: object
       properties:
@@ -1407,6 +1379,11 @@ components:
           additionalProperties:
             description: Any type
       title: AttachmentFieldMappings
+    AttachmentsIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - attachment_type
+      title: AttachmentsIdGetParametersShowEnumOrigins
     PaginatedAttachmentList:
       type: object
       properties:
@@ -1423,6 +1400,21 @@ components:
           items:
             $ref: '#/components/schemas/Attachment'
       title: PaginatedAttachmentList
+    AttachmentsGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - attachment_type
+      title: AttachmentsGetParametersShowEnumOrigins
+    AttachmentsGetParametersRemoteFields:
+      type: string
+      enum:
+      - attachment_type
+      title: AttachmentsGetParametersRemoteFields
+    AttachmentsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - candidate
+      title: AttachmentsGetParametersExpandSchemaItems
     AttachmentRequest:
       type: object
       properties:
@@ -1469,6 +1461,18 @@ components:
 
         Fetch from the `LIST Attachments` endpoint and view attachments accessible by a company.'
       title: AttachmentRequest
+    AttachmentTypeEnum:
+      type: string
+      enum:
+      - RESUME
+      - COVER_LETTER
+      - OFFER_LETTER
+      - OTHER
+      title: AttachmentTypeEnum
+    AttachmentFieldMappings_2:
+      type: object
+      properties: {}
+      title: AttachmentFieldMappings
     Attachment_2:
       type: object
       properties:
@@ -1526,10 +1530,11 @@ components:
 
         Fetch from the `GET /api/knowledgebase/attachments` endpoint and view their attachments.'
       title: Attachment
-    AttachmentFieldMappings_2:
-      type: object
-      properties: {}
-      title: AttachmentFieldMappings
+    AttachmentsGetParametersExpandSchemaItems_2:
+      type: string
+      enum:
+      - ticket
+      title: AttachmentsGetParametersExpandSchemaItems
     Attachment_3:
       type: object
       properties:
@@ -1659,14 +1664,6 @@ components:
 
         TODO'
       title: AttachmentRequest
-    TicketingAttachmentEndpointRequest:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/AttachmentRequest_2'
-      required:
-      - model
-      title: TicketingAttachmentEndpointRequest
     TicketingAttachmentResponse:
       type: object
       properties:
@@ -1689,16 +1686,19 @@ components:
       - warnings
       - errors
       title: TicketingAttachmentResponse
+    TicketingAttachmentEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/AttachmentRequest_2'
+      required:
+      - model
+      title: TicketingAttachmentEndpointRequest
     AttachmentsIdGetParametersExpandSchemaItems_2:
       type: string
       enum:
       - ticket
       title: AttachmentsIdGetParametersExpandSchemaItems
-    AttachmentsGetParametersExpandSchemaItems_2:
-      type: string
-      enum:
-      - ticket
-      title: AttachmentsGetParametersExpandSchemaItems
   securitySchemes:
     tokenAuth:
       type: http

@@ -281,120 +281,18 @@ paths:
                 $ref: '#/components/schemas/MetaResponse'
 components:
   schemas:
-    InterviewsIdGetParametersExpandSchemaItems:
+    ScheduledInterviewStatusEnum:
       type: string
       enum:
-      - application
-      - interviewers
-      - job_interview_stage
-      - organizer
-      title: InterviewsIdGetParametersExpandSchemaItems
-    ScheduledInterviewRequest:
-      type: object
-      properties:
-        application:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The application being interviewed.
-        job_interview_stage:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The stage of the interview.
-        organizer:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The user organizing the interview.
-        interviewers:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: Array of `RemoteUser` IDs.
-        location:
-          type:
-          - string
-          - 'null'
-          description: The interview's location.
-        start_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: When the interview was started.
-        end_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: When the interview was ended.
-        status:
-          oneOf:
-          - $ref: '#/components/schemas/ScheduledInterviewStatusEnum'
-          - type: 'null'
-          description: The interview's status.
-        integration_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        linked_account_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-      description: '# The ScheduledInterview Object
-
-        ### Description
-
-        The `ScheduledInterview` object is used to represent a scheduled interview for a given candidate’s application to a job. An `Application` can have multiple `ScheduledInterview`s depending on the particular hiring process.
-
-        ### Usage Example
-
-        Fetch from the `LIST ScheduledInterviews` endpoint and filter by `interviewers` to show all office locations.'
-      title: ScheduledInterviewRequest
-    RemoteData:
-      type: object
-      properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
-      required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
-    DebugModeLog:
-      type: object
-      properties:
-        log_id:
-          type: string
-        dashboard_view:
-          type: string
-        log_summary:
-          $ref: '#/components/schemas/DebugModelLogSummary'
-      required:
-      - log_id
-      - dashboard_view
-      - log_summary
-      title: DebugModeLog
+      - SCHEDULED
+      - AWAITING_FEEDBACK
+      - COMPLETE
+      title: ScheduledInterviewStatusEnum
+    InterviewsIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - status
+      title: InterviewsIdGetParametersShowEnumOrigins
     ScheduledInterview:
       type: object
       properties:
@@ -495,54 +393,6 @@ components:
 
         Fetch from the `LIST ScheduledInterviews` endpoint and filter by `interviewers` to show all office locations.'
       title: ScheduledInterview
-    ScheduledInterviewEndpointRequest:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/ScheduledInterviewRequest'
-        remote_user_id:
-          type: string
-      required:
-      - model
-      - remote_user_id
-      title: ScheduledInterviewEndpointRequest
-    ScheduledInterviewStatusEnum:
-      type: string
-      enum:
-      - SCHEDULED
-      - AWAITING_FEEDBACK
-      - COMPLETE
-      title: ScheduledInterviewStatusEnum
-    PaginatedScheduledInterviewList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ScheduledInterview'
-      title: PaginatedScheduledInterviewList
-    DebugModelLogSummary:
-      type: object
-      properties:
-        url:
-          type: string
-        method:
-          type: string
-        status_code:
-          type: integer
-      required:
-      - url
-      - method
-      - status_code
-      title: DebugModelLogSummary
     MetaResponse:
       type: object
       properties:
@@ -567,14 +417,87 @@ components:
       - has_conditional_params
       - has_required_linked_account_params
       title: MetaResponse
-    ValidationProblemSource:
+    InterviewsGetParametersRemoteFields:
+      type: string
+      enum:
+      - status
+      title: InterviewsGetParametersRemoteFields
+    ScheduledInterviewEndpointRequest:
       type: object
       properties:
-        pointer:
+        model:
+          $ref: '#/components/schemas/ScheduledInterviewRequest'
+        remote_user_id:
           type: string
       required:
-      - pointer
-      title: ValidationProblemSource
+      - model
+      - remote_user_id
+      title: ScheduledInterviewEndpointRequest
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    PaginatedScheduledInterviewList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScheduledInterview'
+      title: PaginatedScheduledInterviewList
+    InterviewsIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - status
+      title: InterviewsIdGetParametersRemoteFields
+    InterviewsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - application
+      - interviewers
+      - job_interview_stage
+      - organizer
+      title: InterviewsIdGetParametersExpandSchemaItems
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
     ScheduledInterviewResponse:
       type: object
       properties:
@@ -602,11 +525,55 @@ components:
       enum:
       - status
       title: InterviewsGetParametersShowEnumOrigins
-    InterviewsIdGetParametersRemoteFields:
+    InterviewsGetParametersExpandSchemaItems:
       type: string
       enum:
-      - status
-      title: InterviewsIdGetParametersRemoteFields
+      - application
+      - interviewers
+      - job_interview_stage
+      - organizer
+      title: InterviewsGetParametersExpandSchemaItems
+    ScheduledInterviewFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: ScheduledInterviewFieldMappings
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
     LinkedAccountStatus:
       type: object
       properties:
@@ -618,16 +585,6 @@ components:
       - linked_account_status
       - can_make_request
       title: LinkedAccountStatus
-    InterviewsGetParametersRemoteFields:
-      type: string
-      enum:
-      - status
-      title: InterviewsGetParametersRemoteFields
-    InterviewsIdGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - status
-      title: InterviewsIdGetParametersShowEnumOrigins
     WarningValidationProblem:
       type: object
       properties:
@@ -650,48 +607,91 @@ components:
       - detail
       - problem_type
       title: WarningValidationProblem
-    ErrorValidationProblem:
+    DebugModelLogSummary:
       type: object
       properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
+        url:
           type: string
-        detail:
+        method:
           type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
+        status_code:
           type: integer
       required:
-      - title
-      - detail
-      - problem_type
-      title: ErrorValidationProblem
-    InterviewsGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - application
-      - interviewers
-      - job_interview_stage
-      - organizer
-      title: InterviewsGetParametersExpandSchemaItems
-    ScheduledInterviewFieldMappings:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    ScheduledInterviewRequest:
       type: object
       properties:
-        organization_defined_targets:
-          type: object
+        application:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The application being interviewed.
+        job_interview_stage:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The stage of the interview.
+        organizer:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The user organizing the interview.
+        interviewers:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Array of `RemoteUser` IDs.
+        location:
+          type:
+          - string
+          - 'null'
+          description: The interview's location.
+        start_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the interview was started.
+        end_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the interview was ended.
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/ScheduledInterviewStatusEnum'
+          - type: 'null'
+          description: The interview's status.
+        integration_params:
+          type:
+          - object
+          - 'null'
           additionalProperties:
             description: Any type
-        linked_account_defined_targets:
-          type: object
+        linked_account_params:
+          type:
+          - object
+          - 'null'
           additionalProperties:
             description: Any type
-      title: ScheduledInterviewFieldMappings
+      description: '# The ScheduledInterview Object
+
+        ### Description
+
+        The `ScheduledInterview` object is used to represent a scheduled interview for a given candidate’s application to a job. An `Application` can have multiple `ScheduledInterview`s depending on the particular hiring process.
+
+        ### Usage Example
+
+        Fetch from the `LIST ScheduledInterviews` endpoint and filter by `interviewers` to show all office locations.'
+      title: ScheduledInterviewRequest
   securitySchemes:
     tokenAuth:
       type: http

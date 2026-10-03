@@ -328,35 +328,49 @@ paths:
     - url: https://api-ap.merge.dev/api
 components:
   schemas:
-    LanguageEnum:
-      type: string
-      enum:
-      - en
-      - de
-      title: LanguageEnum
-    CompletedAccountInitialScreenEnum:
-      type: string
-      enum:
-      - SELECTIVE_SYNC
-      title: CompletedAccountInitialScreenEnum
-    FieldPermissionDeserializerRequest:
-      type: object
-      properties:
-        enabled_fields:
-          type: array
-          items:
-            description: Any type
-        disabled_fields:
-          type: array
-          items:
-            description: Any type
-      title: FieldPermissionDeserializerRequest
     ModelPermissionDeserializerRequest:
       type: object
       properties:
         is_enabled:
           type: boolean
       title: ModelPermissionDeserializerRequest
+    IndividualCommonModelScopeDeserializerRequest:
+      type: object
+      properties:
+        model_name:
+          type: string
+        model_permissions:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/ModelPermissionDeserializerRequest'
+        field_permissions:
+          $ref: '#/components/schemas/FieldPermissionDeserializerRequest'
+      required:
+      - model_name
+      title: IndividualCommonModelScopeDeserializerRequest
+    CompletedAccountInitialScreenEnum:
+      type: string
+      enum:
+      - SELECTIVE_SYNC
+      title: CompletedAccountInitialScreenEnum
+    CommonModelScopesBodyRequest:
+      type: object
+      properties:
+        model_id:
+          type: string
+        enabled_actions:
+          type: array
+          items:
+            $ref: '#/components/schemas/EnabledActionsEnum'
+        disabled_fields:
+          type: array
+          items:
+            type: string
+      required:
+      - model_id
+      - enabled_actions
+      - disabled_fields
+      title: CommonModelScopesBodyRequest
     EndUserDetailsRequest:
       type: object
       properties:
@@ -468,38 +482,12 @@ components:
       required:
       - link_token
       title: LinkToken
-    IndividualCommonModelScopeDeserializerRequest:
-      type: object
-      properties:
-        model_name:
-          type: string
-        model_permissions:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/ModelPermissionDeserializerRequest'
-        field_permissions:
-          $ref: '#/components/schemas/FieldPermissionDeserializerRequest'
-      required:
-      - model_name
-      title: IndividualCommonModelScopeDeserializerRequest
-    CommonModelScopesBodyRequest:
-      type: object
-      properties:
-        model_id:
-          type: string
-        enabled_actions:
-          type: array
-          items:
-            $ref: '#/components/schemas/EnabledActionsEnum'
-        disabled_fields:
-          type: array
-          items:
-            type: string
-      required:
-      - model_id
-      - enabled_actions
-      - disabled_fields
-      title: CommonModelScopesBodyRequest
+    EnabledActionsEnum:
+      type: string
+      enum:
+      - READ
+      - WRITE
+      title: EnabledActionsEnum
     CategoriesEnum:
       type: string
       enum:
@@ -512,12 +500,24 @@ components:
       - filestorage
       - knowledgebase
       title: CategoriesEnum
-    EnabledActionsEnum:
+    LanguageEnum:
       type: string
       enum:
-      - READ
-      - WRITE
-      title: EnabledActionsEnum
+      - en
+      - de
+      title: LanguageEnum
+    FieldPermissionDeserializerRequest:
+      type: object
+      properties:
+        enabled_fields:
+          type: array
+          items:
+            description: Any type
+        disabled_fields:
+          type: array
+          items:
+            description: Any type
+      title: FieldPermissionDeserializerRequest
     linkToken_createForRegisteredUser_Response_201:
       type: object
       properties:
@@ -527,15 +527,6 @@ components:
           type: string
           description: URL that opens a hosted authentication page. Share this with the user so they can connect their account in a browser.
       title: linkToken_createForRegisteredUser_Response_201
-    LanguageEnum_2:
-      type: string
-      enum:
-      - en
-      - de
-      description: '* `en` - en
-
-        * `de` - de'
-      title: LanguageEnum
     CompletedAccountInitialScreenEnum_2:
       type: string
       enum:
@@ -645,6 +636,15 @@ components:
       - end_user_origin_id
       - categories
       title: EndUserDetailsRequest
+    EnabledActionsEnum_2:
+      type: string
+      enum:
+      - READ
+      - WRITE
+      description: '* `READ` - READ
+
+        * `WRITE` - WRITE'
+      title: EnabledActionsEnum
     CategoriesEnum_2:
       type: string
       enum:
@@ -672,15 +672,15 @@ components:
 
         * `knowledgebase` - knowledgebase'
       title: CategoriesEnum
-    EnabledActionsEnum_2:
+    LanguageEnum_2:
       type: string
       enum:
-      - READ
-      - WRITE
-      description: '* `READ` - READ
+      - en
+      - de
+      description: '* `en` - en
 
-        * `WRITE` - WRITE'
-      title: EnabledActionsEnum
+        * `de` - de'
+      title: LanguageEnum
   securitySchemes:
     tokenAuth:
       type: http

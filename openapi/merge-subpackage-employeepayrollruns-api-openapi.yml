@@ -203,179 +203,7 @@ paths:
                 $ref: '#/components/schemas/EmployeePayrollRun'
 components:
   schemas:
-    Tax:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        employee_payroll_run:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        name:
-          type:
-          - string
-          - 'null'
-          description: The tax's name.
-        amount:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: The tax amount.
-        employer_tax:
-          type:
-          - boolean
-          - 'null'
-          description: Whether or not the employer is responsible for paying the tax.
-        remote_was_deleted:
-          type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-        field_mappings:
-          oneOf:
-          - $ref: '#/components/schemas/TaxFieldMappings'
-          - type: 'null'
-        remote_data:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/RemoteData'
-      description: '# The Tax Object
-
-        ### Description
-
-        The `Tax` object is used to represent an array of the tax deductions for a given employee''s payroll run.
-
-
-        ### Usage Example
-
-        Fetch from the `LIST Taxes` endpoint and filter by `ID` to show all taxes.'
-      title: Tax
-    RemoteData:
-      type: object
-      properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
-      required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
-    EmployeePayrollRunsIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - employee
-      - payroll_run
-      title: EmployeePayrollRunsIdGetParametersExpandSchemaItems
-    EmployeePayrollRunsGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - employee
-      - payroll_run
-      title: EmployeePayrollRunsGetParametersExpandSchemaItems
-    Earning:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        employee_payroll_run:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        amount:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: The amount earned.
-        type:
-          oneOf:
-          - $ref: '#/components/schemas/EarningTypeEnum'
-          - type: 'null'
-          description: The type of earning.
-        remote_was_deleted:
-          type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-        field_mappings:
-          oneOf:
-          - $ref: '#/components/schemas/EarningFieldMappings'
-          - type: 'null'
-        remote_data:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/RemoteData'
-      description: '# The Earning Object
-
-        ### Description
-
-        The `Earning` object is used to represent an array of different compensations that an employee receives within specific wage categories.
-
-
-        ### Usage Example
-
-        Fetch from the `LIST Earnings` endpoint and filter by `ID` to show all earnings.'
-      title: Earning
-    PaginatedEmployeePayrollRunList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/EmployeePayrollRun'
-      title: PaginatedEmployeePayrollRunList
-    DeductionFieldMappings:
+    TaxFieldMappings:
       type: object
       properties:
         organization_defined_targets:
@@ -386,72 +214,7 @@ components:
           type: object
           additionalProperties:
             description: Any type
-      title: DeductionFieldMappings
-    Deduction:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        employee_payroll_run:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        name:
-          type:
-          - string
-          - 'null'
-          description: The deduction's name.
-        employee_deduction:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: The amount of money that is withheld from an employee's gross pay by the employee.
-        company_deduction:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: The amount of money that is withheld on behalf of an employee by the company.
-        remote_was_deleted:
-          type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-        field_mappings:
-          oneOf:
-          - $ref: '#/components/schemas/DeductionFieldMappings'
-          - type: 'null'
-        remote_data:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/RemoteData'
-      description: '# The Deduction Object
-
-        ### Description
-
-        The `Deduction` object is used to represent an array of the wages withheld from total earnings for the purpose of paying taxes.
-
-
-        ### Usage Example
-
-        Fetch from the `LIST Deductions` endpoint and filter by `ID` to show all deductions.'
-      title: Deduction
+      title: TaxFieldMappings
     EarningTypeEnum:
       type: string
       enum:
@@ -460,6 +223,18 @@ components:
       - OVERTIME
       - BONUS
       title: EarningTypeEnum
+    EarningFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: EarningFieldMappings
     EmployeePayrollRun:
       type: object
       properties:
@@ -557,7 +332,72 @@ components:
 
         Fetch from the `LIST EmployeePayrollRun` endpoint and filter by `ID` to show all employee payroll runs.'
       title: EmployeePayrollRun
-    TaxFieldMappings:
+    Deduction:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        employee_payroll_run:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+          description: The deduction's name.
+        employee_deduction:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The amount of money that is withheld from an employee's gross pay by the employee.
+        company_deduction:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The amount of money that is withheld on behalf of an employee by the company.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/DeductionFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The Deduction Object
+
+        ### Description
+
+        The `Deduction` object is used to represent an array of the wages withheld from total earnings for the purpose of paying taxes.
+
+
+        ### Usage Example
+
+        Fetch from the `LIST Deductions` endpoint and filter by `ID` to show all deductions.'
+      title: Deduction
+    DeductionFieldMappings:
       type: object
       properties:
         organization_defined_targets:
@@ -568,19 +408,29 @@ components:
           type: object
           additionalProperties:
             description: Any type
-      title: TaxFieldMappings
-    EarningFieldMappings:
+      title: DeductionFieldMappings
+    PaginatedEmployeePayrollRunList:
       type: object
       properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: EarningFieldMappings
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmployeePayrollRun'
+      title: PaginatedEmployeePayrollRunList
+    EmployeePayrollRunsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - employee
+      - payroll_run
+      title: EmployeePayrollRunsGetParametersExpandSchemaItems
     EmployeePayrollRunFieldMappings:
       type: object
       properties:
@@ -593,6 +443,156 @@ components:
           additionalProperties:
             description: Any type
       title: EmployeePayrollRunFieldMappings
+    Tax:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        employee_payroll_run:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+          description: The tax's name.
+        amount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The tax amount.
+        employer_tax:
+          type:
+          - boolean
+          - 'null'
+          description: Whether or not the employer is responsible for paying the tax.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/TaxFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The Tax Object
+
+        ### Description
+
+        The `Tax` object is used to represent an array of the tax deductions for a given employee''s payroll run.
+
+
+        ### Usage Example
+
+        Fetch from the `LIST Taxes` endpoint and filter by `ID` to show all taxes.'
+      title: Tax
+    EmployeePayrollRunsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - employee
+      - payroll_run
+      title: EmployeePayrollRunsIdGetParametersExpandSchemaItems
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    Earning:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        employee_payroll_run:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        amount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The amount earned.
+        type:
+          oneOf:
+          - $ref: '#/components/schemas/EarningTypeEnum'
+          - type: 'null'
+          description: The type of earning.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/EarningFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The Earning Object
+
+        ### Description
+
+        The `Earning` object is used to represent an array of different compensations that an employee receives within specific wage categories.
+
+
+        ### Usage Example
+
+        Fetch from the `LIST Earnings` endpoint and filter by `ID` to show all earnings.'
+      title: Earning
   securitySchemes:
     tokenAuth:
       type: http

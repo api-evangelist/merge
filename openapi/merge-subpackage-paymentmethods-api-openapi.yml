@@ -113,55 +113,15 @@ paths:
                 $ref: '#/components/schemas/PaymentMethod'
 components:
   schemas:
-    PaymentMethodFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: PaymentMethodFieldMappings
-    RemoteData:
-      type: object
-      properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
-      required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
-    PaginatedPaymentMethodList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/PaymentMethod'
-      title: PaginatedPaymentMethodList
+    MethodTypeEnum:
+      type: string
+      enum:
+      - CREDIT_CARD
+      - DEBIT_CARD
+      - ACH
+      - CASH
+      - CHECK
+      title: MethodTypeEnum
     PaymentMethod:
       type: object
       properties:
@@ -221,15 +181,55 @@ components:
 
         Fetch from the `GET PaymentMethod` endpoint and view payment method information.'
       title: PaymentMethod
-    MethodTypeEnum:
-      type: string
-      enum:
-      - CREDIT_CARD
-      - DEBIT_CARD
-      - ACH
-      - CASH
-      - CHECK
-      title: MethodTypeEnum
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    PaymentMethodFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: PaymentMethodFieldMappings
+    PaginatedPaymentMethodList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentMethod'
+      title: PaginatedPaymentMethodList
   securitySchemes:
     tokenAuth:
       type: http

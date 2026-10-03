@@ -172,6 +172,67 @@ paths:
                 $ref: '#/components/schemas/JobPosting'
 components:
   schemas:
+    Url:
+      type: object
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        value:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The site's url.
+        url_type:
+          oneOf:
+          - $ref: '#/components/schemas/UrlTypeEnum'
+          - type: 'null'
+          description: The type of site.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+      description: '# The Url Object
+
+        ### Description
+
+        The `Url` object is used to represent hyperlinks associated with the parent model.
+
+        ### Usage Example
+
+        Fetch from the `GET Candidate` endpoint and view their website urls.'
+      title: Url
+    JobPostingsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - job
+      title: JobPostingsIdGetParametersExpandSchemaItems
+    JobPostingStatusEnum:
+      type: string
+      enum:
+      - PUBLISHED
+      - CLOSED
+      - DRAFT
+      - INTERNAL
+      - PENDING
+      title: JobPostingStatusEnum
+    JobPostingFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: JobPostingFieldMappings
     RemoteData:
       type: object
       properties:
@@ -193,53 +254,17 @@ components:
 
         TODO'
       title: RemoteData
-    JobPostingFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: JobPostingFieldMappings
-    PaginatedJobPostingList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/JobPosting'
-      title: PaginatedJobPostingList
-    JobPostingsIdGetParametersExpandSchemaItems:
+    UrlTypeEnum:
       type: string
       enum:
-      - job
-      title: JobPostingsIdGetParametersExpandSchemaItems
-    JobPostingStatusEnum:
-      type: string
-      enum:
-      - PUBLISHED
-      - CLOSED
-      - DRAFT
-      - INTERNAL
-      - PENDING
-      title: JobPostingStatusEnum
-    JobPostingsGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - job
-      title: JobPostingsGetParametersExpandSchemaItems
+      - PERSONAL
+      - COMPANY
+      - PORTFOLIO
+      - BLOG
+      - SOCIAL_MEDIA
+      - OTHER
+      - JOB_POSTING
+      title: UrlTypeEnum
     JobPosting:
       type: object
       properties:
@@ -325,6 +350,27 @@ components:
 
         Fetch from the `LIST JobPostings` endpoint to show all job postings.'
       title: JobPosting
+    PaginatedJobPostingList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobPosting'
+      title: PaginatedJobPostingList
+    JobPostingsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - job
+      title: JobPostingsGetParametersExpandSchemaItems
     JobPostingsGetParametersStatus:
       type: string
       enum:
@@ -334,52 +380,6 @@ components:
       - PENDING
       - PUBLISHED
       title: JobPostingsGetParametersStatus
-    Url:
-      type: object
-      properties:
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        value:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The site's url.
-        url_type:
-          oneOf:
-          - $ref: '#/components/schemas/UrlTypeEnum'
-          - type: 'null'
-          description: The type of site.
-        remote_was_deleted:
-          type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-      description: '# The Url Object
-
-        ### Description
-
-        The `Url` object is used to represent hyperlinks associated with the parent model.
-
-        ### Usage Example
-
-        Fetch from the `GET Candidate` endpoint and view their website urls.'
-      title: Url
-    UrlTypeEnum:
-      type: string
-      enum:
-      - PERSONAL
-      - COMPANY
-      - PORTFOLIO
-      - BLOG
-      - SOCIAL_MEDIA
-      - OTHER
-      - JOB_POSTING
-      title: UrlTypeEnum
   securitySchemes:
     tokenAuth:
       type: http

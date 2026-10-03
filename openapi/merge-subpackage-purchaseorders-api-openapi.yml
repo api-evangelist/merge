@@ -427,38 +427,100 @@ paths:
                 $ref: '#/components/schemas/PaginatedRemoteFieldClassList'
 components:
   schemas:
-    PurchaseOrdersIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - accounting_period
-      - company
-      - delivery_address
-      - line_items
-      - payment_term
-      - tracking_categories
-      - vendor
-      title: PurchaseOrdersIdGetParametersExpandSchemaItems
-    RemoteData:
+    PaginatedRemoteFieldClassList:
       type: object
       properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldClass'
+      title: PaginatedRemoteFieldClassList
+    PurchaseOrdersGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - status
+      title: PurchaseOrdersGetParametersShowEnumOrigins
+    RemoteField:
+      type: object
+      properties:
+        remote_field_class:
+          $ref: '#/components/schemas/RemoteFieldClass'
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
       required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
+      - remote_field_class
+      title: RemoteField
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    FieldFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldFormatEnum
+    PurchaseOrderEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/PurchaseOrderRequest'
+      required:
+      - model
+      title: PurchaseOrderEndpointRequest
+    PurchaseOrdersIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - status
+      title: PurchaseOrdersIdGetParametersRemoteFields
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
     PurchaseOrder:
       type: object
       properties:
@@ -615,78 +677,54 @@ components:
 
         Fetch from the `LIST PurchaseOrders` endpoint and view a company''s purchase orders.'
       title: PurchaseOrder
-    PurchaseOrdersGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - status
-      title: PurchaseOrdersGetParametersShowEnumOrigins
-    DebugModeLog:
+    RemoteFieldRequest:
       type: object
       properties:
-        log_id:
+        remote_field_class:
           type: string
-        dashboard_view:
-          type: string
-        log_summary:
-          $ref: '#/components/schemas/DebugModelLogSummary'
+          format: uuid
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
       required:
-      - log_id
-      - dashboard_view
-      - log_summary
-      title: DebugModeLog
-    FieldTypeEnum:
+      - remote_field_class
+      title: RemoteFieldRequest
+    PurchaseOrdersIdGetParametersExpandSchemaItems:
       type: string
       enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: FieldTypeEnum
-    PurchaseOrdersIdGetParametersRemoteFields:
-      type: string
-      enum:
-      - status
-      title: PurchaseOrdersIdGetParametersRemoteFields
-    PaginatedRemoteFieldClassList:
+      - accounting_period
+      - company
+      - delivery_address
+      - line_items
+      - payment_term
+      - tracking_categories
+      - vendor
+      title: PurchaseOrdersIdGetParametersExpandSchemaItems
+    ItemSchema:
       type: object
       properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
+        item_type:
+          $ref: '#/components/schemas/ItemTypeEnum'
+        item_format:
+          $ref: '#/components/schemas/ItemFormatEnum'
+        item_choices:
           type: array
           items:
-            $ref: '#/components/schemas/RemoteFieldClass'
-      title: PaginatedRemoteFieldClassList
-    DebugModelLogSummary:
+            type: string
+      title: ItemSchema
+    PurchaseOrderFieldMappings:
       type: object
       properties:
-        url:
-          type: string
-        method:
-          type: string
-        status_code:
-          type: integer
-      required:
-      - url
-      - method
-      - status_code
-      title: DebugModelLogSummary
-    PurchaseOrderEndpointRequest:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/PurchaseOrderRequest'
-      required:
-      - model
-      title: PurchaseOrderEndpointRequest
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: PurchaseOrderFieldMappings
     PurchaseOrderStatusEnum:
       type: string
       enum:
@@ -696,6 +734,83 @@ components:
       - BILLED
       - DELETED
       title: PurchaseOrderStatusEnum
+    PurchaseOrdersIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - status
+      title: PurchaseOrdersIdGetParametersShowEnumOrigins
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    RemoteFieldClass:
+      type: object
+      properties:
+        id:
+          type: string
+        display_name:
+          type: string
+        remote_key_name:
+          type: string
+        description:
+          type: string
+        is_custom:
+          type: boolean
+        is_common_model_field:
+          type: boolean
+        is_required:
+          type: boolean
+        field_type:
+          $ref: '#/components/schemas/FieldTypeEnum'
+        field_format:
+          $ref: '#/components/schemas/FieldFormatEnum'
+        field_choices:
+          type: array
+          items:
+            type: string
+        item_schema:
+          $ref: '#/components/schemas/ItemSchema'
+      title: RemoteFieldClass
+    PurchaseOrderResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/PurchaseOrder'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: PurchaseOrderResponse
     PurchaseOrderRequest:
       type: object
       properties:
@@ -809,72 +924,6 @@ components:
 
         Fetch from the `LIST PurchaseOrders` endpoint and view a company''s purchase orders.'
       title: PurchaseOrderRequest
-    MetaResponse:
-      type: object
-      properties:
-        request_schema:
-          type: object
-          additionalProperties:
-            description: Any type
-        status:
-          $ref: '#/components/schemas/LinkedAccountStatus'
-        has_conditional_params:
-          type: boolean
-        has_required_linked_account_params:
-          type: boolean
-        remote_fields:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: Remote field values to populate
-      required:
-      - request_schema
-      - has_conditional_params
-      - has_required_linked_account_params
-      title: MetaResponse
-    ValidationProblemSource:
-      type: object
-      properties:
-        pointer:
-          type: string
-      required:
-      - pointer
-      title: ValidationProblemSource
-    ItemSchema:
-      type: object
-      properties:
-        item_type:
-          $ref: '#/components/schemas/ItemTypeEnum'
-        item_format:
-          $ref: '#/components/schemas/ItemFormatEnum'
-        item_choices:
-          type: array
-          items:
-            type: string
-      title: ItemSchema
-    ItemTypeEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: ItemTypeEnum
-    RemoteField:
-      type: object
-      properties:
-        remote_field_class:
-          $ref: '#/components/schemas/RemoteFieldClass'
-        value:
-          type: object
-          additionalProperties:
-            description: Any type
-      required:
-      - remote_field_class
-      title: RemoteField
     PurchaseOrderLineItemRequest:
       type: object
       properties:
@@ -995,193 +1044,78 @@ components:
       - bool
       - list
       title: ItemFormatEnum
-    PurchaseOrderLineItem:
+    RemoteData:
       type: object
       properties:
-        id:
+        path:
           type: string
-          format: uuid
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        description:
-          type:
-          - string
-          - 'null'
-          description: A description of the good being purchased.
-        unit_price:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: The line item's unit price.
-        quantity:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: The line item's quantity.
-        item:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        account:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The purchase order line item's account.
-        tracking_category:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The purchase order line item's associated tracking category.
-        tracking_categories:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: The purchase order line item's associated tracking categories.
-        tax_amount:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          description: The purchase order line item's tax amount.
-        total_line_amount:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          description: The purchase order line item's total amount.
-        currency:
-          oneOf:
-          - $ref: '#/components/schemas/TransactionCurrencyEnum'
-          - type: 'null'
-          description: The purchase order line item's currency. The currency code in ISO 4217 format.
-        tax_rate:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The tax rate that applies to this line item.
-        exchange_rate:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          description: The purchase order line item's exchange rate.
-        company:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The company the purchase order line item belongs to.
-        remote_was_deleted:
-          type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-        remote_fields:
-          type: array
-          items:
-            $ref: '#/components/schemas/RemoteField'
-      description: '# The PurchaseOrderLineItem Object
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
 
         ### Description
 
-        The `PurchaseOrderLineItem` object is used to represent a purchase order''s line item.
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
 
 
         ### Usage Example
 
-        Fetch from the `GET PurchaseOrder` endpoint and view a company''s purchase orders.'
-      title: PurchaseOrderLineItem
-    PurchaseOrderFieldMappings:
+        TODO'
+      title: RemoteData
+    ValidationProblemSource:
       type: object
       properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: PurchaseOrderFieldMappings
-    PurchaseOrderResponse:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/PurchaseOrder'
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/WarningValidationProblem'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorValidationProblem'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/DebugModeLog'
+        pointer:
+          type: string
       required:
-      - model
-      - warnings
-      - errors
-      title: PurchaseOrderResponse
-    RemoteFieldClass:
+      - pointer
+      title: ValidationProblemSource
+    LinkedAccountStatus:
       type: object
       properties:
-        id:
+        linked_account_status:
           type: string
-        display_name:
-          type: string
-        remote_key_name:
-          type: string
-        description:
-          type: string
-        is_custom:
+        can_make_request:
           type: boolean
-        is_common_model_field:
-          type: boolean
-        is_required:
-          type: boolean
-        field_type:
-          $ref: '#/components/schemas/FieldTypeEnum'
-        field_format:
-          $ref: '#/components/schemas/FieldFormatEnum'
-        field_choices:
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    PaginatedPurchaseOrderList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
           type: array
           items:
-            type: string
-        item_schema:
-          $ref: '#/components/schemas/ItemSchema'
-      title: RemoteFieldClass
-    RemoteFieldRequest:
-      type: object
-      properties:
-        remote_field_class:
-          type: string
-          format: uuid
-        value:
-          type: object
-          additionalProperties:
-            description: Any type
-      required:
-      - remote_field_class
-      title: RemoteFieldRequest
+            $ref: '#/components/schemas/PurchaseOrder'
+      title: PaginatedPurchaseOrderList
+    PurchaseOrdersGetParametersRemoteFields:
+      type: string
+      enum:
+      - status
+      title: PurchaseOrdersGetParametersRemoteFields
+    PurchaseOrdersGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - accounting_period
+      - company
+      - delivery_address
+      - line_items
+      - payment_term
+      - tracking_categories
+      - vendor
+      title: PurchaseOrdersGetParametersExpandSchemaItems
     TransactionCurrencyEnum:
       type: string
       enum:
@@ -1493,33 +1427,16 @@ components:
       - ZWL
       description: The currency code in ISO 4217 format.
       title: TransactionCurrencyEnum
-    LinkedAccountStatus:
-      type: object
-      properties:
-        linked_account_status:
-          type: string
-        can_make_request:
-          type: boolean
-      required:
-      - linked_account_status
-      - can_make_request
-      title: LinkedAccountStatus
-    PaginatedPurchaseOrderList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/PurchaseOrder'
-      title: PaginatedPurchaseOrderList
+    FieldTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldTypeEnum
     WarningValidationProblem:
       type: object
       properties:
@@ -1542,40 +1459,133 @@ components:
       - detail
       - problem_type
       title: WarningValidationProblem
-    PurchaseOrdersGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - accounting_period
-      - company
-      - delivery_address
-      - line_items
-      - payment_term
-      - tracking_categories
-      - vendor
-      title: PurchaseOrdersGetParametersExpandSchemaItems
-    ErrorValidationProblem:
+    PurchaseOrderLineItem:
       type: object
       properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
+        id:
           type: string
-        detail:
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
           type: string
-        problem_type:
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
           type: string
-        block_merge_link:
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        description:
+          type:
+          - string
+          - 'null'
+          description: A description of the good being purchased.
+        unit_price:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The line item's unit price.
+        quantity:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The line item's quantity.
+        item:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The purchase order line item's account.
+        tracking_category:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The purchase order line item's associated tracking category.
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: The purchase order line item's associated tracking categories.
+        tax_amount:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The purchase order line item's tax amount.
+        total_line_amount:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The purchase order line item's total amount.
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: The purchase order line item's currency. The currency code in ISO 4217 format.
+        tax_rate:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The tax rate that applies to this line item.
+        exchange_rate:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The purchase order line item's exchange rate.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the purchase order line item belongs to.
+        remote_was_deleted:
           type: boolean
-        raw_error:
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteField'
+      description: '# The PurchaseOrderLineItem Object
+
+        ### Description
+
+        The `PurchaseOrderLineItem` object is used to represent a purchase order''s line item.
+
+
+        ### Usage Example
+
+        Fetch from the `GET PurchaseOrder` endpoint and view a company''s purchase orders.'
+      title: PurchaseOrderLineItem
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
           type: string
-        error_code:
+        method:
+          type: string
+        status_code:
           type: integer
       required:
-      - title
-      - detail
-      - problem_type
-      title: ErrorValidationProblem
-    FieldFormatEnum:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    ItemTypeEnum:
       type: string
       enum:
       - string
@@ -1584,17 +1594,7 @@ components:
       - datetime
       - bool
       - list
-      title: FieldFormatEnum
-    PurchaseOrdersGetParametersRemoteFields:
-      type: string
-      enum:
-      - status
-      title: PurchaseOrdersGetParametersRemoteFields
-    PurchaseOrdersIdGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - status
-      title: PurchaseOrdersIdGetParametersShowEnumOrigins
+      title: ItemTypeEnum
   securitySchemes:
     tokenAuth:
       type: http

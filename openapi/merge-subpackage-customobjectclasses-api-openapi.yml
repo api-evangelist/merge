@@ -218,26 +218,6 @@ components:
 
         TODO'
       title: CustomObjectClass
-    FieldFormatEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: FieldFormatEnum
-    FieldTypeEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: FieldTypeEnum
     PaginatedCustomObjectClassList:
       type: object
       properties:
@@ -254,6 +234,33 @@ components:
           items:
             $ref: '#/components/schemas/CustomObjectClass'
       title: PaginatedCustomObjectClassList
+    CustomObjectClassesGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - fields
+      title: CustomObjectClassesGetParametersExpandSchemaItems
+    RemoteFieldClassForCustomObjectClassItemSchema:
+      type: object
+      properties:
+        item_type:
+          type:
+          - string
+          - 'null'
+        item_format:
+          type:
+          - string
+          - 'null'
+        item_choices:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+      required:
+      - item_type
+      - item_format
+      - item_choices
+      title: RemoteFieldClassForCustomObjectClassItemSchema
     RemoteFieldClassForCustomObjectClass:
       type: object
       properties:
@@ -294,38 +301,31 @@ components:
           - $ref: '#/components/schemas/RemoteFieldClassForCustomObjectClassItemSchema'
           - type: 'null'
       title: RemoteFieldClassForCustomObjectClass
-    RemoteFieldClassForCustomObjectClassItemSchema:
-      type: object
-      properties:
-        item_type:
-          type:
-          - string
-          - 'null'
-        item_format:
-          type:
-          - string
-          - 'null'
-        item_choices:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-      required:
-      - item_type
-      - item_format
-      - item_choices
-      title: RemoteFieldClassForCustomObjectClassItemSchema
     CustomObjectClassesIdGetParametersExpandSchemaItems:
       type: string
       enum:
       - fields
       title: CustomObjectClassesIdGetParametersExpandSchemaItems
-    CustomObjectClassesGetParametersExpandSchemaItems:
+    FieldTypeEnum:
       type: string
       enum:
-      - fields
-      title: CustomObjectClassesGetParametersExpandSchemaItems
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldTypeEnum
+    FieldFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldFormatEnum
   securitySchemes:
     tokenAuth:
       type: http

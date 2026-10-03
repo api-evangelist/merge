@@ -630,6 +630,15 @@ paths:
     - url: https://api-ap.merge.dev/api
 components:
   schemas:
+    AsyncPassthroughReciept:
+      type: object
+      properties:
+        async_passthrough_receipt_id:
+          type: string
+          format: uuid
+      required:
+      - async_passthrough_receipt_id
+      title: AsyncPassthroughReciept
     MethodEnum:
       type: string
       enum:
@@ -641,15 +650,13 @@ components:
       - PATCH
       - DELETE
       title: MethodEnum
-    AsyncPassthroughReciept:
-      type: object
-      properties:
-        async_passthrough_receipt_id:
-          type: string
-          format: uuid
-      required:
-      - async_passthrough_receipt_id
-      title: AsyncPassthroughReciept
+    RequestFormatEnum:
+      type: string
+      enum:
+      - JSON
+      - XML
+      - MULTIPART
+      title: RequestFormatEnum
     MultipartFormFieldRequest:
       type: object
       properties:
@@ -688,19 +695,6 @@ components:
 
         Create a `MultipartFormField` to define a multipart form entry.'
       title: MultipartFormFieldRequest
-    ResponseTypeEnum:
-      type: string
-      enum:
-      - JSON
-      - BASE64_GZIP
-      title: ResponseTypeEnum
-    RequestFormatEnum:
-      type: string
-      enum:
-      - JSON
-      - XML
-      - MULTIPART
-      title: RequestFormatEnum
     DataPassthroughRequest:
       type: object
       properties:
@@ -754,6 +748,19 @@ components:
 
         Create a `DataPassthrough` to get team hierarchies from your Rippling integration.'
       title: DataPassthroughRequest
+    ResponseTypeEnum:
+      type: string
+      enum:
+      - JSON
+      - BASE64_GZIP
+      title: ResponseTypeEnum
+    EncodingEnum:
+      type: string
+      enum:
+      - RAW
+      - BASE64
+      - GZIP_BASE64
+      title: EncodingEnum
     RemoteResponse:
       type: object
       properties:
@@ -791,13 +798,6 @@ components:
 
         View the `RemoteResponse` returned from your `DataPassthrough`.'
       title: RemoteResponse
-    EncodingEnum:
-      type: string
-      enum:
-      - RAW
-      - BASE64
-      - GZIP_BASE64
-      title: EncodingEnum
     MethodEnum_2:
       type: string
       enum:
@@ -822,6 +822,18 @@ components:
 
         * `DELETE` - DELETE'
       title: MethodEnum
+    RequestFormatEnum_2:
+      type: string
+      enum:
+      - JSON
+      - XML
+      - MULTIPART
+      description: '* `JSON` - JSON
+
+        * `XML` - XML
+
+        * `MULTIPART` - MULTIPART'
+      title: RequestFormatEnum
     MultipartFormFieldRequest_2:
       type: object
       properties:
@@ -876,18 +888,6 @@ components:
 
         * `BASE64_GZIP` - BASE64_GZIP'
       title: ResponseTypeEnum
-    RequestFormatEnum_2:
-      type: string
-      enum:
-      - JSON
-      - XML
-      - MULTIPART
-      description: '* `JSON` - JSON
-
-        * `XML` - XML
-
-        * `MULTIPART` - MULTIPART'
-      title: RequestFormatEnum
     EncodingEnum_2:
       type: string
       enum:

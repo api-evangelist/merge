@@ -608,6 +608,650 @@ paths:
                 $ref: '#/components/schemas/BatchObjectsResponse'
 components:
   schemas:
+    ItemTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemTypeEnum
+    PaginatedRemoteFieldClassList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldClass'
+      title: PaginatedRemoteFieldClassList
+    InvoicesIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - accounting_period
+      - applied_credit_notes
+      - applied_payments
+      - applied_vendor_credits
+      - company
+      - contact
+      - employee
+      - line_items
+      - payment_term
+      - payments
+      - purchase_orders
+      - sales_orders
+      - tracking_categories
+      title: InvoicesIdGetParametersExpandSchemaItems
+    InvoiceLineItemRequest:
+      type: object
+      properties:
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        description:
+          type:
+          - string
+          - 'null'
+          description: The line item's description.
+        unit_price:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The line item's unit price.
+        quantity:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The line item's quantity.
+        total_amount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The line item's total amount.
+        employee:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The employee this overall transaction relates to.
+        project:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        contact:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The invoice's contact.
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: The line item's currency. The currency code in ISO 4217 format.
+        exchange_rate:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The line item's exchange rate.
+        item:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        tax_rate:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The tax rate that applies to this line item.
+        tracking_category:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: The invoice line item's associated tracking categories.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the invoice belongs to.
+        is_billable:
+          type:
+          - boolean
+          - 'null'
+          description: Indicates if the line item can be charged to the client/customer.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldRequest'
+      description: '# The InvoiceLineItem Object
+
+        ### Description
+
+        The `InvoiceLineItem` object represents an itemized record of goods and/or services sold to a customer.
+
+
+        ### Usage Example
+
+        Fetch from the `GET Invoice` endpoint and view the invoice''s line items.'
+      title: InvoiceLineItemRequest
+    BatchObjectItemResponse:
+      type: object
+      properties:
+        merge_common_model_id:
+          type: string
+          format: uuid
+        error_message:
+          type: string
+      description: Response for individual items within a batch
+      title: BatchObjectItemResponse
+    InvoicesIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - type
+      title: InvoicesIdGetParametersRemoteFields
+    InvoicesGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - accounting_period
+      - applied_credit_notes
+      - applied_payments
+      - applied_vendor_credits
+      - company
+      - contact
+      - employee
+      - line_items
+      - payment_term
+      - payments
+      - purchase_orders
+      - sales_orders
+      - tracking_categories
+      title: InvoicesGetParametersExpandSchemaItems
+    BatchObjectStatusEnum:
+      type: string
+      enum:
+      - PENDING
+      - SUCCESS
+      - FAILURE
+      title: BatchObjectStatusEnum
+    InvoiceBulkRequest:
+      type: object
+      properties:
+        batch_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/InvoiceBatchItemRequest'
+      required:
+      - batch_items
+      title: InvoiceBulkRequest
+    RemoteField:
+      type: object
+      properties:
+        remote_field_class:
+          $ref: '#/components/schemas/RemoteFieldClass'
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteField
+    InvoicesGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - type
+      title: InvoicesGetParametersShowEnumOrigins
+    InvoiceLineItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        description:
+          type:
+          - string
+          - 'null'
+          description: The line item's description.
+        unit_price:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The line item's unit price.
+        quantity:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The line item's quantity.
+        total_amount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The line item's total amount.
+        employee:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The employee this overall transaction relates to.
+        project:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        contact:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The invoice's contact.
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: The line item's currency. The currency code in ISO 4217 format.
+        exchange_rate:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The line item's exchange rate.
+        item:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        tax_rate:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The tax rate that applies to this line item.
+        tracking_category:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: The invoice line item's associated tracking categories.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the invoice belongs to.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        is_billable:
+          type:
+          - boolean
+          - 'null'
+          description: Indicates if the line item can be charged to the client/customer.
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/InvoiceLineItemFieldMappings'
+          - type: 'null'
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteField'
+      description: '# The InvoiceLineItem Object
+
+        ### Description
+
+        The `InvoiceLineItem` object represents an itemized record of goods and/or services sold to a customer.
+
+
+        ### Usage Example
+
+        Fetch from the `GET Invoice` endpoint and view the invoice''s line items.'
+      title: InvoiceLineItem
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    FieldFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldFormatEnum
+    InvoicesGetParametersRemoteFields:
+      type: string
+      enum:
+      - type
+      title: InvoicesGetParametersRemoteFields
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    BatchObjectsResponse:
+      type: object
+      properties:
+        batch_id:
+          type: string
+          format: uuid
+          description: The ID of the batch.
+        status:
+          $ref: '#/components/schemas/BatchObjectsResponseStatusEnum'
+          description: 'Possible overall statuses:
+
+
+            * `ENQUEUED` - The request has been received and a task has been enqueued for processing
+
+            * `IN_PROGRESS` - The enqueued task is being processed
+
+            * `PARTIAL_SUCCESS` - The task has been processed, but not all objects were written successfully
+
+            * `SUCCESS` - The task has been processed, and all objects were written successfully
+
+            * `FAILED` - The task has been processed, but ran into an error while processing
+
+            * `RATE_LIMITED` - The request was received but ran into rate limits while processing. The rate limited objects are being retried.'
+        total_count:
+          type: integer
+          description: The total number of objects in the batch.
+        objects:
+          type: array
+          items:
+            $ref: '#/components/schemas/BatchObject'
+      required:
+      - batch_id
+      - status
+      - total_count
+      - objects
+      description: Response serializer for GET bulk/{batch_id} - returns batch status and objects
+      title: BatchObjectsResponse
+    InvoicesGetParametersType:
+      type: string
+      enum:
+      - ACCOUNTS_PAYABLE
+      - ACCOUNTS_RECEIVABLE
+      title: InvoicesGetParametersType
+    VendorCreditApplyLineForInvoice:
+      type: object
+      properties:
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        vendor_credit:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        applied_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Date that the vendor credit is applied to the invoice.
+        applied_amount:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The amount of the VendorCredit applied to the invoice.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+      description: '# The VendorCreditApplyLine Object
+
+        ### Description
+
+        The `VendorCreditApplyLine` object is used to represent a applied vendor credit.
+
+
+        ### Usage Example
+
+        Fetch from the `GET VendorCredit` endpoint and view the vendor credit''s applied to lines.'
+      title: VendorCreditApplyLineForInvoice
+    RemoteFieldRequest:
+      type: object
+      properties:
+        remote_field_class:
+          type: string
+          format: uuid
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteFieldRequest
+    BatchObject:
+      type: object
+      properties:
+        item_id:
+          type: string
+        status:
+          $ref: '#/components/schemas/BatchObjectStatusEnum'
+          description: 'Possible per-object statuses:
+
+
+            * `PENDING` - This object has not been processed yet
+
+            * `SUCCESS` - This object was successfully POSTed
+
+            * `FAILURE` - This object was not successfully POSTed'
+        response:
+          $ref: '#/components/schemas/BatchObjectItemResponse'
+      required:
+      - item_id
+      - status
+      description: Individual batch object with status
+      title: BatchObject
+    ItemSchema:
+      type: object
+      properties:
+        item_type:
+          $ref: '#/components/schemas/ItemTypeEnum'
+        item_format:
+          $ref: '#/components/schemas/ItemFormatEnum'
+        item_choices:
+          type: array
+          items:
+            type: string
+      title: ItemSchema
+    AsyncBulkCreateResponse:
+      type: object
+      properties:
+        batch_id:
+          type: string
+          format: uuid
+          description: The ID of the batch.
+      required:
+      - batch_id
+      description: Response serializer for POST bulk create - returns only batch_id
+      title: AsyncBulkCreateResponse
+    InvoiceStatusEnum:
+      type: string
+      enum:
+      - PAID
+      - DRAFT
+      - SUBMITTED
+      - PARTIALLY_PAID
+      - OPEN
+      - VOID
+      title: InvoiceStatusEnum
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    RemoteFieldClass:
+      type: object
+      properties:
+        id:
+          type: string
+        display_name:
+          type: string
+        remote_key_name:
+          type: string
+        description:
+          type: string
+        is_custom:
+          type: boolean
+        is_common_model_field:
+          type: boolean
+        is_required:
+          type: boolean
+        field_type:
+          $ref: '#/components/schemas/FieldTypeEnum'
+        field_format:
+          $ref: '#/components/schemas/FieldFormatEnum'
+        field_choices:
+          type: array
+          items:
+            type: string
+        item_schema:
+          $ref: '#/components/schemas/ItemSchema'
+      title: RemoteFieldClass
+    PatchedInvoiceEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/InvoiceRequest'
+      required:
+      - model
+      title: PatchedInvoiceEndpointRequest
+    InvoiceFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: InvoiceFieldMappings
     PaginatedInvoiceList:
       type: object
       properties:
@@ -624,6 +1268,50 @@ components:
           items:
             $ref: '#/components/schemas/Invoice'
       title: PaginatedInvoiceList
+    InvoiceResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/Invoice'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: InvoiceResponse
+    InvoiceBatchItemRequest:
+      type: object
+      properties:
+        item_id:
+          type: string
+          description: The third-party item ID for this model in the bulk create request
+        payload:
+          $ref: '#/components/schemas/InvoiceRequest'
+      required:
+      - item_id
+      - payload
+      title: InvoiceBatchItemRequest
+    ItemFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemFormatEnum
     RemoteData:
       type: object
       properties:
@@ -645,21 +1333,237 @@ components:
 
         TODO'
       title: RemoteData
-    InvoicesIdGetParametersRemoteFields:
-      type: string
-      enum:
-      - type
-      title: InvoicesIdGetParametersRemoteFields
-    BatchObjectsResponseStatusEnum:
-      type: string
-      enum:
-      - ENQUEUED
-      - IN_PROGRESS
-      - PARTIAL_SUCCESS
-      - SUCCESS
-      - FAILED
-      - RATE_LIMITED
-      title: BatchObjectsResponseStatusEnum
+    Invoice:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        type:
+          oneOf:
+          - $ref: '#/components/schemas/InvoiceTypeEnum'
+          - type: 'null'
+          description: Whether the invoice is an accounts receivable or accounts payable. If `type` is `ACCOUNTS_PAYABLE`, the invoice is a bill. If `type` is `ACCOUNTS_RECEIVABLE`, it is an invoice.
+        contact:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The invoice's contact.
+        number:
+          type:
+          - string
+          - 'null'
+          description: The invoice's number.
+        issue_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The invoice's issue date.
+        due_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The invoice's due date.
+        paid_on_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The invoice's paid date.
+        memo:
+          type:
+          - string
+          - 'null'
+          description: The invoice's private note.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the invoice belongs to.
+        employee:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The employee this overall transaction relates to.
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: The invoice's currency. The currency code in ISO 4217 format.
+        exchange_rate:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The invoice's exchange rate.
+        payment_term:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The payment term that applies to this transaction.
+        total_discount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The total discounts applied to the total cost.
+        sub_total:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The total amount being paid before taxes.
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/InvoiceStatusEnum'
+          - type: 'null'
+          description: The status of the invoice.
+        total_tax_amount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The total amount being paid in taxes.
+        total_amount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The invoice's total amount.
+        balance:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The invoice's remaining balance.
+        remote_updated_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's invoice entry was updated.
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+        accounting_period:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The accounting period that the Invoice was generated in.
+        purchase_orders:
+          type: array
+          items:
+            type: string
+            format: uuid
+        sales_orders:
+          type: array
+          items:
+            type: string
+            format: uuid
+        payments:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Array of `Payment` object IDs.
+        applied_payments:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: A list of the Payment Applied to Lines common models related to a given Invoice, Credit Note, or Journal Entry.
+        line_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/InvoiceLineItem'
+        applied_credit_notes:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreditNoteApplyLineForInvoice'
+          description: '`CreditNoteApplyLines` applied to the Invoice.'
+        applied_vendor_credits:
+          type: array
+          items:
+            $ref: '#/components/schemas/VendorCreditApplyLineForInvoice'
+          description: '`VendorCreditApplyLines` applied to the Invoice.'
+        inclusive_of_tax:
+          type:
+          - boolean
+          - 'null'
+          description: If the transaction is inclusive or exclusive of tax. `True` if inclusive, `False` if exclusive.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/InvoiceFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteField'
+      description: '# The Invoice Object
+
+        ### Description
+
+        The `Invoice` object represents an itemized record of goods and/or services sold to a customer or bought from a vendor.
+
+
+
+        Represents a Bill when the `Invoice` type is `ACCOUNTS_PAYABLE`. References an Invoice when the `Invoice` type is `ACCOUNTS_RECEIVABLE`.
+
+
+        ### Usage Example
+
+        Fetch from the `LIST Invoices` endpoint and view a company''s invoices.'
+      title: Invoice
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
     InvoiceRequest:
       type: object
       properties:
@@ -828,160 +1732,6 @@ components:
 
         Fetch from the `LIST Invoices` endpoint and view a company''s invoices.'
       title: InvoiceRequest
-    BatchObject:
-      type: object
-      properties:
-        item_id:
-          type: string
-        status:
-          $ref: '#/components/schemas/BatchObjectStatusEnum'
-          description: 'Possible per-object statuses:
-
-
-            * `PENDING` - This object has not been processed yet
-
-            * `SUCCESS` - This object was successfully POSTed
-
-            * `FAILURE` - This object was not successfully POSTed'
-        response:
-          $ref: '#/components/schemas/BatchObjectItemResponse'
-      required:
-      - item_id
-      - status
-      description: Individual batch object with status
-      title: BatchObject
-    DebugModeLog:
-      type: object
-      properties:
-        log_id:
-          type: string
-        dashboard_view:
-          type: string
-        log_summary:
-          $ref: '#/components/schemas/DebugModelLogSummary'
-      required:
-      - log_id
-      - dashboard_view
-      - log_summary
-      title: DebugModeLog
-    FieldTypeEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: FieldTypeEnum
-    PaginatedRemoteFieldClassList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/RemoteFieldClass'
-      title: PaginatedRemoteFieldClassList
-    InvoiceLineItemFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: InvoiceLineItemFieldMappings
-    InvoicesGetParametersType:
-      type: string
-      enum:
-      - ACCOUNTS_PAYABLE
-      - ACCOUNTS_RECEIVABLE
-      title: InvoicesGetParametersType
-    DebugModelLogSummary:
-      type: object
-      properties:
-        url:
-          type: string
-        method:
-          type: string
-        status_code:
-          type: integer
-      required:
-      - url
-      - method
-      - status_code
-      title: DebugModelLogSummary
-    InvoicesIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - accounting_period
-      - applied_credit_notes
-      - applied_payments
-      - applied_vendor_credits
-      - company
-      - contact
-      - employee
-      - line_items
-      - payment_term
-      - payments
-      - purchase_orders
-      - sales_orders
-      - tracking_categories
-      title: InvoicesIdGetParametersExpandSchemaItems
-    InvoiceTypeEnum:
-      type: string
-      enum:
-      - ACCOUNTS_RECEIVABLE
-      - ACCOUNTS_PAYABLE
-      title: InvoiceTypeEnum
-    BatchObjectsResponse:
-      type: object
-      properties:
-        batch_id:
-          type: string
-          format: uuid
-          description: The ID of the batch.
-        status:
-          $ref: '#/components/schemas/BatchObjectsResponseStatusEnum'
-          description: 'Possible overall statuses:
-
-
-            * `ENQUEUED` - The request has been received and a task has been enqueued for processing
-
-            * `IN_PROGRESS` - The enqueued task is being processed
-
-            * `PARTIAL_SUCCESS` - The task has been processed, but not all objects were written successfully
-
-            * `SUCCESS` - The task has been processed, and all objects were written successfully
-
-            * `FAILED` - The task has been processed, but ran into an error while processing
-
-            * `RATE_LIMITED` - The request was received but ran into rate limits while processing. The rate limited objects are being retried.'
-        total_count:
-          type: integer
-          description: The total number of objects in the batch.
-        objects:
-          type: array
-          items:
-            $ref: '#/components/schemas/BatchObject'
-      required:
-      - batch_id
-      - status
-      - total_count
-      - objects
-      description: Response serializer for GET bulk/{batch_id} - returns batch status and objects
-      title: BatchObjectsResponse
     CreditNoteApplyLineForInvoice:
       type: object
       properties:
@@ -1029,236 +1779,26 @@ components:
 
         Fetch from the `GET CreditNote` endpoint and view the invoice''s applied to lines.'
       title: CreditNoteApplyLineForInvoice
-    MetaResponse:
-      type: object
-      properties:
-        request_schema:
-          type: object
-          additionalProperties:
-            description: Any type
-        status:
-          $ref: '#/components/schemas/LinkedAccountStatus'
-        has_conditional_params:
-          type: boolean
-        has_required_linked_account_params:
-          type: boolean
-        remote_fields:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: Remote field values to populate
-      required:
-      - request_schema
-      - has_conditional_params
-      - has_required_linked_account_params
-      title: MetaResponse
-    ValidationProblemSource:
-      type: object
-      properties:
-        pointer:
-          type: string
-      required:
-      - pointer
-      title: ValidationProblemSource
-    ItemSchema:
-      type: object
-      properties:
-        item_type:
-          $ref: '#/components/schemas/ItemTypeEnum'
-        item_format:
-          $ref: '#/components/schemas/ItemFormatEnum'
-        item_choices:
-          type: array
-          items:
-            type: string
-      title: ItemSchema
-    ItemTypeEnum:
+    BatchObjectsResponseStatusEnum:
       type: string
       enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: ItemTypeEnum
-    InvoicesGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - accounting_period
-      - applied_credit_notes
-      - applied_payments
-      - applied_vendor_credits
-      - company
-      - contact
-      - employee
-      - line_items
-      - payment_term
-      - payments
-      - purchase_orders
-      - sales_orders
-      - tracking_categories
-      title: InvoicesGetParametersExpandSchemaItems
-    InvoicesIdGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - type
-      title: InvoicesIdGetParametersShowEnumOrigins
-    VendorCreditApplyLineForInvoice:
-      type: object
-      properties:
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        vendor_credit:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        applied_date:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Date that the vendor credit is applied to the invoice.
-        applied_amount:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          description: The amount of the VendorCredit applied to the invoice.
-        remote_was_deleted:
-          type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-      description: '# The VendorCreditApplyLine Object
-
-        ### Description
-
-        The `VendorCreditApplyLine` object is used to represent a applied vendor credit.
-
-
-        ### Usage Example
-
-        Fetch from the `GET VendorCredit` endpoint and view the vendor credit''s applied to lines.'
-      title: VendorCreditApplyLineForInvoice
-    RemoteField:
-      type: object
-      properties:
-        remote_field_class:
-          $ref: '#/components/schemas/RemoteFieldClass'
-        value:
-          type: object
-          additionalProperties:
-            description: Any type
-      required:
-      - remote_field_class
-      title: RemoteField
-    BatchObjectStatusEnum:
-      type: string
-      enum:
-      - PENDING
+      - ENQUEUED
+      - IN_PROGRESS
+      - PARTIAL_SUCCESS
       - SUCCESS
-      - FAILURE
-      title: BatchObjectStatusEnum
-    InvoicesGetParametersRemoteFields:
+      - FAILED
+      - RATE_LIMITED
+      title: BatchObjectsResponseStatusEnum
+    InvoicesGetParametersStatus:
       type: string
       enum:
-      - type
-      title: InvoicesGetParametersRemoteFields
-    ItemFormatEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: ItemFormatEnum
-    InvoiceResponse:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/Invoice'
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/WarningValidationProblem'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorValidationProblem'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/DebugModeLog'
-      required:
-      - model
-      - warnings
-      - errors
-      title: InvoiceResponse
-    InvoiceStatusEnum:
-      type: string
-      enum:
-      - PAID
       - DRAFT
-      - SUBMITTED
-      - PARTIALLY_PAID
       - OPEN
+      - PAID
+      - PARTIALLY_PAID
+      - SUBMITTED
       - VOID
-      title: InvoiceStatusEnum
-    RemoteFieldClass:
-      type: object
-      properties:
-        id:
-          type: string
-        display_name:
-          type: string
-        remote_key_name:
-          type: string
-        description:
-          type: string
-        is_custom:
-          type: boolean
-        is_common_model_field:
-          type: boolean
-        is_required:
-          type: boolean
-        field_type:
-          $ref: '#/components/schemas/FieldTypeEnum'
-        field_format:
-          $ref: '#/components/schemas/FieldFormatEnum'
-        field_choices:
-          type: array
-          items:
-            type: string
-        item_schema:
-          $ref: '#/components/schemas/ItemSchema'
-      title: RemoteFieldClass
-    RemoteFieldRequest:
-      type: object
-      properties:
-        remote_field_class:
-          type: string
-          format: uuid
-        value:
-          type: object
-          additionalProperties:
-            description: Any type
-      required:
-      - remote_field_class
-      title: RemoteFieldRequest
+      title: InvoicesGetParametersStatus
     TransactionCurrencyEnum:
       type: string
       enum:
@@ -1570,390 +2110,33 @@ components:
       - ZWL
       description: The currency code in ISO 4217 format.
       title: TransactionCurrencyEnum
-    LinkedAccountStatus:
+    FieldTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldTypeEnum
+    InvoiceLineItemFieldMappings:
       type: object
       properties:
-        linked_account_status:
-          type: string
-        can_make_request:
-          type: boolean
-      required:
-      - linked_account_status
-      - can_make_request
-      title: LinkedAccountStatus
-    InvoiceEndpointRequest:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/InvoiceRequest'
-      required:
-      - model
-      title: InvoiceEndpointRequest
-    InvoiceLineItemRequest:
-      type: object
-      properties:
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        description:
-          type:
-          - string
-          - 'null'
-          description: The line item's description.
-        unit_price:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: The line item's unit price.
-        quantity:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: The line item's quantity.
-        total_amount:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: The line item's total amount.
-        employee:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The employee this overall transaction relates to.
-        project:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        contact:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The invoice's contact.
-        currency:
-          oneOf:
-          - $ref: '#/components/schemas/TransactionCurrencyEnum'
-          - type: 'null'
-          description: The line item's currency. The currency code in ISO 4217 format.
-        exchange_rate:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          description: The line item's exchange rate.
-        item:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        account:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        tax_rate:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The tax rate that applies to this line item.
-        tracking_category:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        tracking_categories:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: The invoice line item's associated tracking categories.
-        company:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The company the invoice belongs to.
-        is_billable:
-          type:
-          - boolean
-          - 'null'
-          description: Indicates if the line item can be charged to the client/customer.
-        integration_params:
-          type:
-          - object
-          - 'null'
+        organization_defined_targets:
+          type: object
           additionalProperties:
             description: Any type
-        linked_account_params:
-          type:
-          - object
-          - 'null'
+        linked_account_defined_targets:
+          type: object
           additionalProperties:
             description: Any type
-        remote_fields:
-          type: array
-          items:
-            $ref: '#/components/schemas/RemoteFieldRequest'
-      description: '# The InvoiceLineItem Object
-
-        ### Description
-
-        The `InvoiceLineItem` object represents an itemized record of goods and/or services sold to a customer.
-
-
-        ### Usage Example
-
-        Fetch from the `GET Invoice` endpoint and view the invoice''s line items.'
-      title: InvoiceLineItemRequest
-    Invoice:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        type:
-          oneOf:
-          - $ref: '#/components/schemas/InvoiceTypeEnum'
-          - type: 'null'
-          description: Whether the invoice is an accounts receivable or accounts payable. If `type` is `ACCOUNTS_PAYABLE`, the invoice is a bill. If `type` is `ACCOUNTS_RECEIVABLE`, it is an invoice.
-        contact:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The invoice's contact.
-        number:
-          type:
-          - string
-          - 'null'
-          description: The invoice's number.
-        issue_date:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The invoice's issue date.
-        due_date:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The invoice's due date.
-        paid_on_date:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The invoice's paid date.
-        memo:
-          type:
-          - string
-          - 'null'
-          description: The invoice's private note.
-        company:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The company the invoice belongs to.
-        employee:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The employee this overall transaction relates to.
-        currency:
-          oneOf:
-          - $ref: '#/components/schemas/TransactionCurrencyEnum'
-          - type: 'null'
-          description: The invoice's currency. The currency code in ISO 4217 format.
-        exchange_rate:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          description: The invoice's exchange rate.
-        payment_term:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The payment term that applies to this transaction.
-        total_discount:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: The total discounts applied to the total cost.
-        sub_total:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: The total amount being paid before taxes.
-        status:
-          oneOf:
-          - $ref: '#/components/schemas/InvoiceStatusEnum'
-          - type: 'null'
-          description: The status of the invoice.
-        total_tax_amount:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: The total amount being paid in taxes.
-        total_amount:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: The invoice's total amount.
-        balance:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: The invoice's remaining balance.
-        remote_updated_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: When the third party's invoice entry was updated.
-        tracking_categories:
-          type: array
-          items:
-            type: string
-            format: uuid
-        accounting_period:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The accounting period that the Invoice was generated in.
-        purchase_orders:
-          type: array
-          items:
-            type: string
-            format: uuid
-        sales_orders:
-          type: array
-          items:
-            type: string
-            format: uuid
-        payments:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: Array of `Payment` object IDs.
-        applied_payments:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: A list of the Payment Applied to Lines common models related to a given Invoice, Credit Note, or Journal Entry.
-        line_items:
-          type: array
-          items:
-            $ref: '#/components/schemas/InvoiceLineItem'
-        applied_credit_notes:
-          type: array
-          items:
-            $ref: '#/components/schemas/CreditNoteApplyLineForInvoice'
-          description: '`CreditNoteApplyLines` applied to the Invoice.'
-        applied_vendor_credits:
-          type: array
-          items:
-            $ref: '#/components/schemas/VendorCreditApplyLineForInvoice'
-          description: '`VendorCreditApplyLines` applied to the Invoice.'
-        inclusive_of_tax:
-          type:
-          - boolean
-          - 'null'
-          description: If the transaction is inclusive or exclusive of tax. `True` if inclusive, `False` if exclusive.
-        remote_was_deleted:
-          type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-        field_mappings:
-          oneOf:
-          - $ref: '#/components/schemas/InvoiceFieldMappings'
-          - type: 'null'
-        remote_data:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/RemoteData'
-        remote_fields:
-          type: array
-          items:
-            $ref: '#/components/schemas/RemoteField'
-      description: '# The Invoice Object
-
-        ### Description
-
-        The `Invoice` object represents an itemized record of goods and/or services sold to a customer or bought from a vendor.
-
-
-
-        Represents a Bill when the `Invoice` type is `ACCOUNTS_PAYABLE`. References an Invoice when the `Invoice` type is `ACCOUNTS_RECEIVABLE`.
-
-
-        ### Usage Example
-
-        Fetch from the `LIST Invoices` endpoint and view a company''s invoices.'
-      title: Invoice
-    AsyncBulkCreateResponse:
-      type: object
-      properties:
-        batch_id:
-          type: string
-          format: uuid
-          description: The ID of the batch.
-      required:
-      - batch_id
-      description: Response serializer for POST bulk create - returns only batch_id
-      title: AsyncBulkCreateResponse
-    InvoiceBulkRequest:
-      type: object
-      properties:
-        batch_items:
-          type: array
-          items:
-            $ref: '#/components/schemas/InvoiceBatchItemRequest'
-      required:
-      - batch_items
-      title: InvoiceBulkRequest
-    PatchedInvoiceEndpointRequest:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/InvoiceRequest'
-      required:
-      - model
-      title: PatchedInvoiceEndpointRequest
+      title: InvoiceLineItemFieldMappings
+    InvoicesIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - type
+      title: InvoicesIdGetParametersShowEnumOrigins
     WarningValidationProblem:
       type: object
       properties:
@@ -1976,217 +2159,34 @@ components:
       - detail
       - problem_type
       title: WarningValidationProblem
-    InvoiceLineItem:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        description:
-          type:
-          - string
-          - 'null'
-          description: The line item's description.
-        unit_price:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: The line item's unit price.
-        quantity:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: The line item's quantity.
-        total_amount:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: The line item's total amount.
-        employee:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The employee this overall transaction relates to.
-        project:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        contact:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The invoice's contact.
-        currency:
-          oneOf:
-          - $ref: '#/components/schemas/TransactionCurrencyEnum'
-          - type: 'null'
-          description: The line item's currency. The currency code in ISO 4217 format.
-        exchange_rate:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          description: The line item's exchange rate.
-        item:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        account:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        tax_rate:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The tax rate that applies to this line item.
-        tracking_category:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        tracking_categories:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: The invoice line item's associated tracking categories.
-        company:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The company the invoice belongs to.
-        remote_was_deleted:
-          type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-        is_billable:
-          type:
-          - boolean
-          - 'null'
-          description: Indicates if the line item can be charged to the client/customer.
-        field_mappings:
-          oneOf:
-          - $ref: '#/components/schemas/InvoiceLineItemFieldMappings'
-          - type: 'null'
-        remote_fields:
-          type: array
-          items:
-            $ref: '#/components/schemas/RemoteField'
-      description: '# The InvoiceLineItem Object
-
-        ### Description
-
-        The `InvoiceLineItem` object represents an itemized record of goods and/or services sold to a customer.
-
-
-        ### Usage Example
-
-        Fetch from the `GET Invoice` endpoint and view the invoice''s line items.'
-      title: InvoiceLineItem
-    InvoicesGetParametersShowEnumOrigins:
+    InvoiceTypeEnum:
       type: string
       enum:
-      - type
-      title: InvoicesGetParametersShowEnumOrigins
-    ErrorValidationProblem:
+      - ACCOUNTS_RECEIVABLE
+      - ACCOUNTS_PAYABLE
+      title: InvoiceTypeEnum
+    DebugModelLogSummary:
       type: object
       properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
+        url:
           type: string
-        detail:
+        method:
           type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
+        status_code:
           type: integer
       required:
-      - title
-      - detail
-      - problem_type
-      title: ErrorValidationProblem
-    FieldFormatEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: FieldFormatEnum
-    InvoicesGetParametersStatus:
-      type: string
-      enum:
-      - DRAFT
-      - OPEN
-      - PAID
-      - PARTIALLY_PAID
-      - SUBMITTED
-      - VOID
-      title: InvoicesGetParametersStatus
-    InvoiceFieldMappings:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    InvoiceEndpointRequest:
       type: object
       properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: InvoiceFieldMappings
-    InvoiceBatchItemRequest:
-      type: object
-      properties:
-        item_id:
-          type: string
-          description: The third-party item ID for this model in the bulk create request
-        payload:
+        model:
           $ref: '#/components/schemas/InvoiceRequest'
       required:
-      - item_id
-      - payload
-      title: InvoiceBatchItemRequest
-    BatchObjectItemResponse:
-      type: object
-      properties:
-        merge_common_model_id:
-          type: string
-          format: uuid
-        error_message:
-          type: string
-      description: Response for individual items within a batch
-      title: BatchObjectItemResponse
+      - model
+      title: InvoiceEndpointRequest
   securitySchemes:
     tokenAuth:
       type: http

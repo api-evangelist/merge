@@ -759,64 +759,18 @@ paths:
                 $ref: '#/components/schemas/PaginatedRemoteFieldClassList'
 components:
   schemas:
-    RemoteData:
+    PermissionFieldMappings:
       type: object
       properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
-      required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
-    TicketsGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - account
-      - assigned_teams
-      - assignees
-      - attachments
-      - collections
-      - contact
-      - creator
-      - parent_ticket
-      - permissions
-      title: TicketsGetParametersExpandSchemaItems
-    DebugModeLog:
-      type: object
-      properties:
-        log_id:
-          type: string
-        dashboard_view:
-          type: string
-        log_summary:
-          $ref: '#/components/schemas/DebugModelLogSummary'
-      required:
-      - log_id
-      - dashboard_view
-      - log_summary
-      title: DebugModeLog
-    FieldTypeEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: FieldTypeEnum
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: PermissionFieldMappings
     PaginatedRemoteFieldClassList:
       type: object
       properties:
@@ -833,55 +787,18 @@ components:
           items:
             $ref: '#/components/schemas/RemoteFieldClass'
       title: PaginatedRemoteFieldClassList
-    TicketsLiveSearchGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - priority
-      - priority,status
-      - priority,status,ticket_type
-      - priority,ticket_type
-      - status
-      - status,ticket_type
-      - ticket_type
-      title: TicketsLiveSearchGetParametersShowEnumOrigins
-    TicketAccessLevelEnum:
-      type: string
-      enum:
-      - COMPANY
-      - PUBLIC
-      - PRIVATE
-      - COLLECTION
-      title: TicketAccessLevelEnum
-    PriorityEnum:
-      type: string
-      enum:
-      - URGENT
-      - HIGH
-      - NORMAL
-      - LOW
-      title: PriorityEnum
-    TicketResponse:
+    RemoteField:
       type: object
       properties:
-        model:
-          $ref: '#/components/schemas/Ticket'
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/WarningValidationProblem'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorValidationProblem'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/DebugModeLog'
+        remote_field_class:
+          $ref: '#/components/schemas/RemoteFieldClass'
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
       required:
-      - model
-      - warnings
-      - errors
-      title: TicketResponse
+      - remote_field_class
+      title: RemoteField
     PaginatedTicketList:
       type: object
       properties:
@@ -898,28 +815,6 @@ components:
           items:
             $ref: '#/components/schemas/Ticket'
       title: PaginatedTicketList
-    DebugModelLogSummary:
-      type: object
-      properties:
-        url:
-          type: string
-        method:
-          type: string
-        status_code:
-          type: integer
-      required:
-      - url
-      - method
-      - status_code
-      title: DebugModelLogSummary
-    TicketsGetParametersPriority:
-      type: string
-      enum:
-      - HIGH
-      - LOW
-      - NORMAL
-      - URGENT
-      title: TicketsGetParametersPriority
     MetaResponse:
       type: object
       properties:
@@ -944,15 +839,30 @@ components:
       - has_conditional_params
       - has_required_linked_account_params
       title: MetaResponse
-    ValidationProblemSource:
-      type: object
-      properties:
-        pointer:
-          type: string
-      required:
-      - pointer
-      title: ValidationProblemSource
-    Permission:
+    TicketsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - account
+      - assigned_teams
+      - assignees
+      - attachments
+      - collections
+      - contact
+      - creator
+      - parent_ticket
+      - permissions
+      title: TicketsGetParametersExpandSchemaItems
+    FieldFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldFormatEnum
+    Viewer:
       type: object
       properties:
         id:
@@ -971,78 +881,85 @@ components:
           type: string
           format: date-time
           description: The datetime that this object was modified by Merge.
-        effect:
-          oneOf:
-          - $ref: '#/components/schemas/EffectEnum'
-          - type: 'null'
-          description: Outcome of this permission rule for matching users.
-        actions:
+        team:
           type:
-          - array
+          - string
           - 'null'
-          items:
-            $ref: '#/components/schemas/ActionsEnum'
-          description: Operations that this permission applies to. If the entity inherits permission from a parent entity, then this should be an empty array. In that case, the entity would inherit the parent entity’s actions.
-        applied_to_users:
-          type: array
-          items:
-            type: string
-            format: uuid
-        applied_to_roles:
-          type: array
-          items:
-            type: string
-            format: uuid
-        applied_to_teams:
-          type: array
-          items:
-            type: string
-            format: uuid
-        applied_to_collections:
-          type: array
-          items:
-            type: string
-            format: uuid
-        remote_was_deleted:
-          type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-        field_mappings:
-          oneOf:
-          - $ref: '#/components/schemas/PermissionFieldMappings'
-          - type: 'null'
-      description: '# The Permission Object
+          format: uuid
+          description: The Team this Viewer belongs to.
+        user:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The User this Viewer belongs to.
+      description: '# The Viewer Object
 
         ### Description
 
-        The `Permission` object is used to represent permissions that can be applied to users, roles, teams, collections, and tickets.
+        The `Viewer` object is used to represent a User or Team within a company.
 
 
         ### Usage Example
 
         TODO'
-      title: Permission
-    ItemSchema:
-      type: object
-      properties:
-        item_type:
-          $ref: '#/components/schemas/ItemTypeEnum'
-        item_format:
-          $ref: '#/components/schemas/ItemFormatEnum'
-        item_choices:
-          type: array
-          items:
-            type: string
-      title: ItemSchema
-    ItemTypeEnum:
+      title: Viewer
+    TicketsIdGetParametersShowEnumOrigins:
       type: string
       enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: ItemTypeEnum
+      - priority
+      - priority,status
+      - priority,status,ticket_type
+      - priority,ticket_type
+      - status
+      - status,ticket_type
+      - ticket_type
+      title: TicketsIdGetParametersShowEnumOrigins
+    TicketsGetParametersPriority:
+      type: string
+      enum:
+      - HIGH
+      - LOW
+      - NORMAL
+      - URGENT
+      title: TicketsGetParametersPriority
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    EffectEnum:
+      type: string
+      enum:
+      - ALLOWED
+      - DENIED
+      - INHERITED
+      title: EffectEnum
+    PaginatedViewerList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Viewer'
+      title: PaginatedViewerList
     PatchedTicketRequest:
       type: object
       properties:
@@ -1171,110 +1088,27 @@ components:
 
         TODO'
       title: PatchedTicketRequest
-    TicketsTicketIdViewersGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - team
-      - user
-      title: TicketsTicketIdViewersGetParametersExpandSchemaItems
-    TicketsIdGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - priority
-      - priority,status
-      - priority,status,ticket_type
-      - priority,ticket_type
-      - status
-      - status,ticket_type
-      - ticket_type
-      title: TicketsIdGetParametersShowEnumOrigins
-    Viewer:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        team:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The Team this Viewer belongs to.
-        user:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The User this Viewer belongs to.
-      description: '# The Viewer Object
-
-        ### Description
-
-        The `Viewer` object is used to represent a User or Team within a company.
-
-
-        ### Usage Example
-
-        TODO'
-      title: Viewer
-    RemoteField:
+    RemoteFieldRequest:
       type: object
       properties:
         remote_field_class:
-          $ref: '#/components/schemas/RemoteFieldClass'
+          type: string
+          format: uuid
         value:
           type: object
           additionalProperties:
             description: Any type
       required:
       - remote_field_class
-      title: RemoteField
-    TicketsIdGetParametersRemoteFields:
+      title: RemoteFieldRequest
+    PriorityEnum:
       type: string
       enum:
-      - priority
-      - priority,status
-      - priority,status,ticket_type
-      - priority,ticket_type
-      - status
-      - status,ticket_type
-      - ticket_type
-      title: TicketsIdGetParametersRemoteFields
-    PermissionFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: PermissionFieldMappings
-    ItemFormatEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: ItemFormatEnum
+      - URGENT
+      - HIGH
+      - NORMAL
+      - LOW
+      title: PriorityEnum
     TicketRequest:
       type: object
       properties:
@@ -1408,107 +1242,26 @@ components:
 
         TODO'
       title: TicketRequest
-    TicketsGetParametersRemoteFields:
+    TicketStatusEnum:
       type: string
       enum:
-      - priority
-      - priority,status
-      - priority,status,ticket_type
-      - priority,ticket_type
-      - status
-      - status,ticket_type
-      - ticket_type
-      title: TicketsGetParametersRemoteFields
-    ActionsEnum:
-      type: string
-      enum:
-      - VIEW
-      - CREATE
-      - EDIT
-      - DELETE
-      title: ActionsEnum
-    PatchedTicketEndpointRequest:
+      - OPEN
+      - CLOSED
+      - IN_PROGRESS
+      - ON_HOLD
+      title: TicketStatusEnum
+    ItemSchema:
       type: object
       properties:
-        model:
-          $ref: '#/components/schemas/PatchedTicketRequest'
-      required:
-      - model
-      title: PatchedTicketEndpointRequest
-    RemoteFieldClass:
-      type: object
-      properties:
-        id:
-          type: string
-        display_name:
-          type: string
-        remote_key_name:
-          type: string
-        description:
-          type: string
-        is_custom:
-          type: boolean
-        is_common_model_field:
-          type: boolean
-        is_required:
-          type: boolean
-        field_type:
-          $ref: '#/components/schemas/FieldTypeEnum'
-        field_format:
-          $ref: '#/components/schemas/FieldFormatEnum'
-        field_choices:
+        item_type:
+          $ref: '#/components/schemas/ItemTypeEnum'
+        item_format:
+          $ref: '#/components/schemas/ItemFormatEnum'
+        item_choices:
           type: array
           items:
             type: string
-        item_schema:
-          $ref: '#/components/schemas/ItemSchema'
-      title: RemoteFieldClass
-    RemoteFieldRequest:
-      type: object
-      properties:
-        remote_field_class:
-          type: string
-          format: uuid
-        value:
-          type: object
-          additionalProperties:
-            description: Any type
-      required:
-      - remote_field_class
-      title: RemoteFieldRequest
-    LinkedAccountStatus:
-      type: object
-      properties:
-        linked_account_status:
-          type: string
-        can_make_request:
-          type: boolean
-      required:
-      - linked_account_status
-      - can_make_request
-      title: LinkedAccountStatus
-    TicketsGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - priority
-      - priority,status
-      - priority,status,ticket_type
-      - priority,ticket_type
-      - status
-      - status,ticket_type
-      - ticket_type
-      title: TicketsGetParametersShowEnumOrigins
-    TicketsLiveSearchGetParametersRemoteFields:
-      type: string
-      enum:
-      - priority
-      - priority,status
-      - priority,status,ticket_type
-      - priority,ticket_type
-      - status
-      - status,ticket_type
-      - ticket_type
-      title: TicketsLiveSearchGetParametersRemoteFields
+      title: ItemSchema
     Ticket:
       type: object
       properties:
@@ -1675,81 +1428,75 @@ components:
 
         TODO'
       title: Ticket
-    TicketFieldMappings:
+    Permission:
       type: object
       properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: TicketFieldMappings
-    WarningValidationProblem:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
+        id:
           type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
-      required:
-      - title
-      - detail
-      - problem_type
-      title: WarningValidationProblem
-    PaginatedViewerList:
-      type: object
-      properties:
-        next:
+          format: uuid
+        remote_id:
           type:
           - string
           - 'null'
-        previous:
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        effect:
+          oneOf:
+          - $ref: '#/components/schemas/EffectEnum'
+          - type: 'null'
+          description: Outcome of this permission rule for matching users.
+        actions:
           type:
-          - string
+          - array
           - 'null'
-        results:
+          items:
+            $ref: '#/components/schemas/ActionsEnum'
+          description: Operations that this permission applies to. If the entity inherits permission from a parent entity, then this should be an empty array. In that case, the entity would inherit the parent entity’s actions.
+        applied_to_users:
           type: array
           items:
-            $ref: '#/components/schemas/Viewer'
-      title: PaginatedViewerList
-    EffectEnum:
-      type: string
-      enum:
-      - ALLOWED
-      - DENIED
-      - INHERITED
-      title: EffectEnum
-    TicketStatusEnum:
-      type: string
-      enum:
-      - OPEN
-      - CLOSED
-      - IN_PROGRESS
-      - ON_HOLD
-      title: TicketStatusEnum
-    FieldFormatEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: FieldFormatEnum
+            type: string
+            format: uuid
+        applied_to_roles:
+          type: array
+          items:
+            type: string
+            format: uuid
+        applied_to_teams:
+          type: array
+          items:
+            type: string
+            format: uuid
+        applied_to_collections:
+          type: array
+          items:
+            type: string
+            format: uuid
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/PermissionFieldMappings'
+          - type: 'null'
+      description: '# The Permission Object
+
+        ### Description
+
+        The `Permission` object is used to represent permissions that can be applied to users, roles, teams, collections, and tickets.
+
+
+        ### Usage Example
+
+        TODO'
+      title: Permission
     ErrorValidationProblem:
       type: object
       properties:
@@ -1772,6 +1519,45 @@ components:
       - detail
       - problem_type
       title: ErrorValidationProblem
+    RemoteFieldClass:
+      type: object
+      properties:
+        id:
+          type: string
+        display_name:
+          type: string
+        remote_key_name:
+          type: string
+        description:
+          type: string
+        is_custom:
+          type: boolean
+        is_common_model_field:
+          type: boolean
+        is_required:
+          type: boolean
+        field_type:
+          $ref: '#/components/schemas/FieldTypeEnum'
+        field_format:
+          $ref: '#/components/schemas/FieldFormatEnum'
+        field_choices:
+          type: array
+          items:
+            type: string
+        item_schema:
+          $ref: '#/components/schemas/ItemSchema'
+      title: RemoteFieldClass
+    TicketsLiveSearchGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - priority
+      - priority,status
+      - priority,status,ticket_type
+      - priority,ticket_type
+      - status
+      - status,ticket_type
+      - ticket_type
+      title: TicketsLiveSearchGetParametersShowEnumOrigins
     TicketsIdGetParametersExpandSchemaItems:
       type: string
       enum:
@@ -1793,6 +1579,220 @@ components:
       required:
       - model
       title: TicketEndpointRequest
+    TicketFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: TicketFieldMappings
+    TicketsGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - priority
+      - priority,status
+      - priority,status,ticket_type
+      - priority,ticket_type
+      - status
+      - status,ticket_type
+      - ticket_type
+      title: TicketsGetParametersShowEnumOrigins
+    TicketResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/Ticket'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: TicketResponse
+    TicketsGetParametersRemoteFields:
+      type: string
+      enum:
+      - priority
+      - priority,status
+      - priority,status,ticket_type
+      - priority,ticket_type
+      - status
+      - status,ticket_type
+      - ticket_type
+      title: TicketsGetParametersRemoteFields
+    ItemFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemFormatEnum
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    TicketsTicketIdViewersGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - team
+      - user
+      title: TicketsTicketIdViewersGetParametersExpandSchemaItems
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    TicketsIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - priority
+      - priority,status
+      - priority,status,ticket_type
+      - priority,ticket_type
+      - status
+      - status,ticket_type
+      - ticket_type
+      title: TicketsIdGetParametersRemoteFields
+    ActionsEnum:
+      type: string
+      enum:
+      - VIEW
+      - CREATE
+      - EDIT
+      - DELETE
+      title: ActionsEnum
+    TicketAccessLevelEnum:
+      type: string
+      enum:
+      - COMPANY
+      - PUBLIC
+      - PRIVATE
+      - COLLECTION
+      title: TicketAccessLevelEnum
+    PatchedTicketEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/PatchedTicketRequest'
+      required:
+      - model
+      title: PatchedTicketEndpointRequest
+    TicketsLiveSearchGetParametersRemoteFields:
+      type: string
+      enum:
+      - priority
+      - priority,status
+      - priority,status,ticket_type
+      - priority,ticket_type
+      - status
+      - status,ticket_type
+      - ticket_type
+      title: TicketsLiveSearchGetParametersRemoteFields
+    FieldTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldTypeEnum
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    ItemTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemTypeEnum
   securitySchemes:
     tokenAuth:
       type: http

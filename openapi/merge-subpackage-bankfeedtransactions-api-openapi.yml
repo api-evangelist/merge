@@ -239,30 +239,127 @@ paths:
                 $ref: '#/components/schemas/MetaResponse'
 components:
   schemas:
-    PaginatedBankFeedTransactionList:
+    ValidationProblemSource:
       type: object
       properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/BankFeedTransaction'
-      title: PaginatedBankFeedTransactionList
-    BankFeedTransactionEndpointRequest:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/BankFeedTransactionRequestRequest'
+        pointer:
+          type: string
       required:
-      - model
-      title: BankFeedTransactionEndpointRequest
+      - pointer
+      title: ValidationProblemSource
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    CreditOrDebitEnum:
+      type: string
+      enum:
+      - CREDIT
+      - DEBIT
+      title: CreditOrDebitEnum
+    BankFeedTransactionsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - bank_feed_account
+      title: BankFeedTransactionsIdGetParametersExpandSchemaItems
+    BankFeedTransactionRequestRequest:
+      type: object
+      properties:
+        bank_feed_account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The bank feed account associated with the transaction.
+        transaction_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date that the transaction occurred.
+        posted_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date the transaction was posted to the bank account.
+        amount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The amount of the transaction.
+        description:
+          type:
+          - string
+          - 'null'
+          description: The description of the transaction.
+        transaction_type:
+          type:
+          - string
+          - 'null'
+          description: The underlying type of the transaction.
+        payee:
+          type:
+          - string
+          - 'null'
+          description: The person or merchant who initiated the transaction, or alternatively, to whom the transaction was paid.
+        credit_or_debit:
+          oneOf:
+          - $ref: '#/components/schemas/CreditOrDebitEnum'
+          - type: 'null'
+          description: If the transaction is of type debit or credit.
+        source_transaction_id:
+          type:
+          - string
+          - 'null'
+          description: The customer’s identifier for the transaction.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      required:
+      - bank_feed_account
+      description: '# The BankFeedTransaction Object
+
+        ### Description
+
+        The `BankFeedTransaction` object is used to represent transactions linked to a bank feed account. This includes details about the transaction such as the date, amount, description, and type.
+
+
+        ### Usage Example
+
+        Fetch from the `GET BankFeedTransaction` endpoint to view details of a transaction associated with a bank feed account.'
+      title: BankFeedTransactionRequestRequest
     BankFeedTransaction:
       type: object
       properties:
@@ -348,155 +445,57 @@ components:
 
         Fetch from the `GET BankFeedTransaction` endpoint to view details of a transaction associated with a bank feed account.'
       title: BankFeedTransaction
-    BankFeedTransactionRequestRequest:
+    BankFeedTransactionEndpointRequest:
       type: object
       properties:
-        bank_feed_account:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The bank feed account associated with the transaction.
-        transaction_date:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date that the transaction occurred.
-        posted_date:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date the transaction was posted to the bank account.
-        amount:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: The amount of the transaction.
-        description:
-          type:
-          - string
-          - 'null'
-          description: The description of the transaction.
-        transaction_type:
-          type:
-          - string
-          - 'null'
-          description: The underlying type of the transaction.
-        payee:
-          type:
-          - string
-          - 'null'
-          description: The person or merchant who initiated the transaction, or alternatively, to whom the transaction was paid.
-        credit_or_debit:
-          oneOf:
-          - $ref: '#/components/schemas/CreditOrDebitEnum'
-          - type: 'null'
-          description: If the transaction is of type debit or credit.
-        source_transaction_id:
-          type:
-          - string
-          - 'null'
-          description: The customer’s identifier for the transaction.
-        integration_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        linked_account_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
+        model:
+          $ref: '#/components/schemas/BankFeedTransactionRequestRequest'
       required:
+      - model
+      title: BankFeedTransactionEndpointRequest
+    BankFeedTransactionsGetParametersExpandSchemaItems:
+      type: string
+      enum:
       - bank_feed_account
-      description: '# The BankFeedTransaction Object
-
-        ### Description
-
-        The `BankFeedTransaction` object is used to represent transactions linked to a bank feed account. This includes details about the transaction such as the date, amount, description, and type.
-
-
-        ### Usage Example
-
-        Fetch from the `GET BankFeedTransaction` endpoint to view details of a transaction associated with a bank feed account.'
-      title: BankFeedTransactionRequestRequest
-    DebugModelLogSummary:
+      title: BankFeedTransactionsGetParametersExpandSchemaItems
+    PaginatedBankFeedTransactionList:
       type: object
       properties:
-        url:
-          type: string
-        method:
-          type: string
-        status_code:
-          type: integer
-      required:
-      - url
-      - method
-      - status_code
-      title: DebugModelLogSummary
-    WarningValidationProblem:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BankFeedTransaction'
+      title: PaginatedBankFeedTransactionList
+    BankFeedTransactionResponse:
       type: object
       properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
-          type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
+        model:
+          $ref: '#/components/schemas/BankFeedTransaction'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
       required:
-      - title
-      - detail
-      - problem_type
-      title: WarningValidationProblem
-    ErrorValidationProblem:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
-          type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
-      required:
-      - title
-      - detail
-      - problem_type
-      title: ErrorValidationProblem
-    DebugModeLog:
-      type: object
-      properties:
-        log_id:
-          type: string
-        dashboard_view:
-          type: string
-        log_summary:
-          $ref: '#/components/schemas/DebugModelLogSummary'
-      required:
-      - log_id
-      - dashboard_view
-      - log_summary
-      title: DebugModeLog
+      - model
+      - warnings
+      - errors
+      title: BankFeedTransactionResponse
     MetaResponse:
       type: object
       properties:
@@ -521,63 +520,64 @@ components:
       - has_conditional_params
       - has_required_linked_account_params
       title: MetaResponse
-    LinkedAccountStatus:
+    WarningValidationProblem:
       type: object
       properties:
-        linked_account_status:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
           type: string
-        can_make_request:
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
           type: boolean
-      required:
-      - linked_account_status
-      - can_make_request
-      title: LinkedAccountStatus
-    ValidationProblemSource:
-      type: object
-      properties:
-        pointer:
+        raw_error:
           type: string
+        error_code:
+          type: integer
       required:
-      - pointer
-      title: ValidationProblemSource
-    BankFeedTransactionResponse:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    DebugModelLogSummary:
       type: object
       properties:
-        model:
-          $ref: '#/components/schemas/BankFeedTransaction'
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/WarningValidationProblem'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorValidationProblem'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/DebugModeLog'
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
       required:
-      - model
-      - warnings
-      - errors
-      title: BankFeedTransactionResponse
-    CreditOrDebitEnum:
-      type: string
-      enum:
-      - CREDIT
-      - DEBIT
-      title: CreditOrDebitEnum
-    BankFeedTransactionsGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - bank_feed_account
-      title: BankFeedTransactionsGetParametersExpandSchemaItems
-    BankFeedTransactionsIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - bank_feed_account
-      title: BankFeedTransactionsIdGetParametersExpandSchemaItems
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
   securitySchemes:
     tokenAuth:
       type: http

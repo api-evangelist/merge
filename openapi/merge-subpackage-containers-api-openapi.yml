@@ -180,49 +180,6 @@ paths:
                 $ref: '#/components/schemas/Container'
 components:
   schemas:
-    RemoteData:
-      type: object
-      properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
-      required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
-    ContainersIdGetParametersExpand:
-      type: string
-      enum:
-      - parent_article
-      - parent_article,parent_container
-      - parent_container
-      - permissions
-      - permissions,parent_article
-      - permissions,parent_article,parent_container
-      - permissions,parent_container
-      title: ContainersIdGetParametersExpand
-    ContainersGetParametersType:
-      type: string
-      enum:
-      - ''
-      - CATEGORY
-      - COLLECTION
-      - DATABASE
-      - FOLDER
-      - SECTION
-      - SPACE
-      title: ContainersGetParametersType
     PaginatedContainerList:
       type: object
       properties:
@@ -239,10 +196,74 @@ components:
           items:
             $ref: '#/components/schemas/Container'
       title: PaginatedContainerList
-    ContainerFieldMappings:
+    PermissionFieldMappings:
       type: object
       properties: {}
-      title: ContainerFieldMappings
+      title: PermissionFieldMappings
+    Status3c6Enum:
+      type: string
+      enum:
+      - DRAFT
+      - PUBLISHED
+      - ARCHIVED
+      - TRASH
+      description: '* `DRAFT` - DRAFT
+
+        * `PUBLISHED` - PUBLISHED
+
+        * `ARCHIVED` - ARCHIVED
+
+        * `TRASH` - TRASH'
+      title: Status3c6Enum
+    RolesEnum:
+      type: string
+      enum:
+      - READ
+      - WRITE
+      - OWNER
+      description: '* `READ` - READ
+
+        * `WRITE` - WRITE
+
+        * `OWNER` - OWNER'
+      title: RolesEnum
+    ContainersIdGetParametersExpand:
+      type: string
+      enum:
+      - parent_article
+      - parent_article,parent_container
+      - parent_container
+      - permissions
+      - permissions,parent_article
+      - permissions,parent_article,parent_container
+      - permissions,parent_container
+      title: ContainersIdGetParametersExpand
+    PermissionTypeEnum:
+      type: string
+      enum:
+      - USER
+      - GROUP
+      - COMPANY
+      - ANYONE
+      description: '* `USER` - USER
+
+        * `GROUP` - GROUP
+
+        * `COMPANY` - COMPANY
+
+        * `ANYONE` - ANYONE'
+      title: PermissionTypeEnum
+    ContainersGetParametersType:
+      type: string
+      enum:
+      - ''
+      - CATEGORY
+      - COLLECTION
+      - DATABASE
+      - FOLDER
+      - SECTION
+      - SPACE
+      title: ContainersGetParametersType
     Container:
       type: object
       properties:
@@ -372,73 +393,6 @@ components:
 
         Fetch from the `GET /api/knowledgebase/containers` endpoint and view their containers.'
       title: Container
-    PermissionFieldMappings:
-      type: object
-      properties: {}
-      title: PermissionFieldMappings
-    VisibilityEnum:
-      type: string
-      enum:
-      - PUBLIC
-      - INTERNAL
-      - RESTRICTED
-      description: '* `PUBLIC` - PUBLIC
-
-        * `INTERNAL` - INTERNAL
-
-        * `RESTRICTED` - RESTRICTED'
-      title: VisibilityEnum
-    Status3c6Enum:
-      type: string
-      enum:
-      - DRAFT
-      - PUBLISHED
-      - ARCHIVED
-      - TRASH
-      description: '* `DRAFT` - DRAFT
-
-        * `PUBLISHED` - PUBLISHED
-
-        * `ARCHIVED` - ARCHIVED
-
-        * `TRASH` - TRASH'
-      title: Status3c6Enum
-    PermissionTypeEnum:
-      type: string
-      enum:
-      - USER
-      - GROUP
-      - COMPANY
-      - ANYONE
-      description: '* `USER` - USER
-
-        * `GROUP` - GROUP
-
-        * `COMPANY` - COMPANY
-
-        * `ANYONE` - ANYONE'
-      title: PermissionTypeEnum
-    ContainerTypeEnum:
-      type: string
-      enum:
-      - FOLDER
-      - SPACE
-      - COLLECTION
-      - SECTION
-      - CATEGORY
-      - DATABASE
-      description: '* `FOLDER` - FOLDER
-
-        * `SPACE` - SPACE
-
-        * `COLLECTION` - COLLECTION
-
-        * `SECTION` - SECTION
-
-        * `CATEGORY` - CATEGORY
-
-        * `DATABASE` - DATABASE'
-      title: ContainerTypeEnum
     Permission:
       type: object
       properties:
@@ -504,18 +458,64 @@ components:
 
         ### Usage Example'
       title: Permission
-    RolesEnum:
+    ContainerFieldMappings:
+      type: object
+      properties: {}
+      title: ContainerFieldMappings
+    VisibilityEnum:
       type: string
       enum:
-      - READ
-      - WRITE
-      - OWNER
-      description: '* `READ` - READ
+      - PUBLIC
+      - INTERNAL
+      - RESTRICTED
+      description: '* `PUBLIC` - PUBLIC
 
-        * `WRITE` - WRITE
+        * `INTERNAL` - INTERNAL
 
-        * `OWNER` - OWNER'
-      title: RolesEnum
+        * `RESTRICTED` - RESTRICTED'
+      title: VisibilityEnum
+    ContainerTypeEnum:
+      type: string
+      enum:
+      - FOLDER
+      - SPACE
+      - COLLECTION
+      - SECTION
+      - CATEGORY
+      - DATABASE
+      description: '* `FOLDER` - FOLDER
+
+        * `SPACE` - SPACE
+
+        * `COLLECTION` - COLLECTION
+
+        * `SECTION` - SECTION
+
+        * `CATEGORY` - CATEGORY
+
+        * `DATABASE` - DATABASE'
+      title: ContainerTypeEnum
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
     ContainersGetParametersExpand:
       type: string
       enum:

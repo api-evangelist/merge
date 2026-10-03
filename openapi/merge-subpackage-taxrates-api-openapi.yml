@@ -175,39 +175,82 @@ paths:
                 $ref: '#/components/schemas/TaxRate'
 components:
   schemas:
-    RemoteData:
+    TaxComponent:
       type: object
       properties:
-        path:
+        id:
           type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
-      required:
-      - path
-      description: '# The RemoteData Object
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The tax rate’s name.
+        rate:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The tax component’s rate.
+        is_compound:
+          type:
+          - boolean
+          - 'null'
+          description: Returns True if the tax component is compound, False if not.
+        component_type:
+          oneOf:
+          - $ref: '#/components/schemas/ComponentTypeEnum'
+          - type: 'null'
+          description: Returns PURCHASE if the tax component corresponds to a purchase tax or SALES if the tax component corresponds to a sales tax.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+      description: '# The TaxRate Object
 
         ### Description
 
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+        The `TaxComponent` object is used to represent any sub-taxes that make up the `TaxRate`.
 
 
         ### Usage Example
 
-        TODO'
-      title: RemoteData
-    TaxRateFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: TaxRateFieldMappings
+        Fetch from the `LIST TaxRates` endpoint and view tax components relevant to a tax rate.'
+      title: TaxComponent
+    TaxRatesGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - company
+      title: TaxRatesGetParametersExpandSchemaItems
+    TaxRatesIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - company
+      title: TaxRatesIdGetParametersExpandSchemaItems
+    Status7d1Enum:
+      type: string
+      enum:
+      - ACTIVE
+      - ARCHIVED
+      title: Status7d1Enum
+    ComponentTypeEnum:
+      type: string
+      enum:
+      - SALES
+      - PURCHASE
+      title: ComponentTypeEnum
     TaxRate:
       type: object
       properties:
@@ -299,6 +342,39 @@ components:
 
         Fetch from the `LIST TaxRates` endpoint and view tax rates relevant to a company.'
       title: TaxRate
+    TaxRateFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: TaxRateFieldMappings
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
     PaginatedTaxRateList:
       type: object
       properties:
@@ -315,82 +391,6 @@ components:
           items:
             $ref: '#/components/schemas/TaxRate'
       title: PaginatedTaxRateList
-    TaxRatesIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - company
-      title: TaxRatesIdGetParametersExpandSchemaItems
-    ComponentTypeEnum:
-      type: string
-      enum:
-      - SALES
-      - PURCHASE
-      title: ComponentTypeEnum
-    TaxRatesGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - company
-      title: TaxRatesGetParametersExpandSchemaItems
-    Status7d1Enum:
-      type: string
-      enum:
-      - ACTIVE
-      - ARCHIVED
-      title: Status7d1Enum
-    TaxComponent:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        name:
-          type:
-          - string
-          - 'null'
-          description: The tax rate’s name.
-        rate:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          description: The tax component’s rate.
-        is_compound:
-          type:
-          - boolean
-          - 'null'
-          description: Returns True if the tax component is compound, False if not.
-        component_type:
-          oneOf:
-          - $ref: '#/components/schemas/ComponentTypeEnum'
-          - type: 'null'
-          description: Returns PURCHASE if the tax component corresponds to a purchase tax or SALES if the tax component corresponds to a sales tax.
-        remote_was_deleted:
-          type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-      description: '# The TaxRate Object
-
-        ### Description
-
-        The `TaxComponent` object is used to represent any sub-taxes that make up the `TaxRate`.
-
-
-        ### Usage Example
-
-        Fetch from the `LIST TaxRates` endpoint and view tax components relevant to a tax rate.'
-      title: TaxComponent
   securitySchemes:
     tokenAuth:
       type: http

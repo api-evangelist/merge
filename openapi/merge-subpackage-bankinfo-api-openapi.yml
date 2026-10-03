@@ -214,27 +214,12 @@ paths:
                 $ref: '#/components/schemas/BankInfo'
 components:
   schemas:
-    RemoteData:
-      type: object
-      properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
-      required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
+    BankInfoGetParametersOrderBy:
+      type: string
+      enum:
+      - -remote_created_at
+      - remote_created_at
+      title: BankInfoGetParametersOrderBy
     BankInfoFieldMappings:
       type: object
       properties:
@@ -247,27 +232,59 @@ components:
           additionalProperties:
             description: Any type
       title: BankInfoFieldMappings
-    BankInfoGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - employee
-      title: BankInfoGetParametersExpandSchemaItems
     BankInfoIdGetParametersExpandSchemaItems:
       type: string
       enum:
       - employee
       title: BankInfoIdGetParametersExpandSchemaItems
+    BankInfoIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - account_type
+      title: BankInfoIdGetParametersRemoteFields
+    BankInfoGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - employee
+      title: BankInfoGetParametersExpandSchemaItems
+    BankInfoIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - account_type
+      title: BankInfoIdGetParametersShowEnumOrigins
+    BankInfoGetParametersAccountType:
+      type: string
+      enum:
+      - CHECKING
+      - SAVINGS
+      title: BankInfoGetParametersAccountType
+    BankInfoGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - account_type
+      title: BankInfoGetParametersShowEnumOrigins
+    PaginatedBankInfoList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BankInfo'
+      title: PaginatedBankInfoList
     AccountTypeEnum:
       type: string
       enum:
       - SAVINGS
       - CHECKING
       title: AccountTypeEnum
-    BankInfoGetParametersRemoteFields:
-      type: string
-      enum:
-      - account_type
-      title: BankInfoGetParametersRemoteFields
     BankInfo:
       type: object
       properties:
@@ -343,49 +360,32 @@ components:
 
         Fetch from the `LIST BankInfo` endpoint and filter by `ID` to show all bank information.'
       title: BankInfo
-    BankInfoIdGetParametersRemoteFields:
-      type: string
-      enum:
-      - account_type
-      title: BankInfoIdGetParametersRemoteFields
-    BankInfoGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - account_type
-      title: BankInfoGetParametersShowEnumOrigins
-    PaginatedBankInfoList:
+    RemoteData:
       type: object
       properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/BankInfo'
-      title: PaginatedBankInfoList
-    BankInfoGetParametersOrderBy:
-      type: string
-      enum:
-      - -remote_created_at
-      - remote_created_at
-      title: BankInfoGetParametersOrderBy
-    BankInfoGetParametersAccountType:
-      type: string
-      enum:
-      - CHECKING
-      - SAVINGS
-      title: BankInfoGetParametersAccountType
-    BankInfoIdGetParametersShowEnumOrigins:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    BankInfoGetParametersRemoteFields:
       type: string
       enum:
       - account_type
-      title: BankInfoIdGetParametersShowEnumOrigins
+      title: BankInfoGetParametersRemoteFields
   securitySchemes:
     tokenAuth:
       type: http

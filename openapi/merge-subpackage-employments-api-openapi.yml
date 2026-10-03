@@ -199,6 +199,85 @@ paths:
                 $ref: '#/components/schemas/Employment'
 components:
   schemas:
+    PayFrequencyEnum:
+      type: string
+      enum:
+      - WEEKLY
+      - BIWEEKLY
+      - MONTHLY
+      - QUARTERLY
+      - SEMIANNUALLY
+      - ANNUALLY
+      - THIRTEEN-MONTHLY
+      - PRO_RATA
+      - SEMIMONTHLY
+      title: PayFrequencyEnum
+    EmploymentsIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - employment_type
+      - employment_type,flsa_status
+      - employment_type,flsa_status,pay_frequency
+      - employment_type,flsa_status,pay_frequency,pay_period
+      - employment_type,flsa_status,pay_period
+      - employment_type,pay_frequency
+      - employment_type,pay_frequency,pay_period
+      - employment_type,pay_period
+      - flsa_status
+      - flsa_status,pay_frequency
+      - flsa_status,pay_frequency,pay_period
+      - flsa_status,pay_period
+      - pay_frequency
+      - pay_frequency,pay_period
+      - pay_period
+      title: EmploymentsIdGetParametersShowEnumOrigins
+    EmploymentFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: EmploymentFieldMappings
+    EmploymentsGetParametersRemoteFields:
+      type: string
+      enum:
+      - employment_type
+      - employment_type,flsa_status
+      - employment_type,flsa_status,pay_frequency
+      - employment_type,flsa_status,pay_frequency,pay_period
+      - employment_type,flsa_status,pay_period
+      - employment_type,pay_frequency
+      - employment_type,pay_frequency,pay_period
+      - employment_type,pay_period
+      - flsa_status
+      - flsa_status,pay_frequency
+      - flsa_status,pay_frequency,pay_period
+      - flsa_status,pay_period
+      - pay_frequency
+      - pay_frequency,pay_period
+      - pay_period
+      title: EmploymentsGetParametersRemoteFields
+    PaginatedEmploymentList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Employment'
+      title: PaginatedEmploymentList
     EmploymentTypeEnum:
       type: string
       enum:
@@ -208,33 +287,137 @@ components:
       - CONTRACTOR
       - FREELANCE
       title: EmploymentTypeEnum
+    EmploymentsIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - employment_type
+      - employment_type,flsa_status
+      - employment_type,flsa_status,pay_frequency
+      - employment_type,flsa_status,pay_frequency,pay_period
+      - employment_type,flsa_status,pay_period
+      - employment_type,pay_frequency
+      - employment_type,pay_frequency,pay_period
+      - employment_type,pay_period
+      - flsa_status
+      - flsa_status,pay_frequency
+      - flsa_status,pay_frequency,pay_period
+      - flsa_status,pay_period
+      - pay_frequency
+      - pay_frequency,pay_period
+      - pay_period
+      title: EmploymentsIdGetParametersRemoteFields
+    EmploymentsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - employee
+      - pay_group
+      title: EmploymentsIdGetParametersExpandSchemaItems
     EmploymentsGetParametersExpandSchemaItems:
       type: string
       enum:
       - employee
       - pay_group
       title: EmploymentsGetParametersExpandSchemaItems
-    RemoteData:
+    Employment:
       type: object
       properties:
-        path:
+        id:
           type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
-      required:
-      - path
-      description: '# The RemoteData Object
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        employee:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The employee holding this position.
+        job_title:
+          type:
+          - string
+          - 'null'
+          description: The position's title.
+        pay_rate:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The position's pay rate.
+        pay_period:
+          oneOf:
+          - $ref: '#/components/schemas/PayPeriodEnum'
+          - type: 'null'
+          description: The time period this pay rate encompasses.
+        pay_frequency:
+          oneOf:
+          - $ref: '#/components/schemas/PayFrequencyEnum'
+          - type: 'null'
+          description: The position's pay frequency.
+        pay_currency:
+          oneOf:
+          - $ref: '#/components/schemas/PayCurrencyEnum'
+          - type: 'null'
+          description: The position's currency code. The currency code in ISO 4217 format.
+        pay_group:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The employment's pay group
+        flsa_status:
+          oneOf:
+          - $ref: '#/components/schemas/FlsaStatusEnum'
+          - type: 'null'
+          description: The position's FLSA status.
+        effective_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The position's effective date.
+        employment_type:
+          oneOf:
+          - $ref: '#/components/schemas/EmploymentTypeEnum'
+          - type: 'null'
+          description: The position's type of employment.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/EmploymentFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The Employment Object
 
         ### Description
 
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+        The `Employment` object is used to represent a job position at a company.
+
+
+        If an integration supports historical tracking of employments, it will be reflected in the data. If not, a new `Employment` object will be created whenever there is a change in job title or pay. The `effective_date` field should be used to order `Employment` objects, with the most recent date corresponding to the latest employment record for an employee.
 
 
         ### Usage Example
 
-        TODO'
-      title: RemoteData
+        Fetch from the `LIST Employments` endpoint and filter by `ID` to show all employees.'
+      title: Employment
     FlsaStatusEnum:
       type: string
       enum:
@@ -243,6 +426,38 @@ components:
       - NONEXEMPT
       - OWNER
       title: FlsaStatusEnum
+    PayPeriodEnum:
+      type: string
+      enum:
+      - HOUR
+      - DAY
+      - WEEK
+      - EVERY_TWO_WEEKS
+      - SEMIMONTHLY
+      - MONTH
+      - QUARTER
+      - EVERY_SIX_MONTHS
+      - YEAR
+      title: PayPeriodEnum
+    EmploymentsGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - employment_type
+      - employment_type,flsa_status
+      - employment_type,flsa_status,pay_frequency
+      - employment_type,flsa_status,pay_frequency,pay_period
+      - employment_type,flsa_status,pay_period
+      - employment_type,pay_frequency
+      - employment_type,pay_frequency,pay_period
+      - employment_type,pay_period
+      - flsa_status
+      - flsa_status,pay_frequency
+      - flsa_status,pay_frequency,pay_period
+      - flsa_status,pay_period
+      - pay_frequency
+      - pay_frequency,pay_period
+      - pay_period
+      title: EmploymentsGetParametersShowEnumOrigins
     PayCurrencyEnum:
       type: string
       enum:
@@ -554,248 +769,33 @@ components:
       - ZWL
       description: The currency code in ISO 4217 format.
       title: PayCurrencyEnum
-    EmploymentsIdGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - employment_type
-      - employment_type,flsa_status
-      - employment_type,flsa_status,pay_frequency
-      - employment_type,flsa_status,pay_frequency,pay_period
-      - employment_type,flsa_status,pay_period
-      - employment_type,pay_frequency
-      - employment_type,pay_frequency,pay_period
-      - employment_type,pay_period
-      - flsa_status
-      - flsa_status,pay_frequency
-      - flsa_status,pay_frequency,pay_period
-      - flsa_status,pay_period
-      - pay_frequency
-      - pay_frequency,pay_period
-      - pay_period
-      title: EmploymentsIdGetParametersShowEnumOrigins
-    EmploymentsIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - employee
-      - pay_group
-      title: EmploymentsIdGetParametersExpandSchemaItems
-    PaginatedEmploymentList:
+    RemoteData:
       type: object
       properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Employment'
-      title: PaginatedEmploymentList
-    EmploymentFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: EmploymentFieldMappings
-    EmploymentsGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - employment_type
-      - employment_type,flsa_status
-      - employment_type,flsa_status,pay_frequency
-      - employment_type,flsa_status,pay_frequency,pay_period
-      - employment_type,flsa_status,pay_period
-      - employment_type,pay_frequency
-      - employment_type,pay_frequency,pay_period
-      - employment_type,pay_period
-      - flsa_status
-      - flsa_status,pay_frequency
-      - flsa_status,pay_frequency,pay_period
-      - flsa_status,pay_period
-      - pay_frequency
-      - pay_frequency,pay_period
-      - pay_period
-      title: EmploymentsGetParametersShowEnumOrigins
-    EmploymentsGetParametersRemoteFields:
-      type: string
-      enum:
-      - employment_type
-      - employment_type,flsa_status
-      - employment_type,flsa_status,pay_frequency
-      - employment_type,flsa_status,pay_frequency,pay_period
-      - employment_type,flsa_status,pay_period
-      - employment_type,pay_frequency
-      - employment_type,pay_frequency,pay_period
-      - employment_type,pay_period
-      - flsa_status
-      - flsa_status,pay_frequency
-      - flsa_status,pay_frequency,pay_period
-      - flsa_status,pay_period
-      - pay_frequency
-      - pay_frequency,pay_period
-      - pay_period
-      title: EmploymentsGetParametersRemoteFields
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
     EmploymentsGetParametersOrderBy:
       type: string
       enum:
       - -effective_date
       - effective_date
       title: EmploymentsGetParametersOrderBy
-    PayPeriodEnum:
-      type: string
-      enum:
-      - HOUR
-      - DAY
-      - WEEK
-      - EVERY_TWO_WEEKS
-      - SEMIMONTHLY
-      - MONTH
-      - QUARTER
-      - EVERY_SIX_MONTHS
-      - YEAR
-      title: PayPeriodEnum
-    EmploymentsIdGetParametersRemoteFields:
-      type: string
-      enum:
-      - employment_type
-      - employment_type,flsa_status
-      - employment_type,flsa_status,pay_frequency
-      - employment_type,flsa_status,pay_frequency,pay_period
-      - employment_type,flsa_status,pay_period
-      - employment_type,pay_frequency
-      - employment_type,pay_frequency,pay_period
-      - employment_type,pay_period
-      - flsa_status
-      - flsa_status,pay_frequency
-      - flsa_status,pay_frequency,pay_period
-      - flsa_status,pay_period
-      - pay_frequency
-      - pay_frequency,pay_period
-      - pay_period
-      title: EmploymentsIdGetParametersRemoteFields
-    Employment:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        employee:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The employee holding this position.
-        job_title:
-          type:
-          - string
-          - 'null'
-          description: The position's title.
-        pay_rate:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: The position's pay rate.
-        pay_period:
-          oneOf:
-          - $ref: '#/components/schemas/PayPeriodEnum'
-          - type: 'null'
-          description: The time period this pay rate encompasses.
-        pay_frequency:
-          oneOf:
-          - $ref: '#/components/schemas/PayFrequencyEnum'
-          - type: 'null'
-          description: The position's pay frequency.
-        pay_currency:
-          oneOf:
-          - $ref: '#/components/schemas/PayCurrencyEnum'
-          - type: 'null'
-          description: The position's currency code. The currency code in ISO 4217 format.
-        pay_group:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The employment's pay group
-        flsa_status:
-          oneOf:
-          - $ref: '#/components/schemas/FlsaStatusEnum'
-          - type: 'null'
-          description: The position's FLSA status.
-        effective_date:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The position's effective date.
-        employment_type:
-          oneOf:
-          - $ref: '#/components/schemas/EmploymentTypeEnum'
-          - type: 'null'
-          description: The position's type of employment.
-        remote_was_deleted:
-          type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-        field_mappings:
-          oneOf:
-          - $ref: '#/components/schemas/EmploymentFieldMappings'
-          - type: 'null'
-        remote_data:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/RemoteData'
-      description: '# The Employment Object
-
-        ### Description
-
-        The `Employment` object is used to represent a job position at a company.
-
-
-        If an integration supports historical tracking of employments, it will be reflected in the data. If not, a new `Employment` object will be created whenever there is a change in job title or pay. The `effective_date` field should be used to order `Employment` objects, with the most recent date corresponding to the latest employment record for an employee.
-
-
-        ### Usage Example
-
-        Fetch from the `LIST Employments` endpoint and filter by `ID` to show all employees.'
-      title: Employment
-    PayFrequencyEnum:
-      type: string
-      enum:
-      - WEEKLY
-      - BIWEEKLY
-      - MONTHLY
-      - QUARTERLY
-      - SEMIANNUALLY
-      - ANNUALLY
-      - THIRTEEN-MONTHLY
-      - PRO_RATA
-      - SEMIMONTHLY
-      title: PayFrequencyEnum
   securitySchemes:
     tokenAuth:
       type: http

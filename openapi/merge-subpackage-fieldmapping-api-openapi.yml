@@ -1991,134 +1991,77 @@ paths:
     - url: https://api-ap.merge.dev/api
 components:
   schemas:
-    ExternalTargetFieldAPI:
+    FieldMappingApiInstanceRemoteField:
       type: object
       properties:
-        name:
+        remote_key_name:
           type:
           - string
           - 'null'
-        description:
+        schema:
           type:
-          - string
+          - object
           - 'null'
-        is_mapped:
-          type:
-          - string
-          - 'null'
-      title: ExternalTargetFieldAPI
-    FieldMappingApiInstanceResponse:
+          additionalProperties:
+            description: Any type
+        remote_endpoint_info:
+          $ref: '#/components/schemas/FieldMappingApiInstanceRemoteFieldRemoteEndpointInfo'
+      required:
+      - remote_key_name
+      - schema
+      - remote_endpoint_info
+      title: FieldMappingApiInstanceRemoteField
+    PatchedEditFieldMappingRequest:
       type: object
       properties:
-        Account:
+        remote_field_traversal_path:
           type: array
           items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        AccountingAttachment:
+            description: Any type
+          description: The field traversal path of the remote field listed when you hit the GET /remote-fields endpoint.
+        remote_method:
+          type: string
+          description: The method of the remote endpoint where the remote field is coming from.
+        remote_url_path:
+          type: string
+          description: The path of the remote endpoint where the remote field is coming from.
+        jmes_path:
+          type: string
+          description: 'DEPRECATED: Use ''advanced_mapping_expression'' instead.'
+        advanced_mapping_expression:
+          type: string
+          description: A JSONata expression used to transform the remote field data.
+      title: PatchedEditFieldMappingRequest
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    RemoteEndpointInfo:
+      type: object
+      properties:
+        method:
+          type: string
+        url_path:
+          type: string
+        field_traversal_path:
           type: array
           items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        BalanceSheet:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        CashFlowStatement:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        CompanyInfo:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        Contact:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        IncomeStatement:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        CreditNote:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        Item:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        PurchaseOrder:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        SalesOrder:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        ItemFulfillment:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        ExpenseReport:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        TrackingCategory:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        JournalEntry:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        TaxRate:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        Invoice:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        Payment:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        Expense:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        VendorCredit:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        Transaction:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        AccountingPeriod:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        BankFeedAccount:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        Employee:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        PaymentMethod:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        Project:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        PaymentTerm:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-      title: FieldMappingApiInstanceResponse
+            description: Any type
+      required:
+      - method
+      - url_path
+      - field_traversal_path
+      title: RemoteEndpointInfo
     RemoteFieldAPI:
       type: object
       properties:
@@ -2150,20 +2093,87 @@ components:
       - remote_endpoint_info
       - advanced_metadata
       title: RemoteFieldAPI
-    DebugModeLog:
+    ErrorValidationProblem:
       type: object
       properties:
-        log_id:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
           type: string
-        dashboard_view:
+        detail:
           type: string
-        log_summary:
-          $ref: '#/components/schemas/DebugModelLogSummary'
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
       required:
-      - log_id
-      - dashboard_view
-      - log_summary
-      title: DebugModeLog
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    RemoteFieldApiCoverage:
+      oneOf:
+      - type: integer
+      - type: number
+        format: double
+      title: RemoteFieldApiCoverage
+    FieldMappingApiInstanceTargetField:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        is_organization_wide:
+          type: boolean
+      required:
+      - name
+      - description
+      - is_organization_wide
+      title: FieldMappingApiInstanceTargetField
+    FieldMappingInstanceResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/FieldMappingApiInstance'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: FieldMappingInstanceResponse
+    CreateTargetFieldRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the target field.
+        description:
+          type: string
+          default: ''
+          description: The description of the target field.
+        common_model:
+          type: string
+          description: The name of the Common Model to associate the target field with.
+      required:
+      - name
+      - common_model
+      title: CreateTargetFieldRequest
     RemoteFieldAPIResponse:
       type: object
       properties:
@@ -2276,6 +2286,98 @@ components:
           items:
             $ref: '#/components/schemas/RemoteFieldAPI'
       title: RemoteFieldAPIResponse
+    ExternalTargetFieldAPI:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+        description:
+          type:
+          - string
+          - 'null'
+        is_mapped:
+          type:
+          - string
+          - 'null'
+      title: ExternalTargetFieldAPI
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    AdvancedMetadata:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        display_name:
+          type: string
+        description:
+          type: string
+        is_required:
+          type: boolean
+        is_custom:
+          type: boolean
+        field_choices:
+          type: array
+          items:
+            description: Any type
+      required:
+      - id
+      title: AdvancedMetadata
+    FieldMappingApiInstance:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        is_integration_wide:
+          type: boolean
+        target_field:
+          oneOf:
+          - $ref: '#/components/schemas/FieldMappingApiInstanceTargetField'
+          - type: 'null'
+        remote_field:
+          oneOf:
+          - $ref: '#/components/schemas/FieldMappingApiInstanceRemoteField'
+          - type: 'null'
+        jmes_path:
+          type:
+          - string
+          - 'null'
+        advanced_mapping_expression:
+          type:
+          - string
+          - 'null'
+      title: FieldMappingApiInstance
+    FieldMappingApiInstanceRemoteFieldRemoteEndpointInfo:
+      type: object
+      properties:
+        method:
+          type:
+          - string
+          - 'null'
+        url_path:
+          type:
+          - string
+          - 'null'
+        field_traversal_path:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+      required:
+      - method
+      - url_path
+      - field_traversal_path
+      title: FieldMappingApiInstanceRemoteFieldRemoteEndpointInfo
     CreateFieldMappingRequest:
       type: object
       properties:
@@ -2318,164 +2420,6 @@ components:
       - remote_url_path
       - common_model_name
       title: CreateFieldMappingRequest
-    FieldMappingApiInstance:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        is_integration_wide:
-          type: boolean
-        target_field:
-          oneOf:
-          - $ref: '#/components/schemas/FieldMappingApiInstanceTargetField'
-          - type: 'null'
-        remote_field:
-          oneOf:
-          - $ref: '#/components/schemas/FieldMappingApiInstanceRemoteField'
-          - type: 'null'
-        jmes_path:
-          type:
-          - string
-          - 'null'
-        advanced_mapping_expression:
-          type:
-          - string
-          - 'null'
-      title: FieldMappingApiInstance
-    PatchedEditFieldMappingRequest:
-      type: object
-      properties:
-        remote_field_traversal_path:
-          type: array
-          items:
-            description: Any type
-          description: The field traversal path of the remote field listed when you hit the GET /remote-fields endpoint.
-        remote_method:
-          type: string
-          description: The method of the remote endpoint where the remote field is coming from.
-        remote_url_path:
-          type: string
-          description: The path of the remote endpoint where the remote field is coming from.
-        jmes_path:
-          type: string
-          description: 'DEPRECATED: Use ''advanced_mapping_expression'' instead.'
-        advanced_mapping_expression:
-          type: string
-          description: A JSONata expression used to transform the remote field data.
-      title: PatchedEditFieldMappingRequest
-    DebugModelLogSummary:
-      type: object
-      properties:
-        url:
-          type: string
-        method:
-          type: string
-        status_code:
-          type: integer
-      required:
-      - url
-      - method
-      - status_code
-      title: DebugModelLogSummary
-    ValidationProblemSource:
-      type: object
-      properties:
-        pointer:
-          type: string
-      required:
-      - pointer
-      title: ValidationProblemSource
-    FieldMappingApiInstanceTargetField:
-      type: object
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-        is_organization_wide:
-          type: boolean
-      required:
-      - name
-      - description
-      - is_organization_wide
-      title: FieldMappingApiInstanceTargetField
-    AdvancedMetadata:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        display_name:
-          type: string
-        description:
-          type: string
-        is_required:
-          type: boolean
-        is_custom:
-          type: boolean
-        field_choices:
-          type: array
-          items:
-            description: Any type
-      required:
-      - id
-      title: AdvancedMetadata
-    CreateTargetFieldRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          description: The name of the target field.
-        description:
-          type: string
-          default: ''
-          description: The description of the target field.
-        common_model:
-          type: string
-          description: The name of the Common Model to associate the target field with.
-      required:
-      - name
-      - common_model
-      title: CreateTargetFieldRequest
-    FieldMappingApiInstanceRemoteFieldRemoteEndpointInfo:
-      type: object
-      properties:
-        method:
-          type:
-          - string
-          - 'null'
-        url_path:
-          type:
-          - string
-          - 'null'
-        field_traversal_path:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-      required:
-      - method
-      - url_path
-      - field_traversal_path
-      title: FieldMappingApiInstanceRemoteFieldRemoteEndpointInfo
-    RemoteEndpointInfo:
-      type: object
-      properties:
-        method:
-          type: string
-        url_path:
-          type: string
-        field_traversal_path:
-          type: array
-          items:
-            description: Any type
-      required:
-      - method
-      - url_path
-      - field_traversal_path
-      title: RemoteEndpointInfo
     WarningValidationProblem:
       type: object
       properties:
@@ -2498,6 +2442,132 @@ components:
       - detail
       - problem_type
       title: WarningValidationProblem
+    FieldMappingApiInstanceResponse:
+      type: object
+      properties:
+        Account:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        AccountingAttachment:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        BalanceSheet:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        CashFlowStatement:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        CompanyInfo:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        Contact:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        IncomeStatement:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        CreditNote:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        Item:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        PurchaseOrder:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        SalesOrder:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        ItemFulfillment:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        ExpenseReport:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        TrackingCategory:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        JournalEntry:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        TaxRate:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        Invoice:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        Payment:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        Expense:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        VendorCredit:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        Transaction:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        AccountingPeriod:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        BankFeedAccount:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        Employee:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        PaymentMethod:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        Project:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        PaymentTerm:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+      title: FieldMappingApiInstanceResponse
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
     ExternalTargetFieldAPIResponse:
       type: object
       properties:
@@ -2610,144 +2680,6 @@ components:
           items:
             $ref: '#/components/schemas/ExternalTargetFieldAPI'
       title: ExternalTargetFieldAPIResponse
-    FieldMappingApiInstanceRemoteField:
-      type: object
-      properties:
-        remote_key_name:
-          type:
-          - string
-          - 'null'
-        schema:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        remote_endpoint_info:
-          $ref: '#/components/schemas/FieldMappingApiInstanceRemoteFieldRemoteEndpointInfo'
-      required:
-      - remote_key_name
-      - schema
-      - remote_endpoint_info
-      title: FieldMappingApiInstanceRemoteField
-    FieldMappingInstanceResponse:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/FieldMappingApiInstance'
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/WarningValidationProblem'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorValidationProblem'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/DebugModeLog'
-      required:
-      - model
-      - warnings
-      - errors
-      title: FieldMappingInstanceResponse
-    ErrorValidationProblem:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
-          type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
-      required:
-      - title
-      - detail
-      - problem_type
-      title: ErrorValidationProblem
-    RemoteFieldApiCoverage:
-      oneOf:
-      - type: integer
-      - type: number
-        format: double
-      title: RemoteFieldApiCoverage
-    FieldMappingApiInstanceResponse_2:
-      type: object
-      properties:
-        Activity:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        Application:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        Attachment:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        Candidate:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        Department:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        EEOC:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        ScheduledInterview:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        Job:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        JobPosting:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        JobInterviewStage:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        Offer:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        Office:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        RejectReason:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        Scorecard:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        Tag:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        RemoteUser:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-      title: FieldMappingApiInstanceResponse
     RemoteFieldAPIResponse_2:
       type: object
       properties:
@@ -2816,6 +2748,74 @@ components:
           items:
             $ref: '#/components/schemas/RemoteFieldAPI'
       title: RemoteFieldAPIResponse
+    FieldMappingApiInstanceResponse_2:
+      type: object
+      properties:
+        Activity:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        Application:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        Attachment:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        Candidate:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        Department:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        EEOC:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        ScheduledInterview:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        Job:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        JobPosting:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        JobInterviewStage:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        Offer:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        Office:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        RejectReason:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        Scorecard:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        Tag:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        RemoteUser:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+      title: FieldMappingApiInstanceResponse
     ExternalTargetFieldAPIResponse_2:
       type: object
       properties:
@@ -2884,26 +2884,6 @@ components:
           items:
             $ref: '#/components/schemas/ExternalTargetFieldAPI'
       title: ExternalTargetFieldAPIResponse
-    FieldMappingApiInstanceResponse_3:
-      type: object
-      properties:
-        User:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        Group:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        Conversation:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        Member:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-      title: FieldMappingApiInstanceResponse
     RemoteFieldAPIResponse_3:
       type: object
       properties:
@@ -2924,6 +2904,26 @@ components:
           items:
             $ref: '#/components/schemas/RemoteFieldAPI'
       title: RemoteFieldAPIResponse
+    FieldMappingApiInstanceResponse_3:
+      type: object
+      properties:
+        User:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        Group:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        Conversation:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        Member:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+      title: FieldMappingApiInstanceResponse
     ExternalTargetFieldAPIResponse_3:
       type: object
       properties:
@@ -2944,46 +2944,6 @@ components:
           items:
             $ref: '#/components/schemas/ExternalTargetFieldAPI'
       title: ExternalTargetFieldAPIResponse
-    FieldMappingApiInstanceResponse_4:
-      type: object
-      properties:
-        Account:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        Contact:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        Lead:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        Note:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        Opportunity:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        Stage:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        User:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        Task:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        Engagement:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-      title: FieldMappingApiInstanceResponse
     RemoteFieldAPIResponse_4:
       type: object
       properties:
@@ -3024,6 +2984,46 @@ components:
           items:
             $ref: '#/components/schemas/RemoteFieldAPI'
       title: RemoteFieldAPIResponse
+    FieldMappingApiInstanceResponse_4:
+      type: object
+      properties:
+        Account:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        Contact:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        Lead:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        Note:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        Opportunity:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        Stage:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        User:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        Task:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        Engagement:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+      title: FieldMappingApiInstanceResponse
     ExternalTargetFieldAPIResponse_4:
       type: object
       properties:
@@ -3064,30 +3064,6 @@ components:
           items:
             $ref: '#/components/schemas/ExternalTargetFieldAPI'
       title: ExternalTargetFieldAPIResponse
-    FieldMappingApiInstanceResponse_5:
-      type: object
-      properties:
-        File:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        Folder:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        Drive:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        Group:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        User:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-      title: FieldMappingApiInstanceResponse
     RemoteFieldAPIResponse_5:
       type: object
       properties:
@@ -3112,6 +3088,30 @@ components:
           items:
             $ref: '#/components/schemas/RemoteFieldAPI'
       title: RemoteFieldAPIResponse
+    FieldMappingApiInstanceResponse_5:
+      type: object
+      properties:
+        File:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        Folder:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        Drive:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        Group:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        User:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+      title: FieldMappingApiInstanceResponse
     ExternalTargetFieldAPIResponse_5:
       type: object
       properties:
@@ -3272,30 +3272,42 @@ components:
           items:
             $ref: '#/components/schemas/ExternalTargetFieldAPI'
       title: ExternalTargetFieldAPIResponse
-    FieldMappingApiInstanceResponse_7:
+    PatchedEditFieldMappingRequest_2:
       type: object
       properties:
-        Container:
+        remote_field_traversal_path:
           type: array
           items:
-            $ref: '#/components/schemas/FieldMappingApiInstance_2'
-        Article:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance_2'
-        Attachment:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance_2'
-        User:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance_2'
-        Group:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance_2'
-      title: FieldMappingApiInstanceResponse
+            description: Any type
+          description: The field traversal path of the remote field listed when you hit the GET /remote-fields endpoint.
+        remote_method:
+          type: string
+          description: The method of the remote endpoint where the remote field is coming from.
+        remote_url_path:
+          type: string
+          description: The path of the remote endpoint where the remote field is coming from.
+        jmes_path:
+          type: string
+          description: JMES path to specify json query expression to be used on field mapping.
+      title: PatchedEditFieldMappingRequest
+    ErrorValidationProblem_2:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
     RemoteFieldAPIResponse_6:
       type: object
       properties:
@@ -3320,6 +3332,27 @@ components:
           items:
             $ref: '#/components/schemas/RemoteFieldAPI'
       title: RemoteFieldAPIResponse
+    FieldMappingApiInstance_2:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        is_integration_wide:
+          type: boolean
+        target_field:
+          oneOf:
+          - $ref: '#/components/schemas/FieldMappingApiInstanceTargetField'
+          - type: 'null'
+        remote_field:
+          oneOf:
+          - $ref: '#/components/schemas/FieldMappingApiInstanceRemoteField'
+          - type: 'null'
+        jmes_path:
+          type:
+          - string
+          - 'null'
+      title: FieldMappingApiInstance
     CreateFieldMappingRequest_2:
       type: object
       properties:
@@ -3354,45 +3387,6 @@ components:
       - remote_url_path
       - common_model_name
       title: CreateFieldMappingRequest
-    FieldMappingApiInstance_2:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        is_integration_wide:
-          type: boolean
-        target_field:
-          oneOf:
-          - $ref: '#/components/schemas/FieldMappingApiInstanceTargetField'
-          - type: 'null'
-        remote_field:
-          oneOf:
-          - $ref: '#/components/schemas/FieldMappingApiInstanceRemoteField'
-          - type: 'null'
-        jmes_path:
-          type:
-          - string
-          - 'null'
-      title: FieldMappingApiInstance
-    PatchedEditFieldMappingRequest_2:
-      type: object
-      properties:
-        remote_field_traversal_path:
-          type: array
-          items:
-            description: Any type
-          description: The field traversal path of the remote field listed when you hit the GET /remote-fields endpoint.
-        remote_method:
-          type: string
-          description: The method of the remote endpoint where the remote field is coming from.
-        remote_url_path:
-          type: string
-          description: The path of the remote endpoint where the remote field is coming from.
-        jmes_path:
-          type: string
-          description: JMES path to specify json query expression to be used on field mapping.
-      title: PatchedEditFieldMappingRequest
     WarningValidationProblem_2:
       type: object
       properties:
@@ -3411,6 +3405,30 @@ components:
       - detail
       - problem_type
       title: WarningValidationProblem
+    FieldMappingApiInstanceResponse_7:
+      type: object
+      properties:
+        Container:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance_2'
+        Article:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance_2'
+        Attachment:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance_2'
+        User:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance_2'
+        Group:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance_2'
+      title: FieldMappingApiInstanceResponse
     ExternalTargetFieldAPIResponse_7:
       type: object
       properties:
@@ -3435,72 +3453,6 @@ components:
           items:
             $ref: '#/components/schemas/ExternalTargetFieldAPI'
       title: ExternalTargetFieldAPIResponse
-    ErrorValidationProblem_2:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
-          type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-      required:
-      - title
-      - detail
-      - problem_type
-      title: ErrorValidationProblem
-    FieldMappingApiInstanceResponse_8:
-      type: object
-      properties:
-        Ticket:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        Comment:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        Project:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        Collection:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        User:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        Role:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        Account:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        Team:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        Attachment:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        Tag:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-        Contact:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMappingApiInstance'
-      title: FieldMappingApiInstanceResponse
     RemoteFieldAPIResponse_7:
       type: object
       properties:
@@ -3549,6 +3501,54 @@ components:
           items:
             $ref: '#/components/schemas/RemoteFieldAPI'
       title: RemoteFieldAPIResponse
+    FieldMappingApiInstanceResponse_8:
+      type: object
+      properties:
+        Ticket:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        Comment:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        Project:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        Collection:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        User:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        Role:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        Account:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        Team:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        Attachment:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        Tag:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+        Contact:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMappingApiInstance'
+      title: FieldMappingApiInstanceResponse
     ExternalTargetFieldAPIResponse_8:
       type: object
       properties:
