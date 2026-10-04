@@ -1145,26 +1145,21 @@ paths:
     - url: https://api-ap.merge.dev/api
 components:
   schemas:
-    UsersGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - access_role
-      title: UsersGetParametersShowEnumOrigins
     UsersGetParametersRemoteFields:
       type: string
       enum:
       - access_role
       title: UsersGetParametersRemoteFields
-    UsersIdGetParametersRemoteFields:
-      type: string
-      enum:
-      - access_role
-      title: UsersIdGetParametersRemoteFields
     UsersIdGetParametersShowEnumOrigins:
       type: string
       enum:
       - access_role
       title: UsersIdGetParametersShowEnumOrigins
+    UsersGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - access_role
+      title: UsersGetParametersShowEnumOrigins
     PaginatedRemoteUserList:
       type: object
       properties:
@@ -1181,6 +1176,53 @@ components:
           items:
             $ref: '#/components/schemas/RemoteUser'
       title: PaginatedRemoteUserList
+    AccessRoleEnum:
+      type: string
+      enum:
+      - SUPER_ADMIN
+      - ADMIN
+      - TEAM_MEMBER
+      - LIMITED_TEAM_MEMBER
+      - INTERVIEWER
+      title: AccessRoleEnum
+    RemoteUserFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: RemoteUserFieldMappings
+    UsersIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - access_role
+      title: UsersIdGetParametersRemoteFields
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
     RemoteUser:
       type: object
       properties:
@@ -1255,65 +1297,11 @@ components:
 
         Fetch from the `LIST RemoteUsers` endpoint to show all users for a third party.'
       title: RemoteUser
-    RemoteUserFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: RemoteUserFieldMappings
-    RemoteData:
-      type: object
-      properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
-      required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
-    AccessRoleEnum:
-      type: string
-      enum:
-      - SUPER_ADMIN
-      - ADMIN
-      - TEAM_MEMBER
-      - LIMITED_TEAM_MEMBER
-      - INTERVIEWER
-      title: AccessRoleEnum
-    UserFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: UserFieldMappings
-    UsersGetParametersExpandSchemaItems:
+    UsersIdGetParametersExpandSchemaItems:
       type: string
       enum:
       - groups
-      title: UsersGetParametersExpandSchemaItems
+      title: UsersIdGetParametersExpandSchemaItems
     PaginatedUserList:
       type: object
       properties:
@@ -1421,99 +1409,23 @@ components:
 
         Fetch from the `GET /api/chat/v1/users` endpoint and view their users.'
       title: User
-    UsersIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - groups
-      title: UsersIdGetParametersExpandSchemaItems
-    RemoteFieldClass:
+    UserFieldMappings:
       type: object
       properties:
-        id:
-          type: string
-        display_name:
-          type: string
-        remote_key_name:
-          type: string
-        description:
-          type: string
-        is_custom:
-          type: boolean
-        is_common_model_field:
-          type: boolean
-        is_required:
-          type: boolean
-        field_type:
-          $ref: '#/components/schemas/FieldTypeEnum'
-        field_format:
-          $ref: '#/components/schemas/FieldFormatEnum'
-        field_choices:
-          type: array
-          items:
-            type: string
-        item_schema:
-          $ref: '#/components/schemas/ItemSchema'
-      title: RemoteFieldClass
-    PaginatedRemoteFieldClassList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/RemoteFieldClass'
-      title: PaginatedRemoteFieldClassList
-    users_ignoreCreate_Response_200:
-      type: object
-      properties: {}
-      description: Empty response body
-      title: users_ignoreCreate_Response_200
-    IgnoreCommonModelRequest:
-      type: object
-      properties:
-        reason:
-          $ref: '#/components/schemas/ReasonEnum'
-        message:
-          type: string
-      required:
-      - reason
-      title: IgnoreCommonModelRequest
-    RemoteField:
-      type: object
-      properties:
-        remote_field_class:
-          $ref: '#/components/schemas/RemoteFieldClass'
-        value:
+        organization_defined_targets:
           type: object
           additionalProperties:
             description: Any type
-      required:
-      - remote_field_class
-      title: RemoteField
-    ReasonEnum:
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: UserFieldMappings
+    UsersGetParametersExpandSchemaItems:
       type: string
       enum:
-      - GENERAL_CUSTOMER_REQUEST
-      - GDPR
-      - OTHER
-      title: ReasonEnum
-    FieldTypeEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: FieldTypeEnum
+      - groups
+      title: UsersGetParametersExpandSchemaItems
     ItemSchema:
       type: object
       properties:
@@ -1526,6 +1438,63 @@ components:
           items:
             type: string
       title: ItemSchema
+    ItemTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemTypeEnum
+    IgnoreCommonModelRequest:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/ReasonEnum'
+        message:
+          type: string
+      required:
+      - reason
+      title: IgnoreCommonModelRequest
+    FieldTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldTypeEnum
+    RemoteField:
+      type: object
+      properties:
+        remote_field_class:
+          $ref: '#/components/schemas/RemoteFieldClass'
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteField
+    FieldFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldFormatEnum
+    users_ignoreCreate_Response_200:
+      type: object
+      properties: {}
+      description: Empty response body
+      title: users_ignoreCreate_Response_200
     User_2:
       type: object
       properties:
@@ -1603,26 +1572,57 @@ components:
       - bool
       - list
       title: ItemFormatEnum
-    FieldFormatEnum:
+    ReasonEnum:
       type: string
       enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: FieldFormatEnum
-    ItemTypeEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: ItemTypeEnum
+      - GENERAL_CUSTOMER_REQUEST
+      - GDPR
+      - OTHER
+      title: ReasonEnum
+    RemoteFieldClass:
+      type: object
+      properties:
+        id:
+          type: string
+        display_name:
+          type: string
+        remote_key_name:
+          type: string
+        description:
+          type: string
+        is_custom:
+          type: boolean
+        is_common_model_field:
+          type: boolean
+        is_required:
+          type: boolean
+        field_type:
+          $ref: '#/components/schemas/FieldTypeEnum'
+        field_format:
+          $ref: '#/components/schemas/FieldFormatEnum'
+        field_choices:
+          type: array
+          items:
+            type: string
+        item_schema:
+          $ref: '#/components/schemas/ItemSchema'
+      title: RemoteFieldClass
+    PaginatedRemoteFieldClassList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldClass'
+      title: PaginatedRemoteFieldClassList
     User_3:
       type: object
       properties:
@@ -1678,10 +1678,6 @@ components:
 
         Fetch from the `GET /api/filestorage/v1/users` endpoint and view their users.'
       title: User
-    UserFieldMappings_2:
-      type: object
-      properties: {}
-      title: UserFieldMappings
     User_4:
       type: object
       properties:
@@ -1728,12 +1724,16 @@ components:
 
         Fetch from the `GET /api/knowledgebase/users` endpoint and view their users.'
       title: User
-    UsersGetParametersExpandSchemaItems_2:
+    UserFieldMappings_2:
+      type: object
+      properties: {}
+      title: UserFieldMappings
+    UsersIdGetParametersExpandSchemaItems_2:
       type: string
       enum:
       - roles
       - teams
-      title: UsersGetParametersExpandSchemaItems
+      title: UsersIdGetParametersExpandSchemaItems
     User_5:
       type: object
       properties:
@@ -1809,12 +1809,12 @@ components:
 
         TODO'
       title: User
-    UsersIdGetParametersExpandSchemaItems_2:
+    UsersGetParametersExpandSchemaItems_2:
       type: string
       enum:
       - roles
       - teams
-      title: UsersIdGetParametersExpandSchemaItems
+      title: UsersGetParametersExpandSchemaItems
   securitySchemes:
     tokenAuth:
       type: http

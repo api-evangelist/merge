@@ -163,6 +163,61 @@ paths:
                 $ref: '#/components/schemas/CustomObjectClass'
 components:
   schemas:
+    CustomObjectClassesIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - fields
+      title: CustomObjectClassesIdGetParametersExpandSchemaItems
+    RemoteFieldClassForCustomObjectClass:
+      type: object
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        display_name:
+          type:
+          - string
+          - 'null'
+        remote_key_name:
+          type:
+          - string
+          - 'null'
+        description:
+          type:
+          - string
+          - 'null'
+        is_required:
+          type: boolean
+        field_type:
+          $ref: '#/components/schemas/FieldTypeEnum'
+        field_format:
+          $ref: '#/components/schemas/FieldFormatEnum'
+        field_choices:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+        item_schema:
+          oneOf:
+          - $ref: '#/components/schemas/RemoteFieldClassForCustomObjectClassItemSchema'
+          - type: 'null'
+      title: RemoteFieldClassForCustomObjectClass
+    FieldTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldTypeEnum
     CustomObjectClass:
       type: object
       properties:
@@ -218,27 +273,6 @@ components:
 
         TODO'
       title: CustomObjectClass
-    PaginatedCustomObjectClassList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/CustomObjectClass'
-      title: PaginatedCustomObjectClassList
-    CustomObjectClassesGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - fields
-      title: CustomObjectClassesGetParametersExpandSchemaItems
     RemoteFieldClassForCustomObjectClassItemSchema:
       type: object
       properties:
@@ -261,61 +295,11 @@ components:
       - item_format
       - item_choices
       title: RemoteFieldClassForCustomObjectClassItemSchema
-    RemoteFieldClassForCustomObjectClass:
-      type: object
-      properties:
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        display_name:
-          type:
-          - string
-          - 'null'
-        remote_key_name:
-          type:
-          - string
-          - 'null'
-        description:
-          type:
-          - string
-          - 'null'
-        is_required:
-          type: boolean
-        field_type:
-          $ref: '#/components/schemas/FieldTypeEnum'
-        field_format:
-          $ref: '#/components/schemas/FieldFormatEnum'
-        field_choices:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-        item_schema:
-          oneOf:
-          - $ref: '#/components/schemas/RemoteFieldClassForCustomObjectClassItemSchema'
-          - type: 'null'
-      title: RemoteFieldClassForCustomObjectClass
-    CustomObjectClassesIdGetParametersExpandSchemaItems:
+    CustomObjectClassesGetParametersExpandSchemaItems:
       type: string
       enum:
       - fields
-      title: CustomObjectClassesIdGetParametersExpandSchemaItems
-    FieldTypeEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: FieldTypeEnum
+      title: CustomObjectClassesGetParametersExpandSchemaItems
     FieldFormatEnum:
       type: string
       enum:
@@ -326,6 +310,22 @@ components:
       - bool
       - list
       title: FieldFormatEnum
+    PaginatedCustomObjectClassList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomObjectClass'
+      title: PaginatedCustomObjectClassList
   securitySchemes:
     tokenAuth:
       type: http

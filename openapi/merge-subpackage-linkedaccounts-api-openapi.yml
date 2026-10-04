@@ -878,27 +878,6 @@ paths:
     - url: https://api-ap.merge.dev/api
 components:
   schemas:
-    AccountDetailsAndActionsStatusEnum:
-      type: string
-      enum:
-      - COMPLETE
-      - INCOMPLETE
-      - RELINK_NEEDED
-      - IDLE
-      title: AccountDetailsAndActionsStatusEnum
-    LinkedAccountsGetParametersCategory:
-      type: string
-      enum:
-      - accounting
-      - ats
-      - chat
-      - crm
-      - filestorage
-      - hris
-      - knowledgebase
-      - mktg
-      - ticketing
-      title: LinkedAccountsGetParametersCategory
     ModelOperation:
       type: object
       properties:
@@ -932,53 +911,7 @@ components:
 
         View what operations are supported for the `Candidate` endpoint.'
       title: ModelOperation
-    PaginatedAccountDetailsAndActionsList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/AccountDetailsAndActions'
-      title: PaginatedAccountDetailsAndActionsList
-    AccountDetailsAndActionsIntegration:
-      type: object
-      properties:
-        name:
-          type: string
-        categories:
-          type: array
-          items:
-            $ref: '#/components/schemas/CategoriesEnum'
-        image:
-          type: string
-        square_image:
-          type: string
-        color:
-          type: string
-        slug:
-          type: string
-        passthrough_available:
-          type: boolean
-        available_model_operations:
-          type: array
-          items:
-            $ref: '#/components/schemas/ModelOperation'
-      required:
-      - name
-      - categories
-      - color
-      - slug
-      - passthrough_available
-      title: AccountDetailsAndActionsIntegration
-    CategoriesEnum:
+    CategoryEnum:
       type: string
       enum:
       - hris
@@ -989,7 +922,7 @@ components:
       - mktg
       - filestorage
       - knowledgebase
-      title: CategoriesEnum
+      title: CategoryEnum
     AccountDetailsAndActions:
       type: object
       properties:
@@ -1047,7 +980,37 @@ components:
 
         View a list of your organization''s `LinkedAccount` objects.'
       title: AccountDetailsAndActions
-    CategoryEnum:
+    AccountDetailsAndActionsIntegration:
+      type: object
+      properties:
+        name:
+          type: string
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/CategoriesEnum'
+        image:
+          type: string
+        square_image:
+          type: string
+        color:
+          type: string
+        slug:
+          type: string
+        passthrough_available:
+          type: boolean
+        available_model_operations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ModelOperation'
+      required:
+      - name
+      - categories
+      - color
+      - slug
+      - passthrough_available
+      title: AccountDetailsAndActionsIntegration
+    CategoriesEnum:
       type: string
       enum:
       - hris
@@ -1058,64 +1021,44 @@ components:
       - mktg
       - filestorage
       - knowledgebase
-      title: CategoryEnum
-    AccountDetailsAndActionsStatusEnum_2:
-      type: string
-      enum:
-      - COMPLETE
-      - INCOMPLETE
-      - RELINK_NEEDED
-      - IDLE
-      description: '* `COMPLETE` - COMPLETE
-
-        * `INCOMPLETE` - INCOMPLETE
-
-        * `RELINK_NEEDED` - RELINK_NEEDED
-
-        * `IDLE` - IDLE'
-      title: AccountDetailsAndActionsStatusEnum
-    LinkedAccountsGetParametersCategory_2:
+      title: CategoriesEnum
+    LinkedAccountsGetParametersCategory:
       type: string
       enum:
       - accounting
       - ats
       - chat
-      - communication
       - crm
-      - datawarehouse
       - filestorage
       - hris
       - knowledgebase
       - mktg
       - ticketing
       title: LinkedAccountsGetParametersCategory
-    CategoriesEnum_2:
+    AccountDetailsAndActionsStatusEnum:
       type: string
       enum:
-      - hris
-      - ats
-      - accounting
-      - ticketing
-      - crm
-      - mktg
-      - filestorage
-      - knowledgebase
-      description: '* `hris` - hris
-
-        * `ats` - ats
-
-        * `accounting` - accounting
-
-        * `ticketing` - ticketing
-
-        * `crm` - crm
-
-        * `mktg` - mktg
-
-        * `filestorage` - filestorage
-
-        * `knowledgebase` - knowledgebase'
-      title: CategoriesEnum
+      - COMPLETE
+      - INCOMPLETE
+      - RELINK_NEEDED
+      - IDLE
+      title: AccountDetailsAndActionsStatusEnum
+    PaginatedAccountDetailsAndActionsList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountDetailsAndActions'
+      title: PaginatedAccountDetailsAndActionsList
     CategoryEnum_2:
       type: string
       enum:
@@ -1143,6 +1086,63 @@ components:
 
         * `knowledgebase` - knowledgebase'
       title: CategoryEnum
+    CategoriesEnum_2:
+      type: string
+      enum:
+      - hris
+      - ats
+      - accounting
+      - ticketing
+      - crm
+      - mktg
+      - filestorage
+      - knowledgebase
+      description: '* `hris` - hris
+
+        * `ats` - ats
+
+        * `accounting` - accounting
+
+        * `ticketing` - ticketing
+
+        * `crm` - crm
+
+        * `mktg` - mktg
+
+        * `filestorage` - filestorage
+
+        * `knowledgebase` - knowledgebase'
+      title: CategoriesEnum
+    LinkedAccountsGetParametersCategory_2:
+      type: string
+      enum:
+      - accounting
+      - ats
+      - chat
+      - communication
+      - crm
+      - datawarehouse
+      - filestorage
+      - hris
+      - knowledgebase
+      - mktg
+      - ticketing
+      title: LinkedAccountsGetParametersCategory
+    AccountDetailsAndActionsStatusEnum_2:
+      type: string
+      enum:
+      - COMPLETE
+      - INCOMPLETE
+      - RELINK_NEEDED
+      - IDLE
+      description: '* `COMPLETE` - COMPLETE
+
+        * `INCOMPLETE` - INCOMPLETE
+
+        * `RELINK_NEEDED` - RELINK_NEEDED
+
+        * `IDLE` - IDLE'
+      title: AccountDetailsAndActionsStatusEnum
   securitySchemes:
     tokenAuth:
       type: http

@@ -578,12 +578,44 @@ paths:
     - url: https://api-ap.merge.dev/api
 components:
   schemas:
-    Status895Enum:
+    EmployeesGetParametersExpandSchemaItems:
       type: string
       enum:
-      - ACTIVE
-      - INACTIVE
-      title: Status895Enum
+      - company
+      title: EmployeesGetParametersExpandSchemaItems
+    EmployeeFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: EmployeeFieldMappings
+    EmployeesIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - company
+      title: EmployeesIdGetParametersExpandSchemaItems
+    PaginatedEmployeeList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Employee'
+      title: PaginatedEmployeeList
     Employee:
       type: object
       properties:
@@ -667,39 +699,6 @@ components:
 
         Fetch from the `LIST Employees` endpoint and view a company''s employees.'
       title: Employee
-    PaginatedEmployeeList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Employee'
-      title: PaginatedEmployeeList
-    EmployeesIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - company
-      title: EmployeesIdGetParametersExpandSchemaItems
-    EmployeeFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: EmployeeFieldMappings
     RemoteData:
       type: object
       properties:
@@ -721,18 +720,102 @@ components:
 
         TODO'
       title: RemoteData
-    EmployeesGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - company
-      title: EmployeesGetParametersExpandSchemaItems
-    EmployeesGetParametersEmploymentStatus:
+    Status895Enum:
       type: string
       enum:
       - ACTIVE
       - INACTIVE
-      - PENDING
-      title: EmployeesGetParametersEmploymentStatus
+      title: Status895Enum
+    EmployeesGetParametersRemoteFields:
+      type: string
+      enum:
+      - employment_status
+      - employment_status,ethnicity
+      - employment_status,ethnicity,gender
+      - employment_status,ethnicity,gender,marital_status
+      - employment_status,ethnicity,marital_status
+      - employment_status,gender
+      - employment_status,gender,marital_status
+      - employment_status,marital_status
+      - ethnicity
+      - ethnicity,gender
+      - ethnicity,gender,marital_status
+      - ethnicity,marital_status
+      - gender
+      - gender,marital_status
+      - marital_status
+      title: EmployeesGetParametersRemoteFields
+    EmployeesIdGetParametersExpandSchemaItems_2:
+      type: string
+      enum:
+      - company
+      - employments
+      - groups
+      - home_location
+      - manager
+      - pay_group
+      - team
+      - work_location
+      title: EmployeesIdGetParametersExpandSchemaItems
+    EmployeesIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - employment_status
+      - employment_status,ethnicity
+      - employment_status,ethnicity,gender
+      - employment_status,ethnicity,gender,marital_status
+      - employment_status,ethnicity,marital_status
+      - employment_status,gender
+      - employment_status,gender,marital_status
+      - employment_status,marital_status
+      - ethnicity
+      - ethnicity,gender
+      - ethnicity,gender,marital_status
+      - ethnicity,marital_status
+      - gender
+      - gender,marital_status
+      - marital_status
+      title: EmployeesIdGetParametersRemoteFields
+    EmployeesGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - employment_status
+      - employment_status,ethnicity
+      - employment_status,ethnicity,gender
+      - employment_status,ethnicity,gender,marital_status
+      - employment_status,ethnicity,marital_status
+      - employment_status,gender
+      - employment_status,gender,marital_status
+      - employment_status,marital_status
+      - ethnicity
+      - ethnicity,gender
+      - ethnicity,gender,marital_status
+      - ethnicity,marital_status
+      - gender
+      - gender,marital_status
+      - marital_status
+      title: EmployeesGetParametersShowEnumOrigins
+    EthnicityEnum:
+      type: string
+      enum:
+      - AMERICAN_INDIAN_OR_ALASKA_NATIVE
+      - ASIAN_OR_INDIAN_SUBCONTINENT
+      - BLACK_OR_AFRICAN_AMERICAN
+      - HISPANIC_OR_LATINO
+      - NATIVE_HAWAIIAN_OR_OTHER_PACIFIC_ISLANDER
+      - TWO_OR_MORE_RACES
+      - WHITE
+      - PREFER_NOT_TO_DISCLOSE
+      title: EthnicityEnum
+    GenderEnum:
+      type: string
+      enum:
+      - MALE
+      - FEMALE
+      - NON-BINARY
+      - OTHER
+      - PREFER_NOT_TO_DISCLOSE
+      title: GenderEnum
     EmployeesIdGetParametersShowEnumOrigins:
       type: string
       enum:
@@ -752,6 +835,67 @@ components:
       - gender,marital_status
       - marital_status
       title: EmployeesIdGetParametersShowEnumOrigins
+    EmployeesGetParametersEmploymentStatus:
+      type: string
+      enum:
+      - ACTIVE
+      - INACTIVE
+      - PENDING
+      title: EmployeesGetParametersEmploymentStatus
+    MaritalStatusEnum:
+      type: string
+      enum:
+      - SINGLE
+      - MARRIED_FILING_JOINTLY
+      - MARRIED_FILING_SEPARATELY
+      - HEAD_OF_HOUSEHOLD
+      - QUALIFYING_WIDOW_OR_WIDOWER_WITH_DEPENDENT_CHILD
+      title: MaritalStatusEnum
+    IgnoreCommonModelRequest:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/ReasonEnum'
+        message:
+          type: string
+      required:
+      - reason
+      title: IgnoreCommonModelRequest
+    EmployeesGetParametersExpandSchemaItems_2:
+      type: string
+      enum:
+      - company
+      - employments
+      - groups
+      - home_location
+      - manager
+      - pay_group
+      - team
+      - work_location
+      title: EmployeesGetParametersExpandSchemaItems
+    employees_ignoreCreate_Response_200:
+      type: object
+      properties: {}
+      description: Empty response body
+      title: employees_ignoreCreate_Response_200
+    EmploymentStatusEnum:
+      type: string
+      enum:
+      - ACTIVE
+      - PENDING
+      - INACTIVE
+      title: EmploymentStatusEnum
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
     ReasonEnum:
       type: string
       enum:
@@ -783,37 +927,6 @@ components:
       - has_conditional_params
       - has_required_linked_account_params
       title: MetaResponse
-    EmployeesGetParametersRemoteFields:
-      type: string
-      enum:
-      - employment_status
-      - employment_status,ethnicity
-      - employment_status,ethnicity,gender
-      - employment_status,ethnicity,gender,marital_status
-      - employment_status,ethnicity,marital_status
-      - employment_status,gender
-      - employment_status,gender,marital_status
-      - employment_status,marital_status
-      - ethnicity
-      - ethnicity,gender
-      - ethnicity,gender,marital_status
-      - ethnicity,marital_status
-      - gender
-      - gender,marital_status
-      - marital_status
-      title: EmployeesGetParametersRemoteFields
-    EmployeesGetParametersExpandSchemaItems_2:
-      type: string
-      enum:
-      - company
-      - employments
-      - groups
-      - home_location
-      - manager
-      - pay_group
-      - team
-      - work_location
-      title: EmployeesGetParametersExpandSchemaItems
     Employee_2:
       type: object
       properties:
@@ -1019,119 +1132,6 @@ components:
 
         Fetch from the `LIST Employee` endpoint and filter by `ID` to show all employees.'
       title: Employee
-    EmployeesGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - employment_status
-      - employment_status,ethnicity
-      - employment_status,ethnicity,gender
-      - employment_status,ethnicity,gender,marital_status
-      - employment_status,ethnicity,marital_status
-      - employment_status,gender
-      - employment_status,gender,marital_status
-      - employment_status,marital_status
-      - ethnicity
-      - ethnicity,gender
-      - ethnicity,gender,marital_status
-      - ethnicity,marital_status
-      - gender
-      - gender,marital_status
-      - marital_status
-      title: EmployeesGetParametersShowEnumOrigins
-    IgnoreCommonModelRequest:
-      type: object
-      properties:
-        reason:
-          $ref: '#/components/schemas/ReasonEnum'
-        message:
-          type: string
-      required:
-      - reason
-      title: IgnoreCommonModelRequest
-    LinkedAccountStatus:
-      type: object
-      properties:
-        linked_account_status:
-          type: string
-        can_make_request:
-          type: boolean
-      required:
-      - linked_account_status
-      - can_make_request
-      title: LinkedAccountStatus
-    GenderEnum:
-      type: string
-      enum:
-      - MALE
-      - FEMALE
-      - NON-BINARY
-      - OTHER
-      - PREFER_NOT_TO_DISCLOSE
-      title: GenderEnum
-    EmployeesIdGetParametersExpandSchemaItems_2:
-      type: string
-      enum:
-      - company
-      - employments
-      - groups
-      - home_location
-      - manager
-      - pay_group
-      - team
-      - work_location
-      title: EmployeesIdGetParametersExpandSchemaItems
-    EmploymentStatusEnum:
-      type: string
-      enum:
-      - ACTIVE
-      - PENDING
-      - INACTIVE
-      title: EmploymentStatusEnum
-    employees_ignoreCreate_Response_200:
-      type: object
-      properties: {}
-      description: Empty response body
-      title: employees_ignoreCreate_Response_200
-    EthnicityEnum:
-      type: string
-      enum:
-      - AMERICAN_INDIAN_OR_ALASKA_NATIVE
-      - ASIAN_OR_INDIAN_SUBCONTINENT
-      - BLACK_OR_AFRICAN_AMERICAN
-      - HISPANIC_OR_LATINO
-      - NATIVE_HAWAIIAN_OR_OTHER_PACIFIC_ISLANDER
-      - TWO_OR_MORE_RACES
-      - WHITE
-      - PREFER_NOT_TO_DISCLOSE
-      title: EthnicityEnum
-    EmployeesIdGetParametersRemoteFields:
-      type: string
-      enum:
-      - employment_status
-      - employment_status,ethnicity
-      - employment_status,ethnicity,gender
-      - employment_status,ethnicity,gender,marital_status
-      - employment_status,ethnicity,marital_status
-      - employment_status,gender
-      - employment_status,gender,marital_status
-      - employment_status,marital_status
-      - ethnicity
-      - ethnicity,gender
-      - ethnicity,gender,marital_status
-      - ethnicity,marital_status
-      - gender
-      - gender,marital_status
-      - marital_status
-      title: EmployeesIdGetParametersRemoteFields
-    MaritalStatusEnum:
-      type: string
-      enum:
-      - SINGLE
-      - MARRIED_FILING_JOINTLY
-      - MARRIED_FILING_SEPARATELY
-      - HEAD_OF_HOUSEHOLD
-      - QUALIFYING_WIDOW_OR_WIDOWER_WITH_DEPENDENT_CHILD
-      title: MaritalStatusEnum
   securitySchemes:
     tokenAuth:
       type: http

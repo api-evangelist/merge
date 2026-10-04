@@ -38,11 +38,6 @@ paths:
                 $ref: '#/components/schemas/AvailableActions'
 components:
   schemas:
-    AccountIntegrationCategoryBetaStatus:
-      type: object
-      properties: {}
-      description: Category or categories this integration is in beta status for.
-      title: AccountIntegrationCategoryBetaStatus
     ModelOperation:
       type: object
       properties:
@@ -76,43 +71,11 @@ components:
 
         View what operations are supported for the `Candidate` endpoint.'
       title: ModelOperation
-    AvailableActions:
+    AccountIntegrationCategoryBetaStatus:
       type: object
-      properties:
-        integration:
-          $ref: '#/components/schemas/AccountIntegration'
-        passthrough_available:
-          type: boolean
-        available_model_operations:
-          type: array
-          items:
-            $ref: '#/components/schemas/ModelOperation'
-      required:
-      - integration
-      - passthrough_available
-      description: '# The AvailableActions Object
-
-        ### Description
-
-        The `Activity` object is used to see all available model/operation combinations for an integration.
-
-
-        ### Usage Example
-
-        Fetch all the actions available for the `Zenefits` integration.'
-      title: AvailableActions
-    CategoriesEnum:
-      type: string
-      enum:
-      - hris
-      - ats
-      - accounting
-      - ticketing
-      - crm
-      - mktg
-      - filestorage
-      - knowledgebase
-      title: CategoriesEnum
+      properties: {}
+      description: Category or categories this integration is in beta status for.
+      title: AccountIntegrationCategoryBetaStatus
     AccountIntegration:
       type: object
       properties:
@@ -162,6 +125,43 @@ components:
       required:
       - name
       title: AccountIntegration
+    CategoriesEnum:
+      type: string
+      enum:
+      - hris
+      - ats
+      - accounting
+      - ticketing
+      - crm
+      - mktg
+      - filestorage
+      - knowledgebase
+      title: CategoriesEnum
+    AvailableActions:
+      type: object
+      properties:
+        integration:
+          $ref: '#/components/schemas/AccountIntegration'
+        passthrough_available:
+          type: boolean
+        available_model_operations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ModelOperation'
+      required:
+      - integration
+      - passthrough_available
+      description: '# The AvailableActions Object
+
+        ### Description
+
+        The `Activity` object is used to see all available model/operation combinations for an integration.
+
+
+        ### Usage Example
+
+        Fetch all the actions available for the `Zenefits` integration.'
+      title: AvailableActions
   securitySchemes:
     tokenAuth:
       type: http

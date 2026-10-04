@@ -147,6 +147,43 @@ paths:
                 $ref: '#/components/schemas/EmployerBenefit'
 components:
   schemas:
+    BenefitPlanTypeEnum:
+      type: string
+      enum:
+      - MEDICAL
+      - HEALTH_SAVINGS
+      - INSURANCE
+      - RETIREMENT
+      - OTHER
+      title: BenefitPlanTypeEnum
+    PaginatedEmployerBenefitList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmployerBenefit'
+      title: PaginatedEmployerBenefitList
+    EmployerBenefitFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: EmployerBenefitFieldMappings
     EmployerBenefit:
       type: object
       properties:
@@ -210,43 +247,6 @@ components:
 
         Fetch from the `LIST EmployerBenefits` endpoint and filter by `ID` to show all EmployerBenefits.'
       title: EmployerBenefit
-    EmployerBenefitFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: EmployerBenefitFieldMappings
-    PaginatedEmployerBenefitList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/EmployerBenefit'
-      title: PaginatedEmployerBenefitList
-    BenefitPlanTypeEnum:
-      type: string
-      enum:
-      - MEDICAL
-      - HEALTH_SAVINGS
-      - INSURANCE
-      - RETIREMENT
-      - OTHER
-      title: BenefitPlanTypeEnum
     RemoteData:
       type: object
       properties:

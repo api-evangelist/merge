@@ -756,18 +756,40 @@ paths:
     - url: https://api-ap.merge.dev/api
 components:
   schemas:
-    FieldPermissionDeserializer:
+    CommonModelScopeAPI:
       type: object
       properties:
-        enabled_fields:
+        common_models:
           type: array
           items:
-            description: Any type
-        disabled_fields:
+            $ref: '#/components/schemas/IndividualCommonModelScopeDeserializer'
+          description: The common models you want to update the scopes for
+      required:
+      - common_models
+      title: CommonModelScopeAPI
+    LinkedAccountCommonModelScopeDeserializerRequest:
+      type: object
+      properties:
+        common_models:
           type: array
           items:
-            description: Any type
-      title: FieldPermissionDeserializer
+            $ref: '#/components/schemas/IndividualCommonModelScopeDeserializerRequest'
+          description: The common models you want to update the scopes for
+      required:
+      - common_models
+      title: LinkedAccountCommonModelScopeDeserializerRequest
+    ModelPermissionDeserializer:
+      type: object
+      properties:
+        is_enabled:
+          type: boolean
+      title: ModelPermissionDeserializer
+    ModelPermissionDeserializerRequest:
+      type: object
+      properties:
+        is_enabled:
+          type: boolean
+      title: ModelPermissionDeserializerRequest
     IndividualCommonModelScopeDeserializerRequest:
       type: object
       properties:
@@ -782,12 +804,6 @@ components:
       required:
       - model_name
       title: IndividualCommonModelScopeDeserializerRequest
-    ModelPermissionDeserializer:
-      type: object
-      properties:
-        is_enabled:
-          type: boolean
-      title: ModelPermissionDeserializer
     IndividualCommonModelScopeDeserializer:
       type: object
       properties:
@@ -802,34 +818,18 @@ components:
       required:
       - model_name
       title: IndividualCommonModelScopeDeserializer
-    CommonModelScopeAPI:
+    FieldPermissionDeserializer:
       type: object
       properties:
-        common_models:
+        enabled_fields:
           type: array
           items:
-            $ref: '#/components/schemas/IndividualCommonModelScopeDeserializer'
-          description: The common models you want to update the scopes for
-      required:
-      - common_models
-      title: CommonModelScopeAPI
-    ModelPermissionDeserializerRequest:
-      type: object
-      properties:
-        is_enabled:
-          type: boolean
-      title: ModelPermissionDeserializerRequest
-    LinkedAccountCommonModelScopeDeserializerRequest:
-      type: object
-      properties:
-        common_models:
+            description: Any type
+        disabled_fields:
           type: array
           items:
-            $ref: '#/components/schemas/IndividualCommonModelScopeDeserializerRequest'
-          description: The common models you want to update the scopes for
-      required:
-      - common_models
-      title: LinkedAccountCommonModelScopeDeserializerRequest
+            description: Any type
+      title: FieldPermissionDeserializer
     FieldPermissionDeserializerRequest:
       type: object
       properties:

@@ -745,27 +745,23 @@ paths:
     - url: https://api-ap.merge.dev/api/knowledgebase/v1
 components:
   schemas:
-    PaginatedGroupList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Group'
-      title: PaginatedGroupList
-    GroupsGetParametersExpandSchemaItems:
+    GroupsIdGetParametersExpandSchemaItems:
       type: string
       enum:
       - users
-      title: GroupsGetParametersExpandSchemaItems
+      title: GroupsIdGetParametersExpandSchemaItems
+    GroupFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: GroupFieldMappings
     Group:
       type: object
       properties:
@@ -830,23 +826,11 @@ components:
 
         Fetch from the `GET /api/chat/v1/groups` endpoint and view their groups.'
       title: Group
-    GroupFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: GroupFieldMappings
-    GroupsIdGetParametersExpandSchemaItems:
+    GroupsGetParametersExpandSchemaItems:
       type: string
       enum:
       - users
-      title: GroupsIdGetParametersExpandSchemaItems
+      title: GroupsGetParametersExpandSchemaItems
     RemoteData:
       type: object
       properties:
@@ -868,12 +852,28 @@ components:
 
         TODO'
       title: RemoteData
-    GroupsGetParametersExpandSchemaItems_2:
+    PaginatedGroupList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Group'
+      title: PaginatedGroupList
+    GroupsIdGetParametersExpandSchemaItems_2:
       type: string
       enum:
       - child_groups
       - users
-      title: GroupsGetParametersExpandSchemaItems
+      title: GroupsIdGetParametersExpandSchemaItems
     Group_2:
       type: object
       properties:
@@ -935,44 +935,11 @@ components:
 
         Fetch from the `GET /api/filestorage/v1/groups` endpoint and view their groups.'
       title: Group
-    GroupsIdGetParametersExpandSchemaItems_2:
+    GroupsGetParametersExpandSchemaItems_2:
       type: string
       enum:
       - child_groups
       - users
-      title: GroupsIdGetParametersExpandSchemaItems
-    GroupsIdGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - type
-      title: GroupsIdGetParametersShowEnumOrigins
-    groups_typesList_Response_200:
-      type: object
-      properties:
-        types:
-          type: array
-          items:
-            type: string
-          description: List of distinct group types
-      title: groups_typesList_Response_200
-    GroupsGetParametersRemoteFields:
-      type: string
-      enum:
-      - type
-      title: GroupsGetParametersRemoteFields
-    GroupTypeEnum:
-      type: string
-      enum:
-      - TEAM
-      - DEPARTMENT
-      - COST_CENTER
-      - BUSINESS_UNIT
-      - GROUP
-      title: GroupTypeEnum
-    GroupsGetParametersExpandSchemaItems_3:
-      type: string
-      enum:
-      - parent_group
       title: GroupsGetParametersExpandSchemaItems
     Group_3:
       type: object
@@ -1043,27 +1010,53 @@ components:
       enum:
       - parent_group
       title: GroupsIdGetParametersExpandSchemaItems
-    GroupsGetParametersShowEnumOrigins:
+    GroupsGetParametersExpandSchemaItems_3:
       type: string
       enum:
-      - type
-      title: GroupsGetParametersShowEnumOrigins
+      - parent_group
+      title: GroupsGetParametersExpandSchemaItems
+    groups_typesList_Response_200:
+      type: object
+      properties:
+        types:
+          type: array
+          items:
+            type: string
+          description: List of distinct group types
+      title: groups_typesList_Response_200
+    GroupTypeEnum:
+      type: string
+      enum:
+      - TEAM
+      - DEPARTMENT
+      - COST_CENTER
+      - BUSINESS_UNIT
+      - GROUP
+      title: GroupTypeEnum
     GroupsIdGetParametersRemoteFields:
       type: string
       enum:
       - type
       title: GroupsIdGetParametersRemoteFields
-    UserFieldMappings:
-      type: object
-      properties: {}
-      title: UserFieldMappings
-    GroupsIdGetParametersExpand:
+    GroupsGetParametersRemoteFields:
       type: string
       enum:
-      - parent_group
-      - users
-      - users,parent_group
-      title: GroupsIdGetParametersExpand
+      - type
+      title: GroupsGetParametersRemoteFields
+    GroupsIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - type
+      title: GroupsIdGetParametersShowEnumOrigins
+    GroupsGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - type
+      title: GroupsGetParametersShowEnumOrigins
+    GroupFieldMappings_2:
+      type: object
+      properties: {}
+      title: GroupFieldMappings
     Group_4:
       type: object
       properties:
@@ -1121,10 +1114,13 @@ components:
 
         Fetch from the `GET /api/knowledgebase/groups` endpoint and view their groups.'
       title: Group
-    GroupFieldMappings_2:
-      type: object
-      properties: {}
-      title: GroupFieldMappings
+    GroupsGetParametersExpand:
+      type: string
+      enum:
+      - parent_group
+      - users
+      - users,parent_group
+      title: GroupsGetParametersExpand
     User:
       type: object
       properties:
@@ -1171,13 +1167,17 @@ components:
 
         Fetch from the `GET /api/knowledgebase/users` endpoint and view their users.'
       title: User
-    GroupsGetParametersExpand:
+    UserFieldMappings:
+      type: object
+      properties: {}
+      title: UserFieldMappings
+    GroupsIdGetParametersExpand:
       type: string
       enum:
       - parent_group
       - users
       - users,parent_group
-      title: GroupsGetParametersExpand
+      title: GroupsIdGetParametersExpand
   securitySchemes:
     tokenAuth:
       type: http

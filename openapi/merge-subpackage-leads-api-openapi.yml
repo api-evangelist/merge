@@ -350,7 +350,41 @@ paths:
                 $ref: '#/components/schemas/PaginatedRemoteFieldClassList'
 components:
   schemas:
-    PaginatedRemoteFieldClassList:
+    ItemSchema:
+      type: object
+      properties:
+        item_type:
+          $ref: '#/components/schemas/ItemTypeEnum'
+        item_format:
+          $ref: '#/components/schemas/ItemFormatEnum'
+        item_choices:
+          type: array
+          items:
+            type: string
+      title: ItemSchema
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    PaginatedLeadList:
       type: object
       properties:
         next:
@@ -364,75 +398,38 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/RemoteFieldClass'
-      title: PaginatedRemoteFieldClassList
-    AddressTypeEnum:
-      type: string
-      enum:
-      - BILLING
-      - SHIPPING
-      title: AddressTypeEnum
-    LeadStatusEnum:
-      type: string
-      enum:
-      - OPEN
-      - CLOSED
-      - UNQUALIFIED
-      - QUALIFIED
-      title: LeadStatusEnum
-    RemoteField:
+            $ref: '#/components/schemas/Lead'
+      title: PaginatedLeadList
+    WarningValidationProblem:
       type: object
       properties:
-        remote_field_class:
-          $ref: '#/components/schemas/RemoteFieldClass'
-        value:
-          type: object
-          additionalProperties:
-            description: Any type
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
       required:
-      - remote_field_class
-      title: RemoteField
-    LeadsGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - converted_account
-      - converted_contact
-      - owner
-      title: LeadsGetParametersExpandSchemaItems
-    MetaResponse:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    ValidationProblemSource:
       type: object
       properties:
-        request_schema:
-          type: object
-          additionalProperties:
-            description: Any type
-        status:
-          $ref: '#/components/schemas/LinkedAccountStatus'
-        has_conditional_params:
-          type: boolean
-        has_required_linked_account_params:
-          type: boolean
-        remote_fields:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: Remote field values to populate
+        pointer:
+          type: string
       required:
-      - request_schema
-      - has_conditional_params
-      - has_required_linked_account_params
-      title: MetaResponse
-    FieldFormatEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: FieldFormatEnum
+      - pointer
+      title: ValidationProblemSource
     LeadFieldMappings:
       type: object
       properties:
@@ -445,29 +442,132 @@ components:
           additionalProperties:
             description: Any type
       title: LeadFieldMappings
-    DebugModeLog:
+    DebugModelLogSummary:
       type: object
       properties:
-        log_id:
+        url:
           type: string
-        dashboard_view:
+        method:
           type: string
-        log_summary:
-          $ref: '#/components/schemas/DebugModelLogSummary'
+        status_code:
+          type: integer
       required:
-      - log_id
-      - dashboard_view
-      - log_summary
-      title: DebugModeLog
-    LeadEndpointRequest:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    RemoteFieldRequest:
       type: object
       properties:
-        model:
-          $ref: '#/components/schemas/LeadRequest'
+        remote_field_class:
+          type: string
+          format: uuid
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
       required:
-      - model
-      title: LeadEndpointRequest
-    EmailAddress:
+      - remote_field_class
+      title: RemoteFieldRequest
+    RemoteFieldClass:
+      type: object
+      properties:
+        id:
+          type: string
+        display_name:
+          type: string
+        remote_key_name:
+          type: string
+        description:
+          type: string
+        is_custom:
+          type: boolean
+        is_common_model_field:
+          type: boolean
+        is_required:
+          type: boolean
+        field_type:
+          $ref: '#/components/schemas/FieldTypeEnum'
+        field_format:
+          $ref: '#/components/schemas/FieldFormatEnum'
+        field_choices:
+          type: array
+          items:
+            type: string
+        item_schema:
+          $ref: '#/components/schemas/ItemSchema'
+      title: RemoteFieldClass
+    AddressRequest:
+      type: object
+      properties:
+        street_1:
+          type:
+          - string
+          - 'null'
+          description: Line 1 of the address's street.
+        street_2:
+          type:
+          - string
+          - 'null'
+          description: Line 2 of the address's street.
+        city:
+          type:
+          - string
+          - 'null'
+          description: The address's city.
+        state:
+          type:
+          - string
+          - 'null'
+          description: The address's state.
+        postal_code:
+          type:
+          - string
+          - 'null'
+          description: The address's postal code.
+        country:
+          oneOf:
+          - $ref: '#/components/schemas/CountryEnum'
+          - type: 'null'
+          description: The address's country. The country code in ISO 3166-1 alpha-2 format.
+        address_type:
+          oneOf:
+          - $ref: '#/components/schemas/AddressTypeEnum'
+          - type: 'null'
+          description: The address type.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The Address Object
+
+        ### Description
+
+        The `Address` object is used to represent an entity''s address.
+
+        ### Usage Example
+
+        TODO'
+      title: AddressRequest
+    FieldTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldTypeEnum
+    Address:
       type: object
       properties:
         created_at:
@@ -478,26 +578,159 @@ components:
           type: string
           format: date-time
           description: The datetime that this object was modified by Merge.
-        email_address:
+        street_1:
           type:
           - string
           - 'null'
-          description: The email address.
-        email_address_type:
+          description: Line 1 of the address's street.
+        street_2:
           type:
           - string
           - 'null'
-          description: The email address's type.
-      description: '# The EmailAddress Object
+          description: Line 2 of the address's street.
+        city:
+          type:
+          - string
+          - 'null'
+          description: The address's city.
+        state:
+          type:
+          - string
+          - 'null'
+          description: The address's state.
+        postal_code:
+          type:
+          - string
+          - 'null'
+          description: The address's postal code.
+        country:
+          oneOf:
+          - $ref: '#/components/schemas/CountryEnum'
+          - type: 'null'
+          description: The address's country. The country code in ISO 3166-1 alpha-2 format.
+        address_type:
+          oneOf:
+          - $ref: '#/components/schemas/AddressTypeEnum'
+          - type: 'null'
+          description: The address type.
+      description: '# The Address Object
 
         ### Description
 
-        The `EmailAddress` object is used to represent an entity''s email address.
+        The `Address` object is used to represent an entity''s address.
 
         ### Usage Example
 
-        Fetch from the `GET Contact` endpoint and view their email addresses.'
-      title: EmailAddress
+        TODO'
+      title: Address
+    LeadResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/Lead'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: LeadResponse
+    LeadEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/LeadRequest'
+      required:
+      - model
+      title: LeadEndpointRequest
+    PhoneNumber:
+      type: object
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        phone_number:
+          type:
+          - string
+          - 'null'
+          description: The phone number.
+        phone_number_type:
+          type:
+          - string
+          - 'null'
+          description: The phone number's type.
+      description: '# The PhoneNumber Object
+
+        ### Description
+
+        The `PhoneNumber` object is used to represent an entity''s phone number.
+
+        ### Usage Example
+
+        Fetch from the `GET Contact` endpoint and view their phone numbers.'
+      title: PhoneNumber
+    LeadStatusEnum:
+      type: string
+      enum:
+      - OPEN
+      - CLOSED
+      - UNQUALIFIED
+      - QUALIFIED
+      title: LeadStatusEnum
+    ItemFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemFormatEnum
+    RemoteField:
+      type: object
+      properties:
+        remote_field_class:
+          $ref: '#/components/schemas/RemoteFieldClass'
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteField
+    ItemTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemTypeEnum
+    LeadsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - converted_account
+      - converted_contact
+      - owner
+      title: LeadsIdGetParametersExpandSchemaItems
     Lead:
       type: object
       properties:
@@ -628,84 +861,6 @@ components:
 
         TODO'
       title: Lead
-    RemoteFieldRequest:
-      type: object
-      properties:
-        remote_field_class:
-          type: string
-          format: uuid
-        value:
-          type: object
-          additionalProperties:
-            description: Any type
-      required:
-      - remote_field_class
-      title: RemoteFieldRequest
-    PhoneNumber:
-      type: object
-      properties:
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        phone_number:
-          type:
-          - string
-          - 'null'
-          description: The phone number.
-        phone_number_type:
-          type:
-          - string
-          - 'null'
-          description: The phone number's type.
-      description: '# The PhoneNumber Object
-
-        ### Description
-
-        The `PhoneNumber` object is used to represent an entity''s phone number.
-
-        ### Usage Example
-
-        Fetch from the `GET Contact` endpoint and view their phone numbers.'
-      title: PhoneNumber
-    ItemSchema:
-      type: object
-      properties:
-        item_type:
-          $ref: '#/components/schemas/ItemTypeEnum'
-        item_format:
-          $ref: '#/components/schemas/ItemFormatEnum'
-        item_choices:
-          type: array
-          items:
-            type: string
-      title: ItemSchema
-    ErrorValidationProblem:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
-          type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
-      required:
-      - title
-      - detail
-      - problem_type
-      title: ErrorValidationProblem
     CountryEnum:
       type: string
       enum:
@@ -960,96 +1115,17 @@ components:
       - ZW
       description: The country code in ISO 3166-1 alpha-2 format.
       title: CountryEnum
-    RemoteFieldClass:
+    LinkedAccountStatus:
       type: object
       properties:
-        id:
+        linked_account_status:
           type: string
-        display_name:
-          type: string
-        remote_key_name:
-          type: string
-        description:
-          type: string
-        is_custom:
+        can_make_request:
           type: boolean
-        is_common_model_field:
-          type: boolean
-        is_required:
-          type: boolean
-        field_type:
-          $ref: '#/components/schemas/FieldTypeEnum'
-        field_format:
-          $ref: '#/components/schemas/FieldFormatEnum'
-        field_choices:
-          type: array
-          items:
-            type: string
-        item_schema:
-          $ref: '#/components/schemas/ItemSchema'
-      title: RemoteFieldClass
-    ItemFormatEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: ItemFormatEnum
-    LeadsIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - converted_account
-      - converted_contact
-      - owner
-      title: LeadsIdGetParametersExpandSchemaItems
-    RemoteData:
-      type: object
-      properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
       required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
-    PaginatedLeadList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Lead'
-      title: PaginatedLeadList
-    ValidationProblemSource:
-      type: object
-      properties:
-        pointer:
-          type: string
-      required:
-      - pointer
-      title: ValidationProblemSource
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
     PhoneNumberRequest:
       type: object
       properties:
@@ -1085,55 +1161,109 @@ components:
 
         Fetch from the `GET Contact` endpoint and view their phone numbers.'
       title: PhoneNumberRequest
-    LinkedAccountStatus:
+    RemoteData:
       type: object
       properties:
-        linked_account_status:
+        path:
           type: string
-        can_make_request:
-          type: boolean
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
       required:
-      - linked_account_status
-      - can_make_request
-      title: LinkedAccountStatus
-    AddressRequest:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    DebugModeLog:
       type: object
       properties:
-        street_1:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    EmailAddress:
+      type: object
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        email_address:
           type:
           - string
           - 'null'
-          description: Line 1 of the address's street.
-        street_2:
+          description: The email address.
+        email_address_type:
           type:
           - string
           - 'null'
-          description: Line 2 of the address's street.
-        city:
+          description: The email address's type.
+      description: '# The EmailAddress Object
+
+        ### Description
+
+        The `EmailAddress` object is used to represent an entity''s email address.
+
+        ### Usage Example
+
+        Fetch from the `GET Contact` endpoint and view their email addresses.'
+      title: EmailAddress
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    EmailAddressRequest:
+      type: object
+      properties:
+        email_address:
           type:
           - string
           - 'null'
-          description: The address's city.
-        state:
+          description: The email address.
+        email_address_type:
           type:
           - string
           - 'null'
-          description: The address's state.
-        postal_code:
-          type:
-          - string
-          - 'null'
-          description: The address's postal code.
-        country:
-          oneOf:
-          - $ref: '#/components/schemas/CountryEnum'
-          - type: 'null'
-          description: The address's country. The country code in ISO 3166-1 alpha-2 format.
-        address_type:
-          oneOf:
-          - $ref: '#/components/schemas/AddressTypeEnum'
-          - type: 'null'
-          description: The address type.
+          description: The email address's type.
         integration_params:
           type:
           - object
@@ -1146,95 +1276,23 @@ components:
           - 'null'
           additionalProperties:
             description: Any type
-      description: '# The Address Object
+      description: '# The EmailAddress Object
 
         ### Description
 
-        The `Address` object is used to represent an entity''s address.
+        The `EmailAddress` object is used to represent an entity''s email address.
 
         ### Usage Example
 
-        TODO'
-      title: AddressRequest
-    LeadResponse:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/Lead'
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/WarningValidationProblem'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorValidationProblem'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/DebugModeLog'
-      required:
-      - model
-      - warnings
-      - errors
-      title: LeadResponse
-    Address:
-      type: object
-      properties:
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        street_1:
-          type:
-          - string
-          - 'null'
-          description: Line 1 of the address's street.
-        street_2:
-          type:
-          - string
-          - 'null'
-          description: Line 2 of the address's street.
-        city:
-          type:
-          - string
-          - 'null'
-          description: The address's city.
-        state:
-          type:
-          - string
-          - 'null'
-          description: The address's state.
-        postal_code:
-          type:
-          - string
-          - 'null'
-          description: The address's postal code.
-        country:
-          oneOf:
-          - $ref: '#/components/schemas/CountryEnum'
-          - type: 'null'
-          description: The address's country. The country code in ISO 3166-1 alpha-2 format.
-        address_type:
-          oneOf:
-          - $ref: '#/components/schemas/AddressTypeEnum'
-          - type: 'null'
-          description: The address type.
-      description: '# The Address Object
-
-        ### Description
-
-        The `Address` object is used to represent an entity''s address.
-
-        ### Usage Example
-
-        TODO'
-      title: Address
-    FieldTypeEnum:
+        Fetch from the `GET Contact` endpoint and view their email addresses.'
+      title: EmailAddressRequest
+    AddressTypeEnum:
+      type: string
+      enum:
+      - BILLING
+      - SHIPPING
+      title: AddressTypeEnum
+    FieldFormatEnum:
       type: string
       enum:
       - string
@@ -1243,29 +1301,30 @@ components:
       - datetime
       - bool
       - list
-      title: FieldTypeEnum
-    WarningValidationProblem:
+      title: FieldFormatEnum
+    LeadsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - converted_account
+      - converted_contact
+      - owner
+      title: LeadsGetParametersExpandSchemaItems
+    PaginatedRemoteFieldClassList:
       type: object
       properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
-          type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
-      required:
-      - title
-      - detail
-      - problem_type
-      title: WarningValidationProblem
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldClass'
+      title: PaginatedRemoteFieldClassList
     LeadRequest:
       type: object
       properties:
@@ -1362,65 +1421,6 @@ components:
 
         TODO'
       title: LeadRequest
-    DebugModelLogSummary:
-      type: object
-      properties:
-        url:
-          type: string
-        method:
-          type: string
-        status_code:
-          type: integer
-      required:
-      - url
-      - method
-      - status_code
-      title: DebugModelLogSummary
-    ItemTypeEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: ItemTypeEnum
-    EmailAddressRequest:
-      type: object
-      properties:
-        email_address:
-          type:
-          - string
-          - 'null'
-          description: The email address.
-        email_address_type:
-          type:
-          - string
-          - 'null'
-          description: The email address's type.
-        integration_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        linked_account_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-      description: '# The EmailAddress Object
-
-        ### Description
-
-        The `EmailAddress` object is used to represent an entity''s email address.
-
-        ### Usage Example
-
-        Fetch from the `GET Contact` endpoint and view their email addresses.'
-      title: EmailAddressRequest
   securitySchemes:
     tokenAuth:
       type: http

@@ -175,82 +175,28 @@ paths:
                 $ref: '#/components/schemas/TaxRate'
 components:
   schemas:
-    TaxComponent:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        name:
-          type:
-          - string
-          - 'null'
-          description: The tax rate’s name.
-        rate:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          description: The tax component’s rate.
-        is_compound:
-          type:
-          - boolean
-          - 'null'
-          description: Returns True if the tax component is compound, False if not.
-        component_type:
-          oneOf:
-          - $ref: '#/components/schemas/ComponentTypeEnum'
-          - type: 'null'
-          description: Returns PURCHASE if the tax component corresponds to a purchase tax or SALES if the tax component corresponds to a sales tax.
-        remote_was_deleted:
-          type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-      description: '# The TaxRate Object
-
-        ### Description
-
-        The `TaxComponent` object is used to represent any sub-taxes that make up the `TaxRate`.
-
-
-        ### Usage Example
-
-        Fetch from the `LIST TaxRates` endpoint and view tax components relevant to a tax rate.'
-      title: TaxComponent
-    TaxRatesGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - company
-      title: TaxRatesGetParametersExpandSchemaItems
-    TaxRatesIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - company
-      title: TaxRatesIdGetParametersExpandSchemaItems
     Status7d1Enum:
       type: string
       enum:
       - ACTIVE
       - ARCHIVED
       title: Status7d1Enum
+    TaxRatesGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - company
+      title: TaxRatesGetParametersExpandSchemaItems
     ComponentTypeEnum:
       type: string
       enum:
       - SALES
       - PURCHASE
       title: ComponentTypeEnum
+    TaxRatesIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - company
+      title: TaxRatesIdGetParametersExpandSchemaItems
     TaxRate:
       type: object
       properties:
@@ -342,6 +288,60 @@ components:
 
         Fetch from the `LIST TaxRates` endpoint and view tax rates relevant to a company.'
       title: TaxRate
+    TaxComponent:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The tax rate’s name.
+        rate:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The tax component’s rate.
+        is_compound:
+          type:
+          - boolean
+          - 'null'
+          description: Returns True if the tax component is compound, False if not.
+        component_type:
+          oneOf:
+          - $ref: '#/components/schemas/ComponentTypeEnum'
+          - type: 'null'
+          description: Returns PURCHASE if the tax component corresponds to a purchase tax or SALES if the tax component corresponds to a sales tax.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+      description: '# The TaxRate Object
+
+        ### Description
+
+        The `TaxComponent` object is used to represent any sub-taxes that make up the `TaxRate`.
+
+
+        ### Usage Example
+
+        Fetch from the `LIST TaxRates` endpoint and view tax components relevant to a tax rate.'
+      title: TaxComponent
     TaxRateFieldMappings:
       type: object
       properties:
@@ -354,6 +354,22 @@ components:
           additionalProperties:
             description: Any type
       title: TaxRateFieldMappings
+    PaginatedTaxRateList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaxRate'
+      title: PaginatedTaxRateList
     RemoteData:
       type: object
       properties:
@@ -375,22 +391,6 @@ components:
 
         TODO'
       title: RemoteData
-    PaginatedTaxRateList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/TaxRate'
-      title: PaginatedTaxRateList
   securitySchemes:
     tokenAuth:
       type: http

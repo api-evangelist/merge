@@ -276,35 +276,60 @@ paths:
                 $ref: '#/components/schemas/Collection'
 components:
   schemas:
-    PermissionFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: PermissionFieldMappings
-    CollectionsIdGetParametersExpandSchemaItems:
+    CollectionsIdGetParametersShowEnumOrigins:
       type: string
       enum:
-      - parent_collection
-      - permissions
-      title: CollectionsIdGetParametersExpandSchemaItems
+      - collection_type
+      title: CollectionsIdGetParametersShowEnumOrigins
+    CollectionsGetParametersCollectionType:
+      type: string
+      enum:
+      - ''
+      - LIST
+      - PROJECT
+      title: CollectionsGetParametersCollectionType
+    CollectionsCollectionIdViewersGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - team
+      - user
+      title: CollectionsCollectionIdViewersGetParametersExpandSchemaItems
+    CollectionTypeEnum:
+      type: string
+      enum:
+      - LIST
+      - PROJECT
+      title: CollectionTypeEnum
+    ActionsEnum:
+      type: string
+      enum:
+      - VIEW
+      - CREATE
+      - EDIT
+      - DELETE
+      title: ActionsEnum
+    CollectionsIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - collection_type
+      title: CollectionsIdGetParametersRemoteFields
+    EffectEnum:
+      type: string
+      enum:
+      - ALLOWED
+      - DENIED
+      - INHERITED
+      title: EffectEnum
+    CollectionsGetParametersRemoteFields:
+      type: string
+      enum:
+      - collection_type
+      title: CollectionsGetParametersRemoteFields
     CollectionsGetParametersShowEnumOrigins:
       type: string
       enum:
       - collection_type
       title: CollectionsGetParametersShowEnumOrigins
-    CollectionsGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - parent_collection
-      - permissions
-      title: CollectionsGetParametersExpandSchemaItems
     Viewer:
       type: object
       properties:
@@ -347,110 +372,26 @@ components:
 
         TODO'
       title: Viewer
-    CollectionsGetParametersCollectionType:
-      type: string
-      enum:
-      - ''
-      - LIST
-      - PROJECT
-      title: CollectionsGetParametersCollectionType
-    EffectEnum:
-      type: string
-      enum:
-      - ALLOWED
-      - DENIED
-      - INHERITED
-      title: EffectEnum
-    CollectionsIdGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - collection_type
-      title: CollectionsIdGetParametersShowEnumOrigins
-    PaginatedViewerList:
+    PermissionFieldMappings:
       type: object
       properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Viewer'
-      title: PaginatedViewerList
-    Permission:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        effect:
-          oneOf:
-          - $ref: '#/components/schemas/EffectEnum'
-          - type: 'null'
-          description: Outcome of this permission rule for matching users.
-        actions:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/ActionsEnum'
-          description: Operations that this permission applies to. If the entity inherits permission from a parent entity, then this should be an empty array. In that case, the entity would inherit the parent entity’s actions.
-        applied_to_users:
-          type: array
-          items:
-            type: string
-            format: uuid
-        applied_to_roles:
-          type: array
-          items:
-            type: string
-            format: uuid
-        applied_to_teams:
-          type: array
-          items:
-            type: string
-            format: uuid
-        applied_to_collections:
-          type: array
-          items:
-            type: string
-            format: uuid
-        remote_was_deleted:
-          type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-        field_mappings:
-          oneOf:
-          - $ref: '#/components/schemas/PermissionFieldMappings'
-          - type: 'null'
-      description: '# The Permission Object
-
-        ### Description
-
-        The `Permission` object is used to represent permissions that can be applied to users, roles, teams, collections, and tickets.
-
-
-        ### Usage Example
-
-        TODO'
-      title: Permission
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: PermissionFieldMappings
+    CollectionAccessLevelEnum:
+      type: string
+      enum:
+      - PRIVATE
+      - COMPANY
+      - PUBLIC
+      - PARENT_COLLECTION
+      title: CollectionAccessLevelEnum
     CollectionFieldMappings:
       type: object
       properties:
@@ -463,11 +404,6 @@ components:
           additionalProperties:
             description: Any type
       title: CollectionFieldMappings
-    CollectionsGetParametersRemoteFields:
-      type: string
-      enum:
-      - collection_type
-      title: CollectionsGetParametersRemoteFields
     RemoteData:
       type: object
       properties:
@@ -489,34 +425,13 @@ components:
 
         TODO'
       title: RemoteData
-    CollectionAccessLevelEnum:
+    CollectionsIdGetParametersExpandSchemaItems:
       type: string
       enum:
-      - PRIVATE
-      - COMPANY
-      - PUBLIC
-      - PARENT_COLLECTION
-      title: CollectionAccessLevelEnum
-    CollectionsIdGetParametersRemoteFields:
-      type: string
-      enum:
-      - collection_type
-      title: CollectionsIdGetParametersRemoteFields
-    ActionsEnum:
-      type: string
-      enum:
-      - VIEW
-      - CREATE
-      - EDIT
-      - DELETE
-      title: ActionsEnum
-    CollectionTypeEnum:
-      type: string
-      enum:
-      - LIST
-      - PROJECT
-      title: CollectionTypeEnum
-    PaginatedCollectionList:
+      - parent_collection
+      - permissions
+      title: CollectionsIdGetParametersExpandSchemaItems
+    PaginatedViewerList:
       type: object
       properties:
         next:
@@ -530,8 +445,8 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/Collection'
-      title: PaginatedCollectionList
+            $ref: '#/components/schemas/Viewer'
+      title: PaginatedViewerList
     Collection:
       type: object
       properties:
@@ -623,12 +538,97 @@ components:
 
         TODO'
       title: Collection
-    CollectionsCollectionIdViewersGetParametersExpandSchemaItems:
+    Permission:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        effect:
+          oneOf:
+          - $ref: '#/components/schemas/EffectEnum'
+          - type: 'null'
+          description: Outcome of this permission rule for matching users.
+        actions:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/ActionsEnum'
+          description: Operations that this permission applies to. If the entity inherits permission from a parent entity, then this should be an empty array. In that case, the entity would inherit the parent entity’s actions.
+        applied_to_users:
+          type: array
+          items:
+            type: string
+            format: uuid
+        applied_to_roles:
+          type: array
+          items:
+            type: string
+            format: uuid
+        applied_to_teams:
+          type: array
+          items:
+            type: string
+            format: uuid
+        applied_to_collections:
+          type: array
+          items:
+            type: string
+            format: uuid
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/PermissionFieldMappings'
+          - type: 'null'
+      description: '# The Permission Object
+
+        ### Description
+
+        The `Permission` object is used to represent permissions that can be applied to users, roles, teams, collections, and tickets.
+
+
+        ### Usage Example
+
+        TODO'
+      title: Permission
+    CollectionsGetParametersExpandSchemaItems:
       type: string
       enum:
-      - team
-      - user
-      title: CollectionsCollectionIdViewersGetParametersExpandSchemaItems
+      - parent_collection
+      - permissions
+      title: CollectionsGetParametersExpandSchemaItems
+    PaginatedCollectionList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Collection'
+      title: PaginatedCollectionList
   securitySchemes:
     tokenAuth:
       type: http

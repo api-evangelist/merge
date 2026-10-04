@@ -239,50 +239,6 @@ paths:
                 $ref: '#/components/schemas/MetaResponse'
 components:
   schemas:
-    ValidationProblemSource:
-      type: object
-      properties:
-        pointer:
-          type: string
-      required:
-      - pointer
-      title: ValidationProblemSource
-    DebugModeLog:
-      type: object
-      properties:
-        log_id:
-          type: string
-        dashboard_view:
-          type: string
-        log_summary:
-          $ref: '#/components/schemas/DebugModelLogSummary'
-      required:
-      - log_id
-      - dashboard_view
-      - log_summary
-      title: DebugModeLog
-    LinkedAccountStatus:
-      type: object
-      properties:
-        linked_account_status:
-          type: string
-        can_make_request:
-          type: boolean
-      required:
-      - linked_account_status
-      - can_make_request
-      title: LinkedAccountStatus
-    CreditOrDebitEnum:
-      type: string
-      enum:
-      - CREDIT
-      - DEBIT
-      title: CreditOrDebitEnum
-    BankFeedTransactionsIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - bank_feed_account
-      title: BankFeedTransactionsIdGetParametersExpandSchemaItems
     BankFeedTransactionRequestRequest:
       type: object
       properties:
@@ -360,6 +316,123 @@ components:
 
         Fetch from the `GET BankFeedTransaction` endpoint to view details of a transaction associated with a bank feed account.'
       title: BankFeedTransactionRequestRequest
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    BankFeedTransactionEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/BankFeedTransactionRequestRequest'
+      required:
+      - model
+      title: BankFeedTransactionEndpointRequest
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    CreditOrDebitEnum:
+      type: string
+      enum:
+      - CREDIT
+      - DEBIT
+      title: CreditOrDebitEnum
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    BankFeedTransactionsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - bank_feed_account
+      title: BankFeedTransactionsIdGetParametersExpandSchemaItems
+    BankFeedTransactionResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/BankFeedTransaction'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: BankFeedTransactionResponse
     BankFeedTransaction:
       type: object
       properties:
@@ -445,19 +518,36 @@ components:
 
         Fetch from the `GET BankFeedTransaction` endpoint to view details of a transaction associated with a bank feed account.'
       title: BankFeedTransaction
-    BankFeedTransactionEndpointRequest:
+    LinkedAccountStatus:
       type: object
       properties:
-        model:
-          $ref: '#/components/schemas/BankFeedTransactionRequestRequest'
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
       required:
-      - model
-      title: BankFeedTransactionEndpointRequest
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
     BankFeedTransactionsGetParametersExpandSchemaItems:
       type: string
       enum:
       - bank_feed_account
       title: BankFeedTransactionsGetParametersExpandSchemaItems
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
     PaginatedBankFeedTransactionList:
       type: object
       properties:
@@ -474,110 +564,20 @@ components:
           items:
             $ref: '#/components/schemas/BankFeedTransaction'
       title: PaginatedBankFeedTransactionList
-    BankFeedTransactionResponse:
+    DebugModeLog:
       type: object
       properties:
-        model:
-          $ref: '#/components/schemas/BankFeedTransaction'
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/WarningValidationProblem'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorValidationProblem'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/DebugModeLog'
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
       required:
-      - model
-      - warnings
-      - errors
-      title: BankFeedTransactionResponse
-    MetaResponse:
-      type: object
-      properties:
-        request_schema:
-          type: object
-          additionalProperties:
-            description: Any type
-        status:
-          $ref: '#/components/schemas/LinkedAccountStatus'
-        has_conditional_params:
-          type: boolean
-        has_required_linked_account_params:
-          type: boolean
-        remote_fields:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: Remote field values to populate
-      required:
-      - request_schema
-      - has_conditional_params
-      - has_required_linked_account_params
-      title: MetaResponse
-    WarningValidationProblem:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
-          type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
-      required:
-      - title
-      - detail
-      - problem_type
-      title: WarningValidationProblem
-    DebugModelLogSummary:
-      type: object
-      properties:
-        url:
-          type: string
-        method:
-          type: string
-        status_code:
-          type: integer
-      required:
-      - url
-      - method
-      - status_code
-      title: DebugModelLogSummary
-    ErrorValidationProblem:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
-          type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
-      required:
-      - title
-      - detail
-      - problem_type
-      title: ErrorValidationProblem
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
   securitySchemes:
     tokenAuth:
       type: http

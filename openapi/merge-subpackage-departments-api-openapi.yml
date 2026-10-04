@@ -147,22 +147,18 @@ paths:
                 $ref: '#/components/schemas/Department'
 components:
   schemas:
-    PaginatedDepartmentList:
+    DepartmentFieldMappings:
       type: object
       properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Department'
-      title: PaginatedDepartmentList
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: DepartmentFieldMappings
     RemoteData:
       type: object
       properties:
@@ -231,18 +227,22 @@ components:
 
         Fetch from the `LIST Departments` endpoint and view the departments within a company.'
       title: Department
-    DepartmentFieldMappings:
+    PaginatedDepartmentList:
       type: object
       properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: DepartmentFieldMappings
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Department'
+      title: PaginatedDepartmentList
   securitySchemes:
     tokenAuth:
       type: http

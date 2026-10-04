@@ -246,6 +246,88 @@ paths:
                 $ref: '#/components/schemas/MetaResponse'
 components:
   schemas:
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
     ValidationProblemSource:
       type: object
       properties:
@@ -254,31 +336,47 @@ components:
       required:
       - pointer
       title: ValidationProblemSource
-    DebugModeLog:
+    CommentFieldMappings:
       type: object
       properties:
-        log_id:
-          type: string
-        dashboard_view:
-          type: string
-        log_summary:
-          $ref: '#/components/schemas/DebugModelLogSummary'
-      required:
-      - log_id
-      - dashboard_view
-      - log_summary
-      title: DebugModeLog
-    LinkedAccountStatus:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: CommentFieldMappings
+    CommentResponse:
       type: object
       properties:
-        linked_account_status:
-          type: string
-        can_make_request:
-          type: boolean
+        model:
+          $ref: '#/components/schemas/Comment'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
       required:
-      - linked_account_status
-      - can_make_request
-      title: LinkedAccountStatus
+      - model
+      - warnings
+      - errors
+      title: CommentResponse
+    CommentsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - contact
+      - ticket
+      - user
+      title: CommentsGetParametersExpandSchemaItems
     CommentRequest:
       type: object
       properties:
@@ -338,102 +436,17 @@ components:
 
         TODO'
       title: CommentRequest
-    CommentFieldMappings:
+    LinkedAccountStatus:
       type: object
       properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: CommentFieldMappings
-    CommentsGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - contact
-      - ticket
-      - user
-      title: CommentsGetParametersExpandSchemaItems
-    PaginatedCommentList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Comment'
-      title: PaginatedCommentList
-    CommentEndpointRequest:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/CommentRequest'
-      required:
-      - model
-      title: CommentEndpointRequest
-    CommentsIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - contact
-      - ticket
-      - user
-      title: CommentsIdGetParametersExpandSchemaItems
-    MetaResponse:
-      type: object
-      properties:
-        request_schema:
-          type: object
-          additionalProperties:
-            description: Any type
-        status:
-          $ref: '#/components/schemas/LinkedAccountStatus'
-        has_conditional_params:
+        linked_account_status:
+          type: string
+        can_make_request:
           type: boolean
-        has_required_linked_account_params:
-          type: boolean
-        remote_fields:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: Remote field values to populate
       required:
-      - request_schema
-      - has_conditional_params
-      - has_required_linked_account_params
-      title: MetaResponse
-    WarningValidationProblem:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
-          type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
-      required:
-      - title
-      - detail
-      - problem_type
-      title: WarningValidationProblem
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
     Comment:
       type: object
       properties:
@@ -516,20 +529,29 @@ components:
 
         TODO'
       title: Comment
-    DebugModelLogSummary:
+    CommentsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - contact
+      - ticket
+      - user
+      title: CommentsIdGetParametersExpandSchemaItems
+    PaginatedCommentList:
       type: object
       properties:
-        url:
-          type: string
-        method:
-          type: string
-        status_code:
-          type: integer
-      required:
-      - url
-      - method
-      - status_code
-      title: DebugModelLogSummary
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Comment'
+      title: PaginatedCommentList
     RemoteData:
       type: object
       properties:
@@ -551,50 +573,28 @@ components:
 
         TODO'
       title: RemoteData
-    CommentResponse:
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    CommentEndpointRequest:
       type: object
       properties:
         model:
-          $ref: '#/components/schemas/Comment'
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/WarningValidationProblem'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorValidationProblem'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/DebugModeLog'
+          $ref: '#/components/schemas/CommentRequest'
       required:
       - model
-      - warnings
-      - errors
-      title: CommentResponse
-    ErrorValidationProblem:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
-          type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
-      required:
-      - title
-      - detail
-      - problem_type
-      title: ErrorValidationProblem
+      title: CommentEndpointRequest
   securitySchemes:
     tokenAuth:
       type: http

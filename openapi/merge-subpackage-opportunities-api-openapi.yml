@@ -460,145 +460,78 @@ paths:
                 $ref: '#/components/schemas/PaginatedRemoteFieldClassList'
 components:
   schemas:
-    PaginatedRemoteFieldClassList:
+    ItemSchema:
       type: object
       properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/RemoteFieldClass'
-      title: PaginatedRemoteFieldClassList
-    OpportunityResponse:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/Opportunity'
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/WarningValidationProblem'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorValidationProblem'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/DebugModeLog'
-      required:
-      - model
-      - warnings
-      - errors
-      title: OpportunityResponse
-    RemoteField:
-      type: object
-      properties:
-        remote_field_class:
-          $ref: '#/components/schemas/RemoteFieldClass'
-        value:
-          type: object
-          additionalProperties:
-            description: Any type
-      required:
-      - remote_field_class
-      title: RemoteField
-    OpportunityStatusEnum:
-      type: string
-      enum:
-      - OPEN
-      - WON
-      - LOST
-      title: OpportunityStatusEnum
-    PaginatedOpportunityList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Opportunity'
-      title: PaginatedOpportunityList
-    MetaResponse:
-      type: object
-      properties:
-        request_schema:
-          type: object
-          additionalProperties:
-            description: Any type
-        status:
-          $ref: '#/components/schemas/LinkedAccountStatus'
-        has_conditional_params:
-          type: boolean
-        has_required_linked_account_params:
-          type: boolean
-        remote_fields:
+        item_type:
+          $ref: '#/components/schemas/ItemTypeEnum'
+        item_format:
+          $ref: '#/components/schemas/ItemFormatEnum'
+        item_choices:
           type: array
           items:
             type: string
-            format: uuid
-          description: Remote field values to populate
-      required:
-      - request_schema
-      - has_conditional_params
-      - has_required_linked_account_params
-      title: MetaResponse
-    FieldFormatEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: FieldFormatEnum
-    OpportunityFieldMappings:
+      title: ItemSchema
+    ErrorValidationProblem:
       type: object
       properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: OpportunityFieldMappings
-    DebugModeLog:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    WarningValidationProblem:
       type: object
       properties:
-        log_id:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
           type: string
-        dashboard_view:
+        detail:
           type: string
-        log_summary:
-          $ref: '#/components/schemas/DebugModelLogSummary'
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
       required:
-      - log_id
-      - dashboard_view
-      - log_summary
-      title: DebugModeLog
-    OpportunitiesGetParametersRemoteFields:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    OpportunitiesGetParametersExpandSchemaItems:
       type: string
       enum:
-      - status
-      title: OpportunitiesGetParametersRemoteFields
-    OpportunityRequest:
+      - account
+      - owner
+      - stage
+      title: OpportunitiesGetParametersExpandSchemaItems
+    PatchedOpportunityRequest:
       type: object
       properties:
         name:
@@ -682,81 +615,7 @@ components:
         ### Usage Example
 
         TODO'
-      title: OpportunityRequest
-    OpportunitiesIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - account
-      - owner
-      - stage
-      title: OpportunitiesIdGetParametersExpandSchemaItems
-    RemoteFieldRequest:
-      type: object
-      properties:
-        remote_field_class:
-          type: string
-          format: uuid
-        value:
-          type: object
-          additionalProperties:
-            description: Any type
-      required:
-      - remote_field_class
-      title: RemoteFieldRequest
-    OpportunitiesGetParametersStatus:
-      type: string
-      enum:
-      - LOST
-      - OPEN
-      - WON
-      title: OpportunitiesGetParametersStatus
-    OpportunityEndpointRequest:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/OpportunityRequest'
-      required:
-      - model
-      title: OpportunityEndpointRequest
-    ItemSchema:
-      type: object
-      properties:
-        item_type:
-          $ref: '#/components/schemas/ItemTypeEnum'
-        item_format:
-          $ref: '#/components/schemas/ItemFormatEnum'
-        item_choices:
-          type: array
-          items:
-            type: string
-      title: ItemSchema
-    OpportunitiesGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - status
-      title: OpportunitiesGetParametersShowEnumOrigins
-    ErrorValidationProblem:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
-          type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
-      required:
-      - title
-      - detail
-      - problem_type
-      title: ErrorValidationProblem
+      title: PatchedOpportunityRequest
     RemoteFieldClass:
       type: object
       properties:
@@ -799,11 +658,70 @@ components:
       - method
       - status_code
       title: DebugModelLogSummary
-    OpportunitiesIdGetParametersShowEnumOrigins:
+    RemoteFieldRequest:
+      type: object
+      properties:
+        remote_field_class:
+          type: string
+          format: uuid
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteFieldRequest
+    OpportunitiesIdGetParametersExpandSchemaItems:
       type: string
       enum:
-      - status
-      title: OpportunitiesIdGetParametersShowEnumOrigins
+      - account
+      - owner
+      - stage
+      title: OpportunitiesIdGetParametersExpandSchemaItems
+    FieldTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldTypeEnum
+    OpportunityFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: OpportunityFieldMappings
+    OpportunityResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/Opportunity'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: OpportunityResponse
     ItemFormatEnum:
       type: string
       enum:
@@ -814,27 +732,38 @@ components:
       - bool
       - list
       title: ItemFormatEnum
-    RemoteData:
+    RemoteField:
       type: object
       properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
+        remote_field_class:
+          $ref: '#/components/schemas/RemoteFieldClass'
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
       required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
+      - remote_field_class
+      title: RemoteField
+    OpportunitiesGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - status
+      title: OpportunitiesGetParametersShowEnumOrigins
+    OpportunitiesIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - status
+      title: OpportunitiesIdGetParametersRemoteFields
+    ItemTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemTypeEnum
     Opportunity:
       type: object
       properties:
@@ -943,14 +872,11 @@ components:
 
         TODO'
       title: Opportunity
-    ValidationProblemSource:
-      type: object
-      properties:
-        pointer:
-          type: string
-      required:
-      - pointer
-      title: ValidationProblemSource
+    OpportunitiesIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - status
+      title: OpportunitiesIdGetParametersShowEnumOrigins
     LinkedAccountStatus:
       type: object
       properties:
@@ -962,7 +888,143 @@ components:
       - linked_account_status
       - can_make_request
       title: LinkedAccountStatus
-    PatchedOpportunityRequest:
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    OpportunitiesGetParametersStatus:
+      type: string
+      enum:
+      - LOST
+      - OPEN
+      - WON
+      title: OpportunitiesGetParametersStatus
+    OpportunityEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/OpportunityRequest'
+      required:
+      - model
+      title: OpportunityEndpointRequest
+    PaginatedOpportunityList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Opportunity'
+      title: PaginatedOpportunityList
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    PaginatedRemoteFieldClassList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldClass'
+      title: PaginatedRemoteFieldClassList
+    OpportunityStatusEnum:
+      type: string
+      enum:
+      - OPEN
+      - WON
+      - LOST
+      title: OpportunityStatusEnum
+    FieldFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldFormatEnum
+    PatchedOpportunityEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/PatchedOpportunityRequest'
+      required:
+      - model
+      title: PatchedOpportunityEndpointRequest
+    OpportunitiesGetParametersRemoteFields:
+      type: string
+      enum:
+      - status
+      title: OpportunitiesGetParametersRemoteFields
+    OpportunityRequest:
       type: object
       properties:
         name:
@@ -1046,69 +1108,7 @@ components:
         ### Usage Example
 
         TODO'
-      title: PatchedOpportunityRequest
-    PatchedOpportunityEndpointRequest:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/PatchedOpportunityRequest'
-      required:
-      - model
-      title: PatchedOpportunityEndpointRequest
-    FieldTypeEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: FieldTypeEnum
-    WarningValidationProblem:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
-          type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
-      required:
-      - title
-      - detail
-      - problem_type
-      title: WarningValidationProblem
-    OpportunitiesIdGetParametersRemoteFields:
-      type: string
-      enum:
-      - status
-      title: OpportunitiesIdGetParametersRemoteFields
-    ItemTypeEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: ItemTypeEnum
-    OpportunitiesGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - account
-      - owner
-      - stage
-      title: OpportunitiesGetParametersExpandSchemaItems
+      title: OpportunityRequest
   securitySchemes:
     tokenAuth:
       type: http

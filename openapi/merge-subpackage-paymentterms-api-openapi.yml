@@ -129,32 +129,18 @@ paths:
                 $ref: '#/components/schemas/PaymentTerm'
 components:
   schemas:
-    PaginatedPaymentTermList:
+    PaymentTermFieldMappings:
       type: object
       properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/PaymentTerm'
-      title: PaginatedPaymentTermList
-    PaymentTermsIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - company
-      title: PaymentTermsIdGetParametersExpandSchemaItems
-    PaymentTermsGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - company
-      title: PaymentTermsGetParametersExpandSchemaItems
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: PaymentTermFieldMappings
     PaymentTerm:
       type: object
       properties:
@@ -227,18 +213,27 @@ components:
 
         Fetch from the `GET PaymentTerm` endpoint and view payment term information.'
       title: PaymentTerm
-    PaymentTermFieldMappings:
+    PaginatedPaymentTermList:
       type: object
       properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: PaymentTermFieldMappings
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentTerm'
+      title: PaginatedPaymentTermList
+    PaymentTermsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - company
+      title: PaymentTermsIdGetParametersExpandSchemaItems
     RemoteData:
       type: object
       properties:
@@ -260,6 +255,11 @@ components:
 
         TODO'
       title: RemoteData
+    PaymentTermsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - company
+      title: PaymentTermsGetParametersExpandSchemaItems
   securitySchemes:
     tokenAuth:
       type: http

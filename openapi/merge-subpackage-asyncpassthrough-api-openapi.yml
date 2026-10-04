@@ -630,26 +630,6 @@ paths:
     - url: https://api-ap.merge.dev/api
 components:
   schemas:
-    AsyncPassthroughReciept:
-      type: object
-      properties:
-        async_passthrough_receipt_id:
-          type: string
-          format: uuid
-      required:
-      - async_passthrough_receipt_id
-      title: AsyncPassthroughReciept
-    MethodEnum:
-      type: string
-      enum:
-      - GET
-      - OPTIONS
-      - HEAD
-      - POST
-      - PUT
-      - PATCH
-      - DELETE
-      title: MethodEnum
     RequestFormatEnum:
       type: string
       enum:
@@ -657,44 +637,12 @@ components:
       - XML
       - MULTIPART
       title: RequestFormatEnum
-    MultipartFormFieldRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          description: The name of the form field
-        data:
-          type: string
-          description: The data for the form field.
-        encoding:
-          oneOf:
-          - $ref: '#/components/schemas/EncodingEnum'
-          - type: 'null'
-          description: The encoding of the value of `data`. Defaults to `RAW` if not defined.
-        file_name:
-          type:
-          - string
-          - 'null'
-          description: The file name of the form field, if the field is for a file.
-        content_type:
-          type:
-          - string
-          - 'null'
-          description: The MIME type of the file, if the field is for a file.
-      required:
-      - name
-      - data
-      description: '# The MultipartFormField Object
-
-        ### Description
-
-        The `MultipartFormField` object is used to represent fields in an HTTP request using `multipart/form-data`.
-
-
-        ### Usage Example
-
-        Create a `MultipartFormField` to define a multipart form entry.'
-      title: MultipartFormFieldRequest
+    ResponseTypeEnum:
+      type: string
+      enum:
+      - JSON
+      - BASE64_GZIP
+      title: ResponseTypeEnum
     DataPassthroughRequest:
       type: object
       properties:
@@ -748,19 +696,6 @@ components:
 
         Create a `DataPassthrough` to get team hierarchies from your Rippling integration.'
       title: DataPassthroughRequest
-    ResponseTypeEnum:
-      type: string
-      enum:
-      - JSON
-      - BASE64_GZIP
-      title: ResponseTypeEnum
-    EncodingEnum:
-      type: string
-      enum:
-      - RAW
-      - BASE64
-      - GZIP_BASE64
-      title: EncodingEnum
     RemoteResponse:
       type: object
       properties:
@@ -798,6 +733,92 @@ components:
 
         View the `RemoteResponse` returned from your `DataPassthrough`.'
       title: RemoteResponse
+    MethodEnum:
+      type: string
+      enum:
+      - GET
+      - OPTIONS
+      - HEAD
+      - POST
+      - PUT
+      - PATCH
+      - DELETE
+      title: MethodEnum
+    MultipartFormFieldRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the form field
+        data:
+          type: string
+          description: The data for the form field.
+        encoding:
+          oneOf:
+          - $ref: '#/components/schemas/EncodingEnum'
+          - type: 'null'
+          description: The encoding of the value of `data`. Defaults to `RAW` if not defined.
+        file_name:
+          type:
+          - string
+          - 'null'
+          description: The file name of the form field, if the field is for a file.
+        content_type:
+          type:
+          - string
+          - 'null'
+          description: The MIME type of the file, if the field is for a file.
+      required:
+      - name
+      - data
+      description: '# The MultipartFormField Object
+
+        ### Description
+
+        The `MultipartFormField` object is used to represent fields in an HTTP request using `multipart/form-data`.
+
+
+        ### Usage Example
+
+        Create a `MultipartFormField` to define a multipart form entry.'
+      title: MultipartFormFieldRequest
+    AsyncPassthroughReciept:
+      type: object
+      properties:
+        async_passthrough_receipt_id:
+          type: string
+          format: uuid
+      required:
+      - async_passthrough_receipt_id
+      title: AsyncPassthroughReciept
+    EncodingEnum:
+      type: string
+      enum:
+      - RAW
+      - BASE64
+      - GZIP_BASE64
+      title: EncodingEnum
+    RequestFormatEnum_2:
+      type: string
+      enum:
+      - JSON
+      - XML
+      - MULTIPART
+      description: '* `JSON` - JSON
+
+        * `XML` - XML
+
+        * `MULTIPART` - MULTIPART'
+      title: RequestFormatEnum
+    ResponseTypeEnum_2:
+      type: string
+      enum:
+      - JSON
+      - BASE64_GZIP
+      description: '* `JSON` - JSON
+
+        * `BASE64_GZIP` - BASE64_GZIP'
+      title: ResponseTypeEnum
     MethodEnum_2:
       type: string
       enum:
@@ -822,18 +843,6 @@ components:
 
         * `DELETE` - DELETE'
       title: MethodEnum
-    RequestFormatEnum_2:
-      type: string
-      enum:
-      - JSON
-      - XML
-      - MULTIPART
-      description: '* `JSON` - JSON
-
-        * `XML` - XML
-
-        * `MULTIPART` - MULTIPART'
-      title: RequestFormatEnum
     MultipartFormFieldRequest_2:
       type: object
       properties:
@@ -879,15 +888,6 @@ components:
 
         Create a `MultipartFormField` to define a multipart form entry.'
       title: MultipartFormFieldRequest
-    ResponseTypeEnum_2:
-      type: string
-      enum:
-      - JSON
-      - BASE64_GZIP
-      description: '* `JSON` - JSON
-
-        * `BASE64_GZIP` - BASE64_GZIP'
-      title: ResponseTypeEnum
     EncodingEnum_2:
       type: string
       enum:

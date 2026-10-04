@@ -203,7 +203,7 @@ paths:
                 $ref: '#/components/schemas/EmployeePayrollRun'
 components:
   schemas:
-    TaxFieldMappings:
+    EmployeePayrollRunFieldMappings:
       type: object
       properties:
         organization_defined_targets:
@@ -214,15 +214,7 @@ components:
           type: object
           additionalProperties:
             description: Any type
-      title: TaxFieldMappings
-    EarningTypeEnum:
-      type: string
-      enum:
-      - SALARY
-      - REIMBURSEMENT
-      - OVERTIME
-      - BONUS
-      title: EarningTypeEnum
+      title: EmployeePayrollRunFieldMappings
     EarningFieldMappings:
       type: object
       properties:
@@ -332,6 +324,175 @@ components:
 
         Fetch from the `LIST EmployeePayrollRun` endpoint and filter by `ID` to show all employee payroll runs.'
       title: EmployeePayrollRun
+    DeductionFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: DeductionFieldMappings
+    Tax:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        employee_payroll_run:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+          description: The tax's name.
+        amount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The tax amount.
+        employer_tax:
+          type:
+          - boolean
+          - 'null'
+          description: Whether or not the employer is responsible for paying the tax.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/TaxFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The Tax Object
+
+        ### Description
+
+        The `Tax` object is used to represent an array of the tax deductions for a given employee''s payroll run.
+
+
+        ### Usage Example
+
+        Fetch from the `LIST Taxes` endpoint and filter by `ID` to show all taxes.'
+      title: Tax
+    TaxFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: TaxFieldMappings
+    Earning:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        employee_payroll_run:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        amount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The amount earned.
+        type:
+          oneOf:
+          - $ref: '#/components/schemas/EarningTypeEnum'
+          - type: 'null'
+          description: The type of earning.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/EarningFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The Earning Object
+
+        ### Description
+
+        The `Earning` object is used to represent an array of different compensations that an employee receives within specific wage categories.
+
+
+        ### Usage Example
+
+        Fetch from the `LIST Earnings` endpoint and filter by `ID` to show all earnings.'
+      title: Earning
+    PaginatedEmployeePayrollRunList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmployeePayrollRun'
+      title: PaginatedEmployeePayrollRunList
+    EmployeePayrollRunsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - employee
+      - payroll_run
+      title: EmployeePayrollRunsGetParametersExpandSchemaItems
     Deduction:
       type: object
       properties:
@@ -397,122 +558,14 @@ components:
 
         Fetch from the `LIST Deductions` endpoint and filter by `ID` to show all deductions.'
       title: Deduction
-    DeductionFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: DeductionFieldMappings
-    PaginatedEmployeePayrollRunList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/EmployeePayrollRun'
-      title: PaginatedEmployeePayrollRunList
-    EmployeePayrollRunsGetParametersExpandSchemaItems:
+    EarningTypeEnum:
       type: string
       enum:
-      - employee
-      - payroll_run
-      title: EmployeePayrollRunsGetParametersExpandSchemaItems
-    EmployeePayrollRunFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: EmployeePayrollRunFieldMappings
-    Tax:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        employee_payroll_run:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        name:
-          type:
-          - string
-          - 'null'
-          description: The tax's name.
-        amount:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: The tax amount.
-        employer_tax:
-          type:
-          - boolean
-          - 'null'
-          description: Whether or not the employer is responsible for paying the tax.
-        remote_was_deleted:
-          type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-        field_mappings:
-          oneOf:
-          - $ref: '#/components/schemas/TaxFieldMappings'
-          - type: 'null'
-        remote_data:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/RemoteData'
-      description: '# The Tax Object
-
-        ### Description
-
-        The `Tax` object is used to represent an array of the tax deductions for a given employee''s payroll run.
-
-
-        ### Usage Example
-
-        Fetch from the `LIST Taxes` endpoint and filter by `ID` to show all taxes.'
-      title: Tax
-    EmployeePayrollRunsIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - employee
-      - payroll_run
-      title: EmployeePayrollRunsIdGetParametersExpandSchemaItems
+      - SALARY
+      - REIMBURSEMENT
+      - OVERTIME
+      - BONUS
+      title: EarningTypeEnum
     RemoteData:
       type: object
       properties:
@@ -534,65 +587,12 @@ components:
 
         TODO'
       title: RemoteData
-    Earning:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        employee_payroll_run:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        amount:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: The amount earned.
-        type:
-          oneOf:
-          - $ref: '#/components/schemas/EarningTypeEnum'
-          - type: 'null'
-          description: The type of earning.
-        remote_was_deleted:
-          type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-        field_mappings:
-          oneOf:
-          - $ref: '#/components/schemas/EarningFieldMappings'
-          - type: 'null'
-        remote_data:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/RemoteData'
-      description: '# The Earning Object
-
-        ### Description
-
-        The `Earning` object is used to represent an array of different compensations that an employee receives within specific wage categories.
-
-
-        ### Usage Example
-
-        Fetch from the `LIST Earnings` endpoint and filter by `ID` to show all earnings.'
-      title: Earning
+    EmployeePayrollRunsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - employee
+      - payroll_run
+      title: EmployeePayrollRunsIdGetParametersExpandSchemaItems
   securitySchemes:
     tokenAuth:
       type: http

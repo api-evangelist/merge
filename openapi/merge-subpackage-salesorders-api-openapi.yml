@@ -492,527 +492,6 @@ paths:
                 $ref: '#/components/schemas/BatchObjectsResponse'
 components:
   schemas:
-    PaginatedRemoteFieldClassList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/RemoteFieldClass'
-      title: PaginatedRemoteFieldClassList
-    SalesOrdersIdGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - status
-      title: SalesOrdersIdGetParametersShowEnumOrigins
-    BatchObjectItemResponse:
-      type: object
-      properties:
-        merge_common_model_id:
-          type: string
-          format: uuid
-        error_message:
-          type: string
-      description: Response for individual items within a batch
-      title: BatchObjectItemResponse
-    BatchObjectStatusEnum:
-      type: string
-      enum:
-      - PENDING
-      - SUCCESS
-      - FAILURE
-      title: BatchObjectStatusEnum
-    RemoteField:
-      type: object
-      properties:
-        remote_field_class:
-          $ref: '#/components/schemas/RemoteFieldClass'
-        value:
-          type: object
-          additionalProperties:
-            description: Any type
-      required:
-      - remote_field_class
-      title: RemoteField
-    SalesOrderRequestRequest:
-      type: object
-      properties:
-        customer:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The customer associated with the sales order.
-        currency:
-          oneOf:
-          - $ref: '#/components/schemas/TransactionCurrencyEnum'
-          - type: 'null'
-          description: The currency code for the order. The currency code in ISO 4217 format.
-        exchange_rate:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          description: The exchange rate applied if the order currency differs from the base currency.
-        company:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The subsidiary associated with the order.
-        status:
-          oneOf:
-          - $ref: '#/components/schemas/SalesOrderStatusEnum'
-          - type: 'null'
-          description: The status of the sales order.
-        payment_term:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The payment terms applied to this order.
-        memo:
-          type:
-          - string
-          - 'null'
-          description: Notes or comments attached to the order.
-        shipping_address:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The shipping address for the order.
-        tracking_categories:
-          type: array
-          items:
-            type: string
-            format: uuid
-        issue_date:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date the sales order was issued.
-        transaction_number:
-          type:
-          - string
-          - 'null'
-          description: The human-readable sales order number or transaction reference.
-        total:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: Total amount of order.
-        lines:
-          type: array
-          items:
-            $ref: '#/components/schemas/SalesOrderLineRequest'
-        integration_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        linked_account_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        remote_fields:
-          type: array
-          items:
-            $ref: '#/components/schemas/RemoteFieldRequest'
-      description: '# The SalesOrder Object
-
-        ### Description
-
-        The `SalesOrder` object represents a seller''s formal record and confirmation of a customer''s purchase request.
-
-
-        ### Usage Example
-
-        Fetch from the `LIST SalesOrders` endpoint and view a company''s sales orders.'
-      title: SalesOrderRequestRequest
-    SalesOrder:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        customer:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The customer associated with the sales order.
-        currency:
-          oneOf:
-          - $ref: '#/components/schemas/TransactionCurrencyEnum'
-          - type: 'null'
-          description: The currency code for the order. The currency code in ISO 4217 format.
-        exchange_rate:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          description: The exchange rate applied if the order currency differs from the base currency.
-        company:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The subsidiary associated with the order.
-        status:
-          oneOf:
-          - $ref: '#/components/schemas/SalesOrderStatusEnum'
-          - type: 'null'
-          description: The status of the sales order.
-        payment_term:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The payment terms applied to this order.
-        memo:
-          type:
-          - string
-          - 'null'
-          description: Notes or comments attached to the order.
-        shipping_address:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The shipping address for the order.
-        tracking_categories:
-          type: array
-          items:
-            type: string
-            format: uuid
-        issue_date:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date the sales order was issued.
-        transaction_number:
-          type:
-          - string
-          - 'null'
-          description: The human-readable sales order number or transaction reference.
-        total:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: Total amount of order.
-        lines:
-          type: array
-          items:
-            $ref: '#/components/schemas/SalesOrderLine'
-        remote_created_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: When the third party's sales order was created.
-        remote_updated_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: When the third party's sales order was updated.
-        remote_was_deleted:
-          type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-        field_mappings:
-          oneOf:
-          - $ref: '#/components/schemas/SalesOrderFieldMappings'
-          - type: 'null'
-        remote_data:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/RemoteData'
-        remote_fields:
-          type: array
-          items:
-            $ref: '#/components/schemas/RemoteField'
-      description: '# The SalesOrder Object
-
-        ### Description
-
-        The `SalesOrder` object represents a seller''s formal record and confirmation of a customer''s purchase request.
-
-
-        ### Usage Example
-
-        Fetch from the `LIST SalesOrders` endpoint and view a company''s sales orders.'
-      title: SalesOrder
-    MetaResponse:
-      type: object
-      properties:
-        request_schema:
-          type: object
-          additionalProperties:
-            description: Any type
-        status:
-          $ref: '#/components/schemas/LinkedAccountStatus'
-        has_conditional_params:
-          type: boolean
-        has_required_linked_account_params:
-          type: boolean
-        remote_fields:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: Remote field values to populate
-      required:
-      - request_schema
-      - has_conditional_params
-      - has_required_linked_account_params
-      title: MetaResponse
-    SalesOrderResponse:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/SalesOrder'
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/WarningValidationProblem'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorValidationProblem'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/DebugModeLog'
-      required:
-      - model
-      - warnings
-      - errors
-      title: SalesOrderResponse
-    SalesOrderLineRequest:
-      type: object
-      properties:
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        description:
-          type:
-          - string
-          - 'null'
-          description: Description of the line item.
-        unit_price:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          description: The unit price of the item.
-        quantity:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          description: Quantity ordered for this line.
-        item:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        tax_rate:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The tax rate of the line item.
-        tracking_categories:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: The dimensions or classification tags.
-        company:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The subsidiary associated with the order.
-        remote_created_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: When the third party's sales order line item was created.
-        remote_updated_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: When the third party's sales order line item was updated.
-        integration_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        linked_account_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        remote_fields:
-          type: array
-          items:
-            $ref: '#/components/schemas/RemoteFieldRequest'
-      description: '# The SalesOrderLine Object
-
-        ### Description
-
-        The `SalesOrderLine` object represents a specific line item on a sales order.
-
-
-        ### Usage Example
-
-        Fetch from the `GET SalesOrder` endpoint and view a company''s sales order line items.'
-      title: SalesOrderLineRequest
-    FieldFormatEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: FieldFormatEnum
-    DebugModeLog:
-      type: object
-      properties:
-        log_id:
-          type: string
-        dashboard_view:
-          type: string
-        log_summary:
-          $ref: '#/components/schemas/DebugModelLogSummary'
-      required:
-      - log_id
-      - dashboard_view
-      - log_summary
-      title: DebugModeLog
-    BatchObjectsResponse:
-      type: object
-      properties:
-        batch_id:
-          type: string
-          format: uuid
-          description: The ID of the batch.
-        status:
-          $ref: '#/components/schemas/BatchObjectsResponseStatusEnum'
-          description: 'Possible overall statuses:
-
-
-            * `ENQUEUED` - The request has been received and a task has been enqueued for processing
-
-            * `IN_PROGRESS` - The enqueued task is being processed
-
-            * `PARTIAL_SUCCESS` - The task has been processed, but not all objects were written successfully
-
-            * `SUCCESS` - The task has been processed, and all objects were written successfully
-
-            * `FAILED` - The task has been processed, but ran into an error while processing
-
-            * `RATE_LIMITED` - The request was received but ran into rate limits while processing. The rate limited objects are being retried.'
-        total_count:
-          type: integer
-          description: The total number of objects in the batch.
-        objects:
-          type: array
-          items:
-            $ref: '#/components/schemas/BatchObject'
-      required:
-      - batch_id
-      - status
-      - total_count
-      - objects
-      description: Response serializer for GET bulk/{batch_id} - returns batch status and objects
-      title: BatchObjectsResponse
-    RemoteFieldRequest:
-      type: object
-      properties:
-        remote_field_class:
-          type: string
-          format: uuid
-        value:
-          type: object
-          additionalProperties:
-            description: Any type
-      required:
-      - remote_field_class
-      title: RemoteFieldRequest
-    BatchObject:
-      type: object
-      properties:
-        item_id:
-          type: string
-        status:
-          $ref: '#/components/schemas/BatchObjectStatusEnum'
-          description: 'Possible per-object statuses:
-
-
-            * `PENDING` - This object has not been processed yet
-
-            * `SUCCESS` - This object was successfully POSTed
-
-            * `FAILURE` - This object was not successfully POSTed'
-        response:
-          $ref: '#/components/schemas/BatchObjectItemResponse'
-      required:
-      - item_id
-      - status
-      description: Individual batch object with status
-      title: BatchObject
-    AsyncBulkCreateResponse:
-      type: object
-      properties:
-        batch_id:
-          type: string
-          format: uuid
-          description: The ID of the batch.
-      required:
-      - batch_id
-      description: Response serializer for POST bulk create - returns only batch_id
-      title: AsyncBulkCreateResponse
     ItemSchema:
       type: object
       properties:
@@ -1047,221 +526,28 @@ components:
       - detail
       - problem_type
       title: ErrorValidationProblem
-    SalesOrderEndpointRequest:
+    WarningValidationProblem:
       type: object
       properties:
-        model:
-          $ref: '#/components/schemas/SalesOrderRequestRequest'
-      required:
-      - model
-      title: SalesOrderEndpointRequest
-    RemoteFieldClass:
-      type: object
-      properties:
-        id:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
           type: string
-        display_name:
+        detail:
           type: string
-        remote_key_name:
+        problem_type:
           type: string
-        description:
-          type: string
-        is_custom:
+        block_merge_link:
           type: boolean
-        is_common_model_field:
-          type: boolean
-        is_required:
-          type: boolean
-        field_type:
-          $ref: '#/components/schemas/FieldTypeEnum'
-        field_format:
-          $ref: '#/components/schemas/FieldFormatEnum'
-        field_choices:
-          type: array
-          items:
-            type: string
-        item_schema:
-          $ref: '#/components/schemas/ItemSchema'
-      title: RemoteFieldClass
-    SalesOrdersIdGetParametersRemoteFields:
-      type: string
-      enum:
-      - status
-      title: SalesOrdersIdGetParametersRemoteFields
-    SalesOrderStatusEnum:
-      type: string
-      enum:
-      - DRAFT
-      - PENDING_APPROVAL
-      - OPEN
-      - PARTIALLY_COMPLETED
-      - COMPLETED
-      - CLOSED
-      title: SalesOrderStatusEnum
-    SalesOrderBatchItemRequest:
-      type: object
-      properties:
-        item_id:
+        raw_error:
           type: string
-          description: The third-party item ID for this model in the bulk create request
-        payload:
-          $ref: '#/components/schemas/SalesOrderRequestRequest'
+        error_code:
+          type: integer
       required:
-      - item_id
-      - payload
-      title: SalesOrderBatchItemRequest
-    SalesOrderFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: SalesOrderFieldMappings
-    SalesOrdersGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - status
-      title: SalesOrdersGetParametersShowEnumOrigins
-    SalesOrdersGetParametersRemoteFields:
-      type: string
-      enum:
-      - status
-      title: SalesOrdersGetParametersRemoteFields
-    SalesOrderBulkRequest:
-      type: object
-      properties:
-        batch_items:
-          type: array
-          items:
-            $ref: '#/components/schemas/SalesOrderBatchItemRequest'
-      required:
-      - batch_items
-      title: SalesOrderBulkRequest
-    ItemFormatEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: ItemFormatEnum
-    RemoteData:
-      type: object
-      properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
-      required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
-    SalesOrderLine:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        description:
-          type:
-          - string
-          - 'null'
-          description: Description of the line item.
-        unit_price:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          description: The unit price of the item.
-        quantity:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          description: Quantity ordered for this line.
-        item:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        tax_rate:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The tax rate of the line item.
-        tracking_categories:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: The dimensions or classification tags.
-        company:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The subsidiary associated with the order.
-        remote_created_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: When the third party's sales order line item was created.
-        remote_updated_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: When the third party's sales order line item was updated.
-        remote_was_deleted:
-          type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-        remote_fields:
-          type: array
-          items:
-            $ref: '#/components/schemas/RemoteField'
-      description: '# The SalesOrderLine Object
-
-        ### Description
-
-        The `SalesOrderLine` object represents a specific line item on a sales order.
-
-
-        ### Usage Example
-
-        Fetch from the `GET SalesOrder` endpoint and view a company''s sales order line items.'
-      title: SalesOrderLine
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
     ValidationProblemSource:
       type: object
       properties:
@@ -1270,27 +556,6 @@ components:
       required:
       - pointer
       title: ValidationProblemSource
-    LinkedAccountStatus:
-      type: object
-      properties:
-        linked_account_status:
-          type: string
-        can_make_request:
-          type: boolean
-      required:
-      - linked_account_status
-      - can_make_request
-      title: LinkedAccountStatus
-    SalesOrdersGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - company
-      - customer
-      - lines
-      - payment_term
-      - shipping_address
-      - tracking_categories
-      title: SalesOrdersGetParametersExpandSchemaItems
     SalesOrdersIdGetParametersExpandSchemaItems:
       type: string
       enum:
@@ -1301,32 +566,6 @@ components:
       - shipping_address
       - tracking_categories
       title: SalesOrdersIdGetParametersExpandSchemaItems
-    BatchObjectsResponseStatusEnum:
-      type: string
-      enum:
-      - ENQUEUED
-      - IN_PROGRESS
-      - PARTIAL_SUCCESS
-      - SUCCESS
-      - FAILED
-      - RATE_LIMITED
-      title: BatchObjectsResponseStatusEnum
-    PaginatedSalesOrderList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/SalesOrder'
-      title: PaginatedSalesOrderList
     TransactionCurrencyEnum:
       type: string
       enum:
@@ -1638,38 +877,34 @@ components:
       - ZWL
       description: The currency code in ISO 4217 format.
       title: TransactionCurrencyEnum
-    FieldTypeEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: FieldTypeEnum
-    WarningValidationProblem:
+    RemoteFieldClass:
       type: object
       properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
+        id:
           type: string
-        detail:
+        display_name:
           type: string
-        problem_type:
+        remote_key_name:
           type: string
-        block_merge_link:
+        description:
+          type: string
+        is_custom:
           type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
-      required:
-      - title
-      - detail
-      - problem_type
-      title: WarningValidationProblem
+        is_common_model_field:
+          type: boolean
+        is_required:
+          type: boolean
+        field_type:
+          $ref: '#/components/schemas/FieldTypeEnum'
+        field_format:
+          $ref: '#/components/schemas/FieldFormatEnum'
+        field_choices:
+          type: array
+          items:
+            type: string
+        item_schema:
+          $ref: '#/components/schemas/ItemSchema'
+      title: RemoteFieldClass
     DebugModelLogSummary:
       type: object
       properties:
@@ -1684,6 +919,334 @@ components:
       - method
       - status_code
       title: DebugModelLogSummary
+    RemoteFieldRequest:
+      type: object
+      properties:
+        remote_field_class:
+          type: string
+          format: uuid
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteFieldRequest
+    SalesOrderLineRequest:
+      type: object
+      properties:
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        description:
+          type:
+          - string
+          - 'null'
+          description: Description of the line item.
+        unit_price:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The unit price of the item.
+        quantity:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: Quantity ordered for this line.
+        item:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        tax_rate:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The tax rate of the line item.
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: The dimensions or classification tags.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The subsidiary associated with the order.
+        remote_created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's sales order line item was created.
+        remote_updated_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's sales order line item was updated.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldRequest'
+      description: '# The SalesOrderLine Object
+
+        ### Description
+
+        The `SalesOrderLine` object represents a specific line item on a sales order.
+
+
+        ### Usage Example
+
+        Fetch from the `GET SalesOrder` endpoint and view a company''s sales order line items.'
+      title: SalesOrderLineRequest
+    SalesOrderBatchItemRequest:
+      type: object
+      properties:
+        item_id:
+          type: string
+          description: The third-party item ID for this model in the bulk create request
+        payload:
+          $ref: '#/components/schemas/SalesOrderRequestRequest'
+      required:
+      - item_id
+      - payload
+      title: SalesOrderBatchItemRequest
+    FieldTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldTypeEnum
+    SalesOrderLine:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        description:
+          type:
+          - string
+          - 'null'
+          description: Description of the line item.
+        unit_price:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The unit price of the item.
+        quantity:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: Quantity ordered for this line.
+        item:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        tax_rate:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The tax rate of the line item.
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: The dimensions or classification tags.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The subsidiary associated with the order.
+        remote_created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's sales order line item was created.
+        remote_updated_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's sales order line item was updated.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteField'
+      description: '# The SalesOrderLine Object
+
+        ### Description
+
+        The `SalesOrderLine` object represents a specific line item on a sales order.
+
+
+        ### Usage Example
+
+        Fetch from the `GET SalesOrder` endpoint and view a company''s sales order line items.'
+      title: SalesOrderLine
+    BatchObjectStatusEnum:
+      type: string
+      enum:
+      - PENDING
+      - SUCCESS
+      - FAILURE
+      title: BatchObjectStatusEnum
+    BatchObjectItemResponse:
+      type: object
+      properties:
+        merge_common_model_id:
+          type: string
+          format: uuid
+        error_message:
+          type: string
+      description: Response for individual items within a batch
+      title: BatchObjectItemResponse
+    BatchObjectsResponse:
+      type: object
+      properties:
+        batch_id:
+          type: string
+          format: uuid
+          description: The ID of the batch.
+        status:
+          $ref: '#/components/schemas/BatchObjectsResponseStatusEnum'
+          description: 'Possible overall statuses:
+
+
+            * `ENQUEUED` - The request has been received and a task has been enqueued for processing
+
+            * `IN_PROGRESS` - The enqueued task is being processed
+
+            * `PARTIAL_SUCCESS` - The task has been processed, but not all objects were written successfully
+
+            * `SUCCESS` - The task has been processed, and all objects were written successfully
+
+            * `FAILED` - The task has been processed, but ran into an error while processing
+
+            * `RATE_LIMITED` - The request was received but ran into rate limits while processing. The rate limited objects are being retried.'
+        total_count:
+          type: integer
+          description: The total number of objects in the batch.
+        objects:
+          type: array
+          items:
+            $ref: '#/components/schemas/BatchObject'
+      required:
+      - batch_id
+      - status
+      - total_count
+      - objects
+      description: Response serializer for GET bulk/{batch_id} - returns batch status and objects
+      title: BatchObjectsResponse
+    SalesOrderEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/SalesOrderRequestRequest'
+      required:
+      - model
+      title: SalesOrderEndpointRequest
+    BatchObject:
+      type: object
+      properties:
+        item_id:
+          type: string
+        status:
+          $ref: '#/components/schemas/BatchObjectStatusEnum'
+          description: 'Possible per-object statuses:
+
+
+            * `PENDING` - This object has not been processed yet
+
+            * `SUCCESS` - This object was successfully POSTed
+
+            * `FAILURE` - This object was not successfully POSTed'
+        response:
+          $ref: '#/components/schemas/BatchObjectItemResponse'
+      required:
+      - item_id
+      - status
+      description: Individual batch object with status
+      title: BatchObject
+    RemoteField:
+      type: object
+      properties:
+        remote_field_class:
+          $ref: '#/components/schemas/RemoteFieldClass'
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteField
+    ItemFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemFormatEnum
+    AsyncBulkCreateResponse:
+      type: object
+      properties:
+        batch_id:
+          type: string
+          format: uuid
+          description: The ID of the batch.
+      required:
+      - batch_id
+      description: Response serializer for POST bulk create - returns only batch_id
+      title: AsyncBulkCreateResponse
     ItemTypeEnum:
       type: string
       enum:
@@ -1694,6 +1257,443 @@ components:
       - bool
       - list
       title: ItemTypeEnum
+    SalesOrdersGetParametersRemoteFields:
+      type: string
+      enum:
+      - status
+      title: SalesOrdersGetParametersRemoteFields
+    SalesOrdersGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - company
+      - customer
+      - lines
+      - payment_term
+      - shipping_address
+      - tracking_categories
+      title: SalesOrdersGetParametersExpandSchemaItems
+    SalesOrder:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        customer:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The customer associated with the sales order.
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: The currency code for the order. The currency code in ISO 4217 format.
+        exchange_rate:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The exchange rate applied if the order currency differs from the base currency.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The subsidiary associated with the order.
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/SalesOrderStatusEnum'
+          - type: 'null'
+          description: The status of the sales order.
+        payment_term:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The payment terms applied to this order.
+        memo:
+          type:
+          - string
+          - 'null'
+          description: Notes or comments attached to the order.
+        shipping_address:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The shipping address for the order.
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+        issue_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date the sales order was issued.
+        transaction_number:
+          type:
+          - string
+          - 'null'
+          description: The human-readable sales order number or transaction reference.
+        total:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: Total amount of order.
+        lines:
+          type: array
+          items:
+            $ref: '#/components/schemas/SalesOrderLine'
+        remote_created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's sales order was created.
+        remote_updated_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's sales order was updated.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/SalesOrderFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteField'
+      description: '# The SalesOrder Object
+
+        ### Description
+
+        The `SalesOrder` object represents a seller''s formal record and confirmation of a customer''s purchase request.
+
+
+        ### Usage Example
+
+        Fetch from the `LIST SalesOrders` endpoint and view a company''s sales orders.'
+      title: SalesOrder
+    SalesOrderBulkRequest:
+      type: object
+      properties:
+        batch_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SalesOrderBatchItemRequest'
+      required:
+      - batch_items
+      title: SalesOrderBulkRequest
+    PaginatedSalesOrderList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SalesOrder'
+      title: PaginatedSalesOrderList
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    SalesOrderFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: SalesOrderFieldMappings
+    SalesOrdersGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - status
+      title: SalesOrdersGetParametersShowEnumOrigins
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    BatchObjectsResponseStatusEnum:
+      type: string
+      enum:
+      - ENQUEUED
+      - IN_PROGRESS
+      - PARTIAL_SUCCESS
+      - SUCCESS
+      - FAILED
+      - RATE_LIMITED
+      title: BatchObjectsResponseStatusEnum
+    SalesOrderRequestRequest:
+      type: object
+      properties:
+        customer:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The customer associated with the sales order.
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: The currency code for the order. The currency code in ISO 4217 format.
+        exchange_rate:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: The exchange rate applied if the order currency differs from the base currency.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The subsidiary associated with the order.
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/SalesOrderStatusEnum'
+          - type: 'null'
+          description: The status of the sales order.
+        payment_term:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The payment terms applied to this order.
+        memo:
+          type:
+          - string
+          - 'null'
+          description: Notes or comments attached to the order.
+        shipping_address:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The shipping address for the order.
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+        issue_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date the sales order was issued.
+        transaction_number:
+          type:
+          - string
+          - 'null'
+          description: The human-readable sales order number or transaction reference.
+        total:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: Total amount of order.
+        lines:
+          type: array
+          items:
+            $ref: '#/components/schemas/SalesOrderLineRequest'
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldRequest'
+      description: '# The SalesOrder Object
+
+        ### Description
+
+        The `SalesOrder` object represents a seller''s formal record and confirmation of a customer''s purchase request.
+
+
+        ### Usage Example
+
+        Fetch from the `LIST SalesOrders` endpoint and view a company''s sales orders.'
+      title: SalesOrderRequestRequest
+    SalesOrderStatusEnum:
+      type: string
+      enum:
+      - DRAFT
+      - PENDING_APPROVAL
+      - OPEN
+      - PARTIALLY_COMPLETED
+      - COMPLETED
+      - CLOSED
+      title: SalesOrderStatusEnum
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    SalesOrdersIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - status
+      title: SalesOrdersIdGetParametersShowEnumOrigins
+    SalesOrdersIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - status
+      title: SalesOrdersIdGetParametersRemoteFields
+    FieldFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldFormatEnum
+    SalesOrderResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/SalesOrder'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: SalesOrderResponse
+    PaginatedRemoteFieldClassList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldClass'
+      title: PaginatedRemoteFieldClassList
   securitySchemes:
     tokenAuth:
       type: http

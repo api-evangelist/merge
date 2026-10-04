@@ -169,62 +169,39 @@ paths:
                 $ref: '#/components/schemas/BalanceSheet'
 components:
   schemas:
-    ReportItem:
+    PaginatedBalanceSheetList:
       type: object
       properties:
-        remote_id:
+        next:
           type:
           - string
           - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        name:
+        previous:
           type:
           - string
           - 'null'
-          description: The report item's name.
-        value:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: The report item's value.
-        sub_items:
-          type: object
-          additionalProperties:
-            description: Any type
-        company:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The company the report item belongs to.
-        remote_was_deleted:
-          type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-      description: '# The ReportItem Object
-
-        ### Description
-
-        The `ReportItem` object is used to represent a report item for a Balance Sheet, Cash Flow Statement or Profit and Loss Report.
-
-
-        ### Usage Example
-
-        Fetch from the `GET BalanceSheet` endpoint and view the balance sheet''s report items.'
-      title: ReportItem
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BalanceSheet'
+      title: PaginatedBalanceSheetList
     BalanceSheetsIdGetParametersExpandSchemaItems:
       type: string
       enum:
       - company
       title: BalanceSheetsIdGetParametersExpandSchemaItems
+    BalanceSheetFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: BalanceSheetFieldMappings
     BalanceSheet:
       type: object
       properties:
@@ -314,23 +291,62 @@ components:
 
         Fetch from the `LIST BalanceSheets` endpoint and view a company''s balance sheets.'
       title: BalanceSheet
-    BalanceSheetFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: BalanceSheetFieldMappings
     BalanceSheetsGetParametersExpandSchemaItems:
       type: string
       enum:
       - company
       title: BalanceSheetsGetParametersExpandSchemaItems
+    ReportItem:
+      type: object
+      properties:
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The report item's name.
+        value:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The report item's value.
+        sub_items:
+          type: object
+          additionalProperties:
+            description: Any type
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the report item belongs to.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+      description: '# The ReportItem Object
+
+        ### Description
+
+        The `ReportItem` object is used to represent a report item for a Balance Sheet, Cash Flow Statement or Profit and Loss Report.
+
+
+        ### Usage Example
+
+        Fetch from the `GET BalanceSheet` endpoint and view the balance sheet''s report items.'
+      title: ReportItem
     TransactionCurrencyEnum:
       type: string
       enum:
@@ -642,22 +658,6 @@ components:
       - ZWL
       description: The currency code in ISO 4217 format.
       title: TransactionCurrencyEnum
-    PaginatedBalanceSheetList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/BalanceSheet'
-      title: PaginatedBalanceSheetList
     RemoteData:
       type: object
       properties:

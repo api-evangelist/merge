@@ -466,84 +466,104 @@ paths:
                 $ref: '#/components/schemas/PaginatedRemoteFieldClassList'
 components:
   schemas:
-    PaginatedRemoteFieldClassList:
+    ItemSchema:
       type: object
       properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/RemoteFieldClass'
-      title: PaginatedRemoteFieldClassList
-    RemoteField:
-      type: object
-      properties:
-        remote_field_class:
-          $ref: '#/components/schemas/RemoteFieldClass'
-        value:
-          type: object
-          additionalProperties:
-            description: Any type
-      required:
-      - remote_field_class
-      title: RemoteField
-    ExpenseReportStatusEnum:
-      type: string
-      enum:
-      - DRAFT
-      - SUBMITTED
-      - APPROVED
-      - REJECTED
-      title: ExpenseReportStatusEnum
-    MetaResponse:
-      type: object
-      properties:
-        request_schema:
-          type: object
-          additionalProperties:
-            description: Any type
-        status:
-          $ref: '#/components/schemas/LinkedAccountStatus'
-        has_conditional_params:
-          type: boolean
-        has_required_linked_account_params:
-          type: boolean
-        remote_fields:
+        item_type:
+          $ref: '#/components/schemas/ItemTypeEnum'
+        item_format:
+          $ref: '#/components/schemas/ItemFormatEnum'
+        item_choices:
           type: array
           items:
             type: string
-            format: uuid
-          description: Remote field values to populate
+      title: ItemSchema
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
       required:
-      - request_schema
-      - has_conditional_params
-      - has_required_linked_account_params
-      title: MetaResponse
-    FieldFormatEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: FieldFormatEnum
-    ExpenseReportsGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - accounting_period
-      - company
-      - employee
-      - lines
-      title: ExpenseReportsGetParametersExpandSchemaItems
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    ExpenseReportFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: ExpenseReportFieldMappings
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    ExpenseReportResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/ExpenseReport'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: ExpenseReportResponse
     ExpenseReport:
       type: object
       properties:
@@ -655,455 +675,6 @@ components:
 
         Fetch from the `GET ExpenseReport` endpoint to view details of expense reports and their line items.'
       title: ExpenseReport
-    DebugModeLog:
-      type: object
-      properties:
-        log_id:
-          type: string
-        dashboard_view:
-          type: string
-        log_summary:
-          $ref: '#/components/schemas/DebugModelLogSummary'
-      required:
-      - log_id
-      - dashboard_view
-      - log_summary
-      title: DebugModeLog
-    RemoteFieldRequest:
-      type: object
-      properties:
-        remote_field_class:
-          type: string
-          format: uuid
-        value:
-          type: object
-          additionalProperties:
-            description: Any type
-      required:
-      - remote_field_class
-      title: RemoteFieldRequest
-    ItemSchema:
-      type: object
-      properties:
-        item_type:
-          $ref: '#/components/schemas/ItemTypeEnum'
-        item_format:
-          $ref: '#/components/schemas/ItemFormatEnum'
-        item_choices:
-          type: array
-          items:
-            type: string
-      title: ItemSchema
-    ExpenseReportLine:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        account:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        description:
-          type:
-          - string
-          - 'null'
-          description: Description of the individual expense.
-        expense_date:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date the individual expense was incurred.
-        amount:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: The amount of the expense for the line item.
-        currency:
-          oneOf:
-          - $ref: '#/components/schemas/TransactionCurrencyEnum'
-          - type: 'null'
-          description: Currency of the expense line (if different from the report currency). The currency code in ISO 4217 format.
-        exchange_rate:
-          type:
-          - string
-          - 'null'
-          format: decimal
-          description: Exchange rate used if the line item is in a foreign currency.
-        is_billable:
-          type:
-          - boolean
-          - 'null'
-          description: Whether the expense line is billable to a client or project.
-        tracking_categories:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: The related tracking categories associated with the expense report (Department, Location, Class, Expense Category)
-        employee:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: Identifier for the employee who submitted or is associated with the expense report
-        project:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        company:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The subsidiary that the expense report is created in
-        contact:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        quantity:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: Quantity for the expense line (e.g., miles driven, items purchased).
-        unit_price:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: Price per unit for the expense line (if applicable).
-        non_reimbursable:
-          type:
-          - boolean
-          - 'null'
-          description: Whether the expense line is non-reimbursable (e.g., paid via company card).
-        tax_amount:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: Tax amount applicable for the line item.
-        inclusive_of_tax:
-          type:
-          - boolean
-          - 'null'
-          description: Whether the amount is inclusive of tax.
-        tax_rate:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        remote_was_deleted:
-          type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-        remote_fields:
-          type: array
-          items:
-            $ref: '#/components/schemas/RemoteField'
-      required:
-      - tracking_categories
-      description: '# The ExpenseReportLine Object
-
-        ### Description
-
-        The `ExpenseReportLine` object represents an individual line item within an expense report, containing details about
-
-        a specific expense such as amount, description, and associated metadata.
-
-
-        ### Usage Example
-
-        Fetch from the `GET ExpenseReport` endpoint and expand the lines field to view all line items in the expense report.'
-      title: ExpenseReportLine
-    ExpenseReportEndpointRequest:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/ExpenseReportRequest'
-      required:
-      - model
-      title: ExpenseReportEndpointRequest
-    ErrorValidationProblem:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
-          type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
-      required:
-      - title
-      - detail
-      - problem_type
-      title: ErrorValidationProblem
-    RemoteFieldClass:
-      type: object
-      properties:
-        id:
-          type: string
-        display_name:
-          type: string
-        remote_key_name:
-          type: string
-        description:
-          type: string
-        is_custom:
-          type: boolean
-        is_common_model_field:
-          type: boolean
-        is_required:
-          type: boolean
-        field_type:
-          $ref: '#/components/schemas/FieldTypeEnum'
-        field_format:
-          $ref: '#/components/schemas/FieldFormatEnum'
-        field_choices:
-          type: array
-          items:
-            type: string
-        item_schema:
-          $ref: '#/components/schemas/ItemSchema'
-      title: RemoteFieldClass
-    ExpenseReportsIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - accounting_period
-      - company
-      - employee
-      - lines
-      title: ExpenseReportsIdGetParametersExpandSchemaItems
-    PaginatedExpenseReportList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExpenseReport'
-      title: PaginatedExpenseReportList
-    ExpenseReportsExpenseReportIdLinesGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - account
-      - company
-      - contact
-      - employee
-      - project
-      - tax_rate
-      title: ExpenseReportsExpenseReportIdLinesGetParametersExpandSchemaItems
-    ItemFormatEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: ItemFormatEnum
-    RemoteData:
-      type: object
-      properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
-      required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
-    PaginatedExpenseReportLineList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExpenseReportLine'
-      title: PaginatedExpenseReportLineList
-    ValidationProblemSource:
-      type: object
-      properties:
-        pointer:
-          type: string
-      required:
-      - pointer
-      title: ValidationProblemSource
-    LinkedAccountStatus:
-      type: object
-      properties:
-        linked_account_status:
-          type: string
-        can_make_request:
-          type: boolean
-      required:
-      - linked_account_status
-      - can_make_request
-      title: LinkedAccountStatus
-    ExpenseReportRequest:
-      type: object
-      properties:
-        report_date:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The date of the expense report.
-        report_identifier:
-          type:
-          - string
-          - 'null'
-          description: Human-readable expense report identifier.
-        employee:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: Identifier for the employee who submitted or is associated with the expense report
-        status:
-          oneOf:
-          - $ref: '#/components/schemas/ExpenseReportStatusEnum'
-          - type: 'null'
-          description: Overall status of the expense report. One of DRAFT, SUBMITTED, APPROVED, REJECTED
-        total_amount:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: Total amount of the expense report
-        currency:
-          oneOf:
-          - $ref: '#/components/schemas/TransactionCurrencyEnum'
-          - type: 'null'
-          description: Currency code for the expense report. The currency code in ISO 4217 format.
-        description:
-          type:
-          - string
-          - 'null'
-          description: A brief description or purpose for the expense report
-        accounting_period:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The accounting period the report was posted in
-        company:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The subsidiary that the expense report is created in
-        tracking_categories:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: The related tracking categories associated with the expense report
-        integration_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        linked_account_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        remote_fields:
-          type: array
-          items:
-            $ref: '#/components/schemas/RemoteFieldRequest'
-      required:
-      - tracking_categories
-      description: '# The ExpenseReport Object
-
-        ### Description
-
-        The `ExpenseReport` object represents a collection of expenses submitted for review and reimbursement.
-
-        It includes details about the submitter, status, amounts, and associated metadata.
-
-
-        ### Usage Example
-
-        Fetch from the `GET ExpenseReport` endpoint to view details of expense reports and their line items.'
-      title: ExpenseReportRequest
-    ExpenseReportResponse:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/ExpenseReport'
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/WarningValidationProblem'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorValidationProblem'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/DebugModeLog'
-      required:
-      - model
-      - warnings
-      - errors
-      title: ExpenseReportResponse
     TransactionCurrencyEnum:
       type: string
       enum:
@@ -1415,50 +986,71 @@ components:
       - ZWL
       description: The currency code in ISO 4217 format.
       title: TransactionCurrencyEnum
-    FieldTypeEnum:
+    RemoteFieldRequest:
+      type: object
+      properties:
+        remote_field_class:
+          type: string
+          format: uuid
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteFieldRequest
+    RemoteFieldClass:
+      type: object
+      properties:
+        id:
+          type: string
+        display_name:
+          type: string
+        remote_key_name:
+          type: string
+        description:
+          type: string
+        is_custom:
+          type: boolean
+        is_common_model_field:
+          type: boolean
+        is_required:
+          type: boolean
+        field_type:
+          $ref: '#/components/schemas/FieldTypeEnum'
+        field_format:
+          $ref: '#/components/schemas/FieldFormatEnum'
+        field_choices:
+          type: array
+          items:
+            type: string
+        item_schema:
+          $ref: '#/components/schemas/ItemSchema'
+      title: RemoteFieldClass
+    PaginatedExpenseReportLineList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExpenseReportLine'
+      title: PaginatedExpenseReportLineList
+    ExpenseReportsIdGetParametersExpandSchemaItems:
       type: string
       enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: FieldTypeEnum
-    WarningValidationProblem:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
-          type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
-      required:
-      - title
-      - detail
-      - problem_type
-      title: WarningValidationProblem
-    ExpenseReportFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: ExpenseReportFieldMappings
+      - accounting_period
+      - company
+      - employee
+      - lines
+      title: ExpenseReportsIdGetParametersExpandSchemaItems
     DebugModelLogSummary:
       type: object
       properties:
@@ -1473,6 +1065,210 @@ components:
       - method
       - status_code
       title: DebugModelLogSummary
+    ExpenseReportLine:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        description:
+          type:
+          - string
+          - 'null'
+          description: Description of the individual expense.
+        expense_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date the individual expense was incurred.
+        amount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The amount of the expense for the line item.
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: Currency of the expense line (if different from the report currency). The currency code in ISO 4217 format.
+        exchange_rate:
+          type:
+          - string
+          - 'null'
+          format: decimal
+          description: Exchange rate used if the line item is in a foreign currency.
+        is_billable:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the expense line is billable to a client or project.
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: The related tracking categories associated with the expense report (Department, Location, Class, Expense Category)
+        employee:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: Identifier for the employee who submitted or is associated with the expense report
+        project:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The subsidiary that the expense report is created in
+        contact:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        quantity:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: Quantity for the expense line (e.g., miles driven, items purchased).
+        unit_price:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: Price per unit for the expense line (if applicable).
+        non_reimbursable:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the expense line is non-reimbursable (e.g., paid via company card).
+        tax_amount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: Tax amount applicable for the line item.
+        inclusive_of_tax:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the amount is inclusive of tax.
+        tax_rate:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteField'
+      required:
+      - tracking_categories
+      description: '# The ExpenseReportLine Object
+
+        ### Description
+
+        The `ExpenseReportLine` object represents an individual line item within an expense report, containing details about
+
+        a specific expense such as amount, description, and associated metadata.
+
+
+        ### Usage Example
+
+        Fetch from the `GET ExpenseReport` endpoint and expand the lines field to view all line items in the expense report.'
+      title: ExpenseReportLine
+    FieldTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldTypeEnum
+    PaginatedExpenseReportList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExpenseReport'
+      title: PaginatedExpenseReportList
+    ExpenseReportEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/ExpenseReportRequest'
+      required:
+      - model
+      title: ExpenseReportEndpointRequest
+    ExpenseReportStatusEnum:
+      type: string
+      enum:
+      - DRAFT
+      - SUBMITTED
+      - APPROVED
+      - REJECTED
+      title: ExpenseReportStatusEnum
+    RemoteField:
+      type: object
+      properties:
+        remote_field_class:
+          $ref: '#/components/schemas/RemoteFieldClass'
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteField
+    ItemFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemFormatEnum
     ItemTypeEnum:
       type: string
       enum:
@@ -1483,6 +1279,210 @@ components:
       - bool
       - list
       title: ItemTypeEnum
+    ExpenseReportsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - accounting_period
+      - company
+      - employee
+      - lines
+      title: ExpenseReportsGetParametersExpandSchemaItems
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    ExpenseReportsExpenseReportIdLinesGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - account
+      - company
+      - contact
+      - employee
+      - project
+      - tax_rate
+      title: ExpenseReportsExpenseReportIdLinesGetParametersExpandSchemaItems
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    ExpenseReportRequest:
+      type: object
+      properties:
+        report_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date of the expense report.
+        report_identifier:
+          type:
+          - string
+          - 'null'
+          description: Human-readable expense report identifier.
+        employee:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: Identifier for the employee who submitted or is associated with the expense report
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/ExpenseReportStatusEnum'
+          - type: 'null'
+          description: Overall status of the expense report. One of DRAFT, SUBMITTED, APPROVED, REJECTED
+        total_amount:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: Total amount of the expense report
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: Currency code for the expense report. The currency code in ISO 4217 format.
+        description:
+          type:
+          - string
+          - 'null'
+          description: A brief description or purpose for the expense report
+        accounting_period:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The accounting period the report was posted in
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The subsidiary that the expense report is created in
+        tracking_categories:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: The related tracking categories associated with the expense report
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldRequest'
+      required:
+      - tracking_categories
+      description: '# The ExpenseReport Object
+
+        ### Description
+
+        The `ExpenseReport` object represents a collection of expenses submitted for review and reimbursement.
+
+        It includes details about the submitter, status, amounts, and associated metadata.
+
+
+        ### Usage Example
+
+        Fetch from the `GET ExpenseReport` endpoint to view details of expense reports and their line items.'
+      title: ExpenseReportRequest
+    FieldFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldFormatEnum
+    PaginatedRemoteFieldClassList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldClass'
+      title: PaginatedRemoteFieldClassList
   securitySchemes:
     tokenAuth:
       type: http

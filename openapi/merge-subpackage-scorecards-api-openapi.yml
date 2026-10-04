@@ -205,23 +205,6 @@ paths:
                 $ref: '#/components/schemas/Scorecard'
 components:
   schemas:
-    ScorecardsGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - overall_recommendation
-      title: ScorecardsGetParametersShowEnumOrigins
-    ScorecardFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: ScorecardFieldMappings
     ScorecardsGetParametersExpandSchemaItems:
       type: string
       enum:
@@ -234,6 +217,33 @@ components:
       enum:
       - overall_recommendation
       title: ScorecardsIdGetParametersRemoteFields
+    ScorecardsIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - overall_recommendation
+      title: ScorecardsIdGetParametersShowEnumOrigins
+    ScorecardFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: ScorecardFieldMappings
+    ScorecardsGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - overall_recommendation
+      title: ScorecardsGetParametersShowEnumOrigins
+    ScorecardsGetParametersRemoteFields:
+      type: string
+      enum:
+      - overall_recommendation
+      title: ScorecardsGetParametersRemoteFields
     Scorecard:
       type: object
       properties:
@@ -311,6 +321,22 @@ components:
 
         Fetch from the `LIST Scorecards` endpoint and filter by `application` to show all scorecard for an applicant.'
       title: Scorecard
+    PaginatedScorecardList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Scorecard'
+      title: PaginatedScorecardList
     ScorecardsIdGetParametersExpandSchemaItems:
       type: string
       enum:
@@ -318,25 +344,6 @@ components:
       - interview
       - interviewer
       title: ScorecardsIdGetParametersExpandSchemaItems
-    ScorecardsGetParametersRemoteFields:
-      type: string
-      enum:
-      - overall_recommendation
-      title: ScorecardsGetParametersRemoteFields
-    OverallRecommendationEnum:
-      type: string
-      enum:
-      - DEFINITELY_NO
-      - 'NO'
-      - 'YES'
-      - STRONG_YES
-      - NO_DECISION
-      title: OverallRecommendationEnum
-    ScorecardsIdGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - overall_recommendation
-      title: ScorecardsIdGetParametersShowEnumOrigins
     RemoteData:
       type: object
       properties:
@@ -358,22 +365,15 @@ components:
 
         TODO'
       title: RemoteData
-    PaginatedScorecardList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Scorecard'
-      title: PaginatedScorecardList
+    OverallRecommendationEnum:
+      type: string
+      enum:
+      - DEFINITELY_NO
+      - 'NO'
+      - 'YES'
+      - STRONG_YES
+      - NO_DECISION
+      title: OverallRecommendationEnum
   securitySchemes:
     tokenAuth:
       type: http

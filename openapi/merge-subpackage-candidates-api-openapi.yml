@@ -377,77 +377,72 @@ paths:
                 $ref: '#/components/schemas/MetaResponse'
 components:
   schemas:
+    CandidateEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/CandidateRequest'
+        remote_user_id:
+          type: string
+      required:
+      - model
+      - remote_user_id
+      title: CandidateEndpointRequest
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    candidates_ignoreCreate_Response_200:
+      type: object
+      properties: {}
+      description: Empty response body
+      title: candidates_ignoreCreate_Response_200
     CandidatesGetParametersExpandSchemaItems:
       type: string
       enum:
       - applications
       - attachments
       title: CandidatesGetParametersExpandSchemaItems
-    candidates_ignoreCreate_Response_200:
-      type: object
-      properties: {}
-      description: Empty response body
-      title: candidates_ignoreCreate_Response_200
-    ReasonEnum:
-      type: string
-      enum:
-      - GENERAL_CUSTOMER_REQUEST
-      - GDPR
-      - OTHER
-      title: ReasonEnum
-    MetaResponse:
+    WarningValidationProblem:
       type: object
       properties:
-        request_schema:
-          type: object
-          additionalProperties:
-            description: Any type
-        status:
-          $ref: '#/components/schemas/LinkedAccountStatus'
-        has_conditional_params:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
           type: boolean
-        has_required_linked_account_params:
-          type: boolean
-        remote_fields:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: Remote field values to populate
+        raw_error:
+          type: string
+        error_code:
+          type: integer
       required:
-      - request_schema
-      - has_conditional_params
-      - has_required_linked_account_params
-      title: MetaResponse
-    CandidateResponse:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/Candidate'
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/WarningValidationProblem'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorValidationProblem'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/DebugModeLog'
-      required:
-      - model
-      - warnings
-      - errors
-      title: CandidateResponse
-    EmailAddressTypeEnum:
-      type: string
-      enum:
-      - PERSONAL
-      - WORK
-      - OTHER
-      title: EmailAddressTypeEnum
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
     Url:
       type: object
       properties:
@@ -483,170 +478,14 @@ components:
 
         Fetch from the `GET Candidate` endpoint and view their website urls.'
       title: Url
-    DebugModeLog:
+    ValidationProblemSource:
       type: object
       properties:
-        log_id:
+        pointer:
           type: string
-        dashboard_view:
-          type: string
-        log_summary:
-          $ref: '#/components/schemas/DebugModelLogSummary'
       required:
-      - log_id
-      - dashboard_view
-      - log_summary
-      title: DebugModeLog
-    PaginatedCandidateList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Candidate'
-      title: PaginatedCandidateList
-    UrlTypeEnum:
-      type: string
-      enum:
-      - PERSONAL
-      - COMPANY
-      - PORTFOLIO
-      - BLOG
-      - SOCIAL_MEDIA
-      - OTHER
-      - JOB_POSTING
-      title: UrlTypeEnum
-    EmailAddress:
-      type: object
-      properties:
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        value:
-          type:
-          - string
-          - 'null'
-          format: email
-          description: The email address.
-        email_address_type:
-          oneOf:
-          - $ref: '#/components/schemas/EmailAddressTypeEnum'
-          - type: 'null'
-          description: The type of email address.
-        remote_was_deleted:
-          type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-      description: '# The EmailAddress Object
-
-        ### Description
-
-        The `EmailAddress` object is used to represent a candidate''s email address.
-
-        ### Usage Example
-
-        Fetch from the `GET Candidate` endpoint and view their email addresses.'
-      title: EmailAddress
-    CandidateFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: CandidateFieldMappings
-    CandidatesIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - applications
-      - attachments
-      title: CandidatesIdGetParametersExpandSchemaItems
-    UrlRequest:
-      type: object
-      properties:
-        value:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The site's url.
-        url_type:
-          oneOf:
-          - $ref: '#/components/schemas/UrlTypeEnum'
-          - type: 'null'
-          description: The type of site.
-        integration_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        linked_account_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-      description: '# The Url Object
-
-        ### Description
-
-        The `Url` object is used to represent hyperlinks associated with the parent model.
-
-        ### Usage Example
-
-        Fetch from the `GET Candidate` endpoint and view their website urls.'
-      title: UrlRequest
-    PhoneNumber:
-      type: object
-      properties:
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        value:
-          type:
-          - string
-          - 'null'
-          description: The phone number.
-        phone_number_type:
-          oneOf:
-          - $ref: '#/components/schemas/PhoneNumberTypeEnum'
-          - type: 'null'
-          description: The type of phone number.
-        remote_was_deleted:
-          type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-      description: '# The PhoneNumber Object
-
-        ### Description
-
-        The `PhoneNumber` object is used to represent a candidate''s phone number.
-
-        ### Usage Example
-
-        Fetch from the `GET Candidate` endpoint and view their phone numbers.'
-      title: PhoneNumber
+      - pointer
+      title: ValidationProblemSource
     PhoneNumberTypeEnum:
       type: string
       enum:
@@ -656,136 +495,27 @@ components:
       - SKYPE
       - OTHER
       title: PhoneNumberTypeEnum
-    PatchedCandidateEndpointRequest:
+    DebugModelLogSummary:
       type: object
       properties:
-        model:
-          $ref: '#/components/schemas/PatchedCandidateRequest'
-        remote_user_id:
+        url:
           type: string
-      required:
-      - model
-      - remote_user_id
-      title: PatchedCandidateEndpointRequest
-    ErrorValidationProblem:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
+        method:
           type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
+        status_code:
           type: integer
       required:
-      - title
-      - detail
-      - problem_type
-      title: ErrorValidationProblem
-    IgnoreCommonModelRequest:
-      type: object
-      properties:
-        reason:
-          $ref: '#/components/schemas/ReasonEnum'
-        message:
-          type: string
-      required:
-      - reason
-      title: IgnoreCommonModelRequest
-    RemoteData:
-      type: object
-      properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
-      required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
-    ValidationProblemSource:
-      type: object
-      properties:
-        pointer:
-          type: string
-      required:
-      - pointer
-      title: ValidationProblemSource
-    PhoneNumberRequest:
-      type: object
-      properties:
-        value:
-          type:
-          - string
-          - 'null'
-          description: The phone number.
-        phone_number_type:
-          oneOf:
-          - $ref: '#/components/schemas/PhoneNumberTypeEnum'
-          - type: 'null'
-          description: The type of phone number.
-        integration_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        linked_account_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-      description: '# The PhoneNumber Object
-
-        ### Description
-
-        The `PhoneNumber` object is used to represent a candidate''s phone number.
-
-        ### Usage Example
-
-        Fetch from the `GET Candidate` endpoint and view their phone numbers.'
-      title: PhoneNumberRequest
-    LinkedAccountStatus:
-      type: object
-      properties:
-        linked_account_status:
-          type: string
-        can_make_request:
-          type: boolean
-      required:
-      - linked_account_status
-      - can_make_request
-      title: LinkedAccountStatus
-    CandidateEndpointRequest:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/CandidateRequest'
-        remote_user_id:
-          type: string
-      required:
-      - model
-      - remote_user_id
-      title: CandidateEndpointRequest
-    CandidateRequest:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    CandidatesIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - applications
+      - attachments
+      title: CandidatesIdGetParametersExpandSchemaItems
+    PatchedCandidateRequest:
       type: object
       properties:
         first_name:
@@ -885,7 +615,116 @@ components:
         ### Usage Example
 
         Fetch from the `LIST Candidates` endpoint and filter by `ID` to show all candidates.'
-      title: CandidateRequest
+      title: PatchedCandidateRequest
+    EmailAddressTypeEnum:
+      type: string
+      enum:
+      - PERSONAL
+      - WORK
+      - OTHER
+      title: EmailAddressTypeEnum
+    PhoneNumber:
+      type: object
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        value:
+          type:
+          - string
+          - 'null'
+          description: The phone number.
+        phone_number_type:
+          oneOf:
+          - $ref: '#/components/schemas/PhoneNumberTypeEnum'
+          - type: 'null'
+          description: The type of phone number.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+      description: '# The PhoneNumber Object
+
+        ### Description
+
+        The `PhoneNumber` object is used to represent a candidate''s phone number.
+
+        ### Usage Example
+
+        Fetch from the `GET Candidate` endpoint and view their phone numbers.'
+      title: PhoneNumber
+    PatchedCandidateEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/PatchedCandidateRequest'
+        remote_user_id:
+          type: string
+      required:
+      - model
+      - remote_user_id
+      title: PatchedCandidateEndpointRequest
+    IgnoreCommonModelRequest:
+      type: object
+      properties:
+        reason:
+          $ref: '#/components/schemas/ReasonEnum'
+        message:
+          type: string
+      required:
+      - reason
+      title: IgnoreCommonModelRequest
+    UrlRequest:
+      type: object
+      properties:
+        value:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The site's url.
+        url_type:
+          oneOf:
+          - $ref: '#/components/schemas/UrlTypeEnum'
+          - type: 'null'
+          description: The type of site.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The Url Object
+
+        ### Description
+
+        The `Url` object is used to represent hyperlinks associated with the parent model.
+
+        ### Usage Example
+
+        Fetch from the `GET Candidate` endpoint and view their website urls.'
+      title: UrlRequest
+    UrlTypeEnum:
+      type: string
+      enum:
+      - PERSONAL
+      - COMPANY
+      - PORTFOLIO
+      - BLOG
+      - SOCIAL_MEDIA
+      - OTHER
+      - JOB_POSTING
+      title: UrlTypeEnum
     Candidate:
       type: object
       properties:
@@ -1012,29 +851,168 @@ components:
 
         Fetch from the `LIST Candidates` endpoint and filter by `ID` to show all candidates.'
       title: Candidate
-    WarningValidationProblem:
+    LinkedAccountStatus:
       type: object
       properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
+        linked_account_status:
           type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
+        can_make_request:
           type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
       required:
-      - title
-      - detail
-      - problem_type
-      title: WarningValidationProblem
-    PatchedCandidateRequest:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    ReasonEnum:
+      type: string
+      enum:
+      - GENERAL_CUSTOMER_REQUEST
+      - GDPR
+      - OTHER
+      title: ReasonEnum
+    PaginatedCandidateList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Candidate'
+      title: PaginatedCandidateList
+    PhoneNumberRequest:
+      type: object
+      properties:
+        value:
+          type:
+          - string
+          - 'null'
+          description: The phone number.
+        phone_number_type:
+          oneOf:
+          - $ref: '#/components/schemas/PhoneNumberTypeEnum'
+          - type: 'null'
+          description: The type of phone number.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The PhoneNumber Object
+
+        ### Description
+
+        The `PhoneNumber` object is used to represent a candidate''s phone number.
+
+        ### Usage Example
+
+        Fetch from the `GET Candidate` endpoint and view their phone numbers.'
+      title: PhoneNumberRequest
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    EmailAddress:
+      type: object
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        value:
+          type:
+          - string
+          - 'null'
+          format: email
+          description: The email address.
+        email_address_type:
+          oneOf:
+          - $ref: '#/components/schemas/EmailAddressTypeEnum'
+          - type: 'null'
+          description: The type of email address.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+      description: '# The EmailAddress Object
+
+        ### Description
+
+        The `EmailAddress` object is used to represent a candidate''s email address.
+
+        ### Usage Example
+
+        Fetch from the `GET Candidate` endpoint and view their email addresses.'
+      title: EmailAddress
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    CandidateResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/Candidate'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: CandidateResponse
+    CandidateRequest:
       type: object
       properties:
         first_name:
@@ -1134,21 +1112,31 @@ components:
         ### Usage Example
 
         Fetch from the `LIST Candidates` endpoint and filter by `ID` to show all candidates.'
-      title: PatchedCandidateRequest
-    DebugModelLogSummary:
+      title: CandidateRequest
+    MetaResponse:
       type: object
       properties:
-        url:
-          type: string
-        method:
-          type: string
-        status_code:
-          type: integer
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
       required:
-      - url
-      - method
-      - status_code
-      title: DebugModelLogSummary
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
     EmailAddressRequest:
       type: object
       properties:
@@ -1185,6 +1173,18 @@ components:
 
         Fetch from the `GET Candidate` endpoint and view their email addresses.'
       title: EmailAddressRequest
+    CandidateFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: CandidateFieldMappings
   securitySchemes:
     tokenAuth:
       type: http

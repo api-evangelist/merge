@@ -197,77 +197,6 @@ paths:
                 $ref: '#/components/schemas/ExternalTargetFieldAPIResponse'
 components:
   schemas:
-    FieldMappingApiInstanceRemoteField:
-      type: object
-      properties:
-        remote_key_name:
-          type:
-          - string
-          - 'null'
-        schema:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        remote_endpoint_info:
-          $ref: '#/components/schemas/FieldMappingApiInstanceRemoteFieldRemoteEndpointInfo'
-      required:
-      - remote_key_name
-      - schema
-      - remote_endpoint_info
-      title: FieldMappingApiInstanceRemoteField
-    PatchedEditFieldMappingRequest:
-      type: object
-      properties:
-        remote_field_traversal_path:
-          type: array
-          items:
-            description: Any type
-          description: The field traversal path of the remote field listed when you hit the GET /remote-fields endpoint.
-        remote_method:
-          type: string
-          description: The method of the remote endpoint where the remote field is coming from.
-        remote_url_path:
-          type: string
-          description: The path of the remote endpoint where the remote field is coming from.
-        jmes_path:
-          type: string
-          description: 'DEPRECATED: Use ''advanced_mapping_expression'' instead.'
-        advanced_mapping_expression:
-          type: string
-          description: A JSONata expression used to transform the remote field data.
-      title: PatchedEditFieldMappingRequest
-    DebugModeLog:
-      type: object
-      properties:
-        log_id:
-          type: string
-        dashboard_view:
-          type: string
-        log_summary:
-          $ref: '#/components/schemas/DebugModelLogSummary'
-      required:
-      - log_id
-      - dashboard_view
-      - log_summary
-      title: DebugModeLog
-    RemoteEndpointInfo:
-      type: object
-      properties:
-        method:
-          type: string
-        url_path:
-          type: string
-        field_traversal_path:
-          type: array
-          items:
-            description: Any type
-      required:
-      - method
-      - url_path
-      - field_traversal_path
-      title: RemoteEndpointInfo
     RemoteFieldAPI:
       type: object
       properties:
@@ -321,48 +250,113 @@ components:
       - detail
       - problem_type
       title: ErrorValidationProblem
-    RemoteFieldApiCoverage:
-      oneOf:
-      - type: integer
-      - type: number
-        format: double
-      title: RemoteFieldApiCoverage
-    FieldMappingApiInstanceTargetField:
+    WarningValidationProblem:
       type: object
       properties:
-        name:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
           type: string
-        description:
+        detail:
           type: string
-        is_organization_wide:
+        problem_type:
+          type: string
+        block_merge_link:
           type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
       required:
-      - name
-      - description
-      - is_organization_wide
-      title: FieldMappingApiInstanceTargetField
-    FieldMappingInstanceResponse:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    ValidationProblemSource:
       type: object
       properties:
-        model:
-          $ref: '#/components/schemas/FieldMappingApiInstance'
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/WarningValidationProblem'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorValidationProblem'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/DebugModeLog'
+        pointer:
+          type: string
       required:
-      - model
-      - warnings
-      - errors
-      title: FieldMappingInstanceResponse
+      - pointer
+      title: ValidationProblemSource
+    FieldMappingApiInstance:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        is_integration_wide:
+          type: boolean
+        target_field:
+          oneOf:
+          - $ref: '#/components/schemas/FieldMappingApiInstanceTargetField'
+          - type: 'null'
+        remote_field:
+          oneOf:
+          - $ref: '#/components/schemas/FieldMappingApiInstanceRemoteField'
+          - type: 'null'
+        jmes_path:
+          type:
+          - string
+          - 'null'
+        advanced_mapping_expression:
+          type:
+          - string
+          - 'null'
+      title: FieldMappingApiInstance
+    RemoteEndpointInfo:
+      type: object
+      properties:
+        method:
+          type: string
+        url_path:
+          type: string
+        field_traversal_path:
+          type: array
+          items:
+            description: Any type
+      required:
+      - method
+      - url_path
+      - field_traversal_path
+      title: RemoteEndpointInfo
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    FieldMappingApiInstanceRemoteFieldRemoteEndpointInfo:
+      type: object
+      properties:
+        method:
+          type:
+          - string
+          - 'null'
+        url_path:
+          type:
+          - string
+          - 'null'
+        field_traversal_path:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+      required:
+      - method
+      - url_path
+      - field_traversal_path
+      title: FieldMappingApiInstanceRemoteFieldRemoteEndpointInfo
     RemoteFieldAPIResponse:
       type: object
       properties:
@@ -431,6 +425,47 @@ components:
           items:
             $ref: '#/components/schemas/RemoteFieldAPI'
       title: RemoteFieldAPIResponse
+    FieldMappingApiInstanceRemoteField:
+      type: object
+      properties:
+        remote_key_name:
+          type:
+          - string
+          - 'null'
+        schema:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        remote_endpoint_info:
+          $ref: '#/components/schemas/FieldMappingApiInstanceRemoteFieldRemoteEndpointInfo'
+      required:
+      - remote_key_name
+      - schema
+      - remote_endpoint_info
+      title: FieldMappingApiInstanceRemoteField
+    PatchedEditFieldMappingRequest:
+      type: object
+      properties:
+        remote_field_traversal_path:
+          type: array
+          items:
+            description: Any type
+          description: The field traversal path of the remote field listed when you hit the GET /remote-fields endpoint.
+        remote_method:
+          type: string
+          description: The method of the remote endpoint where the remote field is coming from.
+        remote_url_path:
+          type: string
+          description: The path of the remote endpoint where the remote field is coming from.
+        jmes_path:
+          type: string
+          description: 'DEPRECATED: Use ''advanced_mapping_expression'' instead.'
+        advanced_mapping_expression:
+          type: string
+          description: A JSONata expression used to transform the remote field data.
+      title: PatchedEditFieldMappingRequest
     ExternalTargetFieldAPI:
       type: object
       properties:
@@ -447,14 +482,6 @@ components:
           - string
           - 'null'
       title: ExternalTargetFieldAPI
-    ValidationProblemSource:
-      type: object
-      properties:
-        pointer:
-          type: string
-      required:
-      - pointer
-      title: ValidationProblemSource
     AdvancedMetadata:
       type: object
       properties:
@@ -476,31 +503,26 @@ components:
       required:
       - id
       title: AdvancedMetadata
-    FieldMappingApiInstance:
+    RemoteFieldApiCoverage:
+      oneOf:
+      - type: integer
+      - type: number
+        format: double
+      title: RemoteFieldApiCoverage
+    FieldMappingApiInstanceTargetField:
       type: object
       properties:
-        id:
+        name:
           type: string
-          format: uuid
-        is_integration_wide:
+        description:
+          type: string
+        is_organization_wide:
           type: boolean
-        target_field:
-          oneOf:
-          - $ref: '#/components/schemas/FieldMappingApiInstanceTargetField'
-          - type: 'null'
-        remote_field:
-          oneOf:
-          - $ref: '#/components/schemas/FieldMappingApiInstanceRemoteField'
-          - type: 'null'
-        jmes_path:
-          type:
-          - string
-          - 'null'
-        advanced_mapping_expression:
-          type:
-          - string
-          - 'null'
-      title: FieldMappingApiInstance
+      required:
+      - name
+      - description
+      - is_organization_wide
+      title: FieldMappingApiInstanceTargetField
     CreateFieldMappingRequest:
       type: object
       properties:
@@ -543,64 +565,42 @@ components:
       - remote_url_path
       - common_model_name
       title: CreateFieldMappingRequest
-    FieldMappingApiInstanceRemoteFieldRemoteEndpointInfo:
+    DebugModeLog:
       type: object
       properties:
-        method:
-          type:
-          - string
-          - 'null'
-        url_path:
-          type:
-          - string
-          - 'null'
-        field_traversal_path:
-          type:
-          - array
-          - 'null'
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    FieldMappingInstanceResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/FieldMappingApiInstance'
+        warnings:
+          type: array
           items:
-            type: string
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
       required:
-      - method
-      - url_path
-      - field_traversal_path
-      title: FieldMappingApiInstanceRemoteFieldRemoteEndpointInfo
-    WarningValidationProblem:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
-          type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
-      required:
-      - title
-      - detail
-      - problem_type
-      title: WarningValidationProblem
-    DebugModelLogSummary:
-      type: object
-      properties:
-        url:
-          type: string
-        method:
-          type: string
-        status_code:
-          type: integer
-      required:
-      - url
-      - method
-      - status_code
-      title: DebugModelLogSummary
+      - model
+      - warnings
+      - errors
+      title: FieldMappingInstanceResponse
     ExternalTargetFieldAPIResponse:
       type: object
       properties:

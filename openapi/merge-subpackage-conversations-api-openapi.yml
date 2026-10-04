@@ -234,12 +234,7 @@ paths:
                 $ref: '#/components/schemas/PaginatedMemberList'
 components:
   schemas:
-    ConversationsIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - members
-      title: ConversationsIdGetParametersExpandSchemaItems
-    PaginatedConversationList:
+    PaginatedMemberList:
       type: object
       properties:
         next:
@@ -253,8 +248,13 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/Conversation'
-      title: PaginatedConversationList
+            $ref: '#/components/schemas/Member'
+      title: PaginatedMemberList
+    ConversationsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - members
+      title: ConversationsIdGetParametersExpandSchemaItems
     ConversationsConversationIdMembersGetParametersExpandSchemaItems:
       type: string
       enum:
@@ -273,6 +273,11 @@ components:
           additionalProperties:
             description: Any type
       title: MemberFieldMappings
+    ConversationsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - members
+      title: ConversationsGetParametersExpandSchemaItems
     ConversationFieldMappings:
       type: object
       properties:
@@ -285,6 +290,84 @@ components:
           additionalProperties:
             description: Any type
       title: ConversationFieldMappings
+    Member:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        user:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The user that is a member of the conversation. Only populated if the member is a user.
+        group:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The group that is a member of the conversation. Only populated if the member is a group.
+        remote_created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's conversation was created.
+        remote_updated_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the third party's conversation was updated.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/MemberFieldMappings'
+          - type: 'null'
+        remote_data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RemoteData'
+      description: '# The Member Object
+
+        ### Description
+
+        The `Member` object is used to represent a member within the Chat account.
+
+
+        ### Usage Example
+
+        Fetch from the `GET /api/chat/v1/members` endpoint and view their members.'
+      title: Member
+    TypeEnum:
+      type: string
+      enum:
+      - PRIVATE_INTERNAL
+      - PRIVATE_EXTERNAL
+      - PUBLIC_INTERNAL
+      - PUBLIC_EXTERNAL
+      - ONE_ON_ONE_CHAT
+      - GROUP_CHAT
+      - MEETING_CHAT
+      title: TypeEnum
     Conversation:
       type: object
       properties:
@@ -366,22 +449,6 @@ components:
 
         Fetch from the `GET /api/chat/v1/conversations` endpoint and view their conversations.'
       title: Conversation
-    TypeEnum:
-      type: string
-      enum:
-      - PRIVATE_INTERNAL
-      - PRIVATE_EXTERNAL
-      - PUBLIC_INTERNAL
-      - PUBLIC_EXTERNAL
-      - ONE_ON_ONE_CHAT
-      - GROUP_CHAT
-      - MEETING_CHAT
-      title: TypeEnum
-    ConversationsGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - members
-      title: ConversationsGetParametersExpandSchemaItems
     RemoteData:
       type: object
       properties:
@@ -403,7 +470,7 @@ components:
 
         TODO'
       title: RemoteData
-    PaginatedMemberList:
+    PaginatedConversationList:
       type: object
       properties:
         next:
@@ -417,75 +484,8 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/Member'
-      title: PaginatedMemberList
-    Member:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        user:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The user that is a member of the conversation. Only populated if the member is a user.
-        group:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The group that is a member of the conversation. Only populated if the member is a group.
-        remote_created_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: When the third party's conversation was created.
-        remote_updated_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: When the third party's conversation was updated.
-        remote_was_deleted:
-          type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-        field_mappings:
-          oneOf:
-          - $ref: '#/components/schemas/MemberFieldMappings'
-          - type: 'null'
-        remote_data:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/RemoteData'
-      description: '# The Member Object
-
-        ### Description
-
-        The `Member` object is used to represent a member within the Chat account.
-
-
-        ### Usage Example
-
-        Fetch from the `GET /api/chat/v1/members` endpoint and view their members.'
-      title: Member
+            $ref: '#/components/schemas/Conversation'
+      title: PaginatedConversationList
   securitySchemes:
     tokenAuth:
       type: http

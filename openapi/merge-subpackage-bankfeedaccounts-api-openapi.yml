@@ -183,61 +183,30 @@ paths:
                 $ref: '#/components/schemas/MetaResponse'
 components:
   schemas:
-    ValidationProblemSource:
+    MetaResponse:
       type: object
       properties:
-        pointer:
-          type: string
-      required:
-      - pointer
-      title: ValidationProblemSource
-    DebugModeLog:
-      type: object
-      properties:
-        log_id:
-          type: string
-        dashboard_view:
-          type: string
-        log_summary:
-          $ref: '#/components/schemas/DebugModelLogSummary'
-      required:
-      - log_id
-      - dashboard_view
-      - log_summary
-      title: DebugModeLog
-    LinkedAccountStatus:
-      type: object
-      properties:
-        linked_account_status:
-          type: string
-        can_make_request:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
           type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
       required:
-      - linked_account_status
-      - can_make_request
-      title: LinkedAccountStatus
-    BankFeedAccountResponse:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/BankFeedAccount'
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/WarningValidationProblem'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorValidationProblem'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/DebugModeLog'
-      required:
-      - model
-      - warnings
-      - errors
-      title: BankFeedAccountResponse
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
     ErrorValidationProblem:
       type: object
       properties:
@@ -260,6 +229,48 @@ components:
       - detail
       - problem_type
       title: ErrorValidationProblem
+    BankFeedAccountAccountTypeEnum:
+      type: string
+      enum:
+      - BANK
+      - CREDIT_CARD
+      title: BankFeedAccountAccountTypeEnum
+    FeedStatusEnum:
+      type: string
+      enum:
+      - ACTIVE
+      - INACTIVE
+      title: FeedStatusEnum
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
     BankFeedAccount:
       type: object
       properties:
@@ -355,24 +366,6 @@ components:
 
         Fetch from the `GET BankFeedAccount` endpoint to view details of a bank feed account.'
       title: BankFeedAccount
-    BankFeedAccountFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: BankFeedAccountFieldMappings
-    BankFeedAccountAccountTypeEnum:
-      type: string
-      enum:
-      - BANK
-      - CREDIT_CARD
-      title: BankFeedAccountAccountTypeEnum
     BankFeedAccountEndpointRequest:
       type: object
       properties:
@@ -381,6 +374,95 @@ components:
       required:
       - model
       title: BankFeedAccountEndpointRequest
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    BankFeedAccountRequest:
+      type: object
+      properties:
+        source_account_id:
+          type:
+          - string
+          - 'null'
+          description: The unique identifier of the source account from our customer’s platform.
+        target_account_id:
+          type:
+          - string
+          - 'null'
+          description: The unique identifier of the target account from the third party software.
+        source_account_name:
+          type:
+          - string
+          - 'null'
+          description: The name of the source account as stored in our customer’s platform.
+        source_account_number:
+          type:
+          - string
+          - 'null'
+          description: The human-readable account number of the source account as stored in our customer’s platform.
+        target_account_name:
+          type:
+          - string
+          - 'null'
+          description: The name of the target account from the third party software.
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: The currency code of the bank feed. The currency code in ISO 4217 format.
+        feed_status:
+          oneOf:
+          - $ref: '#/components/schemas/FeedStatusEnum'
+          - type: 'null'
+          description: The status of the bank feed.
+        feed_start_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The start date of the bank feed’s transactions.
+        source_account_balance:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The current balance of funds in the source account.
+        account_type:
+          oneOf:
+          - $ref: '#/components/schemas/BankFeedAccountAccountTypeEnum'
+          - type: 'null'
+          description: The type of the account.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The BankFeedAccount Object
+
+        ### Description
+
+        The `BankFeedAccount` object represents a bank feed account, detailing various attributes including account identifiers, names, currency, and balance information. This object is central to managing and tracking bank feed accounts within the system.
+
+
+        ### Usage Example
+
+        Fetch from the `GET BankFeedAccount` endpoint to view details of a bank feed account.'
+      title: BankFeedAccountRequest
     TransactionCurrencyEnum:
       type: string
       enum:
@@ -692,130 +774,28 @@ components:
       - ZWL
       description: The currency code in ISO 4217 format.
       title: TransactionCurrencyEnum
-    MetaResponse:
+    BankFeedAccountResponse:
       type: object
       properties:
-        request_schema:
-          type: object
-          additionalProperties:
-            description: Any type
-        status:
-          $ref: '#/components/schemas/LinkedAccountStatus'
-        has_conditional_params:
-          type: boolean
-        has_required_linked_account_params:
-          type: boolean
-        remote_fields:
+        model:
+          $ref: '#/components/schemas/BankFeedAccount'
+        warnings:
           type: array
           items:
-            type: string
-            format: uuid
-          description: Remote field values to populate
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
       required:
-      - request_schema
-      - has_conditional_params
-      - has_required_linked_account_params
-      title: MetaResponse
-    BankFeedAccountRequest:
-      type: object
-      properties:
-        source_account_id:
-          type:
-          - string
-          - 'null'
-          description: The unique identifier of the source account from our customer’s platform.
-        target_account_id:
-          type:
-          - string
-          - 'null'
-          description: The unique identifier of the target account from the third party software.
-        source_account_name:
-          type:
-          - string
-          - 'null'
-          description: The name of the source account as stored in our customer’s platform.
-        source_account_number:
-          type:
-          - string
-          - 'null'
-          description: The human-readable account number of the source account as stored in our customer’s platform.
-        target_account_name:
-          type:
-          - string
-          - 'null'
-          description: The name of the target account from the third party software.
-        currency:
-          oneOf:
-          - $ref: '#/components/schemas/TransactionCurrencyEnum'
-          - type: 'null'
-          description: The currency code of the bank feed. The currency code in ISO 4217 format.
-        feed_status:
-          oneOf:
-          - $ref: '#/components/schemas/FeedStatusEnum'
-          - type: 'null'
-          description: The status of the bank feed.
-        feed_start_date:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The start date of the bank feed’s transactions.
-        source_account_balance:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: The current balance of funds in the source account.
-        account_type:
-          oneOf:
-          - $ref: '#/components/schemas/BankFeedAccountAccountTypeEnum'
-          - type: 'null'
-          description: The type of the account.
-        integration_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        linked_account_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-      description: '# The BankFeedAccount Object
-
-        ### Description
-
-        The `BankFeedAccount` object represents a bank feed account, detailing various attributes including account identifiers, names, currency, and balance information. This object is central to managing and tracking bank feed accounts within the system.
-
-
-        ### Usage Example
-
-        Fetch from the `GET BankFeedAccount` endpoint to view details of a bank feed account.'
-      title: BankFeedAccountRequest
-    WarningValidationProblem:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
-          type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
-      required:
-      - title
-      - detail
-      - problem_type
-      title: WarningValidationProblem
+      - model
+      - warnings
+      - errors
+      title: BankFeedAccountResponse
     DebugModelLogSummary:
       type: object
       properties:
@@ -830,6 +810,22 @@ components:
       - method
       - status_code
       title: DebugModelLogSummary
+    PaginatedBankFeedAccountList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BankFeedAccount'
+      title: PaginatedBankFeedAccountList
     RemoteData:
       type: object
       properties:
@@ -851,28 +847,32 @@ components:
 
         TODO'
       title: RemoteData
-    FeedStatusEnum:
-      type: string
-      enum:
-      - ACTIVE
-      - INACTIVE
-      title: FeedStatusEnum
-    PaginatedBankFeedAccountList:
+    DebugModeLog:
       type: object
       properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/BankFeedAccount'
-      title: PaginatedBankFeedAccountList
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    BankFeedAccountFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: BankFeedAccountFieldMappings
   securitySchemes:
     tokenAuth:
       type: http

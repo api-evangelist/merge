@@ -273,50 +273,47 @@ paths:
                 $ref: '#/components/schemas/MetaResponse'
 components:
   schemas:
-    ValidationProblemSource:
-      type: object
-      properties:
-        pointer:
-          type: string
-      required:
-      - pointer
-      title: ValidationProblemSource
-    DebugModeLog:
-      type: object
-      properties:
-        log_id:
-          type: string
-        dashboard_view:
-          type: string
-        log_summary:
-          $ref: '#/components/schemas/DebugModelLogSummary'
-      required:
-      - log_id
-      - dashboard_view
-      - log_summary
-      title: DebugModeLog
-    LinkedAccountStatus:
-      type: object
-      properties:
-        linked_account_status:
-          type: string
-        can_make_request:
-          type: boolean
-      required:
-      - linked_account_status
-      - can_make_request
-      title: LinkedAccountStatus
-    TimesheetEntriesGetParametersOrderBy:
-      type: string
-      enum:
-      - -start_time
-      - start_time
-      title: TimesheetEntriesGetParametersOrderBy
-    TimesheetEntriesGetParametersExpandSchemaItems:
+    TimesheetEntriesIdGetParametersExpandSchemaItems:
       type: string
       enum:
       - employee
-      title: TimesheetEntriesGetParametersExpandSchemaItems
+      title: TimesheetEntriesIdGetParametersExpandSchemaItems
+    TimesheetEntryFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: TimesheetEntryFieldMappings
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
     TimesheetEntryResponse:
       type: object
       properties:
@@ -339,6 +336,82 @@ components:
       - warnings
       - errors
       title: TimesheetEntryResponse
+    TimesheetEntryEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/TimesheetEntryRequest'
+      required:
+      - model
+      title: TimesheetEntryEndpointRequest
+    ErrorValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
+    WarningValidationProblem:
+      type: object
+      properties:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
+          type: string
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
+      required:
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    PaginatedTimesheetEntryList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimesheetEntry'
+      title: PaginatedTimesheetEntryList
     TimesheetEntry:
       type: object
       properties:
@@ -407,88 +480,17 @@ components:
 
         GET and POST Timesheet Entries'
       title: TimesheetEntry
-    PaginatedTimesheetEntryList:
+    LinkedAccountStatus:
       type: object
       properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/TimesheetEntry'
-      title: PaginatedTimesheetEntryList
-    TimesheetEntryEndpointRequest:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/TimesheetEntryRequest'
-      required:
-      - model
-      title: TimesheetEntryEndpointRequest
-    MetaResponse:
-      type: object
-      properties:
-        request_schema:
-          type: object
-          additionalProperties:
-            description: Any type
-        status:
-          $ref: '#/components/schemas/LinkedAccountStatus'
-        has_conditional_params:
+        linked_account_status:
+          type: string
+        can_make_request:
           type: boolean
-        has_required_linked_account_params:
-          type: boolean
-        remote_fields:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: Remote field values to populate
       required:
-      - request_schema
-      - has_conditional_params
-      - has_required_linked_account_params
-      title: MetaResponse
-    TimesheetEntryFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: TimesheetEntryFieldMappings
-    WarningValidationProblem:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
-          type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
-      required:
-      - title
-      - detail
-      - problem_type
-      title: WarningValidationProblem
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
     TimesheetEntryRequest:
       type: object
       properties:
@@ -540,6 +542,17 @@ components:
 
         GET and POST Timesheet Entries'
       title: TimesheetEntryRequest
+    TimesheetEntriesGetParametersOrderBy:
+      type: string
+      enum:
+      - -start_time
+      - start_time
+      title: TimesheetEntriesGetParametersOrderBy
+    TimesheetEntriesGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - employee
+      title: TimesheetEntriesGetParametersExpandSchemaItems
     DebugModelLogSummary:
       type: object
       properties:
@@ -575,33 +588,20 @@ components:
 
         TODO'
       title: RemoteData
-    TimesheetEntriesIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - employee
-      title: TimesheetEntriesIdGetParametersExpandSchemaItems
-    ErrorValidationProblem:
+    DebugModeLog:
       type: object
       properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
+        log_id:
           type: string
-        detail:
+        dashboard_view:
           type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
       required:
-      - title
-      - detail
-      - problem_type
-      title: ErrorValidationProblem
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
   securitySchemes:
     tokenAuth:
       type: http

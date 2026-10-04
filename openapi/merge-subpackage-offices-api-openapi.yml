@@ -147,6 +147,22 @@ paths:
                 $ref: '#/components/schemas/Office'
 components:
   schemas:
+    PaginatedOfficeList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Office'
+      title: PaginatedOfficeList
     RemoteData:
       type: object
       properties:
@@ -232,22 +248,6 @@ components:
 
         Fetch from the `LIST Offices` endpoint and view the offices within a company.'
       title: Office
-    PaginatedOfficeList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Office'
-      title: PaginatedOfficeList
   securitySchemes:
     tokenAuth:
       type: http

@@ -205,6 +205,29 @@ components:
       - created_at
       description: Request and response shape for creating or regenerating an access key.
       title: AccessKeyCreate
+    PaginatedAccessKeyList:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccessKey'
+      required:
+      - count
+      - next
+      - previous
+      - results
+      title: PaginatedAccessKeyList
     AccessKey:
       type: object
       properties:
@@ -262,29 +285,6 @@ components:
       - created_at
       description: Access key shape returned by list and detail endpoints.
       title: AccessKey
-    PaginatedAccessKeyList:
-      type: object
-      properties:
-        count:
-          type: integer
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/AccessKey'
-      required:
-      - count
-      - next
-      - previous
-      - results
-      title: PaginatedAccessKeyList
   securitySchemes:
     tokenAuth:
       type: http

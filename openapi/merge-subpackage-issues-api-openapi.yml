@@ -1179,6 +1179,22 @@ paths:
     - url: https://api-ap.merge.dev/api
 components:
   schemas:
+    PaginatedIssueList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Issue'
+      title: PaginatedIssueList
     IssueStatusEnum:
       type: string
       enum:
@@ -1225,22 +1241,6 @@ components:
       required:
       - error_description
       title: Issue
-    PaginatedIssueList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Issue'
-      title: PaginatedIssueList
     IssueStatusEnum_2:
       type: string
       enum:

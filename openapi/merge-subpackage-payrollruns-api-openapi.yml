@@ -208,6 +208,29 @@ paths:
                 $ref: '#/components/schemas/PayrollRun'
 components:
   schemas:
+    RunTypeEnum:
+      type: string
+      enum:
+      - REGULAR
+      - OFF_CYCLE
+      - CORRECTION
+      - TERMINATION
+      - SIGN_ON_BONUS
+      title: RunTypeEnum
+    PayrollRunsIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - run_state
+      - run_state,run_type
+      - run_type
+      title: PayrollRunsIdGetParametersRemoteFields
+    PayrollRunsGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - run_state
+      - run_state,run_type
+      - run_type
+      title: PayrollRunsGetParametersShowEnumOrigins
     PayrollRunsGetParametersRunType:
       type: string
       enum:
@@ -217,13 +240,6 @@ components:
       - SIGN_ON_BONUS
       - TERMINATION
       title: PayrollRunsGetParametersRunType
-    PayrollRunsGetParametersRemoteFields:
-      type: string
-      enum:
-      - run_state
-      - run_state,run_type
-      - run_type
-      title: PayrollRunsGetParametersRemoteFields
     PayrollRun:
       type: object
       properties:
@@ -295,6 +311,13 @@ components:
 
         Fetch from the `LIST PayrollRuns` endpoint and filter by `ID` to show all payroll runs.'
       title: PayrollRun
+    PayrollRunsIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - run_state
+      - run_state,run_type
+      - run_type
+      title: PayrollRunsIdGetParametersShowEnumOrigins
     PaginatedPayrollRunList:
       type: object
       properties:
@@ -311,29 +334,22 @@ components:
           items:
             $ref: '#/components/schemas/PayrollRun'
       title: PaginatedPayrollRunList
-    PayrollRunsIdGetParametersRemoteFields:
+    RunStateEnum:
+      type: string
+      enum:
+      - PAID
+      - DRAFT
+      - APPROVED
+      - FAILED
+      - CLOSED
+      title: RunStateEnum
+    PayrollRunsGetParametersRemoteFields:
       type: string
       enum:
       - run_state
       - run_state,run_type
       - run_type
-      title: PayrollRunsIdGetParametersRemoteFields
-    RunTypeEnum:
-      type: string
-      enum:
-      - REGULAR
-      - OFF_CYCLE
-      - CORRECTION
-      - TERMINATION
-      - SIGN_ON_BONUS
-      title: RunTypeEnum
-    PayrollRunsGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - run_state
-      - run_state,run_type
-      - run_type
-      title: PayrollRunsGetParametersShowEnumOrigins
+      title: PayrollRunsGetParametersRemoteFields
     PayrollRunFieldMappings:
       type: object
       properties:
@@ -346,22 +362,6 @@ components:
           additionalProperties:
             description: Any type
       title: PayrollRunFieldMappings
-    RunStateEnum:
-      type: string
-      enum:
-      - PAID
-      - DRAFT
-      - APPROVED
-      - FAILED
-      - CLOSED
-      title: RunStateEnum
-    PayrollRunsIdGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - run_state
-      - run_state,run_type
-      - run_type
-      title: PayrollRunsIdGetParametersShowEnumOrigins
     RemoteData:
       type: object
       properties:

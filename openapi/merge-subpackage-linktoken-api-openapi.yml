@@ -328,31 +328,6 @@ paths:
     - url: https://api-ap.merge.dev/api
 components:
   schemas:
-    ModelPermissionDeserializerRequest:
-      type: object
-      properties:
-        is_enabled:
-          type: boolean
-      title: ModelPermissionDeserializerRequest
-    IndividualCommonModelScopeDeserializerRequest:
-      type: object
-      properties:
-        model_name:
-          type: string
-        model_permissions:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/ModelPermissionDeserializerRequest'
-        field_permissions:
-          $ref: '#/components/schemas/FieldPermissionDeserializerRequest'
-      required:
-      - model_name
-      title: IndividualCommonModelScopeDeserializerRequest
-    CompletedAccountInitialScreenEnum:
-      type: string
-      enum:
-      - SELECTIVE_SYNC
-      title: CompletedAccountInitialScreenEnum
     CommonModelScopesBodyRequest:
       type: object
       properties:
@@ -371,6 +346,18 @@ components:
       - enabled_actions
       - disabled_fields
       title: CommonModelScopesBodyRequest
+    CategoriesEnum:
+      type: string
+      enum:
+      - hris
+      - ats
+      - accounting
+      - ticketing
+      - crm
+      - mktg
+      - filestorage
+      - knowledgebase
+      title: CategoriesEnum
     EndUserDetailsRequest:
       type: object
       properties:
@@ -470,6 +457,26 @@ components:
       - end_user_origin_id
       - categories
       title: EndUserDetailsRequest
+    ModelPermissionDeserializerRequest:
+      type: object
+      properties:
+        is_enabled:
+          type: boolean
+      title: ModelPermissionDeserializerRequest
+    IndividualCommonModelScopeDeserializerRequest:
+      type: object
+      properties:
+        model_name:
+          type: string
+        model_permissions:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/ModelPermissionDeserializerRequest'
+        field_permissions:
+          $ref: '#/components/schemas/FieldPermissionDeserializerRequest'
+      required:
+      - model_name
+      title: IndividualCommonModelScopeDeserializerRequest
     LinkToken:
       type: object
       properties:
@@ -482,30 +489,23 @@ components:
       required:
       - link_token
       title: LinkToken
-    EnabledActionsEnum:
-      type: string
-      enum:
-      - READ
-      - WRITE
-      title: EnabledActionsEnum
-    CategoriesEnum:
-      type: string
-      enum:
-      - hris
-      - ats
-      - accounting
-      - ticketing
-      - crm
-      - mktg
-      - filestorage
-      - knowledgebase
-      title: CategoriesEnum
     LanguageEnum:
       type: string
       enum:
       - en
       - de
       title: LanguageEnum
+    EnabledActionsEnum:
+      type: string
+      enum:
+      - READ
+      - WRITE
+      title: EnabledActionsEnum
+    CompletedAccountInitialScreenEnum:
+      type: string
+      enum:
+      - SELECTIVE_SYNC
+      title: CompletedAccountInitialScreenEnum
     FieldPermissionDeserializerRequest:
       type: object
       properties:
@@ -527,12 +527,33 @@ components:
           type: string
           description: URL that opens a hosted authentication page. Share this with the user so they can connect their account in a browser.
       title: linkToken_createForRegisteredUser_Response_201
-    CompletedAccountInitialScreenEnum_2:
+    CategoriesEnum_2:
       type: string
       enum:
-      - SELECTIVE_SYNC
-      description: '* `SELECTIVE_SYNC` - SELECTIVE_SYNC'
-      title: CompletedAccountInitialScreenEnum
+      - hris
+      - ats
+      - accounting
+      - ticketing
+      - crm
+      - mktg
+      - filestorage
+      - knowledgebase
+      description: '* `hris` - hris
+
+        * `ats` - ats
+
+        * `accounting` - accounting
+
+        * `ticketing` - ticketing
+
+        * `crm` - crm
+
+        * `mktg` - mktg
+
+        * `filestorage` - filestorage
+
+        * `knowledgebase` - knowledgebase'
+      title: CategoriesEnum
     EndUserDetailsRequest_2:
       type: object
       properties:
@@ -636,42 +657,6 @@ components:
       - end_user_origin_id
       - categories
       title: EndUserDetailsRequest
-    EnabledActionsEnum_2:
-      type: string
-      enum:
-      - READ
-      - WRITE
-      description: '* `READ` - READ
-
-        * `WRITE` - WRITE'
-      title: EnabledActionsEnum
-    CategoriesEnum_2:
-      type: string
-      enum:
-      - hris
-      - ats
-      - accounting
-      - ticketing
-      - crm
-      - mktg
-      - filestorage
-      - knowledgebase
-      description: '* `hris` - hris
-
-        * `ats` - ats
-
-        * `accounting` - accounting
-
-        * `ticketing` - ticketing
-
-        * `crm` - crm
-
-        * `mktg` - mktg
-
-        * `filestorage` - filestorage
-
-        * `knowledgebase` - knowledgebase'
-      title: CategoriesEnum
     LanguageEnum_2:
       type: string
       enum:
@@ -681,6 +666,21 @@ components:
 
         * `de` - de'
       title: LanguageEnum
+    EnabledActionsEnum_2:
+      type: string
+      enum:
+      - READ
+      - WRITE
+      description: '* `READ` - READ
+
+        * `WRITE` - WRITE'
+      title: EnabledActionsEnum
+    CompletedAccountInitialScreenEnum_2:
+      type: string
+      enum:
+      - SELECTIVE_SYNC
+      description: '* `SELECTIVE_SYNC` - SELECTIVE_SYNC'
+      title: CompletedAccountInitialScreenEnum
   securitySchemes:
     tokenAuth:
       type: http

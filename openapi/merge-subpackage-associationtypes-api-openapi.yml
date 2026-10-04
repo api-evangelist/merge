@@ -257,28 +257,52 @@ paths:
                 $ref: '#/components/schemas/MetaResponse'
 components:
   schemas:
-    ValidationProblemSource:
+    MetaResponse:
       type: object
       properties:
-        pointer:
-          type: string
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
       required:
-      - pointer
-      title: ValidationProblemSource
-    DebugModeLog:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    ErrorValidationProblem:
       type: object
       properties:
-        log_id:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
           type: string
-        dashboard_view:
+        detail:
           type: string
-        log_summary:
-          $ref: '#/components/schemas/DebugModelLogSummary'
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
       required:
-      - log_id
-      - dashboard_view
-      - log_summary
-      title: DebugModeLog
+      - title
+      - detail
+      - problem_type
+      title: ErrorValidationProblem
     CardinalityEnum:
       type: string
       enum:
@@ -287,67 +311,50 @@ components:
       - MANY_TO_MANY
       - ONE_TO_MANY
       title: CardinalityEnum
-    LinkedAccountStatus:
+    CRMAssociationTypeResponse:
       type: object
       properties:
-        linked_account_status:
-          type: string
-        can_make_request:
-          type: boolean
-      required:
-      - linked_account_status
-      - can_make_request
-      title: LinkedAccountStatus
-    PaginatedAssociationTypeList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
+        model:
+          $ref: '#/components/schemas/AssociationType'
+        warnings:
           type: array
           items:
-            $ref: '#/components/schemas/AssociationType'
-      title: PaginatedAssociationTypeList
-    AssociationTypeRequestRequest:
-      type: object
-      properties:
-        source_object_class:
-          $ref: '#/components/schemas/ObjectClassDescriptionRequest'
-        target_object_classes:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
           type: array
           items:
-            $ref: '#/components/schemas/ObjectClassDescriptionRequest'
-        remote_key_name:
-          type: string
-        display_name:
-          type: string
-        cardinality:
-          $ref: '#/components/schemas/CardinalityEnum'
-        is_required:
-          type: boolean
-          default: false
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
       required:
-      - source_object_class
-      - target_object_classes
-      - remote_key_name
-      title: AssociationTypeRequestRequest
-    ObjectClassDescriptionRequest:
+      - model
+      - warnings
+      - errors
+      title: CRMAssociationTypeResponse
+    WarningValidationProblem:
       type: object
       properties:
-        id:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
           type: string
-        origin_type:
-          $ref: '#/components/schemas/OriginTypeEnum'
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
       required:
-      - id
-      - origin_type
-      title: ObjectClassDescriptionRequest
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
     AssociationSubType:
       type: object
       properties:
@@ -368,6 +375,61 @@ components:
           - string
           - 'null'
       title: AssociationSubType
+    CustomObjectClassesCustomObjectClassIdAssociationTypesIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - target_object_classes
+      title: CustomObjectClassesCustomObjectClassIdAssociationTypesIdGetParametersExpandSchemaItems
+    ValidationProblemSource:
+      type: object
+      properties:
+        pointer:
+          type: string
+      required:
+      - pointer
+      title: ValidationProblemSource
+    CustomObjectClassesCustomObjectClassIdAssociationTypesGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - target_object_classes
+      title: CustomObjectClassesCustomObjectClassIdAssociationTypesGetParametersExpandSchemaItems
+    OriginTypeEnum:
+      type: string
+      enum:
+      - CUSTOM_OBJECT
+      - COMMON_MODEL
+      - REMOTE_ONLY_MODEL
+      title: OriginTypeEnum
+    CRMAssociationTypeEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/AssociationTypeRequestRequest'
+      required:
+      - model
+      title: CRMAssociationTypeEndpointRequest
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    ObjectClassDescriptionRequest:
+      type: object
+      properties:
+        id:
+          type: string
+        origin_type:
+          $ref: '#/components/schemas/OriginTypeEnum'
+      required:
+      - id
+      - origin_type
+      title: ObjectClassDescriptionRequest
     AssociationType:
       type: object
       properties:
@@ -420,92 +482,6 @@ components:
 
         TODO'
       title: AssociationType
-    CustomObjectClassesCustomObjectClassIdAssociationTypesGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - target_object_classes
-      title: CustomObjectClassesCustomObjectClassIdAssociationTypesGetParametersExpandSchemaItems
-    CRMAssociationTypeResponse:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/AssociationType'
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/WarningValidationProblem'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorValidationProblem'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/DebugModeLog'
-      required:
-      - model
-      - warnings
-      - errors
-      title: CRMAssociationTypeResponse
-    MetaResponse:
-      type: object
-      properties:
-        request_schema:
-          type: object
-          additionalProperties:
-            description: Any type
-        status:
-          $ref: '#/components/schemas/LinkedAccountStatus'
-        has_conditional_params:
-          type: boolean
-        has_required_linked_account_params:
-          type: boolean
-        remote_fields:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: Remote field values to populate
-      required:
-      - request_schema
-      - has_conditional_params
-      - has_required_linked_account_params
-      title: MetaResponse
-    WarningValidationProblem:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
-          type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
-      required:
-      - title
-      - detail
-      - problem_type
-      title: WarningValidationProblem
-    CRMAssociationTypeEndpointRequest:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/AssociationTypeRequestRequest'
-      required:
-      - model
-      title: CRMAssociationTypeEndpointRequest
-    CustomObjectClassesCustomObjectClassIdAssociationTypesIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - target_object_classes
-      title: CustomObjectClassesCustomObjectClassIdAssociationTypesIdGetParametersExpandSchemaItems
     DebugModelLogSummary:
       type: object
       properties:
@@ -520,35 +496,59 @@ components:
       - method
       - status_code
       title: DebugModelLogSummary
-    ErrorValidationProblem:
+    DebugModeLog:
       type: object
       properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
+        log_id:
           type: string
-        detail:
+        dashboard_view:
           type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
       required:
-      - title
-      - detail
-      - problem_type
-      title: ErrorValidationProblem
-    OriginTypeEnum:
-      type: string
-      enum:
-      - CUSTOM_OBJECT
-      - COMMON_MODEL
-      - REMOTE_ONLY_MODEL
-      title: OriginTypeEnum
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    PaginatedAssociationTypeList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssociationType'
+      title: PaginatedAssociationTypeList
+    AssociationTypeRequestRequest:
+      type: object
+      properties:
+        source_object_class:
+          $ref: '#/components/schemas/ObjectClassDescriptionRequest'
+        target_object_classes:
+          type: array
+          items:
+            $ref: '#/components/schemas/ObjectClassDescriptionRequest'
+        remote_key_name:
+          type: string
+        display_name:
+          type: string
+        cardinality:
+          $ref: '#/components/schemas/CardinalityEnum'
+        is_required:
+          type: boolean
+          default: false
+      required:
+      - source_object_class
+      - target_object_classes
+      - remote_key_name
+      title: AssociationTypeRequestRequest
   securitySchemes:
     tokenAuth:
       type: http

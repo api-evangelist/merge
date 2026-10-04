@@ -169,6 +169,32 @@ paths:
                 $ref: '#/components/schemas/IncomeStatement'
 components:
   schemas:
+    PaginatedIncomeStatementList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/IncomeStatement'
+      title: PaginatedIncomeStatementList
+    IncomeStatementsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - company
+      title: IncomeStatementsIdGetParametersExpandSchemaItems
+    IncomeStatementsGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - company
+      title: IncomeStatementsGetParametersExpandSchemaItems
     IncomeStatement:
       type: object
       properties:
@@ -325,11 +351,6 @@ components:
 
         Fetch from the `GET BalanceSheet` endpoint and view the balance sheet''s report items.'
       title: ReportItem
-    IncomeStatementsGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - company
-      title: IncomeStatementsGetParametersExpandSchemaItems
     TransactionCurrencyEnum:
       type: string
       enum:
@@ -641,39 +662,6 @@ components:
       - ZWL
       description: The currency code in ISO 4217 format.
       title: TransactionCurrencyEnum
-    PaginatedIncomeStatementList:
-      type: object
-      properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/IncomeStatement'
-      title: PaginatedIncomeStatementList
-    IncomeStatementFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: IncomeStatementFieldMappings
-    IncomeStatementsIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - company
-      title: IncomeStatementsIdGetParametersExpandSchemaItems
     RemoteData:
       type: object
       properties:
@@ -695,6 +683,18 @@ components:
 
         TODO'
       title: RemoteData
+    IncomeStatementFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: IncomeStatementFieldMappings
   securitySchemes:
     tokenAuth:
       type: http

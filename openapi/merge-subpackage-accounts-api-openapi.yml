@@ -885,99 +885,6 @@ paths:
     - url: https://api-ap.merge.dev/api
 components:
   schemas:
-    AccountResponse:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/Account'
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/WarningValidationProblem'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorValidationProblem'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/DebugModeLog'
-      required:
-      - model
-      - warnings
-      - errors
-      title: AccountResponse
-    ClassificationEnum:
-      type: string
-      enum:
-      - ASSET
-      - EQUITY
-      - EXPENSE
-      - LIABILITY
-      - REVENUE
-      title: ClassificationEnum
-    AccountsGetParametersRemoteFields:
-      type: string
-      enum:
-      - classification
-      - classification,status
-      - status
-      title: AccountsGetParametersRemoteFields
-    MetaResponse:
-      type: object
-      properties:
-        request_schema:
-          type: object
-          additionalProperties:
-            description: Any type
-        status:
-          $ref: '#/components/schemas/LinkedAccountStatus'
-        has_conditional_params:
-          type: boolean
-        has_required_linked_account_params:
-          type: boolean
-        remote_fields:
-          type: array
-          items:
-            type: string
-            format: uuid
-          description: Remote field values to populate
-      required:
-      - request_schema
-      - has_conditional_params
-      - has_required_linked_account_params
-      title: MetaResponse
-    DebugModeLog:
-      type: object
-      properties:
-        log_id:
-          type: string
-        dashboard_view:
-          type: string
-        log_summary:
-          $ref: '#/components/schemas/DebugModelLogSummary'
-      required:
-      - log_id
-      - dashboard_view
-      - log_summary
-      title: DebugModeLog
-    AccountAccountTypeEnum:
-      type: string
-      enum:
-      - BANK
-      - CREDIT_CARD
-      - ACCOUNTS_PAYABLE
-      - ACCOUNTS_RECEIVABLE
-      - FIXED_ASSET
-      - OTHER_ASSET
-      - OTHER_CURRENT_ASSET
-      - OTHER_EXPENSE
-      - OTHER_INCOME
-      - COST_OF_GOODS_SOLD
-      - OTHER_CURRENT_LIABILITY
-      - LONG_TERM_LIABILITY
-      - NON_POSTING
-      title: AccountAccountTypeEnum
     ErrorValidationProblem:
       type: object
       properties:
@@ -1000,77 +907,28 @@ components:
       - detail
       - problem_type
       title: ErrorValidationProblem
-    AccountStatusEnum:
-      type: string
-      enum:
-      - ACTIVE
-      - PENDING
-      - INACTIVE
-      title: AccountStatusEnum
-    AccountsIdGetParametersRemoteFields:
-      type: string
-      enum:
-      - classification
-      - classification,status
-      - status
-      title: AccountsIdGetParametersRemoteFields
-    AccountFieldMappings:
+    WarningValidationProblem:
       type: object
       properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: AccountFieldMappings
-    AccountsIdGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - classification
-      - classification,status
-      - status
-      title: AccountsIdGetParametersShowEnumOrigins
-    AccountsGetParametersShowEnumOrigins:
-      type: string
-      enum:
-      - classification
-      - classification,status
-      - status
-      title: AccountsGetParametersShowEnumOrigins
-    AccountsGetParametersClassification:
-      type: string
-      enum:
-      - ''
-      - ASSET
-      - EQUITY
-      - EXPENSE
-      - LIABILITY
-      - REVENUE
-      title: AccountsGetParametersClassification
-    RemoteData:
-      type: object
-      properties:
-        path:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
           type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
       required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
     ValidationProblemSource:
       type: object
       properties:
@@ -1079,30 +937,128 @@ components:
       required:
       - pointer
       title: ValidationProblemSource
-    LinkedAccountStatus:
+    AccountRequest:
       type: object
       properties:
-        linked_account_status:
-          type: string
-        can_make_request:
-          type: boolean
-      required:
-      - linked_account_status
-      - can_make_request
-      title: LinkedAccountStatus
-    AccountsGetParametersExpandSchemaItems:
+        name:
+          type:
+          - string
+          - 'null'
+          description: The account's name.
+        description:
+          type:
+          - string
+          - 'null'
+          description: The account's description.
+        classification:
+          oneOf:
+          - $ref: '#/components/schemas/ClassificationEnum'
+          - type: 'null'
+          description: The account's broadest grouping.
+        type:
+          type:
+          - string
+          - 'null'
+          description: The account's type is a narrower and more specific grouping within the account's classification.
+        account_type:
+          oneOf:
+          - $ref: '#/components/schemas/AccountAccountTypeEnum'
+          - type: 'null'
+          description: Normalized account type- which is a narrower and more specific grouping within the account's classification.
+        status:
+          oneOf:
+          - $ref: '#/components/schemas/AccountStatusEnum'
+          - type: 'null'
+          description: The account's status.
+        current_balance:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The account's current balance.
+        currency:
+          oneOf:
+          - $ref: '#/components/schemas/TransactionCurrencyEnum'
+          - type: 'null'
+          description: The account's currency. The currency code in ISO 4217 format.
+        account_number:
+          type:
+          - string
+          - 'null'
+          description: The account's number.
+        parent_account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: ID of the parent account.
+        company:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The company the account belongs to.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The Account Object
+
+        ### Description
+
+        An `Account` represents a category in a company’s ledger in which a financial transaction is recorded against. The aggregation of each `Account` object is often referred to as the **Chart of Accounts**.
+
+
+        An `Account` can be classified into one of the following categories, determined through the `classification` field:
+
+        * __Asset:__ Accounts Receivable and Bank Accounts
+
+        * __Liability:__ Accounts Payable and Credit Card Accounts
+
+        * __Equity:__ Treasury Accounts and Retained Earnings
+
+        * __Revenue:__ Income and Other Income
+
+        * __Expense:__ Cost of Goods Sold and Office Expenses
+
+
+        ### Usage Example
+
+        Fetch from the `LIST Accounts` endpoint and view a company''s accounts.'
+      title: AccountRequest
+    AccountAccountTypeEnum:
       type: string
       enum:
-      - company
-      title: AccountsGetParametersExpandSchemaItems
-    AccountEndpointRequest:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/AccountRequest'
-      required:
-      - model
-      title: AccountEndpointRequest
+      - BANK
+      - CREDIT_CARD
+      - ACCOUNTS_PAYABLE
+      - ACCOUNTS_RECEIVABLE
+      - FIXED_ASSET
+      - OTHER_ASSET
+      - OTHER_CURRENT_ASSET
+      - OTHER_EXPENSE
+      - OTHER_INCOME
+      - COST_OF_GOODS_SOLD
+      - OTHER_CURRENT_LIABILITY
+      - LONG_TERM_LIABILITY
+      - NON_POSTING
+      title: AccountAccountTypeEnum
+    AccountsGetParametersStatus:
+      type: string
+      enum:
+      - ''
+      - ACTIVE
+      - INACTIVE
+      - PENDING
+      title: AccountsGetParametersStatus
     TransactionCurrencyEnum:
       type: string
       enum:
@@ -1414,6 +1370,48 @@ components:
       - ZWL
       description: The currency code in ISO 4217 format.
       title: TransactionCurrencyEnum
+    DebugModelLogSummary:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        status_code:
+          type: integer
+      required:
+      - url
+      - method
+      - status_code
+      title: DebugModelLogSummary
+    AccountFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: AccountFieldMappings
+    AccountsGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - classification
+      - classification,status
+      - status
+      title: AccountsGetParametersShowEnumOrigins
+    ClassificationEnum:
+      type: string
+      enum:
+      - ASSET
+      - EQUITY
+      - EXPENSE
+      - LIABILITY
+      - REVENUE
+      title: ClassificationEnum
     PaginatedAccountList:
       type: object
       properties:
@@ -1430,6 +1428,131 @@ components:
           items:
             $ref: '#/components/schemas/Account'
       title: PaginatedAccountList
+    AccountStatusEnum:
+      type: string
+      enum:
+      - ACTIVE
+      - PENDING
+      - INACTIVE
+      title: AccountStatusEnum
+    AccountsGetParametersRemoteFields:
+      type: string
+      enum:
+      - classification
+      - classification,status
+      - status
+      title: AccountsGetParametersRemoteFields
+    AccountsIdGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - company
+      title: AccountsIdGetParametersExpandSchemaItems
+    AccountResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/Account'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: AccountResponse
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    AccountsIdGetParametersRemoteFields:
+      type: string
+      enum:
+      - classification
+      - classification,status
+      - status
+      title: AccountsIdGetParametersRemoteFields
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    AccountsIdGetParametersShowEnumOrigins:
+      type: string
+      enum:
+      - classification
+      - classification,status
+      - status
+      title: AccountsIdGetParametersShowEnumOrigins
     Account:
       type: object
       properties:
@@ -1544,50 +1667,50 @@ components:
 
         Fetch from the `LIST Accounts` endpoint and view a company''s accounts.'
       title: Account
-    AccountsIdGetParametersExpandSchemaItems:
+    AccountsGetParametersExpandSchemaItems:
       type: string
       enum:
       - company
-      title: AccountsIdGetParametersExpandSchemaItems
-    WarningValidationProblem:
+      title: AccountsGetParametersExpandSchemaItems
+    AccountsGetParametersClassification:
+      type: string
+      enum:
+      - ''
+      - ASSET
+      - EQUITY
+      - EXPENSE
+      - LIABILITY
+      - REVENUE
+      title: AccountsGetParametersClassification
+    AccountEndpointRequest:
       type: object
       properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
-          type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
+        model:
+          $ref: '#/components/schemas/AccountRequest'
       required:
-      - title
-      - detail
-      - problem_type
-      title: WarningValidationProblem
-    DebugModelLogSummary:
+      - model
+      title: AccountEndpointRequest
+    ItemSchema:
       type: object
       properties:
-        url:
-          type: string
-        method:
-          type: string
-        status_code:
-          type: integer
-      required:
-      - url
-      - method
-      - status_code
-      title: DebugModelLogSummary
-    AccountRequest:
+        item_type:
+          $ref: '#/components/schemas/ItemTypeEnum'
+        item_format:
+          $ref: '#/components/schemas/ItemFormatEnum'
+        item_choices:
+          type: array
+          items:
+            type: string
+      title: ItemSchema
+    AccountRequest_2:
       type: object
       properties:
+        owner:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The account's owner.
         name:
           type:
           - string
@@ -1598,54 +1721,38 @@ components:
           - string
           - 'null'
           description: The account's description.
-        classification:
-          oneOf:
-          - $ref: '#/components/schemas/ClassificationEnum'
-          - type: 'null'
-          description: The account's broadest grouping.
-        type:
+        industry:
           type:
           - string
           - 'null'
-          description: The account's type is a narrower and more specific grouping within the account's classification.
-        account_type:
-          oneOf:
-          - $ref: '#/components/schemas/AccountAccountTypeEnum'
-          - type: 'null'
-          description: Normalized account type- which is a narrower and more specific grouping within the account's classification.
-        status:
-          oneOf:
-          - $ref: '#/components/schemas/AccountStatusEnum'
-          - type: 'null'
-          description: The account's status.
-        current_balance:
-          type:
-          - number
-          - 'null'
-          format: double
-          description: The account's current balance.
-        currency:
-          oneOf:
-          - $ref: '#/components/schemas/TransactionCurrencyEnum'
-          - type: 'null'
-          description: The account's currency. The currency code in ISO 4217 format.
-        account_number:
+          description: The account's industry.
+        website:
           type:
           - string
           - 'null'
-          description: The account's number.
-        parent_account:
+          format: uri
+          description: The account's website.
+        number_of_employees:
+          type:
+          - integer
+          - 'null'
+          description: The account's number of employees.
+        addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddressRequest'
+        last_activity_at:
           type:
           - string
           - 'null'
-          format: uuid
-          description: ID of the parent account.
-        company:
+          format: date-time
+          description: The last date (either most recent or furthest in the future) of when an activity occurs in an account.
+        account_url:
           type:
           - string
           - 'null'
-          format: uuid
-          description: The company the account belongs to.
+          format: uri
+          description: The account's URL in the remote system.
         integration_params:
           type:
           - object
@@ -1658,82 +1765,48 @@ components:
           - 'null'
           additionalProperties:
             description: Any type
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldRequest'
       description: '# The Account Object
 
         ### Description
 
-        An `Account` represents a category in a company’s ledger in which a financial transaction is recorded against. The aggregation of each `Account` object is often referred to as the **Chart of Accounts**.
-
-
-        An `Account` can be classified into one of the following categories, determined through the `classification` field:
-
-        * __Asset:__ Accounts Receivable and Bank Accounts
-
-        * __Liability:__ Accounts Payable and Credit Card Accounts
-
-        * __Equity:__ Treasury Accounts and Retained Earnings
-
-        * __Revenue:__ Income and Other Income
-
-        * __Expense:__ Cost of Goods Sold and Office Expenses
-
+        The `Account` object is used to represent a company in a CRM system.
 
         ### Usage Example
 
-        Fetch from the `LIST Accounts` endpoint and view a company''s accounts.'
+        TODO'
       title: AccountRequest
-    AccountsGetParametersStatus:
-      type: string
-      enum:
-      - ''
-      - ACTIVE
-      - INACTIVE
-      - PENDING
-      title: AccountsGetParametersStatus
-    PaginatedRemoteFieldClassList:
+    RemoteFieldClass:
       type: object
       properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
+        id:
+          type: string
+        display_name:
+          type: string
+        remote_key_name:
+          type: string
+        description:
+          type: string
+        is_custom:
+          type: boolean
+        is_common_model_field:
+          type: boolean
+        is_required:
+          type: boolean
+        field_type:
+          $ref: '#/components/schemas/FieldTypeEnum'
+        field_format:
+          $ref: '#/components/schemas/FieldFormatEnum'
+        field_choices:
           type: array
           items:
-            $ref: '#/components/schemas/RemoteFieldClass'
-      title: PaginatedRemoteFieldClassList
-    AddressTypeEnum:
-      type: string
-      enum:
-      - BILLING
-      - SHIPPING
-      title: AddressTypeEnum
-    RemoteField:
-      type: object
-      properties:
-        remote_field_class:
-          $ref: '#/components/schemas/RemoteFieldClass'
-        value:
-          type: object
-          additionalProperties:
-            description: Any type
-      required:
-      - remote_field_class
-      title: RemoteField
-    FieldFormatEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: FieldFormatEnum
+            type: string
+        item_schema:
+          $ref: '#/components/schemas/ItemSchema'
+      title: RemoteFieldClass
     RemoteFieldRequest:
       type: object
       properties:
@@ -1747,6 +1820,154 @@ components:
       required:
       - remote_field_class
       title: RemoteFieldRequest
+    AddressRequest:
+      type: object
+      properties:
+        street_1:
+          type:
+          - string
+          - 'null'
+          description: Line 1 of the address's street.
+        street_2:
+          type:
+          - string
+          - 'null'
+          description: Line 2 of the address's street.
+        city:
+          type:
+          - string
+          - 'null'
+          description: The address's city.
+        state:
+          type:
+          - string
+          - 'null'
+          description: The address's state.
+        postal_code:
+          type:
+          - string
+          - 'null'
+          description: The address's postal code.
+        country:
+          oneOf:
+          - $ref: '#/components/schemas/CountryEnum'
+          - type: 'null'
+          description: The address's country. The country code in ISO 3166-1 alpha-2 format.
+        address_type:
+          oneOf:
+          - $ref: '#/components/schemas/AddressTypeEnum'
+          - type: 'null'
+          description: The address type.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+      description: '# The Address Object
+
+        ### Description
+
+        The `Address` object is used to represent an entity''s address.
+
+        ### Usage Example
+
+        TODO'
+      title: AddressRequest
+    CRMAccountResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/Account_2'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: CRMAccountResponse
+    FieldTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldTypeEnum
+    Address:
+      type: object
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        street_1:
+          type:
+          - string
+          - 'null'
+          description: Line 1 of the address's street.
+        street_2:
+          type:
+          - string
+          - 'null'
+          description: Line 2 of the address's street.
+        city:
+          type:
+          - string
+          - 'null'
+          description: The address's city.
+        state:
+          type:
+          - string
+          - 'null'
+          description: The address's state.
+        postal_code:
+          type:
+          - string
+          - 'null'
+          description: The address's postal code.
+        country:
+          oneOf:
+          - $ref: '#/components/schemas/CountryEnum'
+          - type: 'null'
+          description: The address's country. The country code in ISO 3166-1 alpha-2 format.
+        address_type:
+          oneOf:
+          - $ref: '#/components/schemas/AddressTypeEnum'
+          - type: 'null'
+          description: The address type.
+      description: '# The Address Object
+
+        ### Description
+
+        The `Address` object is used to represent an entity''s address.
+
+        ### Usage Example
+
+        TODO'
+      title: Address
     CRMAccountEndpointRequest:
       type: object
       properties:
@@ -1786,18 +2007,128 @@ components:
 
         Fetch from the `GET Contact` endpoint and view their phone numbers.'
       title: PhoneNumber
-    ItemSchema:
+    ItemFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemFormatEnum
+    RemoteField:
       type: object
       properties:
-        item_type:
-          $ref: '#/components/schemas/ItemTypeEnum'
-        item_format:
-          $ref: '#/components/schemas/ItemFormatEnum'
-        item_choices:
+        remote_field_class:
+          $ref: '#/components/schemas/RemoteFieldClass'
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteField
+    PatchedAccountRequest:
+      type: object
+      properties:
+        owner:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The account's owner.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The account's name.
+        description:
+          type:
+          - string
+          - 'null'
+          description: The account's description.
+        industry:
+          type:
+          - string
+          - 'null'
+          description: The account's industry.
+        website:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The account's website.
+        number_of_employees:
+          type:
+          - integer
+          - 'null'
+          description: The account's number of employees.
+        addresses:
           type: array
           items:
-            type: string
-      title: ItemSchema
+            $ref: '#/components/schemas/AddressRequest'
+        last_activity_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The last date (either most recent or furthest in the future) of when an activity occurs in an account.
+        account_url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The account's URL in the remote system.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldRequest'
+      description: '# The Account Object
+
+        ### Description
+
+        The `Account` object is used to represent a company in a CRM system.
+
+        ### Usage Example
+
+        TODO'
+      title: PatchedAccountRequest
+    ItemTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemTypeEnum
+    PatchedCRMAccountEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/PatchedAccountRequest'
+      required:
+      - model
+      title: PatchedCRMAccountEndpointRequest
+    AccountsIdGetParametersExpandSchemaItems_2:
+      type: string
+      enum:
+      - owner
+      title: AccountsIdGetParametersExpandSchemaItems
     CountryEnum:
       type: string
       enum:
@@ -2052,282 +2383,6 @@ components:
       - ZW
       description: The country code in ISO 3166-1 alpha-2 format.
       title: CountryEnum
-    RemoteFieldClass:
-      type: object
-      properties:
-        id:
-          type: string
-        display_name:
-          type: string
-        remote_key_name:
-          type: string
-        description:
-          type: string
-        is_custom:
-          type: boolean
-        is_common_model_field:
-          type: boolean
-        is_required:
-          type: boolean
-        field_type:
-          $ref: '#/components/schemas/FieldTypeEnum'
-        field_format:
-          $ref: '#/components/schemas/FieldFormatEnum'
-        field_choices:
-          type: array
-          items:
-            type: string
-        item_schema:
-          $ref: '#/components/schemas/ItemSchema'
-      title: RemoteFieldClass
-    PatchedCRMAccountEndpointRequest:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/PatchedAccountRequest'
-      required:
-      - model
-      title: PatchedCRMAccountEndpointRequest
-    PatchedAccountRequest:
-      type: object
-      properties:
-        owner:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The account's owner.
-        name:
-          type:
-          - string
-          - 'null'
-          description: The account's name.
-        description:
-          type:
-          - string
-          - 'null'
-          description: The account's description.
-        industry:
-          type:
-          - string
-          - 'null'
-          description: The account's industry.
-        website:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The account's website.
-        number_of_employees:
-          type:
-          - integer
-          - 'null'
-          description: The account's number of employees.
-        addresses:
-          type: array
-          items:
-            $ref: '#/components/schemas/AddressRequest'
-        last_activity_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The last date (either most recent or furthest in the future) of when an activity occurs in an account.
-        account_url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The account's URL in the remote system.
-        integration_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        linked_account_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        remote_fields:
-          type: array
-          items:
-            $ref: '#/components/schemas/RemoteFieldRequest'
-      description: '# The Account Object
-
-        ### Description
-
-        The `Account` object is used to represent a company in a CRM system.
-
-        ### Usage Example
-
-        TODO'
-      title: PatchedAccountRequest
-    ItemFormatEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: ItemFormatEnum
-    AccountsGetParametersExpandSchemaItems_2:
-      type: string
-      enum:
-      - owner
-      title: AccountsGetParametersExpandSchemaItems
-    AddressRequest:
-      type: object
-      properties:
-        street_1:
-          type:
-          - string
-          - 'null'
-          description: Line 1 of the address's street.
-        street_2:
-          type:
-          - string
-          - 'null'
-          description: Line 2 of the address's street.
-        city:
-          type:
-          - string
-          - 'null'
-          description: The address's city.
-        state:
-          type:
-          - string
-          - 'null'
-          description: The address's state.
-        postal_code:
-          type:
-          - string
-          - 'null'
-          description: The address's postal code.
-        country:
-          oneOf:
-          - $ref: '#/components/schemas/CountryEnum'
-          - type: 'null'
-          description: The address's country. The country code in ISO 3166-1 alpha-2 format.
-        address_type:
-          oneOf:
-          - $ref: '#/components/schemas/AddressTypeEnum'
-          - type: 'null'
-          description: The address type.
-        integration_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        linked_account_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-      description: '# The Address Object
-
-        ### Description
-
-        The `Address` object is used to represent an entity''s address.
-
-        ### Usage Example
-
-        TODO'
-      title: AddressRequest
-    CRMAccountResponse:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/Account_2'
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/WarningValidationProblem'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorValidationProblem'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/DebugModeLog'
-      required:
-      - model
-      - warnings
-      - errors
-      title: CRMAccountResponse
-    Address:
-      type: object
-      properties:
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        street_1:
-          type:
-          - string
-          - 'null'
-          description: Line 1 of the address's street.
-        street_2:
-          type:
-          - string
-          - 'null'
-          description: Line 2 of the address's street.
-        city:
-          type:
-          - string
-          - 'null'
-          description: The address's city.
-        state:
-          type:
-          - string
-          - 'null'
-          description: The address's state.
-        postal_code:
-          type:
-          - string
-          - 'null'
-          description: The address's postal code.
-        country:
-          oneOf:
-          - $ref: '#/components/schemas/CountryEnum'
-          - type: 'null'
-          description: The address's country. The country code in ISO 3166-1 alpha-2 format.
-        address_type:
-          oneOf:
-          - $ref: '#/components/schemas/AddressTypeEnum'
-          - type: 'null'
-          description: The address type.
-      description: '# The Address Object
-
-        ### Description
-
-        The `Address` object is used to represent an entity''s address.
-
-        ### Usage Example
-
-        TODO'
-      title: Address
-    FieldTypeEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: FieldTypeEnum
     Account_2:
       type: object
       properties:
@@ -2438,89 +2493,18 @@ components:
 
         TODO'
       title: Account
-    AccountsIdGetParametersExpandSchemaItems_2:
+    AccountsGetParametersExpandSchemaItems_2:
       type: string
       enum:
       - owner
-      title: AccountsIdGetParametersExpandSchemaItems
-    AccountRequest_2:
-      type: object
-      properties:
-        owner:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The account's owner.
-        name:
-          type:
-          - string
-          - 'null'
-          description: The account's name.
-        description:
-          type:
-          - string
-          - 'null'
-          description: The account's description.
-        industry:
-          type:
-          - string
-          - 'null'
-          description: The account's industry.
-        website:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The account's website.
-        number_of_employees:
-          type:
-          - integer
-          - 'null'
-          description: The account's number of employees.
-        addresses:
-          type: array
-          items:
-            $ref: '#/components/schemas/AddressRequest'
-        last_activity_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: The last date (either most recent or furthest in the future) of when an activity occurs in an account.
-        account_url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The account's URL in the remote system.
-        integration_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        linked_account_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        remote_fields:
-          type: array
-          items:
-            $ref: '#/components/schemas/RemoteFieldRequest'
-      description: '# The Account Object
-
-        ### Description
-
-        The `Account` object is used to represent a company in a CRM system.
-
-        ### Usage Example
-
-        TODO'
-      title: AccountRequest
-    ItemTypeEnum:
+      title: AccountsGetParametersExpandSchemaItems
+    AddressTypeEnum:
+      type: string
+      enum:
+      - BILLING
+      - SHIPPING
+      title: AddressTypeEnum
+    FieldFormatEnum:
       type: string
       enum:
       - string
@@ -2529,7 +2513,23 @@ components:
       - datetime
       - bool
       - list
-      title: ItemTypeEnum
+      title: FieldFormatEnum
+    PaginatedRemoteFieldClassList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldClass'
+      title: PaginatedRemoteFieldClassList
     Account_3:
       type: object
       properties:

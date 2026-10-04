@@ -196,25 +196,6 @@ components:
           items:
             $ref: '#/components/schemas/Container'
       title: PaginatedContainerList
-    PermissionFieldMappings:
-      type: object
-      properties: {}
-      title: PermissionFieldMappings
-    Status3c6Enum:
-      type: string
-      enum:
-      - DRAFT
-      - PUBLISHED
-      - ARCHIVED
-      - TRASH
-      description: '* `DRAFT` - DRAFT
-
-        * `PUBLISHED` - PUBLISHED
-
-        * `ARCHIVED` - ARCHIVED
-
-        * `TRASH` - TRASH'
-      title: Status3c6Enum
     RolesEnum:
       type: string
       enum:
@@ -227,17 +208,6 @@ components:
 
         * `OWNER` - OWNER'
       title: RolesEnum
-    ContainersIdGetParametersExpand:
-      type: string
-      enum:
-      - parent_article
-      - parent_article,parent_container
-      - parent_container
-      - permissions
-      - permissions,parent_article
-      - permissions,parent_article,parent_container
-      - permissions,parent_container
-      title: ContainersIdGetParametersExpand
     PermissionTypeEnum:
       type: string
       enum:
@@ -253,6 +223,98 @@ components:
 
         * `ANYONE` - ANYONE'
       title: PermissionTypeEnum
+    PermissionFieldMappings:
+      type: object
+      properties: {}
+      title: PermissionFieldMappings
+    VisibilityEnum:
+      type: string
+      enum:
+      - PUBLIC
+      - INTERNAL
+      - RESTRICTED
+      description: '* `PUBLIC` - PUBLIC
+
+        * `INTERNAL` - INTERNAL
+
+        * `RESTRICTED` - RESTRICTED'
+      title: VisibilityEnum
+    Permission:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        remote_id:
+          type:
+          - string
+          - 'null'
+          description: The third-party API ID of the matching object.
+        created_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was created by Merge.
+        modified_at:
+          type: string
+          format: date-time
+          description: The datetime that this object was modified by Merge.
+        user:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        group:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        type:
+          oneOf:
+          - $ref: '#/components/schemas/PermissionTypeEnum'
+          - type: 'null'
+          description: 'Denotes what type of people have access to the Article or Container.
+
+
+            * `USER` - USER
+
+            * `GROUP` - GROUP
+
+            * `COMPANY` - COMPANY
+
+            * `ANYONE` - ANYONE'
+        roles:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/RolesEnum'
+          description: The permissions that the user or group has for the Article or Container. It is possible for a user or group to have multiple roles, such as viewing & uploading.
+        remote_was_deleted:
+          type: boolean
+          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
+        field_mappings:
+          oneOf:
+          - $ref: '#/components/schemas/PermissionFieldMappings'
+          - type: 'null'
+      description: '# The Permission Object
+
+        ### Description
+
+        The `Permission` object is used to represent a user''s or group''s access to an article or container. Permissions are unexpanded by default.
+
+        ### Usage Example'
+      title: Permission
+    ContainersIdGetParametersExpand:
+      type: string
+      enum:
+      - parent_article
+      - parent_article,parent_container
+      - parent_container
+      - permissions
+      - permissions,parent_article
+      - permissions,parent_article,parent_container
+      - permissions,parent_container
+      title: ContainersIdGetParametersExpand
     ContainersGetParametersType:
       type: string
       enum:
@@ -264,6 +326,74 @@ components:
       - SECTION
       - SPACE
       title: ContainersGetParametersType
+    Status3c6Enum:
+      type: string
+      enum:
+      - DRAFT
+      - PUBLISHED
+      - ARCHIVED
+      - TRASH
+      description: '* `DRAFT` - DRAFT
+
+        * `PUBLISHED` - PUBLISHED
+
+        * `ARCHIVED` - ARCHIVED
+
+        * `TRASH` - TRASH'
+      title: Status3c6Enum
+    ContainersGetParametersExpand:
+      type: string
+      enum:
+      - parent_article
+      - parent_article,parent_container
+      - parent_container
+      - permissions
+      - permissions,parent_article
+      - permissions,parent_article,parent_container
+      - permissions,parent_container
+      title: ContainersGetParametersExpand
+    ContainerTypeEnum:
+      type: string
+      enum:
+      - FOLDER
+      - SPACE
+      - COLLECTION
+      - SECTION
+      - CATEGORY
+      - DATABASE
+      description: '* `FOLDER` - FOLDER
+
+        * `SPACE` - SPACE
+
+        * `COLLECTION` - COLLECTION
+
+        * `SECTION` - SECTION
+
+        * `CATEGORY` - CATEGORY
+
+        * `DATABASE` - DATABASE'
+      title: ContainerTypeEnum
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
     Container:
       type: object
       properties:
@@ -393,140 +523,10 @@ components:
 
         Fetch from the `GET /api/knowledgebase/containers` endpoint and view their containers.'
       title: Container
-    Permission:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        remote_id:
-          type:
-          - string
-          - 'null'
-          description: The third-party API ID of the matching object.
-        created_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was created by Merge.
-        modified_at:
-          type: string
-          format: date-time
-          description: The datetime that this object was modified by Merge.
-        user:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        group:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        type:
-          oneOf:
-          - $ref: '#/components/schemas/PermissionTypeEnum'
-          - type: 'null'
-          description: 'Denotes what type of people have access to the Article or Container.
-
-
-            * `USER` - USER
-
-            * `GROUP` - GROUP
-
-            * `COMPANY` - COMPANY
-
-            * `ANYONE` - ANYONE'
-        roles:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/RolesEnum'
-          description: The permissions that the user or group has for the Article or Container. It is possible for a user or group to have multiple roles, such as viewing & uploading.
-        remote_was_deleted:
-          type: boolean
-          description: Indicates whether or not this object has been deleted in the third party platform. Full coverage deletion detection is a premium add-on. Native deletion detection is offered for free with limited coverage. [Learn more](https://docs.merge.dev/integrations/hris/supported-features/).
-        field_mappings:
-          oneOf:
-          - $ref: '#/components/schemas/PermissionFieldMappings'
-          - type: 'null'
-      description: '# The Permission Object
-
-        ### Description
-
-        The `Permission` object is used to represent a user''s or group''s access to an article or container. Permissions are unexpanded by default.
-
-        ### Usage Example'
-      title: Permission
     ContainerFieldMappings:
       type: object
       properties: {}
       title: ContainerFieldMappings
-    VisibilityEnum:
-      type: string
-      enum:
-      - PUBLIC
-      - INTERNAL
-      - RESTRICTED
-      description: '* `PUBLIC` - PUBLIC
-
-        * `INTERNAL` - INTERNAL
-
-        * `RESTRICTED` - RESTRICTED'
-      title: VisibilityEnum
-    ContainerTypeEnum:
-      type: string
-      enum:
-      - FOLDER
-      - SPACE
-      - COLLECTION
-      - SECTION
-      - CATEGORY
-      - DATABASE
-      description: '* `FOLDER` - FOLDER
-
-        * `SPACE` - SPACE
-
-        * `COLLECTION` - COLLECTION
-
-        * `SECTION` - SECTION
-
-        * `CATEGORY` - CATEGORY
-
-        * `DATABASE` - DATABASE'
-      title: ContainerTypeEnum
-    RemoteData:
-      type: object
-      properties:
-        path:
-          type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
-      required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
-    ContainersGetParametersExpand:
-      type: string
-      enum:
-      - parent_article
-      - parent_article,parent_container
-      - parent_container
-      - permissions
-      - permissions,parent_article
-      - permissions,parent_article,parent_container
-      - permissions,parent_container
-      title: ContainersGetParametersExpand
   securitySchemes:
     tokenAuth:
       type: http

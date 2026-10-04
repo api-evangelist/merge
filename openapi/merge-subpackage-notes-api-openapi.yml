@@ -344,188 +344,18 @@ paths:
                 $ref: '#/components/schemas/PaginatedRemoteFieldClassList'
 components:
   schemas:
-    PaginatedRemoteFieldClassList:
+    ItemSchema:
       type: object
       properties:
-        next:
-          type:
-          - string
-          - 'null'
-        previous:
-          type:
-          - string
-          - 'null'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/RemoteFieldClass'
-      title: PaginatedRemoteFieldClassList
-    NoteResponse:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/Note'
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/WarningValidationProblem'
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/ErrorValidationProblem'
-        logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/DebugModeLog'
-      required:
-      - model
-      - warnings
-      - errors
-      title: NoteResponse
-    NoteRequest:
-      type: object
-      properties:
-        owner:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The note's owner.
-        content:
-          type:
-          - string
-          - 'null'
-          description: The note's content.
-        contact:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The note's contact.
-        account:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The note's account.
-        opportunity:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The note's opportunity.
-        note_url:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The note's URL in the remote system.
-        integration_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        linked_account_params:
-          type:
-          - object
-          - 'null'
-          additionalProperties:
-            description: Any type
-        remote_fields:
-          type: array
-          items:
-            $ref: '#/components/schemas/RemoteFieldRequest'
-      description: '# The Note Object
-
-        ### Description
-
-        The `Note` object is used to represent a note on another object.
-
-        ### Usage Example
-
-        TODO'
-      title: NoteRequest
-    NoteFieldMappings:
-      type: object
-      properties:
-        organization_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-        linked_account_defined_targets:
-          type: object
-          additionalProperties:
-            description: Any type
-      title: NoteFieldMappings
-    RemoteField:
-      type: object
-      properties:
-        remote_field_class:
-          $ref: '#/components/schemas/RemoteFieldClass'
-        value:
-          type: object
-          additionalProperties:
-            description: Any type
-      required:
-      - remote_field_class
-      title: RemoteField
-    MetaResponse:
-      type: object
-      properties:
-        request_schema:
-          type: object
-          additionalProperties:
-            description: Any type
-        status:
-          $ref: '#/components/schemas/LinkedAccountStatus'
-        has_conditional_params:
-          type: boolean
-        has_required_linked_account_params:
-          type: boolean
-        remote_fields:
+        item_type:
+          $ref: '#/components/schemas/ItemTypeEnum'
+        item_format:
+          $ref: '#/components/schemas/ItemFormatEnum'
+        item_choices:
           type: array
           items:
             type: string
-            format: uuid
-          description: Remote field values to populate
-      required:
-      - request_schema
-      - has_conditional_params
-      - has_required_linked_account_params
-      title: MetaResponse
-    NotesIdGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - account
-      - contact
-      - opportunity
-      - owner
-      title: NotesIdGetParametersExpandSchemaItems
-    FieldFormatEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: FieldFormatEnum
-    DebugModeLog:
-      type: object
-      properties:
-        log_id:
-          type: string
-        dashboard_view:
-          type: string
-        log_summary:
-          $ref: '#/components/schemas/DebugModelLogSummary'
-      required:
-      - log_id
-      - dashboard_view
-      - log_summary
-      title: DebugModeLog
+      title: ItemSchema
     PaginatedNoteList:
       type: object
       properties:
@@ -542,31 +372,6 @@ components:
           items:
             $ref: '#/components/schemas/Note'
       title: PaginatedNoteList
-    RemoteFieldRequest:
-      type: object
-      properties:
-        remote_field_class:
-          type: string
-          format: uuid
-        value:
-          type: object
-          additionalProperties:
-            description: Any type
-      required:
-      - remote_field_class
-      title: RemoteFieldRequest
-    ItemSchema:
-      type: object
-      properties:
-        item_type:
-          $ref: '#/components/schemas/ItemTypeEnum'
-        item_format:
-          $ref: '#/components/schemas/ItemFormatEnum'
-        item_choices:
-          type: array
-          items:
-            type: string
-      title: ItemSchema
     ErrorValidationProblem:
       type: object
       properties:
@@ -589,73 +394,36 @@ components:
       - detail
       - problem_type
       title: ErrorValidationProblem
-    RemoteFieldClass:
-      type: object
-      properties:
-        id:
-          type: string
-        display_name:
-          type: string
-        remote_key_name:
-          type: string
-        description:
-          type: string
-        is_custom:
-          type: boolean
-        is_common_model_field:
-          type: boolean
-        is_required:
-          type: boolean
-        field_type:
-          $ref: '#/components/schemas/FieldTypeEnum'
-        field_format:
-          $ref: '#/components/schemas/FieldFormatEnum'
-        field_choices:
-          type: array
-          items:
-            type: string
-        item_schema:
-          $ref: '#/components/schemas/ItemSchema'
-      title: RemoteFieldClass
-    NoteEndpointRequest:
-      type: object
-      properties:
-        model:
-          $ref: '#/components/schemas/NoteRequest'
-      required:
-      - model
-      title: NoteEndpointRequest
-    ItemFormatEnum:
+    NotesIdGetParametersExpandSchemaItems:
       type: string
       enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: ItemFormatEnum
-    RemoteData:
+      - account
+      - contact
+      - opportunity
+      - owner
+      title: NotesIdGetParametersExpandSchemaItems
+    WarningValidationProblem:
       type: object
       properties:
-        path:
+        source:
+          $ref: '#/components/schemas/ValidationProblemSource'
+        title:
           type: string
-          description: The third-party API path that is being called.
-        data:
-          description: The data returned from the third-party for this object in its original, unnormalized format.
+        detail:
+          type: string
+        problem_type:
+          type: string
+        block_merge_link:
+          type: boolean
+        raw_error:
+          type: string
+        error_code:
+          type: integer
       required:
-      - path
-      description: '# The RemoteData Object
-
-        ### Description
-
-        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
-
-
-        ### Usage Example
-
-        TODO'
-      title: RemoteData
+      - title
+      - detail
+      - problem_type
+      title: WarningValidationProblem
     ValidationProblemSource:
       type: object
       properties:
@@ -757,57 +525,6 @@ components:
 
         TODO'
       title: Note
-    LinkedAccountStatus:
-      type: object
-      properties:
-        linked_account_status:
-          type: string
-        can_make_request:
-          type: boolean
-      required:
-      - linked_account_status
-      - can_make_request
-      title: LinkedAccountStatus
-    NotesGetParametersExpandSchemaItems:
-      type: string
-      enum:
-      - account
-      - contact
-      - opportunity
-      - owner
-      title: NotesGetParametersExpandSchemaItems
-    FieldTypeEnum:
-      type: string
-      enum:
-      - string
-      - number
-      - date
-      - datetime
-      - bool
-      - list
-      title: FieldTypeEnum
-    WarningValidationProblem:
-      type: object
-      properties:
-        source:
-          $ref: '#/components/schemas/ValidationProblemSource'
-        title:
-          type: string
-        detail:
-          type: string
-        problem_type:
-          type: string
-        block_merge_link:
-          type: boolean
-        raw_error:
-          type: string
-        error_code:
-          type: integer
-      required:
-      - title
-      - detail
-      - problem_type
-      title: WarningValidationProblem
     DebugModelLogSummary:
       type: object
       properties:
@@ -822,6 +539,91 @@ components:
       - method
       - status_code
       title: DebugModelLogSummary
+    RemoteFieldClass:
+      type: object
+      properties:
+        id:
+          type: string
+        display_name:
+          type: string
+        remote_key_name:
+          type: string
+        description:
+          type: string
+        is_custom:
+          type: boolean
+        is_common_model_field:
+          type: boolean
+        is_required:
+          type: boolean
+        field_type:
+          $ref: '#/components/schemas/FieldTypeEnum'
+        field_format:
+          $ref: '#/components/schemas/FieldFormatEnum'
+        field_choices:
+          type: array
+          items:
+            type: string
+        item_schema:
+          $ref: '#/components/schemas/ItemSchema'
+      title: RemoteFieldClass
+    RemoteFieldRequest:
+      type: object
+      properties:
+        remote_field_class:
+          type: string
+          format: uuid
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteFieldRequest
+    FieldTypeEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldTypeEnum
+    NoteFieldMappings:
+      type: object
+      properties:
+        organization_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+        linked_account_defined_targets:
+          type: object
+          additionalProperties:
+            description: Any type
+      title: NoteFieldMappings
+    RemoteField:
+      type: object
+      properties:
+        remote_field_class:
+          $ref: '#/components/schemas/RemoteFieldClass'
+        value:
+          type: object
+          additionalProperties:
+            description: Any type
+      required:
+      - remote_field_class
+      title: RemoteField
+    ItemFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: ItemFormatEnum
     ItemTypeEnum:
       type: string
       enum:
@@ -832,6 +634,204 @@ components:
       - bool
       - list
       title: ItemTypeEnum
+    NoteEndpointRequest:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/NoteRequest'
+      required:
+      - model
+      title: NoteEndpointRequest
+    NotesGetParametersExpandSchemaItems:
+      type: string
+      enum:
+      - account
+      - contact
+      - opportunity
+      - owner
+      title: NotesGetParametersExpandSchemaItems
+    LinkedAccountStatus:
+      type: object
+      properties:
+        linked_account_status:
+          type: string
+        can_make_request:
+          type: boolean
+      required:
+      - linked_account_status
+      - can_make_request
+      title: LinkedAccountStatus
+    NoteResponse:
+      type: object
+      properties:
+        model:
+          $ref: '#/components/schemas/Note'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/WarningValidationProblem'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorValidationProblem'
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DebugModeLog'
+      required:
+      - model
+      - warnings
+      - errors
+      title: NoteResponse
+    RemoteData:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The third-party API path that is being called.
+        data:
+          description: The data returned from the third-party for this object in its original, unnormalized format.
+      required:
+      - path
+      description: '# The RemoteData Object
+
+        ### Description
+
+        The `RemoteData` object is used to represent the full data pulled from the third-party API for an object.
+
+
+        ### Usage Example
+
+        TODO'
+      title: RemoteData
+    DebugModeLog:
+      type: object
+      properties:
+        log_id:
+          type: string
+        dashboard_view:
+          type: string
+        log_summary:
+          $ref: '#/components/schemas/DebugModelLogSummary'
+      required:
+      - log_id
+      - dashboard_view
+      - log_summary
+      title: DebugModeLog
+    NoteRequest:
+      type: object
+      properties:
+        owner:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The note's owner.
+        content:
+          type:
+          - string
+          - 'null'
+          description: The note's content.
+        contact:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The note's contact.
+        account:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The note's account.
+        opportunity:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The note's opportunity.
+        note_url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The note's URL in the remote system.
+        integration_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        linked_account_params:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            description: Any type
+        remote_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldRequest'
+      description: '# The Note Object
+
+        ### Description
+
+        The `Note` object is used to represent a note on another object.
+
+        ### Usage Example
+
+        TODO'
+      title: NoteRequest
+    MetaResponse:
+      type: object
+      properties:
+        request_schema:
+          type: object
+          additionalProperties:
+            description: Any type
+        status:
+          $ref: '#/components/schemas/LinkedAccountStatus'
+        has_conditional_params:
+          type: boolean
+        has_required_linked_account_params:
+          type: boolean
+        remote_fields:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Remote field values to populate
+      required:
+      - request_schema
+      - has_conditional_params
+      - has_required_linked_account_params
+      title: MetaResponse
+    FieldFormatEnum:
+      type: string
+      enum:
+      - string
+      - number
+      - date
+      - datetime
+      - bool
+      - list
+      title: FieldFormatEnum
+    PaginatedRemoteFieldClassList:
+      type: object
+      properties:
+        next:
+          type:
+          - string
+          - 'null'
+        previous:
+          type:
+          - string
+          - 'null'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteFieldClass'
+      title: PaginatedRemoteFieldClassList
   securitySchemes:
     tokenAuth:
       type: http
